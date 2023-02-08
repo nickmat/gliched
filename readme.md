@@ -1,6 +1,6 @@
 # Glich an Extendable Script Language Library.
 
-![Glich logo](./images/glich32.svg)
+![Glich logo](./image/glich32.svg)
 
 The library is intended to provide the bases for an updated HistoryCal script
 and a new HistoryGen script language, as well as possible others.

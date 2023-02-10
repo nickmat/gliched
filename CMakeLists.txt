@@ -22,3 +22,4 @@ include_directories( include )
 
 add_subdirectory( src/glc )
 add_subdirectory( src/glcs )
+add_subdirectory( test/glctest )

@@ -321,9 +321,10 @@ string get_statement( const string& start, StmtType type )
     string statement = start + "\n";
     for ( int lnum = 2;; lnum++ ) {
         string prompt = std::to_string( lnum );
-        while ( prompt.size() < 5 ) {
+        while ( prompt.size() < 4 ) {
             prompt += ".";
         }
+        prompt += ":";
         std::cout << prompt << " ";
         string line;
         std::getline( std::cin, line );
@@ -420,7 +421,7 @@ int main( int argc, char* argv[] )
 
     if( do_cmd_line ) {
         for( ;;) {
-            std::cout << "higs: ";
+            std::cout << "glcs: ";
             string cmnd;
             std::getline( std::cin, cmnd );
             string word, tail;
@@ -446,8 +447,8 @@ int main( int argc, char* argv[] )
                 }
             }
             else if(
-                word == "function" || word == "scheme" || word == "grammar"
-                || word == "vocab" || word == "lexicon" )
+                word == "function" /* || word == "scheme" || word == "grammar"
+                || word == "vocab" || word == "lexicon"*/ )
             {
                 if( !terminated_curlybracket( tail ) ) {
                     cmnd = get_statement( cmnd, StmtType::curlybracket );

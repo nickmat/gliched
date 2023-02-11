@@ -64,6 +64,7 @@ namespace glich {
         };
 
         SToken() : m_type(Type::End) {}
+        SToken( const SToken& token );
 
         void set_type( Type type ) { m_type = type; }
         void set_value( const std::string& str ) { m_value.set_str( str ); }

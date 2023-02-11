@@ -36,6 +36,14 @@ using std::vector;
 
 #define MAX_ALLOWED_ERRORS 5
 
+
+SToken::SToken( const SToken& token )
+{
+    m_type = token.m_type;
+    m_value = token.m_value;
+}
+
+
 SToken STokenStream::next()
 {
     char ch;

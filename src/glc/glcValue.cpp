@@ -1,3 +1,5 @@
+#include "glcValue.h"
+#include "glcValue.h"
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        src/glc/glcValue.cpp
  * Project:     Glich: Extendable Script Language.
@@ -39,8 +41,25 @@ using std::string;
 SValue::SValue( const SValue& value )
 {
     m_type = value.m_type;
-    m_str = value.m_str;
-    m_num = value.m_num;
+    m_data = value.m_data;
+}
+
+string SValue::as_string() const
+{
+    string str;
+    if( m_type == Type::Null ) {
+        return "null";
+    }
+    switch( static_cast<di>(m_data.index()) ) {
+    case di::di_bool:
+        return std::get<bool>( m_data ) ? "true" : "false";
+    case di::di_Num:
+        return std::to_string( std::get<Num>( m_data ) );
+    case di::di_string:
+        return std::get<string>( m_data );
+    }
+    assert( false ); // This should not be possible.
+    return string();
 }
 
 void SValue::set_error( const std::string& str )
@@ -48,59 +67,67 @@ void SValue::set_error( const std::string& str )
     STokenStream* ts = Script::get_current_ts();
     m_type = Type::Error;
     if( ts ) {
-        m_str = "Error (" + std::to_string( ts->get_line() ) + "): " + str;
+        m_data = "Error (" + std::to_string( ts->get_line() ) + "): " + str;
     }
     else {
-        m_str = str;
+        m_data = str;
     }
 }
 
 string SValue::get_str() const
 {
-    assert( m_type == Type::String || m_type == Type::Error );
-    return m_str;
+    if( std::holds_alternative<string>( m_data ) ) {
+        return std::get<string>( m_data );
+    }
+    assert( false ); // Should only be called for string types.
+    return string();
+}
+
+std::string glich::SValue::get_str( bool& success ) const
+{
+    if( std::holds_alternative<string>( m_data ) ) {
+        success = true;
+        return std::get<string>( m_data );
+    }
+    success = false;
+    return string();
 }
 
 Num SValue::get_number() const
 {
-    assert( m_type == Type::Number );
-    return m_num;
+    if( std::holds_alternative<Num>( m_data ) ) {
+        return std::get<Num>( m_data );
+    }
+    assert( false ); // Should only be called for Number type.
+    return 0;
+}
+
+Num glich::SValue::get_number( bool& success ) const
+{
+    if( std::holds_alternative<Num>( m_data ) ) {
+        success = true;
+        return std::get<Num>( m_data );
+    }
+    success = false;
+    return 0;
 }
 
 bool SValue::get_bool() const
 {
-    assert( m_type == Type::Bool );
-    return bool( m_num );
-}
-
-bool SValue::get( std::string& str ) const
-{
-    str.clear();
-    switch( m_type )
-    {
-    case Type::Error:
-    case Type::String:
-        str = m_str;
-        return true;
-    case Type::Bool:
-        str = get_bool() ? "true" : "false";
-        return true;
-    case Type::Number:
-        str = std::to_string( m_num );
-        return true;
-    case Type::Null:
-        str = "null";
-        return true;
+    if( std::holds_alternative<bool>( m_data ) ) {
+        return std::get<bool>( m_data );
     }
+    assert( false ); // Should only be called for bool type.
     return false;
 }
 
-bool SValue::get( bool& b ) const
+bool glich::SValue::get_bool( bool& success ) const
 {
-    if( m_type == Type::Bool ) {
-        b = m_num;
-        return true;
+    if( std::holds_alternative<bool>( m_data ) ) {
+        success = true;
+        return std::get<bool>( m_data );
     }
+    success = false;
     return false;
 }
 
@@ -111,7 +138,7 @@ bool SValue::propagate_error( const SValue& value )
     }
     if( value.is_error() ) {
         m_type = Type::Error;
-        m_str = value.m_str;
+        m_data = value.as_string();
         return true;
     }
     return false;
@@ -146,6 +173,8 @@ void SValue::equal( const SValue& value )
             result = (get_str() == value.get_str());
             break;
         case Type::Bool:
+            result = (get_bool() == value.get_bool());
+            break;
         case Type::Number:
             result = (get_number() == value.get_number());
             break;
@@ -233,20 +262,15 @@ void SValue::plus( const SValue& value )
         return;
     }
     if( type() == Type::String || value.type() == Type::String ) {
-        string str1, str2;
-        bool success = get( str1 );
-        if( success ) {
-            success = value.get( str2 );
-        }
-        if( success ) {
-            set_str( str1 + str2 );
-            return;
-        }
-        set_error( "Unable to combine strings." );
+        string str1 = as_string();
+        string str2 = value.as_string();
+        set_str( str1 + str2 );
         return;
     }
     if( type() == Type::Number || value.type() == Type::Number ) {
-        m_num += value.get_number();
+        Num num1 = get_number();
+        Num num2 = value.get_number();
+        set_number( num1 + num2 );
         return;
     }
     set_error( "Unable to add or subtract types." );
@@ -258,7 +282,9 @@ void SValue::minus( const SValue& value )
         return;
     }
     if( type() == Type::Number || value.type() == Type::Number ) {
-        m_num -= value.get_number();
+        Num num1 = get_number();
+        Num num2 = value.get_number();
+        set_number( num1 - num2 );
         return;
     }
     set_error( "Unable to subtract types." );
@@ -270,7 +296,9 @@ void SValue::multiply( const SValue& value )
         return;
     }
     if( type() == Type::Number || value.type() == Type::Number ) {
-        m_num *= value.get_number();
+        Num num1 = get_number();
+        Num num2 = value.get_number();
+        set_number( num1 * num2 );
         return;
     }
     set_error( "Can only multiply numbers." );
@@ -281,12 +309,14 @@ void SValue::divide( const SValue& value )
     if( propagate_error( value ) ) {
         return;
     }
-    if( value.get_number() == 0 ) {
-        set_error( "Division by zero." );
-        return;
-    }
     if( type() == Type::Number || value.type() == Type::Number ) {
-        m_num = div_e( m_num, value.get_number() );
+        Num num1 = get_number();
+        Num num2 = value.get_number();
+        if( num2 == 0 ) {
+            set_error( "Division by zero." );
+            return;
+        }
+        set_number( div_e( num1, num2 ) );
         return;
     }
     set_error( "Can only divide numbers." );
@@ -297,12 +327,14 @@ void SValue::modulus( const SValue& value )
     if( propagate_error( value ) ) {
         return;
     }
-    if( value.get_number() == 0 ) {
-        set_error( "Modulus by zero." );
-        return;
-    }
     if( type() == Type::Number || value.type() == Type::Number ) {
-        m_num = mod_e( m_num, value.get_number() );
+        Num num1 = get_number();
+        Num num2 = value.get_number();
+        if( num2 == 0 ) {
+            set_error( "Modulus by zero." );
+            return;
+        }
+        set_number( mod_e( num1, num2 ) );
         return;
     }
     set_error( "Can only use modulus with numbers." );
@@ -315,7 +347,7 @@ void SValue::negate()
     case Type::Error:
         return;
     case Type::Number:
-        m_num = -m_num;
+        set_number( -get_number() );
         return;
     }
     set_error( "Can only negate number types." );
@@ -323,12 +355,12 @@ void SValue::negate()
 
 void SValue::logical_not()
 {
-    if( is_error() ) {
+    switch( m_type )
+    {
+    case Type::Error:
         return;
-    }
-    bool b;
-    if( get( b ) ) {
-        set_bool( !b );
+    case Type::Bool:
+        set_bool( !get_bool() );
         return;
     }
     set_error( "Logical 'not' only operates on bools" );

@@ -28,7 +28,9 @@
 #ifndef SRC_GLC_GLCVALUE_H_GUARD
 #define SRC_GLC_GLCVALUE_H_GUARD
 
-#include <glc/glcDefs.h>
+#include "glc/glcDefs.h"
+
+#include <variant>
 
 namespace glich {
 
@@ -38,23 +40,27 @@ namespace glich {
         enum class Type {
             Null, Error, String, Number, Bool
         };
-        SValue() : m_type( Type::Null ), m_num( 0 ) {}
+        SValue() : m_type( Type::Null ) {}
         SValue( const SValue& value );
-        SValue( const std::string& str ) : m_type(Type::String), m_str(str), m_num(0) {}
-        SValue( Num num ) : m_type( Type::Number ), m_num( num ) {}
-        SValue( bool b ) : m_type( Type::Bool ), m_num( b ) {}
+        SValue( const std::string& str ) : m_type( Type::String ), m_data( str ) {}
+        SValue( const char* str ) : m_type( Type::String ), m_data( std::string( str ) ) {}
+        SValue( Num num ) : m_type( Type::Number ), m_data( num ) {}
+        SValue( int num ) : m_type( Type::Number ), m_data( static_cast<Num>(num) ) {}
+        SValue( bool b ) : m_type( Type::Bool ), m_data( b ) {}
 
-        void set_str( const std::string& str ) { m_type = Type::String; m_str = str; }
-        void set_bool( bool b ) { m_type = Type::Bool; m_num = b ? 1 : 0; }
-        void set_number( Num num ) { m_type = Type::Number; m_num = num; }
+        void set_str( const std::string& str ) { m_type = Type::String; m_data = str; }
+        void set_bool( bool b ) { m_type = Type::Bool; m_data = b; }
+        void set_number( Num num ) { m_type = Type::Number; m_data = num; }
         void set_error( const std::string& str );
 
-        std::string get_str() const;
-        Num get_number() const;
-        bool get_bool() const;
+        std::string as_string() const;
 
-        bool get( std::string& str ) const;
-        bool get( bool& b ) const;
+        std::string get_str() const;
+        std::string get_str( bool& success ) const;
+        Num get_number() const;
+        Num get_number( bool& success ) const;
+        bool get_bool() const;
+        bool get_bool( bool& success ) const;
 
         bool is_error() const { return m_type == Type::Error; }
         bool propagate_error( const SValue& value );
@@ -77,8 +83,8 @@ namespace glich {
 
     private:
         Type        m_type;
-        std::string m_str;
-        Num         m_num;
+        enum class di { di_bool, di_Num, di_string };
+        std::variant<bool, Num, std::string> m_data;
     };
 
     using SValueVec = std::vector<SValue>;

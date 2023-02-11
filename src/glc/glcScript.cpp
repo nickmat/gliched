@@ -135,12 +135,12 @@ bool Script::do_clear()
 
 bool Script::do_if()
 {
-    bool done = false, result = false;
+    bool done = false, result = false, ok = false;;
     int nested = 0;
     const char* enderr = "if ended unexpectedly.";
     for( ;;) {
         if( !result && !done ) {
-            bool ok = expr( true ).get( result );
+            result = expr( true ).get_bool( ok );
             if( !ok ) {
                 error( "Boolean expression expected." );
                 return false;
@@ -260,7 +260,8 @@ bool Script::do_do()
             if( token.type() == SToken::Type::Name ) {
                 string name = token.get_str();
                 if( name == "until" || name == "while" ) {
-                    bool ok = expr( true ).get( exit );
+                    bool ok = false;
+                    exit = expr( true ).get_bool( ok );
                     if( !ok ) {
                         error( "Boolean expression expected." );
                         break;
@@ -368,14 +369,8 @@ bool Script::do_write( const std::string& term )
     }
 
     SValue value = expr( false );
-    string str;
-    if( value.get( str ) ) {
-        *out << str << term;
-    }
-    else {
-        error( "Unable to output string" );
-        return false;
-    }
+    *out << value.as_string() << term;
+
     if( value.type() == SValue::Type::Error ) {
         m_ts.skip_to( SToken::Type::Semicolon );
     }
@@ -474,8 +469,7 @@ bool Script::do_file()
         error( "File code missing." );
         return false;
     }
-    string name;
-    expr( false ).get( name );
+    string name = expr( false ).as_string();
     if( name.empty() ) {
         error( "Filename missing." );
         return false;
@@ -668,7 +662,7 @@ std::string Script::get_name_or_primary( bool get )
     else {
         SValue value = primary( false );
         if( value.type() == SValue::Type::String || value.type() == SValue::Type::Number ) {
-            value.get( str );
+            str = value.as_string();
         }
     }
     return str;
@@ -677,8 +671,9 @@ std::string Script::get_name_or_primary( bool get )
 SValue Script::error_cast()
 {
     SValue value = primary( true );
-    string mess;
-    if( !value.get( mess ) ) {
+    bool ok = false;
+    string mess = value.get_str( ok );
+    if( !ok ) {
         mess = "Unable to read error message.";
     }
     value.set_error( mess );

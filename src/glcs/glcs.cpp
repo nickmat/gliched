@@ -447,7 +447,7 @@ int main( int argc, char* argv[] )
                 }
             }
             else if(
-                word == "function" /* || word == "scheme" || word == "grammar"
+                word == "function" || "command" /* || word == "scheme" || word == "grammar"
                 || word == "vocab" || word == "lexicon"*/ )
             {
                 if( !terminated_curlybracket( tail ) ) {

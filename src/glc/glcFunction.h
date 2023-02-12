@@ -33,6 +33,31 @@
 
 namespace glich {
 
+    class Command
+    {
+    public:
+        Command( const std::string& code ) : m_code( code ), m_line( 0 ) {}
+
+        void set_script( const std::string& script ) { m_script = script; }
+        void set_line( int line ) { m_line = line; }
+        void set_args( const StdStrVec& args ) { m_args = args; }
+        void set_defaults( const SValueVec& defs ) { m_defs = defs; }
+
+        std::string get_code() const { return m_code; }
+        int get_line() const { return m_line; }
+        std::string get_script() const { return m_script; }
+        size_t get_arg_size() const { return m_args.size(); }
+        std::string get_arg_name( size_t index ) const { return m_args[index]; }
+        SValue get_default_value( size_t index ) const { return m_defs[index]; }
+
+    private:
+        std::string  m_code;
+        int          m_line;
+        std::string  m_script;
+        StdStrVec    m_args;
+        SValueVec m_defs;
+    };
+
     class Function
     {
     public:

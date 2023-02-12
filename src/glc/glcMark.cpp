@@ -45,11 +45,23 @@ Mark::~Mark()
 string Mark::remove_next_function()
 {
     string code;
-    if ( !m_functions.empty() ) {
+    if( !m_functions.empty() ) {
         Function* func = m_functions[m_functions.size() - 1];
         code = func->get_code();
         delete func;
         m_functions.pop_back();
+    }
+    return code;
+}
+
+std::string glich::Mark::remove_next_command()
+{
+    string code;
+    if( !m_commands.empty() ) {
+        Command* com = m_commands[m_commands.size() - 1];
+        code = com->get_code();
+        delete com;
+        m_commands.pop_back();
     }
     return code;
 }

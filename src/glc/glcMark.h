@@ -33,6 +33,7 @@
 namespace glich {
 
     class Function;
+    class Command;
     class File;
 
     class Mark
@@ -44,14 +45,17 @@ namespace glich {
         std::string get_name() const { return m_name; }
 
         void add_function( Function* function ) { m_functions.push_back( function ); }
+        void add_command( Command* command ) { m_commands.push_back( command ); }
         void add_file( File* file ) { m_files.push_back( file ); }
 
         std::string remove_next_function();
+        std::string remove_next_command();
         std::string remove_next_file();
 
     private:
         std::string            m_name;
         std::vector<Function*> m_functions;
+        std::vector<Command*>  m_commands;
         std::vector<File*>     m_files;
     };
 

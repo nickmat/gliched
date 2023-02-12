@@ -56,6 +56,7 @@ namespace glich {
         bool do_write( const std::string& term = "" );
         bool do_writeln() { return do_write( "\n" ); }
         bool do_function();
+        bool do_command();
         bool do_call();
         bool do_file();
 
@@ -69,6 +70,7 @@ namespace glich {
         SValue error_cast();
         SValueVec get_args( SValue& value );
         SValue function_call();
+        SValue command_call();
         SValue at_if();
         SValue at_read();
 

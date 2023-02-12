@@ -85,6 +85,23 @@ Function* Glich::get_function( const std::string& code ) const
     return nullptr;
 }
 
+Command* Glich::create_command( const std::string& code )
+{
+    Command* com = new Command( code );
+    assert( m_marks.size() > 0 );
+    m_marks[m_marks.size() - 1]->add_command( com );
+    m_commands[code] = com;
+    return com;
+}
+
+Command* Glich::get_command( const std::string& code ) const
+{
+    if( m_commands.count( code ) > 0 ) {
+        return m_commands.find( code )->second;
+    }
+    return nullptr;
+}
+
 File* Glich::create_file( const std::string& code )
 {
     File* file = new File( code );
@@ -129,6 +146,13 @@ bool Glich::clear_mark( const std::string& name )
                 break;
             }
             m_functions.erase( code );
+        }
+        for( ;;) {
+            code = m_marks[i]->remove_next_command();
+            if( code.empty() ) {
+                break;
+            }
+            m_commands.erase( code );
         }
         for( ;;) {
             code = m_marks[i]->remove_next_file();

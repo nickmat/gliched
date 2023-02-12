@@ -89,6 +89,7 @@ bool Script::statement()
         if( name == "writeln" ) return do_writeln();
         if( name == "call" ) return do_call();
         if( name == "function" ) return do_function();
+        if( name == "command" ) return do_command();
         if( name == "file" ) return do_file();
         if( store()->exists( name ) ) return do_assign( name );
     }
@@ -449,9 +450,69 @@ bool Script::do_function()
     return true;
 }
 
+bool glich::Script::do_command()
+{
+    string code = get_name_or_primary( true );
+    if( code.empty() ) {
+        error( "Command name missing." );
+        return false;
+    }
+    if( m_db->get_command( code ) != NULL ) {
+        error( "command \"" + code + "\" already exists." );
+        return false;
+    }
+    SToken token = m_ts.current();
+    StdStrVec args;
+    SValueVec defs;
+    if( token.type() == SToken::Type::Lbracket ) {
+        token = m_ts.next();
+        for( ;;) {
+            if( token.type() == SToken::Type::Rbracket ) {
+                break;
+            }
+            string str = m_ts.current().get_str();
+            if( token.type() != SToken::Type::Name || str.empty() ) {
+                error( "Argument name expected." );
+                return false;
+            }
+            args.push_back( str );
+            token = m_ts.next();
+            SValue value;
+            if( token.type() == SToken::Type::Equal ) {
+                value = expr( true );
+            }
+            defs.push_back( value );
+            token = m_ts.current();
+            if( token.type() == SToken::Type::Comma ) {
+                token = m_ts.next();
+            }
+        }
+        token = m_ts.next();
+    }
+    if( token.type() != SToken::Type::LCbracket ) {
+        error( "'{' expected." );
+        return false;
+    }
+    int line = m_ts.get_line();
+    string script = m_ts.read_until( "}", "{" );
+    if( script.empty() ) {
+        error( "Terminating '}' not found." );
+        return false;
+    }
+    Command* com = m_db->create_command( code );
+    if( com == nullptr ) {
+        return false;
+    }
+    com->set_args( args );
+    com->set_defaults( defs );
+    com->set_line( line );
+    com->set_script( script );
+    return true;
+}
+
 bool Script::do_call()
 {
-    SValue value = function_call();
+    SValue value = command_call();
     if( value.is_error() ) {
         error( value.get_str() );
         return false;
@@ -759,6 +820,54 @@ SValue Script::function_call()
     m_ts = prev_ts;
 
     return value;
+}
+
+SValue glich::Script::command_call()
+{
+    SValue value;
+    SToken token = m_ts.next();
+    if( token.type() != SToken::Type::Name ) {
+        value.set_error( "Command name expected." );
+        return value;
+    }
+    string name = token.get_str();
+
+    SValueVec args = get_args( value );
+    if( value.is_error() ) {
+        return value;
+    }
+    Command* com = m_db->get_command( name );
+    if( com == nullptr ) {
+        value.set_error( "Command " + name + " not found." );
+        return value;
+    }
+
+    STokenStream prev_ts = m_ts;
+    m_ts.set_line( com->get_line() );
+    std::istringstream iss( com->get_script() );
+    m_ts.reset_in( &iss );
+    m_db->push_store();
+
+    for( size_t i = 0; i < com->get_arg_size(); i++ ) {
+        if( i < args.size() ) {
+            store()->set( com->get_arg_name( i ), args[i] );
+        }
+        else {
+            store()->set( com->get_arg_name( i ), com->get_default_value( i ) );
+        }
+    }
+
+    m_ts.next();
+    while( statement() ) {
+        if( m_ts.next().type() == SToken::Type::End ) {
+            break;
+        }
+    }
+
+    m_db->pop_store();
+    m_ts = prev_ts;
+
+    return SValue();
 }
 
 // Evaluate the built-in @if function:

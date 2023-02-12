@@ -1,0 +1,11 @@
+// function006.glcs - Test function in expression.
+
+function sum(a, b) {
+    result = a + b;
+}
+
+write "Sum: " + @sum(50, 8);
+
+/*[OUTPUT]
+Sum: 58
+[OUTPUT]*/

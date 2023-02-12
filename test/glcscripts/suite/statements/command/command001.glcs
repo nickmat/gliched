@@ -1,0 +1,13 @@
+// function001.hcs - Test function statement.
+
+command say {
+    write "Hello Command";
+}
+
+write "Start ";
+call say;
+write " done.";
+
+/*[OUTPUT]
+Start Hello Command done.
+[OUTPUT]*/

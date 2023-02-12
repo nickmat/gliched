@@ -1,0 +1,16 @@
+// command003.hcs - Test command statement.
+
+command say {
+  let d = 3;
+  writeln d;
+}
+
+call say;
+
+d += 7;
+
+/*[OUTPUT]
+3
+Error (10): Unrecognised statement.
+
+[OUTPUT]*/

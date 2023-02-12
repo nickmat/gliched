@@ -1,0 +1,14 @@
+// command004.hcs - Test command statement.
+
+let d = 7;
+
+command say {
+  let e = 10 + d;
+  write e;
+}
+
+call say;
+
+/*[OUTPUT]
+Error (6): Variable "d" not found.
+[OUTPUT]*/

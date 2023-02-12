@@ -12,5 +12,5 @@ write "end";
 
 /*[OUTPUT]
 Start Error (7): Boolean expression expected.
-
+end
 [OUTPUT]*/

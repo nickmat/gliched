@@ -264,6 +264,7 @@ bool Script::do_do()
                     exit = expr( true ).get_bool( ok );
                     if( !ok ) {
                         error( "Boolean expression expected." );
+                        exit = true;
                         break;
                     }
                     if( name == "while" ) {

@@ -23,6 +23,7 @@ set( GLC_HEADERS
     ../../include/glc/glcDefs.h
     glcFile.h
     glcFunction.h
+    glcHelper.h
     glcMark.h
     glcMath.h
     glcScript.h

@@ -27,6 +27,8 @@
 
 #include "glcTokenStream.h"
 
+#include "glcHelper.h"
+
 #include <string>
 #include <vector>
 

@@ -28,9 +28,7 @@
 #ifndef INCLUDE_GLC_GLC_H_GUARD
 #define INCLUDE_GLC_GLC_H_GUARD
 
-#include <map>
-#include <string>
-#include <vector>
+#include "glcDefs.h"
 
 namespace glich {
 

@@ -1,10 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        include/glc/glcDefs.h
+ * Name:        glc/glc/glcHelper.h
  * Project:     Glich: Extendable Script Language.
- * Purpose:     General defines
+ * Purpose:     Helpful functions and strucs
  * Author:      Nick Matthews
  * Website:     https://github.com/nickmat/glich
- * Created:     8th February 2023
+ * Created:     13th February 2023
  * Copyright:   Copyright (c) 2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -25,31 +25,20 @@
 
 */
 
-#ifndef INCLUDE_GLC_GLCDEFS_H
-#define INCLUDE_GLC_GLCDEFS_H
+#ifndef SRC_GLC_GLCHELPER_H
+#define SRC_GLC_GLCHELPER_H
 
-#include <cstdint>
-#include <cstdlib>
-#include <cinttypes>
-#include <map>
-#include <string>
-#include <vector>
+#include <glc/glcDefs.h>
 
 namespace glich {
 
-    using Num = int64_t;
-
-#define NUM "%" PRId64 
-
-    using  StdStrVec = std::vector< std::string >;
-    using  StdStrMap = std::map< std::string, std::string >;
-    using  IntVec = std::vector< int >;
-    using  DoubleVec = std::vector< double >;
-    using  BoolVec = std::vector< bool >;
-
-    using  NumStringMap = std::map< Num, std::string >;
-    using  NumVec = std::vector< Num >;
-
+    inline Num GetNum( const std::string& str )
+    {
+        if( str.empty() ) {
+            return 0;
+        }
+        return strtoll( str.c_str(), nullptr, 10 );
+    }
 }
 
-#endif // INCLUDE_GLC_GLCDEFS_H
+#endif // SRC_GLC_GLCHELPER_H

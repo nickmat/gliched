@@ -50,6 +50,31 @@ namespace glich {
     using  NumStringMap = std::map< Num, std::string >;
     using  NumVec = std::vector< Num >;
 
+    using Field = int32_t;
+
+#define FLD "%" PRId32
+
+    using LongField = int64_t;
+
+    using FieldVec = std::vector<Field>;
+    using FieldVecVec = std::vector<FieldVec>;
+
+    constexpr Field f_invalid = -2147483648;  // INT_MIN
+    constexpr Field f_minimum = -2147483645;  // -(INT_MAX - 2)
+    constexpr Field f_maximum =  2147483645;  // INT_MAX - 2
+    constexpr Field f_end     =  2147483646;  // INT_MAX - 1
+    constexpr Field f_invalid2 = 2147483647;  // INT_MAX
+
+    struct Range
+    {
+        Field m_beg;
+        Field m_end;
+
+        Range() : m_beg( f_invalid ), m_end( f_invalid ) {}
+        Range( Field beg, Field end ) : m_beg( beg ), m_end( end ) {}
+    };
+
+    using RList = std::vector< Range >; 
 }
 
 #endif // INCLUDE_GLC_GLCDEFS_H

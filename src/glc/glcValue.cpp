@@ -1,5 +1,3 @@
-#include "glcValue.h"
-#include "glcValue.h"
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
  * Name:        src/glc/glcValue.cpp
  * Project:     Glich: Extendable Script Language.
@@ -29,6 +27,7 @@
 
 #include "glcValue.h"
 
+#include "glcHelper.h"
 #include "glcMath.h"
 #include "glcScript.h"
 
@@ -62,6 +61,26 @@ string SValue::as_string() const
     return string();
 }
 
+void glich::SValue::set_range_demote( Range rng )
+{
+    if( rng.m_beg == rng.m_end ) {
+        set_field( rng.m_beg );
+    }
+    else {
+        set_range( rng );
+    }
+}
+
+void glich::SValue::set_rlist_demote( const RList& rlist )
+{
+    if( rlist.size() == 1 ) {
+        set_range_demote( rlist[0] );
+    }
+    else {
+        set_rlist( rlist );
+    }
+}
+
 void SValue::set_error( const std::string& str )
 {
     STokenStream* ts = Script::get_current_ts();
@@ -83,32 +102,12 @@ string SValue::get_str() const
     return string();
 }
 
-std::string glich::SValue::get_str( bool& success ) const
-{
-    if( std::holds_alternative<string>( m_data ) ) {
-        success = true;
-        return std::get<string>( m_data );
-    }
-    success = false;
-    return string();
-}
-
 Num SValue::get_number() const
 {
     if( std::holds_alternative<Num>( m_data ) ) {
         return std::get<Num>( m_data );
     }
     assert( false ); // Should only be called for Number type.
-    return 0;
-}
-
-Num glich::SValue::get_number( bool& success ) const
-{
-    if( std::holds_alternative<Num>( m_data ) ) {
-        success = true;
-        return std::get<Num>( m_data );
-    }
-    success = false;
     return 0;
 }
 
@@ -121,7 +120,57 @@ bool SValue::get_bool() const
     return false;
 }
 
-bool glich::SValue::get_bool( bool& success ) const
+Field SValue::get_field() const
+{
+    if( std::holds_alternative<CField>( m_data ) ) {
+        return std::get<CField>( m_data ).m_field;
+    }
+    assert( false );
+    return f_invalid;
+}
+
+Range SValue::get_range() const
+{
+    if( std::holds_alternative<Range>( m_data ) ) {
+        return std::get<Range>( m_data );
+    }
+    assert( false );
+    return Range( f_invalid, f_invalid );
+}
+
+RList SValue::get_rlist() const
+{
+    if( std::holds_alternative<RList>( m_data ) ) {
+        return std::get<RList>( m_data );
+    }
+    assert( false );
+    return RList( 0 );
+}
+
+std::string glich::SValue::get_str( bool& success ) const
+{
+    if( std::holds_alternative<string>( m_data ) ) {
+        success = true;
+        return std::get<string>( m_data );
+    }
+    success = false;
+    return string();
+}
+
+Num glich::SValue::get_number( bool& success ) const
+{
+    if( std::holds_alternative<Num>( m_data ) ) {
+        success = true;
+        return std::get<Num>( m_data );
+    }
+    Field fld = get_field( success );
+    if( success ) {
+        return FieldToNum( fld, success );
+    }
+    return 0;
+}
+
+bool SValue::get_bool( bool& success ) const
 {
     if( std::holds_alternative<bool>( m_data ) ) {
         success = true;
@@ -129,6 +178,66 @@ bool glich::SValue::get_bool( bool& success ) const
     }
     success = false;
     return false;
+}
+
+Field SValue::get_field( bool& success ) const
+{
+    success = true;
+    if( std::holds_alternative<CField>( m_data ) ) {
+        return std::get<CField>( m_data ).m_field;
+    }
+    if( std::holds_alternative<Range>( m_data ) ) {
+        Range rng = std::get<Range>( m_data );
+        if( rng.m_beg == rng.m_end ) {
+            return rng.m_beg;
+        }
+    }
+    if( std::holds_alternative<RList>( m_data ) ) {
+        RList rl = std::get<RList>( m_data );
+        if( rl.size() == 1 && rl[0].m_beg == rl[0].m_end ) {
+            return rl[0].m_beg;
+        }
+    }
+    if( std::holds_alternative<Num>( m_data ) ) {
+        Num num = std::get<Num>( m_data );
+        return FieldToNum( num, success );
+    }
+    success = false;
+    return f_invalid;
+}
+
+Range SValue::get_range( bool& success ) const
+{
+    success = true;
+    if( std::holds_alternative<Range>( m_data ) ) {
+        return std::get<Range>( m_data );
+    }
+    if( std::holds_alternative<RList>( m_data ) ) {
+        RList rl = std::get<RList>( m_data );
+        if( rl.size() == 1 ) {
+            return rl[0];
+        }
+    }
+    success = false;
+    return Range( f_invalid, f_invalid );
+}
+
+RList SValue::get_rlist( bool& success ) const
+{
+    success = true;
+    if( std::holds_alternative<RList>( m_data ) ) {
+        return std::get<RList>( m_data );
+    }
+    if( std::holds_alternative<Range>( m_data ) ) {
+        Range rng = std::get<Range>( m_data );
+        return { rng };
+    }
+    if( std::holds_alternative<CField>( m_data ) ) {
+        Field fld = std::get<CField>( m_data ).m_field;
+        return { Range( fld, fld ) };
+    }
+    success = false;
+    return RList( 0 );
 }
 
 bool SValue::propagate_error( const SValue& value )

@@ -38,7 +38,7 @@ namespace glich {
     {
     public:
         enum class Type {
-            Null, Error, String, Number, Bool
+            Null, Error, String, Number, Bool, field, range, rlist
         };
         SValue() : m_type( Type::Null ) {}
         SValue( const SValue& value );
@@ -47,20 +47,37 @@ namespace glich {
         SValue( Num num ) : m_type( Type::Number ), m_data( num ) {}
         SValue( int num ) : m_type( Type::Number ), m_data( static_cast<Num>(num) ) {}
         SValue( bool b ) : m_type( Type::Bool ), m_data( b ) {}
+        SValue( CField f ) : m_type( Type::field ), m_data( f ) {}
+        SValue( Range r ) : m_type( Type::range ), m_data( r ) {}
+        SValue( const RList& rl ) : m_type( Type::rlist ), m_data( rl ) {}
 
         void set_str( const std::string& str ) { m_type = Type::String; m_data = str; }
         void set_bool( bool b ) { m_type = Type::Bool; m_data = b; }
         void set_number( Num num ) { m_type = Type::Number; m_data = num; }
+        void set_field( Field fld ) { m_type = Type::field; m_data = Range( fld, fld ); }
+        void set_range( Range rng ) { m_type = Type::range; m_data = rng; }
+        void set_rlist( const RList& rlist ) { m_type = Type::rlist; m_data = rlist; }
+
+        void set_range_demote( Range rng );
+        void set_rlist_demote( const RList& rlist );
+
         void set_error( const std::string& str );
 
         std::string as_string() const;
 
         std::string get_str() const;
-        std::string get_str( bool& success ) const;
         Num get_number() const;
-        Num get_number( bool& success ) const;
         bool get_bool() const;
+        Field get_field() const;
+        Range get_range() const;
+        RList get_rlist() const;
+
+        std::string get_str( bool& success ) const;
+        Num get_number( bool& success ) const;
         bool get_bool( bool& success ) const;
+        Field get_field( bool& success ) const; // Promote or demote if possible
+        Range get_range( bool& success ) const; // Promote or demote if possible
+        RList get_rlist( bool& success ) const;
 
         bool is_error() const { return m_type == Type::Error; }
         bool propagate_error( const SValue& value );
@@ -84,7 +101,7 @@ namespace glich {
     private:
         Type        m_type;
         enum class di { di_bool, di_Num, di_string };
-        std::variant<bool, Num, std::string> m_data;
+        std::variant<bool, Num, std::string, CField, Range, RList> m_data;
     };
 
     using SValueVec = std::vector<SValue>;

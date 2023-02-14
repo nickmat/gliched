@@ -75,6 +75,7 @@ namespace glich {
         std::string get_str() const { return m_value.get_str(); }
         bool get_bool() const { return m_value.get_bool(); }
         Num get_number() const { return m_value.get_number(); }
+        Field get_field() const { return m_value.get_field(); }
 
     private:
         Type m_type;

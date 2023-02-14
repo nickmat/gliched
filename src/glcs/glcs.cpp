@@ -447,8 +447,7 @@ int main( int argc, char* argv[] )
                 }
             }
             else if(
-                word == "function" || "command" /* || word == "scheme" || word == "grammar"
-                || word == "vocab" || word == "lexicon"*/ )
+                word == "function" || word == "command" )
             {
                 if( !terminated_curlybracket( tail ) ) {
                     cmnd = get_statement( cmnd, StmtType::curlybracket );

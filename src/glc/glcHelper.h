@@ -39,6 +39,35 @@ namespace glich {
         }
         return strtoll( str.c_str(), nullptr, 10 );
     }
+
+    inline Field NumToField( Num num )
+    {
+        if( num < f_maximum && num > f_minimum ) {
+            return static_cast<Field>(num);
+        }
+        return f_invalid;
+    }
+
+    inline Field NumToField( Num num, bool& success )
+    {
+        if( num < f_maximum && num > f_minimum ) {
+            success = true;
+            return static_cast<Field>(num);
+        }
+        success = false;
+        return f_invalid;
+    }
+
+    inline Num FieldToNum( Field fld, bool& success )
+    {
+        success = true;
+        if( fld < f_maximum && fld > f_minimum ) {
+            return static_cast<Num>(fld);
+        }
+        success = false;
+        return 0;
+    }
+
 }
 
 #endif // SRC_GLC_GLCHELPER_H

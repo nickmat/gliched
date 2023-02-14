@@ -104,7 +104,7 @@ string SValue::get_str() const
 
 Num SValue::get_number() const
 {
-    if( std::holds_alternative<Num>( m_data ) ) {
+    if( std::holds_alternative<Num>( m_data ) && m_type == Type::Number ) {
         return std::get<Num>( m_data );
     }
     assert( false ); // Should only be called for Number type.
@@ -122,8 +122,8 @@ bool SValue::get_bool() const
 
 Field SValue::get_field() const
 {
-    if( std::holds_alternative<CField>( m_data ) ) {
-        return std::get<CField>( m_data ).m_field;
+    if( std::holds_alternative<Num>( m_data ) && m_type == Type::field ) {
+        return std::get<Num>( m_data );
     }
     assert( false );
     return f_invalid;
@@ -159,7 +159,7 @@ std::string glich::SValue::get_str( bool& success ) const
 
 Num glich::SValue::get_number( bool& success ) const
 {
-    if( std::holds_alternative<Num>( m_data ) ) {
+    if( std::holds_alternative<Num>( m_data ) && m_type == Type::Number ) {
         success = true;
         return std::get<Num>( m_data );
     }
@@ -183,8 +183,8 @@ bool SValue::get_bool( bool& success ) const
 Field SValue::get_field( bool& success ) const
 {
     success = true;
-    if( std::holds_alternative<CField>( m_data ) ) {
-        return std::get<CField>( m_data ).m_field;
+    if( std::holds_alternative<Num>( m_data ) && m_type == Type::field ) {
+        return std::get<Num>( m_data );
     }
     if( std::holds_alternative<Range>( m_data ) ) {
         Range rng = std::get<Range>( m_data );
@@ -198,7 +198,7 @@ Field SValue::get_field( bool& success ) const
             return rl[0].m_beg;
         }
     }
-    if( std::holds_alternative<Num>( m_data ) ) {
+    if( std::holds_alternative<Num>( m_data ) && m_type == Type::Number ) {
         Num num = std::get<Num>( m_data );
         return FieldToNum( num, success );
     }
@@ -232,8 +232,8 @@ RList SValue::get_rlist( bool& success ) const
         Range rng = std::get<Range>( m_data );
         return { rng };
     }
-    if( std::holds_alternative<CField>( m_data ) ) {
-        Field fld = std::get<CField>( m_data ).m_field;
+    if( std::holds_alternative<Num>( m_data ) && m_type == Type::field ) {
+        Field fld = std::get<Num>( m_data );
         return { Range( fld, fld ) };
     }
     success = false;

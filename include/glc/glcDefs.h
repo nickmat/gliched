@@ -52,12 +52,6 @@ namespace glich {
 
     using Field = int32_t;
 
-    struct CField {
-        Field m_field;
-
-        CField( Field f ) : m_field( f ) {}
-    };
-
 #define FLD "%" PRId32
 
     using LongField = int64_t;

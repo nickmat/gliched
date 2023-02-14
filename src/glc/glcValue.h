@@ -44,17 +44,16 @@ namespace glich {
         SValue( const SValue& value );
         SValue( const std::string& str ) : m_type( Type::String ), m_data( str ) {}
         SValue( const char* str ) : m_type( Type::String ), m_data( std::string( str ) ) {}
-        SValue( Num num ) : m_type( Type::Number ), m_data( num ) {}
+        SValue( Num num, Type type ) : m_type( type ), m_data( num ) {}
         SValue( int num ) : m_type( Type::Number ), m_data( static_cast<Num>(num) ) {}
         SValue( bool b ) : m_type( Type::Bool ), m_data( b ) {}
-        SValue( CField f ) : m_type( Type::field ), m_data( f ) {}
         SValue( Range r ) : m_type( Type::range ), m_data( r ) {}
         SValue( const RList& rl ) : m_type( Type::rlist ), m_data( rl ) {}
 
         void set_str( const std::string& str ) { m_type = Type::String; m_data = str; }
         void set_bool( bool b ) { m_type = Type::Bool; m_data = b; }
         void set_number( Num num ) { m_type = Type::Number; m_data = num; }
-        void set_field( Field fld ) { m_type = Type::field; m_data = Range( fld, fld ); }
+        void set_field( Field fld ) { m_type = Type::field; m_data = static_cast<Num>(fld); }
         void set_range( Range rng ) { m_type = Type::range; m_data = rng; }
         void set_rlist( const RList& rlist ) { m_type = Type::rlist; m_data = rlist; }
 
@@ -101,7 +100,7 @@ namespace glich {
     private:
         Type        m_type;
         enum class di { di_bool, di_Num, di_string };
-        std::variant<bool, Num, std::string, CField, Range, RList> m_data;
+        std::variant<bool, Num, std::string, Range, RList> m_data;
     };
 
     using SValueVec = std::vector<SValue>;

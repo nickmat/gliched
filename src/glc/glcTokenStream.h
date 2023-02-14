@@ -1,5 +1,4 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- *
  * Name:        src/glc/glcTokenStream.h
  * Project:     Glich: Extendable Script Language.
  * Purpose:     Translate a character stream to a higs token stream.
@@ -39,7 +38,7 @@ namespace glich {
     {
     public:
         enum class Type {
-            Null, End, String, Name, Number,
+            Null, End, String, Name, Number, Field,
             Equal, Plus, Minus, Divide, Star,
             PlusEq, MinusEq, DivideEq, StarEq,
             Percent, Backslash, Tilde,
@@ -67,8 +66,9 @@ namespace glich {
         SToken( const SToken& token );
 
         void set_type( Type type ) { m_type = type; }
-        void set_value( const std::string& str ) { m_value.set_str( str ); }
-        void set_value( Num field ) { m_value.set_number( field ); }
+        void set_value_str( const std::string& str ) { m_value.set_str( str ); }
+        void set_value_num( Num num ) { m_value.set_number( num ); }
+        void set_value_field( Field fld ) { m_value.set_field( fld ); }
 
         Type type() const { return m_type; }
         SValue value() const { return m_value; }
@@ -106,7 +106,7 @@ namespace glich {
 
         std::istream* m_in;
         std::ostream* m_err;
-        SToken     m_cur_token;
+        SToken        m_cur_token;
         int           m_line;
         int           m_errors;
     };

@@ -84,6 +84,17 @@ SToken STokenStream::next()
         do {
             text += ch;
         } while( m_in->get( ch ) && isdigit( ch ) );
+        if( ch == 'f' || ch == 'n' ) {
+            int ch2 = m_in->peek();
+            if( !isalpha( ch2 ) ) {
+                SToken::Type type = SToken::Type::Number;
+                if( ch == 'f' ) {
+                    type = SToken::Type::Field;
+                }
+                set_current( type, GetNum( text ) );
+                return m_cur_token;
+            }
+        }
         m_in->putback( ch );
         set_current( SToken::Type::Number, GetNum( text ) );
         return m_cur_token;
@@ -312,13 +323,18 @@ std::istream* STokenStream::reset_in( std::istream* in )
 void STokenStream::set_current( SToken::Type type, const std::string& str )
 {
     m_cur_token.set_type( type );
-    m_cur_token.set_value( str );
+    m_cur_token.set_value_str( str );
 }
 
 void STokenStream::set_current( SToken::Type type, Num num )
 {
     m_cur_token.set_type( type );
-    m_cur_token.set_value( num );
+    if( type == SToken::Type::Number ) {
+        m_cur_token.set_value_num( num );
+    }
+    else if( type == SToken::Type::Field ) {
+        m_cur_token.set_value_field( NumToField( num ) );
+    }
 }
 
 

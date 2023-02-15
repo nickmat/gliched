@@ -240,6 +240,20 @@ RList SValue::get_rlist( bool& success ) const
     return RList( 0 );
 }
 
+Num glich::SValue::get_integer( bool& success ) const
+{
+    success = true;
+    if( std::holds_alternative<Num>( m_data ) ) {
+        Num num = std::get<Num>( m_data );
+        if( m_type == Type::field ) {
+            num = NumToField( success );
+        }
+        return num;
+    }
+    success = false;
+    return Num();
+}
+
 bool SValue::propagate_error( const SValue& value )
 {
     if( is_error() ) {
@@ -297,8 +311,24 @@ void SValue::equal( const SValue& value )
         set_bool( result );
         return;
     }
+    else if( is_integer() && value.is_integer() ) {
+        bool success1, success2;
+        Num num1 = get_integer( success1 );
+        Num num2 = value.get_integer( success2 );
+        if( !success1 || !success2 ) {
+            set_bool( false );
+            return;
+        }
+        bool result = false;
+        if( num1 == num2 ) {
+            result = true;
+        }
+        set_bool( result );
+        return;
+    }
     if( m_type == Type::Null || value.type() == Type::Null ) {
-        return set_bool( false );
+        set_bool( false );
+        return;
     }
     set_error( "Must compare same types." );
 }
@@ -331,6 +361,21 @@ void SValue::greater_than( const SValue& value )
         set_bool( result );
         return;
     }
+    else if( is_integer() && value.is_integer() ) {
+        bool success1, success2;
+        Num num1 = get_integer( success1 );
+        Num num2 = value.get_integer( success2 );
+        if( !success1 || !success2 ) {
+            set_error( "Could not convert Field to Number." );
+            return;
+        }
+        bool result = false;
+        if( num1 > num2 ) {
+            result = true;
+        }
+        set_bool( result );
+        return;
+    }
     set_error( "Must compare same types." );
 }
 
@@ -358,6 +403,21 @@ void SValue::less_than( const SValue& value )
         default:
             set_error( "Type cannot be compared." );
             return;
+        }
+        set_bool( result );
+        return;
+    }
+    else if( is_integer() && value.is_integer() ) {
+        bool success1, success2;
+        Num num1 = get_integer( success1 );
+        Num num2 = value.get_integer( success2 );
+        if( !success1 || !success2 ) {
+            set_error( "Could not convert Field to Number." );
+            return;
+        }
+        bool result = false;
+        if( num1 < num2 ) {
+            result = true;
         }
         set_bool( result );
         return;

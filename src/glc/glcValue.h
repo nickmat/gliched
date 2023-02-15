@@ -78,6 +78,8 @@ namespace glich {
         Range get_range( bool& success ) const; // Promote or demote if possible
         RList get_rlist( bool& success ) const;
 
+        Num get_integer( bool& success ) const; // Num or Field as Num
+
         bool is_error() const { return m_type == Type::Error; }
         bool propagate_error( const SValue& value );
 
@@ -96,6 +98,7 @@ namespace glich {
         void logical_not();
 
         Type type() const { return m_type; }
+        bool is_integer() const { return (m_type == Type::Number || m_type == Type::field); }
 
     private:
         Type        m_type;

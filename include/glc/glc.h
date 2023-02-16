@@ -69,6 +69,9 @@ namespace glich {
         bool pop_store();
         std::string read_input( const std::string& prompt ) const;
 
+        void set_context( Context ct );
+        Context get_context() const;
+
     private:
         FunctionMap m_functions;
         CommandMap m_commands;

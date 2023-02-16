@@ -193,4 +193,21 @@ std::string Glich::read_input( const std::string& prompt ) const
     return m_inout->get_input( prompt );
 }
 
+void Glich::set_context( Context ct )
+{
+    int i = int( m_marks.size() ) - 1;
+    if( i >= 0 ) {
+        m_marks[i]->set_context( ct );
+    }
+}
+
+Context Glich::get_context() const
+{
+    int i = int( m_marks.size() ) - 1;
+    if( i >= 0 ) {
+       return m_marks[i]->get_context();
+    }
+    return Context::number;
+}
+
 // End of src/hg/historygen.cpp

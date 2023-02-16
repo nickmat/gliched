@@ -51,6 +51,7 @@ namespace glich {
         bool do_clear();
         bool do_if();
         bool do_do();
+        bool do_set();
         bool do_let();
         bool do_assign( const std::string& name );
         bool do_write( const std::string& term = "" );

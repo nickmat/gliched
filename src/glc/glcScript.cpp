@@ -84,6 +84,7 @@ bool Script::statement()
         if( name == "clear" ) return do_clear();
         if( name == "if" ) return do_if();
         if( name == "do" ) return do_do();
+        if( name == "set" ) return do_set();
         if( name == "let" ) return do_let();
         if( name == "write" ) return do_write();
         if( name == "writeln" ) return do_writeln();
@@ -295,6 +296,39 @@ bool Script::do_do()
     }
     m_ts.reset_in( prev_iss );
     m_ts.set_line( end_line );
+    return true;
+}
+
+bool Script::do_set()
+{
+    string prop;
+    SToken token = m_ts.next();
+    if( token.type() == SToken::Type::Name ) {
+        prop = token.get_str();
+    }
+    else {
+        error( "Set property expected." );
+        return false;
+    }
+    string value = get_name_or_primary( true );
+    if( m_ts.current().type() != SToken::Type::Semicolon ) {
+        error( "set statement is \"set propery value;\"." );
+        return false;
+    }
+    if( prop == "context" ) {
+        if( value == "number" ) {
+            m_db->set_context( Context::number );
+        }
+        else if( value == "field" ) {
+            m_db->set_context( Context::field );
+        }
+        else {
+            error( "Unknown context value \"" + value + "\"." );
+        }
+    }
+    else {
+        error( "Set property \"" + prop + "\" not recognised." );
+    }
     return true;
 }
 

@@ -52,11 +52,16 @@ namespace glich {
         std::string remove_next_command();
         std::string remove_next_file();
 
+        void set_context( Context ct ) { m_context = ct; }
+
+        Context get_context() const { return m_context; }
+
     private:
         std::string            m_name;
         std::vector<Function*> m_functions;
         std::vector<Command*>  m_commands;
         std::vector<File*>     m_files;
+        Context m_context;
     };
 
 }

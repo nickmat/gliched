@@ -74,7 +74,10 @@ namespace glich {
         Range( Field beg, Field end ) : m_beg( beg ), m_end( end ) {}
     };
 
-    using RList = std::vector< Range >; 
+    using RList = std::vector< Range >;
+
+    enum class Context { number, field };
+
 }
 
 #endif // INCLUDE_GLC_GLCDEFS_H

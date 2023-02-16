@@ -39,7 +39,7 @@ namespace glich {
     class Mark
     {
     public:
-        Mark( const std::string& name );
+        Mark( const std::string& name, Mark* prev );
         ~Mark();
 
         std::string get_name() const { return m_name; }

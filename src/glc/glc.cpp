@@ -53,7 +53,7 @@ string InOut::get_input( const string& prompt ) {
 
 Glich::Glich( InOut* inout ) : m_store( new ScriptStore ), m_inout( inout )
 {
-    m_marks.push_back( new Mark( "" ) );
+    m_marks.push_back( new Mark( "", nullptr ) );
     if( !m_inout ) {
         m_inout = new InOut;
     }
@@ -122,7 +122,12 @@ File* Glich::get_file( const std::string& code ) const
 void Glich::add_or_replace_mark( const std::string& name )
 {
     clear_mark( name );
-    Mark* mark = new Mark( name );
+    Mark* prev = nullptr;
+    int i = int( m_marks.size() ) - 1;
+    if( i >= 0 ) {
+        prev = m_marks[i];
+    }
+    Mark* mark = new Mark( name, prev );
     m_marks.push_back( mark );
 }
 

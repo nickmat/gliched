@@ -745,6 +745,9 @@ SValue Script::primary( bool get )
         value = primary( true );
         value.negate();
         break;
+    case SToken::Type::Plus:
+        value = primary( true );
+        break;
     case SToken::Type::Not:
         value = primary( true );
         value.logical_not();

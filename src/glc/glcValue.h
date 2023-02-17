@@ -70,6 +70,7 @@ namespace glich {
         Field get_field() const;
         Range get_range() const;
         RList get_rlist() const;
+        Field get_num_as_field() const;
 
         std::string get_str( bool& success ) const;
         Num get_number( bool& success ) const;
@@ -101,6 +102,11 @@ namespace glich {
         bool is_integer() const { return (m_type == Type::Number || m_type == Type::field); }
 
     private:
+        Field add( Field left, Field right ) const;
+        Range add( Range range, Field field ) const;
+        Range add( Range left, Range right ) const;
+        RList add( RList rlist, Field field ) const;
+        RList add( RList rlist, Range range ) const;
         Type        m_type;
         enum class di { di_bool, di_Num, di_string };
         std::variant<bool, Num, std::string, Range, RList> m_data;

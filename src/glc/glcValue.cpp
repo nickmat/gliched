@@ -147,6 +147,19 @@ RList SValue::get_rlist() const
     return RList( 0 );
 }
 
+Field glich::SValue::get_num_as_field() const
+{
+    if( std::holds_alternative<Num>( m_data ) && m_type == Type::Number ) {
+        Num num = std::get<Num>( m_data );
+        if( num >= f_maximum || num <= f_minimum ) {
+            return f_invalid;
+        }
+        return num;
+    }
+    assert( false );
+    return Field();
+}
+
 std::string glich::SValue::get_str( bool& success ) const
 {
     if( std::holds_alternative<string>( m_data ) ) {
@@ -436,11 +449,79 @@ void SValue::plus( const SValue& value )
         set_str( str1 + str2 );
         return;
     }
-    if( type() == Type::Number || value.type() == Type::Number ) {
-        Num num1 = get_number();
-        Num num2 = value.get_number();
-        set_number( num1 + num2 );
-        return;
+    Field fld = f_invalid;
+    switch( type() )
+    {
+    case Type::Number:
+        fld = get_num_as_field();
+        switch( value.type() )
+        {
+        case Type::Number:
+            set_number( get_number() + value.get_number() );
+            return;
+        case Type::field:
+            set_field( add( fld, value.get_field() ) );
+            return;
+        case Type::range:
+            set_range( add( value.get_range(), fld ) );
+            return;
+        case Type::rlist:
+            set_rlist( add( value.get_rlist(), fld ) );
+            return;
+        }
+        break;
+
+    case Type::field:
+        switch( value.type() )
+        {
+        case Type::Number:
+            set_field( add( get_field(), value.get_num_as_field() ) );
+            return;
+        case Type::field:
+            set_field( add( get_field(), value.get_field() ) );
+            return;
+        case Type::range:
+            set_range( add( value.get_range(), get_field() ) );
+            return;
+        case Type::rlist:
+            set_rlist( add( value.get_rlist(), get_field() ) );
+            return;
+        }
+        break;
+    case Type::range:
+        switch( value.type() )
+        {
+        case Type::Number:
+            set_range( add( get_range(), value.get_num_as_field() ) );
+            return;
+        case Type::field:
+            set_range( add( get_range(), value.get_field() ) );
+            return;
+        case Type::range:
+            set_range( add( value.get_range(), get_range() ) );
+            return;
+        case Type::rlist:
+            set_rlist( add( value.get_rlist(), get_range() ) );
+            return;
+        }
+        break;
+    case Type::rlist:
+        switch( value.type() )
+        {
+        case Type::Number:
+            set_rlist( add( get_rlist(), value.get_num_as_field() ) );
+            return;
+        case Type::field:
+            set_rlist( add( get_rlist(), value.get_field() ) );
+            return;
+        case Type::range:
+            set_rlist( add( value.get_rlist(), get_range() ) );
+            return;
+        case Type::rlist:
+            set_error( "Unable to add or subtract rlists." );
+            return;
+        }
+        break;
     }
     set_error( "Unable to add or subtract types." );
 }
@@ -450,10 +531,14 @@ void SValue::minus( const SValue& value )
     if( propagate_error( value ) ) {
         return;
     }
-    if( type() == Type::Number || value.type() == Type::Number ) {
-        Num num1 = get_number();
-        Num num2 = value.get_number();
-        set_number( num1 - num2 );
+    if( ( m_type == Type::Number || m_type == Type::field ||
+        m_type == Type::range || m_type == Type::rlist ) &&
+        ( value.m_type == Type::Number || value.m_type == Type::field ||
+            value.m_type == Type::range || value.m_type == Type::rlist )
+        ) {
+        SValue v( value );
+        v.negate();
+        plus( v );
         return;
     }
     set_error( "Unable to subtract types." );
@@ -518,6 +603,32 @@ void SValue::negate()
     case Type::Number:
         set_number( -get_number() );
         return;
+    case Type::field:
+        if( get_field() != f_invalid ) {
+            set_field( -get_field() );
+        }
+        return;
+    case Type::range: {
+        Range rng = get_range();
+        if( rng.m_beg != f_invalid && rng.m_end != f_invalid ) {
+            Field end = -rng.m_beg;
+            rng.m_beg = -rng.m_end;
+            rng.m_end = end;
+        }
+        return;
+    }
+    case Type::rlist: {
+        RList rlist = get_rlist();
+        for( Range rng : rlist ) {
+            if( rng.m_beg != f_invalid && rng.m_end != f_invalid ) {
+                Field end = -rng.m_beg;
+                rng.m_beg = -rng.m_end;
+                rng.m_end = end;
+            }
+        }
+        std::reverse( rlist.begin(), rlist.end() );
+        return;
+    }
     }
     set_error( "Can only negate number types." );
 }
@@ -533,6 +644,64 @@ void SValue::logical_not()
         return;
     }
     set_error( "Logical 'not' only operates on bools" );
+}
+
+Field SValue::add( Field left, Field right ) const
+{
+    if( left == f_invalid || right == f_invalid ) {
+        return f_invalid;
+    }
+    if( left == f_minimum || right == f_minimum ) {
+        if( left == f_maximum || right == f_maximum ) {
+            return f_invalid; // max + min = invalid
+        }
+        return f_minimum;
+    }
+    if( left == f_maximum || right == f_maximum ) {
+        return f_maximum;
+    }
+
+    LongField lf = static_cast<LongField>(left) + static_cast<LongField>(right);
+    if( lf < static_cast<LongField>(f_minimum) ) {
+        return f_minimum;
+    }
+    if( lf > static_cast<LongField>(f_maximum) ) {
+        return f_maximum;
+    }
+    return static_cast<Field>(lf);
+}
+
+Range SValue::add( Range range, Field field ) const
+{
+    return Range( add( range.m_beg, field ), add( range.m_end, field ) );
+}
+
+Range SValue::add( Range left, Range right ) const
+{
+    return Range(
+        add( left.m_beg, right.m_beg ),
+        add( left.m_end, right.m_end )
+    );
+}
+
+RList SValue::add( RList rlist, Field field ) const
+{
+    RList rl;
+    for( size_t i = 0; i < rlist.size(); i++ ) {
+        Range range = add( rlist[i], field );
+        rl.push_back( range );
+    }
+    return rl;
+}
+
+RList SValue::add( RList rlist, Range range ) const
+{
+    RList rl;
+    for( size_t i = 0; i < rlist.size(); i++ ) {
+        Range r = add( rlist[i], range );
+        rl.push_back( r );
+    }
+    return rl;
 }
 
 

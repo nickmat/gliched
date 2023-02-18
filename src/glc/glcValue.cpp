@@ -774,6 +774,20 @@ void SValue::logical_not()
     set_error( "Logical 'not' only operates on bools" );
 }
 
+void glich::SValue::compliment()
+{
+    if( is_error() ) {
+        return;
+    }
+    bool success;
+    RList rlist = get_rlist( success );
+    if( success ) {
+        set_rlist( op_set_complement( rlist ) );
+        return;
+    }
+    set_error( "Cannot convert to RList." );
+}
+
 Field SValue::add( Field left, Field right ) const
 {
     if( left == f_invalid || right == f_invalid ) {

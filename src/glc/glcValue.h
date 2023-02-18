@@ -105,6 +105,7 @@ namespace glich {
 
         void negate(); // Unitary minus
         void logical_not();
+        void compliment();
 
         Type type() const { return m_type; }
         bool is_integer() const { return (m_type == Type::Number || m_type == Type::field); }

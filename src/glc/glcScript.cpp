@@ -747,21 +747,21 @@ SValue Script::primary( bool get )
     switch( token.type() )
     {
     case SToken::Type::Number:
-    {
-        Num num = token.get_number();
-        assert( num >= 0 ); // Literals are always positive.
-        value.set_number( num );
-    }
-    m_ts.next();
-    break;
+        {
+            Num num = token.get_number();
+            assert( num >= 0 ); // Literals are always positive.
+            value.set_number( num );
+        }
+        m_ts.next();
+        break;
     case SToken::Type::Field:
-    {
-        Field fld = token.get_field();
-        assert( fld >= 0 ); // Literals are always positive.
-        value.set_field( fld );
-    }
-    m_ts.next();
-    break;
+        {
+            Field fld = token.get_field();
+            assert( fld >= 0 ); // Literals are always positive.
+            value.set_field( fld );
+        }
+        m_ts.next();
+        break;
     case SToken::Type::String:
         value.set_str( token.get_str() );
         m_ts.next();
@@ -794,6 +794,10 @@ SValue Script::primary( bool get )
     case SToken::Type::Not:
         value = primary( true );
         value.logical_not();
+        break;
+    case SToken::Type::COMPLEMENT:
+        value = primary( true );
+        value.compliment();
         break;
     default:
         value.set_error( "Primary value expected." );

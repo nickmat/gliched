@@ -623,31 +623,74 @@ SValue Script::expr( bool get )
 
 SValue Script::compare( bool get )
 {
-    SValue left = sum( get );
+    SValue left = combine( get );
     for( ;;) {
         SToken token = m_ts.current();
         switch( token.type() )
         {
         case SToken::Type::Equal:
-            left.equal( sum( true ) );
+            left.equal( combine( true ) );
             break;
         case SToken::Type::NotEqual:
-            left.equal( sum( true ) );
+            left.equal( combine( true ) );
             left.logical_not();
             break;
         case SToken::Type::GtThan:
-            left.greater_than( sum( true ) );
+            left.greater_than( combine( true ) );
             break;
         case SToken::Type::GtThanEq:
-            left.less_than( sum( true ) );
+            left.less_than( combine( true ) );
             left.logical_not();
             break;
         case SToken::Type::LessThan:
-            left.less_than( sum( true ) );
+            left.less_than( combine( true ) );
             break;
         case SToken::Type::LessThanEq:
-            left.greater_than( sum( true ) );
+            left.greater_than( combine( true ) );
             left.logical_not();
+            break;
+        default:
+            return left;
+        }
+    }
+}
+
+SValue Script::combine( bool get )
+{
+    SValue left = range( get );
+
+    for( ;;) {
+        SToken token = m_ts.current();
+        switch( token.type() )
+        {
+        case SToken::Type::UNION:
+            left.rlist_union( range( true ) );
+            break;
+        case SToken::Type::INTERSECTION:
+            left.intersection( range( true ) );
+            break;
+        case SToken::Type::REL_COMPLEMENT:
+            left.rel_complement( range( true ) );
+            break;
+        case SToken::Type::SYM_DIFFERENCE:
+            left.sym_difference( range( true ) );
+            break;
+        default:
+            return left;
+        }
+    }
+}
+
+SValue Script::range( bool get )
+{
+    SValue left = sum( get );
+
+    for( ;;) {
+        SToken token = m_ts.current();
+        switch( token.type() )
+        {
+        case SToken::Type::DotDot:
+            left.range_op( sum( true ) );
             break;
         default:
             return left;

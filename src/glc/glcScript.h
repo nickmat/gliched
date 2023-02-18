@@ -63,6 +63,8 @@ namespace glich {
 
         SValue expr( bool get );
         SValue compare( bool get );
+        SValue combine( bool get );
+        SValue range( bool get );
         SValue sum( bool get );
         SValue term( bool get );
         SValue primary( bool get );

@@ -68,6 +68,44 @@ namespace glich {
         return 0;
     }
 
+    inline std::string bool_to_string( bool b ) {
+        return b ? "true" : "false";
+    }
+
+    inline std::string field_to_string( Field fld ) {
+        switch( fld )
+        {
+        case f_invalid:
+            return "?";
+        case f_maximum:
+            return "+infinity";
+        case f_minimum:
+            return "-infinity";
+        }
+        return std::to_string( fld );
+    }
+
+    inline std::string range_to_string( Range rng ){
+        if( rng.m_beg == rng.m_end ) {
+            return field_to_string( rng.m_beg );
+        }
+        return 
+            field_to_string( rng.m_beg ) + ".." +
+            field_to_string( rng.m_end );
+    }
+
+    inline std::string rlist_to_string( RList rlist ) {
+        std::string str;
+        bool first = true;
+        for( Range rng : rlist ) {
+            if( !first ) {
+                str += " | ";
+            }
+            str += range_to_string( rng );
+            first = false;
+        }
+        return str;
+    }
 }
 
 #endif // SRC_GLC_GLCHELPER_H

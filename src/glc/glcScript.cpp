@@ -1020,6 +1020,9 @@ SValue Script::get_value_var( const std::string& name )
     if( name == "false" ) {
         return SValue( false );
     }
+    if( name == "infinity" ) {
+        return SValue( f_maximum, SValue::Type::field );
+    }
     if( name == "null" ) {
         return SValue();
     }

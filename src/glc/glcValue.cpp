@@ -45,19 +45,24 @@ SValue::SValue( const SValue& value )
 
 string SValue::as_string() const
 {
-    string str;
-    if( m_type == Type::Null ) {
+    switch( m_type )
+    {
+    case Type::Null:
         return "null";
-    }
-    switch( static_cast<di>(m_data.index()) ) {
-    case di::di_bool:
-        return std::get<bool>( m_data ) ? "true" : "false";
-    case di::di_Num:
-        return std::to_string( std::get<Num>( m_data ) );
-    case di::di_string:
+    case Type::String:
+    case Type::Error:
         return std::get<string>( m_data );
+    case Type::Bool:
+        return bool_to_string( std::get<bool>( m_data ) );
+    case Type::Number:
+        return std::to_string( std::get<Num>( m_data ) );
+    case Type::field:
+        return field_to_string( std::get<Num>( m_data ) );
+    case Type::range:
+        return range_to_string( std::get<Range>( m_data ) );
+    case Type::rlist:
+        return rlist_to_string( std::get<RList>( m_data ) );
     }
-    assert( false ); // This should not be possible.
     return string();
 }
 

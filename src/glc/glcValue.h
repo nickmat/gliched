@@ -75,14 +75,15 @@ namespace glich {
         std::string get_str( bool& success ) const;
         Num get_number( bool& success ) const;
         bool get_bool( bool& success ) const;
-        Field get_field( bool& success ) const; // Promote or demote if possible
-        Range get_range( bool& success ) const; // Promote or demote if possible
-        RList get_rlist( bool& success ) const;
+        Field get_field( bool& success ) const; // Demote if possible.
+        Range get_range( bool& success ) const; // Promote or demote if possible.
+        RList get_rlist( bool& success ) const; // Promote if possible.
 
         Num get_integer( bool& success ) const; // Num or Field as Num
 
         bool is_error() const { return m_type == Type::Error; }
         bool propagate_error( const SValue& value );
+        bool obtain_rlists( RList& left, RList& right, const SValue& value );
 
         void logical_or( const SValue& value );
         void logical_and( const SValue& value );
@@ -94,6 +95,13 @@ namespace glich {
         void multiply( const SValue& value );
         void divide( const SValue& value );
         void modulus( const SValue& value );
+
+        void rlist_union( const SValue& value );
+        void intersection( const SValue& value );
+        void rel_complement( const SValue& value );
+        void sym_difference( const SValue& value );
+
+        void range_op( const SValue& value );
 
         void negate(); // Unitary minus
         void logical_not();

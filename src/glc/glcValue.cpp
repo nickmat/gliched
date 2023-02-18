@@ -291,6 +291,25 @@ bool SValue::propagate_error( const SValue& value )
     return false;
 }
 
+bool SValue::obtain_rlists( RList& left, RList& right, const SValue& value )
+{
+    if( propagate_error( value ) ) {
+        return false;
+    }
+    bool success;
+    left = get_rlist( success );
+    if( !success ) {
+        set_error( "Cannot convert left hand to RList." );
+        return false;
+    }
+    right = value.get_rlist( success );
+    if( !success ) {
+        set_error( "Cannot convert right hand to RList." );
+        return false;
+    }
+    return true;
+}
+
 void SValue::logical_or( const SValue& value )
 {
     if( propagate_error( value ) ) {
@@ -603,6 +622,104 @@ void SValue::modulus( const SValue& value )
         return;
     }
     set_error( "Can only use modulus with numbers." );
+}
+
+void glich::SValue::rlist_union( const SValue& value )
+{
+    RList left, right;
+    if( obtain_rlists( left, right, value ) ) {
+        set_rlist_demote( set_operation( SetOp::Union, left, right ) );
+    }
+}
+
+void glich::SValue::intersection( const SValue& value )
+{
+    RList left, right;
+    if( obtain_rlists( left, right, value ) ) {
+        set_rlist_demote( set_operation( SetOp::Inter, left, right ) );
+    }
+}
+
+void glich::SValue::rel_complement( const SValue& value )
+{
+    RList left, right;
+    if( obtain_rlists( left, right, value ) ) {
+        set_rlist_demote( set_operation( SetOp::RelComp, left, right ) );
+    }
+}
+
+void glich::SValue::sym_difference( const SValue& value )
+{
+    RList left, right;
+    if( obtain_rlists( left, right, value ) ) {
+        set_rlist_demote( set_operation( SetOp::SymDif, left, right ) );
+    }
+}
+
+void glich::SValue::range_op( const SValue& value )
+{
+    if( propagate_error( value ) ) {
+        return;
+    }
+    Range lhs, rhs;
+    const char* type_err_mess = "Range operator requires number types.";
+    const char* empty_err_mess = "Range operator cannot use empty rlist.";
+    const char* invalid_err_mess = "Range invalid.";
+    switch( m_type )
+    {
+    case Type::rlist:
+        if( get_rlist().empty() ) {
+            set_error( empty_err_mess );
+            return;
+        }
+        lhs = enclosing_range( get_rlist() );
+        break;
+    case Type::Number:
+        lhs.m_beg = lhs.m_end = get_num_as_field();
+        break;
+    case Type::field:
+        lhs.m_beg = lhs.m_end = get_field();
+        break;
+    case Type::range:
+        lhs = get_range();
+        break;
+    default:
+        set_error( type_err_mess );
+        return;
+    }
+    switch( value.m_type )
+    {
+    case Type::rlist:
+        if( value.get_rlist().empty() ) {
+            set_error( empty_err_mess );
+            return;
+        }
+        rhs = enclosing_range( value.get_rlist() );
+        break;
+    case Type::Number:
+        rhs.m_beg = rhs.m_end = value.get_num_as_field();
+        break;
+    case Type::field:
+        rhs.m_beg = rhs.m_end = value.get_field();
+        break;
+    case Type::range:
+        rhs = value.get_range();
+        break;
+    default:
+        set_error( type_err_mess );
+        return;
+    }
+    if( lhs.m_beg > rhs.m_beg ) {
+        lhs.m_beg = rhs.m_beg;
+    }
+    if( lhs.m_end < rhs.m_end ) {
+        lhs.m_end = rhs.m_end;
+    }
+    if( lhs.m_beg == f_invalid ) {
+        set_error( invalid_err_mess );
+        return;
+    }
+    set_range( lhs );
 }
 
 void SValue::negate()

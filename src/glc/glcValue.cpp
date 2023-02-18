@@ -253,8 +253,11 @@ RList SValue::get_rlist( bool& success ) const
         Range rng = std::get<Range>( m_data );
         return { rng };
     }
-    if( std::holds_alternative<Num>( m_data ) && m_type == Type::field ) {
+    if( std::holds_alternative<Num>( m_data ) ) {
         Field fld = std::get<Num>( m_data );
+        if( m_type == Type::Number ) {
+            fld = get_num_as_field();
+        }
         return { Range( fld, fld ) };
     }
     success = false;

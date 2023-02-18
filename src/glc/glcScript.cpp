@@ -762,6 +762,10 @@ SValue Script::primary( bool get )
         }
         m_ts.next();
         break;
+    case SToken::Type::Qmark:
+        value.set_field( f_invalid );
+        m_ts.next();
+        break;
     case SToken::Type::String:
         value.set_str( token.get_str() );
         m_ts.next();

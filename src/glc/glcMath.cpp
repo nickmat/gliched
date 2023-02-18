@@ -120,7 +120,163 @@ double glich::fmod_r( double x, double y )
         return r - y;
     }
     return r;
-} 
+}
 
+
+RList glich::set_operation( SetOp op, const RList& left, const RList& right )
+{
+    bool lon = false, ron = false;
+    Field lpos = f_maximum, rpos = f_maximum, apos = f_minimum;
+    size_t li = 0, ri = 0;
+    bool aon = false, paon = false;
+
+    if( left.size() ) {
+        lpos = f_minimum;
+        lon = (lpos == left[0].m_beg);
+    }
+    if( right.size() ) {
+        rpos = f_minimum;
+        ron = (rpos == right[0].m_beg);
+    }
+
+    RList answer;
+    Range range;
+    while( apos != f_end && apos != f_invalid2 ) {
+        apos = std::min( lpos, rpos ); // Next position.
+        // We want to know if the left, right ranges are on or off
+        // at the current answer position. If the left or right position
+        // is the same as the answer postion, we can just use the on/off flag.
+        // Otherwise, we want the previous setting, which is the opposite
+        // of the current on/off setting.
+        bool lval = (apos == lpos) ? lon : !lon;
+        bool rval = (apos == rpos) ? ron : !ron;
+        switch( op )
+        {
+        case SetOp::Union:
+            aon = (lval || rval);
+            break;
+        case SetOp::Inter:
+            aon = (lval && rval);
+            break;
+        case SetOp::RelComp:
+            aon = (lval && !rval);
+            break;
+        case SetOp::SymDif:
+            aon = (lval != rval);
+            break;
+        default:
+            assert( false ); // How did we get here?
+        }
+        if( aon != paon ) {         // we need make an answer entry
+            if( aon ) {            // start of a new range
+                range.m_beg = apos;
+            }
+            else {               // completes a range
+                range.m_end = apos - 1;
+                answer.push_back( range );
+            }
+            paon = aon;
+        }
+        // move on left
+        if( lpos == apos && lpos != f_invalid2 ) {
+            if( li < left.size() ) {
+                if( lon ) {
+                    lpos = left[li].m_end;
+                    assert( lpos != f_end );
+                    lpos++;
+                    li++;
+                }
+                else { // lon == false
+                    lpos = left[li].m_beg;
+                }
+            }
+            else {
+                lpos = f_invalid2;
+            }
+            lon = !lon;
+        }
+        // move on right
+        if( rpos == apos && rpos != f_invalid2 ) {
+            if( ri < right.size() ) {
+                if( ron ) {
+                    rpos = right[ri].m_end;
+                    assert( rpos != f_end );
+                    rpos++;
+                    ri++;
+                }
+                else { // ron == false
+                    rpos = right[ri].m_beg;
+                }
+            }
+            else {
+                rpos = f_invalid2;
+            }
+            ron = !ron;
+        }
+    }
+    return answer;
+}
+
+RList glich::op_set_complement( const RList& input )
+{
+    RList answer;
+    Range range;
+
+    // Check for empty set.
+    if( input.empty() ) {
+        range.m_beg = f_minimum;
+        range.m_end = f_maximum;
+        answer.push_back( range );
+        return answer; // Return the full set.
+    }
+
+    int i = 0;
+    if( input[0].m_beg != f_minimum ) {
+        range.m_beg = f_minimum;
+        range.m_end = input[0].m_beg - 1;
+        answer.push_back( range );
+    }
+    while( i < (int) input.size() - 1 ) {
+        range.m_beg = input[i].m_end + 1;
+        i++;
+        range.m_end = input[i].m_beg - 1;
+        answer.push_back( range );
+    }
+    if( input[i].m_end != f_maximum ) {
+        range.m_beg = input[i].m_end + 1;
+        range.m_end = f_maximum;
+        answer.push_back( range );
+    }
+    return answer;
+}
+
+RList glich::op_set_well_order( const RList& rlist )
+{
+    RList result;
+    if( rlist.size() > 0 ) {
+        result.push_back( rlist[0] );
+        op_normalise_range( &result[0] );
+        if( rlist.size() > 1 ) {
+            RList right( 1 );
+            for( size_t i = 1; i < rlist.size(); i++ ) {
+                right[0] = rlist[i];
+                op_normalise_range( &right[0] );
+                result = set_operation( SetOp::Union, result, right );
+            }
+        }
+    }
+    return result;
+}
+
+Range glich::enclosing_range( const RList& rlist )
+{
+    if( rlist.empty() ) {
+        return Range( f_invalid, f_invalid );
+    }
+    Range range;
+    range.m_beg = rlist[0].m_beg;
+    range.m_end = rlist[rlist.size() - 1].m_end;
+    return range;
+}
 
 // End of src/glc/glcMath.cpp

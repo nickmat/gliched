@@ -72,6 +72,30 @@ namespace glich {
     double inline acos_d( double n ) { return rad_to_deg( acos( n ) ); }
     double inline atan_d( double n ) { return rad_to_deg( atan( n ) ); }
 
+    // Set operations
+    enum class SetOp {
+        Union,      // Union                 L | R
+        Inter,      // Intersection          L & R
+        RelComp,    // Relative complement   L \ R
+        SymDif      // Symmetric difference  L ^ R
+    };
+
+    extern RList set_operation( SetOp op, const RList& left, const RList& right );
+
+    extern RList op_set_complement( const RList& input );
+
+    extern RList op_set_well_order( const RList& rlist );
+
+    inline void op_normalise_range( Range* range ) {
+        if( range->m_beg > range->m_end ) {
+            Field fld = range->m_beg;
+            range->m_beg = range->m_end;
+            range->m_end = fld;
+        }
+    }
+
+    extern Range enclosing_range( const RList& rlist ); // Assumes well ordered list
+
 }
 
 #endif // SRC_GLC_GLCMATH_H_GUARD

@@ -41,7 +41,7 @@
 #endif
 
 #define VERSION   "0.1.0"
-#define PROGNAME  "glcs (Glich Script)"
+#define PROGNAME  " (Glich Script)"
 #define COPYRIGHT  "2023 Nick Matthews"
 
 const char* g_version = VERSION;
@@ -92,32 +92,36 @@ string read_file( const string& name )
     return ss.str();
 }
 
-void do_usage()
+void do_usage( bool glich_prog )
 {
-    std::cout << g_title << g_copyright << "\n";
+    char* prog = glich_prog ? "glich" : "glcs";
+    char* i_default = glich_prog ? " (Default)" : "";
+    char* e_default = glich_prog ? "" : " (Default)";
+    if( glich_prog )
+    std::cout << prog << g_title << g_copyright << "\n";
     std::cout << 
         "Usage:\n"
-        "  hcs [options]\n"
+        "  " << prog << " [options]\n"
         "\n"
         "Options:\n"
         "  -h    Show this help message and exit.\n"
-        "  -n    Do not run the default script on start up.\n"
-        "  -e    Exit the program without entering interactive mode.\n"
+        "  -e    End after running scripts." << i_default << "\n"
+        "  -i    Enter interactive mode." << e_default << "\n"
         "  name  Run the file 'name' as a script.\n"
         "        Multiple files are run in the order that they appear.\n" 
         "\n"
     ;
 }
 
-void do_help( const string& option )
+void do_help( const string& option, bool glich_prog )
 {
     if ( option == "usage" ) {
-        do_usage();
+        do_usage( glich_prog );
         return;
     }
     std::cout <<
         "\n"
-        "Welcome to the HistoryCalScript interactive program.\n"
+        "Welcome to the Glich interactive program.\n"
         "\n"
         "Briefly, a script consists of one or more statements. These statements are\n"
         "detailed in the online manual at http://historycal.org/man/script/. A single\n"
@@ -141,42 +145,6 @@ void do_help( const string& option )
         "\n"
     ;
 }
-
-#if 0
-void do_info( Calendars* cal, const string& scode )
-{
-    if ( scode.empty() ) {
-        SchemeList schemes = cal->get_scheme_list();
-        cout << "Available schemes:-" << endl;
-        for ( auto data : schemes ) {
-            cout << data.code << "\t" << data.name << endl;
-        }
-        cout << endl;
-        return;
-    }
-    SHandle sch = cal->get_scheme( scode );
-    if ( sch == nullptr ) {
-        cout << "Scheme " << scode << " not found.\n";
-        return;
-    }
-    Scheme_info info;
-    cal->get_scheme_info( &info, sch );
-    SchemeFormatInfo formats;
-    cal->get_output_info( &formats, sch );
-    cout <<
-        "Name:\t" << info.name << "\n"
-        "Code:\t" << info.code << "\n"
-        "Grammar:\t" << info.grammar_code << "\n"
-        "Formats:-" << endl
-    ;
-    for ( auto pdesc : formats.descs ) {
-        for ( auto pcode : pdesc.codes ) {
-            cout << pcode.code << "\t" << pdesc.desc << endl;
-        }
-    }
-    cout << endl;
-}
-#endif
 
 string compress_statement( const string& statement )
 {
@@ -379,20 +347,34 @@ int main( int argc, char* argv[] )
     hg::Glich glc;
     vector<string> filenames;
     bool run_default = true;
-    bool do_cmd_line = true;
+
+    bool interactive = true;
+    bool glich_prog = false;
+    std::string prog( argv[0] );
+    if( prog.size() >= 9 && prog.substr( prog.size() - 9 ) == "glich.exe" ) {
+        interactive = false;
+        glich_prog = true;
+    }
+    else if( prog.size() >= 5 && prog.substr( prog.size() - 5 ) == "glich" ) {
+        interactive = false;
+        glich_prog = true;
+    }
 
     for( int i = 1; i < argc; i++ ) {
         if( argv[i][0] == '-' ) {
             switch( argv[i][1] )
             {
             case 'h': // Help
-                do_usage();
+                do_usage( glich_prog );
                 return 0;
             case 'n': // No default script.
                 run_default = false;
                 break;
             case 'e': // Exit without running command line.
-                do_cmd_line = false;
+                interactive = false;
+                break;
+            case 'i': // Run command line.
+                interactive = true;
                 break;
             default:
                 std::cout << "Command line flag not recognised.\n";
@@ -403,9 +385,11 @@ int main( int argc, char* argv[] )
         }
     }
 
-    if( do_cmd_line ) {
-        std::cout << g_title << g_copyright <<
+    if( interactive ) {
+        char* prog = glich_prog ? "glich" : "glcs";
+        std::cout << prog << g_title << g_copyright <<
             "Enter 'help' for more information.\n"
+            "Enter 'end' to exit program.\n"
             "\n"
             ;
     }
@@ -419,7 +403,7 @@ int main( int argc, char* argv[] )
         }
     }
 
-    if( do_cmd_line ) {
+    if( interactive ) {
         for( ;;) {
             std::cout << "glcs: ";
             string cmnd;
@@ -431,7 +415,7 @@ int main( int argc, char* argv[] )
                 break;
             }
             else if( word == "help" ) {
-                do_help( tail );
+                do_help( tail, glich_prog );
                 continue;
             }
             else if( word == "run" ) {
@@ -473,6 +457,9 @@ int main( int argc, char* argv[] )
                 std::cout << output << "\n";
             }
         }
+    }
+    else if( filenames.empty() ) {
+        do_usage( glich_prog );
     }
     return 0;
 }

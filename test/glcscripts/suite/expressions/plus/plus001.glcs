@@ -1,0 +1,10 @@
+// bool001.glcs Test file to test plus and minus maths.
+
+writeln +2;
+writeln -3;
+
+/*[OUTPUT]
+2
+-3
+
+[OUTPUT]*/

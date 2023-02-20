@@ -1,0 +1,10 @@
+// plus002.glcs Test file to test plus and minus maths.
+
+writeln 1 + 2;
+writeln 1 - 2;
+
+/*[OUTPUT]
+3
+-1
+
+[OUTPUT]*/

@@ -479,28 +479,28 @@ void SValue::plus( const SValue& value )
         set_str( str1 + str2 );
         return;
     }
-    Field fld = f_invalid;
     switch( type() )
     {
     case Type::Number:
-        fld = get_num_as_field();
-        switch( value.type() )
         {
-        case Type::Number:
-            set_number( get_number() + value.get_number() );
-            return;
-        case Type::field:
-            set_field( add( fld, value.get_field() ) );
-            return;
-        case Type::range:
-            set_range( add( value.get_range(), fld ) );
-            return;
-        case Type::rlist:
-            set_rlist( add( value.get_rlist(), fld ) );
-            return;
+            Field fld = get_num_as_field();
+            switch( value.type() )
+            {
+            case Type::Number:
+                set_number( get_number() + value.get_number() );
+                return;
+            case Type::field:
+                set_field( add( fld, value.get_field() ) );
+                return;
+            case Type::range:
+                set_range( add( value.get_range(), fld ) );
+                return;
+            case Type::rlist:
+                set_rlist( add( value.get_rlist(), fld ) );
+                return;
+            }
+            break;
         }
-        break;
-
     case Type::field:
         switch( value.type() )
         {

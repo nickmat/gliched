@@ -1,4 +1,4 @@
-// bool001.glcs Test file to test plus and minus maths.
+// plus001.glcs Test file to test plus and minus maths.
 
 writeln +2;
 writeln -3;

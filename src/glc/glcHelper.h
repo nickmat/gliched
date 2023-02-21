@@ -42,7 +42,7 @@ namespace glich {
 
     inline Field NumToField( Num num )
     {
-        if( num < f_maximum && num > f_minimum ) {
+        if( num <= f_maximum && num >= f_minimum ) {
             return static_cast<Field>(num);
         }
         return f_invalid;

@@ -74,7 +74,30 @@ namespace glich {
         Range( Field beg, Field end ) : m_beg( beg ), m_end( end ) {}
     };
 
+    inline bool operator==( const Range& left, const Range& right ) {
+        return left.m_beg == right.m_beg && left.m_end == right.m_end;
+    }
+    inline bool operator!=( const Range& left, const Range& right ) {
+        return !(left == right);
+    }
+
     using RList = std::vector< Range >;
+
+    inline bool operator==( const RList& left, const RList& right ) {
+        if( left.size() != right.size() ) {
+            return false;
+        }
+        for( size_t i = 0; i < left.size(); i++ ) {
+            if( left[i] != right[i] ) {
+                return false;
+            }
+        }
+        return true;
+    }
+    inline bool operator!=( const RList& left, const RList& right ) {
+        return !(left == right);
+    }
+
 
     enum class Context { number, field };
 

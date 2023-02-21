@@ -80,6 +80,7 @@ namespace glich {
         RList get_rlist( bool& success ) const; // Promote if possible.
 
         Num get_integer( bool& success ) const; // Num or Field as Num
+        Field get_int_as_field( bool& success ) const; // Num or Field as Field
 
         bool is_error() const { return m_type == Type::Error; }
         bool propagate_error( const SValue& value );

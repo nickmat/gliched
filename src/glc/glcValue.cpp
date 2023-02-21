@@ -278,6 +278,20 @@ Num glich::SValue::get_integer( bool& success ) const
     return Num();
 }
 
+Field SValue::get_int_as_field( bool& success ) const
+{
+    success = true;
+    if( type() == Type::Number ) {
+        Num num = get_number();
+        return NumToField( num, success );
+    }
+    if( type() == Type::field ) {
+        return get_field();
+    }
+    success = false;
+    return Field();
+}
+
 bool SValue::propagate_error( const SValue& value )
 {
     if( is_error() ) {
@@ -331,6 +345,19 @@ void SValue::equal( const SValue& value )
     if( propagate_error( value ) ) {
         return;
     }
+    // Check mixed Integer.
+    if( (type() == Type::Number && value.type() == Type::field) ||
+        (type() == Type::field && value.type() == Type::Number) ) {
+        bool success1, success2;
+        Field left = get_int_as_field( success1 );
+        Field right = value.get_int_as_field( success2 );
+        if( !success1 || !success2 ) {
+            set_error( "Could not convert to Field type." );
+            return;
+        }
+        set_bool( left == right );
+        return;
+    }
     if( m_type == value.type() ) {
         bool result = false;
         switch( m_type )
@@ -344,27 +371,21 @@ void SValue::equal( const SValue& value )
         case Type::Number:
             result = (get_number() == value.get_number());
             break;
+        case Type::field:
+            result = (get_field() == value.get_field());
+            break;
+        case Type::range:
+            result = (get_range() == value.get_range());
+            break;
+        case Type::rlist:
+            result = (get_rlist() == value.get_rlist());
+            break;
         case Type::Null:
             result = true;
             break;
         default:
             set_error( "Type cannot be compared." );
             return;
-        }
-        set_bool( result );
-        return;
-    }
-    else if( is_integer() && value.is_integer() ) {
-        bool success1, success2;
-        Num num1 = get_integer( success1 );
-        Num num2 = value.get_integer( success2 );
-        if( !success1 || !success2 ) {
-            set_bool( false );
-            return;
-        }
-        bool result = false;
-        if( num1 == num2 ) {
-            result = true;
         }
         set_bool( result );
         return;

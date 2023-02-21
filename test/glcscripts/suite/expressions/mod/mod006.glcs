@@ -1,0 +1,25 @@
+// mod005.glcs Test file to test division and mod with infinity.
+
+writeln "";
+
+let a = +infinity;
+let n = 4;
+let q = a / n;
+let r = a mod n;
+let b = (a = n * q + r);
+writeln b + ", " + q + ", " + r;
+
+let a = -infinity;
+let n = 4;
+let q = a / n;
+let r = a mod n;
+let b = (a = n * q + r);
+writeln b + ", " + q + ", " + r;
+
+
+/*[OUTPUT]
+
+true, +infinity, 0
+true, -infinity, 0
+
+[OUTPUT]*/

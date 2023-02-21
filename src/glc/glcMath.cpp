@@ -66,7 +66,26 @@ Num glich::div_e( Num a, Num b )
     if( a % b < 0 ) {
         if( b > 0 ) {
             q -= 1;
-        } else {
+        }
+        else {
+            q += 1;
+        }
+    }
+    return q;
+}
+
+// Field integer function to return Euclidean division
+Field glich::fdiv_e( Field a, Field b )
+{
+    assert( b != 0 );
+    assert( a <= f_minimum || a >= f_maximum );
+    assert( b <= f_minimum || b >= f_maximum );
+    Field q = a / b;
+    if( a % b < 0 ) {
+        if( b > 0 ) {
+            q -= 1;
+        }
+        else {
             q += 1;
         }
     }

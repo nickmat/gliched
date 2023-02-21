@@ -619,17 +619,83 @@ void SValue::divide( const SValue& value )
     if( propagate_error( value ) ) {
         return;
     }
-    if( type() == Type::Number || value.type() == Type::Number ) {
-        Num num1 = get_number();
-        Num num2 = value.get_number();
-        if( num2 == 0 ) {
-            set_error( "Division by zero." );
+
+
+    const char* only_ints_err = "Can only divide fields and numbers.";
+    const char* divide_zero_err = "Division by zero.";
+    Field left = f_invalid;
+    Field right = f_invalid;
+    switch( type() )
+    {
+    case Type::Number:
+        switch( value.type() )
+        {
+        case Type::Number:
+            {
+                Num num1 = get_number();
+                Num num2 = value.get_number();
+                if( num2 == 0 ) {
+                    set_error( divide_zero_err );
+                    return;
+                }
+                set_number( div_e( num1, num2 ) );
+            }
+            return;
+        case Type::field:
+            left = get_num_as_field();
+            right = value.get_field();
+            break;
+        default:
+            set_error( only_ints_err );
             return;
         }
-        set_number( div_e( num1, num2 ) );
+        break;
+    case Type::field:
+        switch( value.type() )
+        {
+        case Type::Number:
+            left = get_field();
+            right = value.get_num_as_field();
+            break;
+        case Type::field:
+            left = get_field();
+            right = value.get_field();
+            break;
+        default:
+            set_error( only_ints_err );
+            return;
+        }
+        break;
+    default:
+        set_error( only_ints_err );
         return;
     }
-    set_error( "Can only divide numbers." );
+    switch( right )
+    {
+    case 0:
+        set_error( divide_zero_err );
+        return;
+    case f_invalid:
+        set_error( "Division by invalid." );
+        return;
+    case f_maximum:
+        set_error( "Division by +infinity." );
+        return;
+    case f_minimum:
+        set_error( "Division by -infinity." );
+        return;
+    }
+    switch( left )
+    {
+    case f_invalid:
+        set_error( "Cannot divide invalid." );
+        return;
+    case f_maximum:
+    case f_minimum:
+        set_field( left );
+        return;
+    }
+    set_field( fdiv_e( left, right ) );
 }
 
 void SValue::modulus( const SValue& value )
@@ -650,7 +716,7 @@ void SValue::modulus( const SValue& value )
     set_error( "Can only use modulus with numbers." );
 }
 
-void glich::SValue::rlist_union( const SValue& value )
+void SValue::rlist_union( const SValue& value )
 {
     RList left, right;
     if( obtain_rlists( left, right, value ) ) {
@@ -658,7 +724,7 @@ void glich::SValue::rlist_union( const SValue& value )
     }
 }
 
-void glich::SValue::intersection( const SValue& value )
+void SValue::intersection( const SValue& value )
 {
     RList left, right;
     if( obtain_rlists( left, right, value ) ) {
@@ -666,7 +732,7 @@ void glich::SValue::intersection( const SValue& value )
     }
 }
 
-void glich::SValue::rel_complement( const SValue& value )
+void SValue::rel_complement( const SValue& value )
 {
     RList left, right;
     if( obtain_rlists( left, right, value ) ) {
@@ -674,7 +740,7 @@ void glich::SValue::rel_complement( const SValue& value )
     }
 }
 
-void glich::SValue::sym_difference( const SValue& value )
+void SValue::sym_difference( const SValue& value )
 {
     RList left, right;
     if( obtain_rlists( left, right, value ) ) {
@@ -682,7 +748,7 @@ void glich::SValue::sym_difference( const SValue& value )
     }
 }
 
-void glich::SValue::range_op( const SValue& value )
+void SValue::range_op( const SValue& value )
 {
     if( propagate_error( value ) ) {
         return;
@@ -800,7 +866,7 @@ void SValue::logical_not()
     set_error( "Logical 'not' only operates on bools" );
 }
 
-void glich::SValue::compliment()
+void SValue::compliment()
 {
     if( is_error() ) {
         return;

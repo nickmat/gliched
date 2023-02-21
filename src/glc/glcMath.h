@@ -45,6 +45,7 @@ namespace glich {
 
     //! Integer function to return Euclidean division
     extern Num div_e( Num a, Num b );
+    extern Field fdiv_e( Field a, Field b );
     //! Integer function to return positive value for (a modulo b).
     extern Num mod_e( Num a, Num b );
 

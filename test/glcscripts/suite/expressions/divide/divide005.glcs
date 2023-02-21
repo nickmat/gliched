@@ -1,0 +1,21 @@
+// divide005.glcs Test file to test division of special field errors
+
+writeln "";
+
+writeln 10 / 0;
+writeln 10f / 0;
+writeln 10 / ?;
+writeln 10 / -infinity;
+writeln 10 / +infinity;
+writeln ? / 2;
+
+/*[OUTPUT]
+
+Error (5): Division by zero.
+Error (6): Division by zero.
+Error (7): Division by invalid.
+Error (8): Division by -infinity.
+Error (9): Division by +infinity.
+Error (10): Cannot divide invalid.
+
+[OUTPUT]*/

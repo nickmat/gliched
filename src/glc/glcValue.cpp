@@ -402,6 +402,23 @@ void SValue::greater_than( const SValue& value )
     if( propagate_error( value ) ) {
         return;
     }
+    // Check mixed Integer.
+    if( (type() == Type::Number && value.type() == Type::field) ||
+        (type() == Type::field && value.type() == Type::Number) ) {
+        bool success1, success2;
+        Field left = get_int_as_field( success1 );
+        Field right = value.get_int_as_field( success2 );
+        if( !success1 || !success2 ) {
+            set_error( "Could not convert to Field type." );
+            return;
+        }
+        if( left == f_invalid || right == f_invalid ) {
+            set_error( "Cannot compare invalid fields." );
+            return;
+        }
+        set_bool( left > right );
+        return;
+    }
     if( m_type == value.type() ) {
         bool result = false;
         switch( m_type )
@@ -415,27 +432,23 @@ void SValue::greater_than( const SValue& value )
         case Type::Number:
             result = (get_number() > value.get_number());
             break;
+        case Type::field:
+            {
+                Field left = get_field();
+                Field right = value.get_field();
+                if( left == f_invalid || right == f_invalid ) {
+                    set_error( "Cannot compare invalid fields." );
+                    return;
+                }
+                result = (left > right);
+            }
+            break;
         case Type::Null:
             set_error( "Can only compare a null value for equal or not equal." );
             return;
         default:
             set_error( "Type cannot be compared." );
             return;
-        }
-        set_bool( result );
-        return;
-    }
-    else if( is_integer() && value.is_integer() ) {
-        bool success1, success2;
-        Num num1 = get_integer( success1 );
-        Num num2 = value.get_integer( success2 );
-        if( !success1 || !success2 ) {
-            set_error( "Could not convert Field to Number." );
-            return;
-        }
-        bool result = false;
-        if( num1 > num2 ) {
-            result = true;
         }
         set_bool( result );
         return;
@@ -448,45 +461,9 @@ void SValue::less_than( const SValue& value )
     if( propagate_error( value ) ) {
         return;
     }
-    if( m_type == value.type() ) {
-        bool result = false;
-        switch( m_type )
-        {
-        case Type::String:
-            result = (get_str().compare( value.get_str() ) < 0);
-            break;
-        case Type::Bool:
-            set_error( "Can only compare bool for equal or not equal." );
-            return;
-        case Type::Number:
-            result = (get_number() < value.get_number());
-            break;
-        case Type::Null:
-            set_error( "Can only compare a null value for equal or not equal." );
-            return;
-        default:
-            set_error( "Type cannot be compared." );
-            return;
-        }
-        set_bool( result );
-        return;
-    }
-    else if( is_integer() && value.is_integer() ) {
-        bool success1, success2;
-        Num num1 = get_integer( success1 );
-        Num num2 = value.get_integer( success2 );
-        if( !success1 || !success2 ) {
-            set_error( "Could not convert Field to Number." );
-            return;
-        }
-        bool result = false;
-        if( num1 < num2 ) {
-            result = true;
-        }
-        set_bool( result );
-        return;
-    }
-    set_error( "Must compare same types." );
+    SValue right( value );
+    right.greater_than( *this );
+    *this = right;
 }
 
 void SValue::plus( const SValue& value )

@@ -1,0 +1,19 @@
+// bool009.glcs Test file to test bool maths.
+
+writeln "";
+
+writeln 1 <= 1;
+writeln 1 <= 2;
+writeln 2 <= 1;
+writeln 1 <= +infinity;
+writeln 1 <= -infinity;
+
+/*[OUTPUT]
+
+true
+true
+false
+true
+false
+
+[OUTPUT]*/

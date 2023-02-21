@@ -1,0 +1,17 @@
+// multiply003.hcs Test file for multiplication of fields
+
+writeln "";
+
+writeln 2147483640f * 1;
+writeln 2147483640f * 2; // overflow
+writeln -2147483640f * 1;
+writeln -2147483640f * 2; // overflow
+
+/*[OUTPUT]
+
+2147483640
+Error (6): Multiply has invalid result.
+-2147483640
+Error (8): Multiply has invalid result.
+
+[OUTPUT]*/

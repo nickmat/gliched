@@ -116,6 +116,8 @@ namespace glich {
         Range add( Range left, Range right ) const;
         RList add( RList rlist, Field field ) const;
         RList add( RList rlist, Range range ) const;
+        Field multiply( Field left, Field right ) const;
+
         Type        m_type;
         enum class di { di_bool, di_Num, di_string };
         std::variant<bool, Num, std::string, Range, RList> m_data;

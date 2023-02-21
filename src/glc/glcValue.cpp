@@ -579,13 +579,39 @@ void SValue::multiply( const SValue& value )
     if( propagate_error( value ) ) {
         return;
     }
-    if( type() == Type::Number || value.type() == Type::Number ) {
-        Num num1 = get_number();
-        Num num2 = value.get_number();
-        set_number( num1 * num2 );
+    const char* only_ints_err = "Can only multiply fields and numbers.";
+    switch( type() )
+    {
+    case Type::Number:
+        switch( value.type() )
+        {
+        case Type::Number:
+            set_number( get_number() * value.get_number() );
+            return;
+        case Type::field:
+            set_field( multiply( get_num_as_field(), value.get_field() ) );
+            break;
+        }
+        break;
+    case Type::field:
+        switch( value.type() )
+        {
+        case Type::Number:
+            set_field( multiply( get_field(), value.get_num_as_field() ) );
+            break;
+        case Type::field:
+            set_field( multiply( get_field(), value.get_field() ) );
+            break;
+        }
+        break;
+    }
+    if( type() == Type::field ) {
+        if( get_field() == f_invalid ) {
+            set_error( "Multiply has invalid result." );
+        }
         return;
     }
-    set_error( "Can only multiply numbers." );
+    set_error( "Can only multiply fields and numbers." );
 }
 
 void SValue::divide( const SValue& value )
@@ -844,6 +870,39 @@ RList SValue::add( RList rlist, Range range ) const
         rl.push_back( r );
     }
     return rl;
+}
+
+Field SValue::multiply( Field left, Field right ) const
+{
+    // Checks for f_invalid
+    if( left == f_invalid || right == f_invalid ) {
+        return f_invalid;
+    }
+    if( left == f_minimum || right == f_minimum ) {
+        if( left == f_maximum || right == f_maximum ) {
+            return f_invalid; // +infinity * -infinity = invalid
+        }
+        if( left == 0 || right == 0 ) {
+            return f_invalid; // -infinity * 0 = invalid
+        }
+        return f_minimum;
+    }
+    if( left == f_maximum || right == f_maximum ) {
+        if( left == 0 || right == 0 ) {
+            return f_invalid; // +infinity * 0 = invalid
+        }
+        return f_maximum;
+    }
+
+    // Checks for overflow.
+    LongField lf = static_cast<LongField>(left) * static_cast<LongField>(right);
+    if( lf <= static_cast<LongField>(f_minimum) ) {
+        return f_invalid;
+    }
+    if( lf >= static_cast<LongField>(f_maximum) ) {
+        return f_invalid;
+    }
+    return static_cast<Field>(lf);
 }
 
 

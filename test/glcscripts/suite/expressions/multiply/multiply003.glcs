@@ -1,0 +1,13 @@
+// multiply003.hcs Test file for multiplication of fields
+
+writeln "";
+
+writeln 0 * -infinity;
+writeln infinity * 0;
+
+/*[OUTPUT]
+
+Error (5): Multiply has invalid result.
+Error (6): Multiply has invalid result.
+
+[OUTPUT]*/

@@ -99,9 +99,29 @@ Num glich::mod_e( Num a, Num b )
     assert( b != 0 );
     Num r = a % b;
     if( r < 0 ) {
-        if( b > 0 ) { 
+        if( b > 0 ) {
             r += b;
-        } else {
+        }
+        else {
+            r -= b;
+        }
+    }
+    return r;
+}
+
+// Field integer function to return positive value for (a modulo b).
+// Function based on Euclidean division.
+Field glich::fmod_e( Field a, Field b )
+{
+    assert( b != 0 );
+    assert( a <= f_minimum || a >= f_maximum );
+    assert( b <= f_minimum || b >= f_maximum );
+    Field r = a % b;
+    if( r < 0 ) {
+        if( b > 0 ) {
+            r += b;
+        }
+        else {
             r -= b;
         }
     }

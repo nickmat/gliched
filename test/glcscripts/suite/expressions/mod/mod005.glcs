@@ -1,0 +1,23 @@
+// mod005.hcs Test file to test modulus of invalid fields
+
+writeln "";
+
+writeln 9 mod 0;
+writeln 9 mod ?;
+writeln ? mod 3;
+writeln 9 mod -infinity;
+writeln -infinity mod 3;
+writeln 9 mod +infinity;
+writeln +infinity mod 3;
+
+/*[OUTPUT]
+
+Error (5): Modulo by zero.
+Error (6): Modulo by invalid.
+Error (7): Cannot modulo invalid.
+Error (8): Modulo by -infinity.
+0
+Error (10): Modulo by +infinity.
+0
+
+[OUTPUT]*/

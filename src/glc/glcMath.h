@@ -48,6 +48,7 @@ namespace glich {
     extern Field fdiv_e( Field a, Field b );
     //! Integer function to return positive value for (a modulo b).
     extern Num mod_e( Num a, Num b );
+    extern Field fmod_e( Field a, Field b );
 
     //! Convert double to Number by rounding.
     extern Num round_f( double r );

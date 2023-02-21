@@ -619,8 +619,6 @@ void SValue::divide( const SValue& value )
     if( propagate_error( value ) ) {
         return;
     }
-
-
     const char* only_ints_err = "Can only divide fields and numbers.";
     const char* divide_zero_err = "Division by zero.";
     Field left = f_invalid;
@@ -703,17 +701,81 @@ void SValue::modulus( const SValue& value )
     if( propagate_error( value ) ) {
         return;
     }
-    if( type() == Type::Number || value.type() == Type::Number ) {
-        Num num1 = get_number();
-        Num num2 = value.get_number();
-        if( num2 == 0 ) {
-            set_error( "Modulus by zero." );
+    const char* only_ints_err = "Can only use modulus with numbers.";
+    const char* modulo_zero_err = "Modulo by zero.";
+    Field left = f_invalid;
+    Field right = f_invalid;
+    switch( type() )
+    {
+    case Type::Number:
+        switch( value.type() )
+        {
+        case Type::Number:
+        {
+            Num num1 = get_number();
+            Num num2 = value.get_number();
+            if( num2 == 0 ) {
+                set_error( modulo_zero_err );
+                return;
+            }
+            set_number( mod_e( num1, num2 ) );
+        }
+        return;
+        case Type::field:
+            left = get_num_as_field();
+            right = value.get_field();
+            break;
+        default:
+            set_error( only_ints_err );
             return;
         }
-        set_number( mod_e( num1, num2 ) );
+        break;
+    case Type::field:
+        switch( value.type() )
+        {
+        case Type::Number:
+            left = get_field();
+            right = value.get_num_as_field();
+            break;
+        case Type::field:
+            left = get_field();
+            right = value.get_field();
+            break;
+        default:
+            set_error( only_ints_err );
+            return;
+        }
+        break;
+    default:
+        set_error( only_ints_err );
         return;
     }
-    set_error( "Can only use modulus with numbers." );
+    switch( right )
+    {
+    case 0:
+        set_error( modulo_zero_err );
+        return;
+    case f_invalid:
+        set_error( "Modulo by invalid." );
+        return;
+    case f_maximum:
+        set_error( "Modulo by +infinity." );
+        return;
+    case f_minimum:
+        set_error( "Modulo by -infinity." );
+        return;
+    }
+    switch( left )
+    {
+    case f_invalid:
+        set_error( "Cannot modulo invalid." );
+        return;
+    case f_maximum:
+    case f_minimum:
+        set_field( 0 );
+        return;
+    }
+    set_field( fmod_e( left, right ) );
 }
 
 void SValue::rlist_union( const SValue& value )

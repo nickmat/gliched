@@ -95,6 +95,9 @@ namespace glich {
     }
 
     inline std::string rlist_to_string( RList rlist ) {
+        if( rlist.empty() ) {
+            return "empty";
+        }
         std::string str;
         bool first = true;
         for( Range rng : rlist ) {

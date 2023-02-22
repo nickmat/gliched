@@ -1026,6 +1026,9 @@ SValue Script::get_value_var( const std::string& name )
     if( name == "null" ) {
         return SValue();
     }
+    if( name == "empty" ) {
+        return SValue( RList() );
+    }
     SValue value;
     if( store()->get( &value, name ) ) {
         return value;

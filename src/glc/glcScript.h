@@ -81,7 +81,7 @@ namespace glich {
 
         static STokenStream* s_current_ts;
 
-        Glich* m_db;
+        Glich* m_glc;
         STokenStream m_ts;
         std::ostream* m_out;
         std::ostream* m_err;

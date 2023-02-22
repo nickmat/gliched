@@ -42,10 +42,10 @@ using std::vector;
 
 STokenStream* Script::s_current_ts = nullptr;
 
-Script::Script( Glich* db, std::istream& in, std::ostream& out )
-    : m_db(db), m_ts(in,out), m_out(&out), m_err(&out)
+Script::Script( Glich* glc, std::istream& in, std::ostream& out )
+    : m_glc( glc ), m_ts( in, out ), m_out( &out ), m_err( &out )
 {
-    assert( db != nullptr );
+    assert( glc != nullptr );
 }
 
 bool Script::run()
@@ -70,7 +70,7 @@ bool Script::run()
 
 ScriptStore* Script::store() const
 {
-    return m_db->get_store();
+    return m_glc->get_store();
 }
 
 bool Script::statement()
@@ -112,7 +112,7 @@ bool Script::do_mark()
         error( "Mark name string expected." );
         return false;
     }
-    m_db->add_or_replace_mark( mark );
+    m_glc->add_or_replace_mark( mark );
     return true;
 }
 
@@ -129,7 +129,7 @@ bool Script::do_clear()
         return false;
     }
     if( !mark.empty() ) {
-        m_db->clear_mark( mark );
+        m_glc->clear_mark( mark );
     }
     store()->clear();
     return true;
@@ -317,10 +317,10 @@ bool Script::do_set()
     }
     if( prop == "context" ) {
         if( value == "number" ) {
-            m_db->set_context( Context::number );
+            m_glc->set_context( Context::number );
         }
         else if( value == "field" ) {
-            m_db->set_context( Context::field );
+            m_glc->set_context( Context::field );
         }
         else {
             error( "Unknown context value \"" + value + "\"." );
@@ -393,7 +393,7 @@ bool Script::do_write( const std::string& term )
     }
     std::ostream* out = nullptr;
     if( !filecode.empty() ) {
-        File* file = m_db->get_file( filecode );
+        File* file = m_glc->get_file( filecode );
         if( file == nullptr ) {
             error( "File \"" + filecode + "\" not found." );
             return false;
@@ -431,7 +431,7 @@ bool Script::do_function()
             return false;
         }
     }
-    if( m_db->get_function( code ) != NULL ) {
+    if( m_glc->get_function( code ) != NULL ) {
         error( "function \"" + code + "\" already exists." );
         return false;
     }
@@ -473,7 +473,7 @@ bool Script::do_function()
         error( "Terminating '}' not found." );
         return false;
     }
-    Function* fun = m_db->create_function( code );
+    Function* fun = m_glc->create_function( code );
     if( fun == nullptr ) {
         return false;
     }
@@ -491,7 +491,7 @@ bool glich::Script::do_command()
         error( "Command name missing." );
         return false;
     }
-    if( m_db->get_command( code ) != NULL ) {
+    if( m_glc->get_command( code ) != NULL ) {
         error( "command \"" + code + "\" already exists." );
         return false;
     }
@@ -533,7 +533,7 @@ bool glich::Script::do_command()
         error( "Terminating '}' not found." );
         return false;
     }
-    Command* com = m_db->create_command( code );
+    Command* com = m_glc->create_command( code );
     if( com == nullptr ) {
         return false;
     }
@@ -588,7 +588,7 @@ bool Script::do_file()
         error( "';' expected." );
         return false;
     }
-    File* file = m_db->create_file( code );
+    File* file = m_glc->create_file( code );
     if( type != File::FT_null ) {
         file->set_filetype( type );
     }
@@ -882,7 +882,7 @@ SValue Script::function_call()
     if( value.is_error() ) {
         return value;
     }
-    Function* fun = m_db->get_function( name );
+    Function* fun = m_glc->get_function( name );
     if( fun == nullptr ) {
         value.set_error( "Function " + name + " not found." );
         return value;
@@ -892,7 +892,7 @@ SValue Script::function_call()
     m_ts.set_line( fun->get_line() );
     std::istringstream iss( fun->get_script() );
     m_ts.reset_in( &iss );
-    m_db->push_store();
+    m_glc->push_store();
 
     store()->set( "result", SValue() );
     for( size_t i = 0; i < fun->get_arg_size(); i++ ) {
@@ -912,7 +912,7 @@ SValue Script::function_call()
     }
 
     store()->get( &value, "result" );
-    m_db->pop_store();
+    m_glc->pop_store();
     m_ts = prev_ts;
 
     return value;
@@ -932,7 +932,7 @@ SValue glich::Script::command_call()
     if( value.is_error() ) {
         return value;
     }
-    Command* com = m_db->get_command( name );
+    Command* com = m_glc->get_command( name );
     if( com == nullptr ) {
         value.set_error( "Command " + name + " not found." );
         return value;
@@ -942,7 +942,7 @@ SValue glich::Script::command_call()
     m_ts.set_line( com->get_line() );
     std::istringstream iss( com->get_script() );
     m_ts.reset_in( &iss );
-    m_db->push_store();
+    m_glc->push_store();
 
     for( size_t i = 0; i < com->get_arg_size(); i++ ) {
         if( i < args.size() ) {
@@ -960,7 +960,7 @@ SValue glich::Script::command_call()
         }
     }
 
-    m_db->pop_store();
+    m_glc->pop_store();
     m_ts = prev_ts;
 
     return SValue();
@@ -1009,7 +1009,7 @@ SValue Script::at_read()
     if( args.size() > 0 && args[0].type() == SValue::Type::String ) {
         prompt = args[0].get_str();
     }
-    return m_db->read_input( prompt );
+    return m_glc->read_input( prompt );
 }
 
 SValue Script::get_value_var( const std::string& name )

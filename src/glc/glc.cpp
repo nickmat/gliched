@@ -57,6 +57,7 @@ Glich::Glich( InOut* inout ) : m_store( new ScriptStore ), m_inout( inout )
     if( !m_inout ) {
         m_inout = new InOut;
     }
+    STokenStream::init( this );
 }
 
 string Glich::run_script( const string& script )

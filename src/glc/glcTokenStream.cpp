@@ -27,6 +27,7 @@
 
 #include "glcTokenStream.h"
 
+#include <glc/glc.h>
 #include "glcHelper.h"
 
 #include <string>
@@ -45,6 +46,7 @@ SToken::SToken( const SToken& token )
     m_value = token.m_value;
 }
 
+Glich* STokenStream::s_glc = nullptr;
 
 SToken STokenStream::next()
 {
@@ -96,7 +98,12 @@ SToken STokenStream::next()
             }
         }
         m_in->putback( ch );
-        set_current( SToken::Type::Number, GetNum( text ) );
+        SToken::Type type = SToken::Type::Number;
+        Context context = s_glc->get_context();
+        if( context == Context::field ) {
+            type = SToken::Type::Field;
+        }
+        set_current( type, GetNum( text ) );
         return m_cur_token;
     }
 

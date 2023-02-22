@@ -34,6 +34,8 @@
 
 namespace glich {
 
+    class Glich;
+
     class SToken
     {
     public:
@@ -88,6 +90,8 @@ namespace glich {
         STokenStream( std::istream& in, std::ostream& err )
             : m_in( &in ), m_err( &err ), m_line( 1 ), m_errors( 0 ) {}
 
+        static void init( Glich* glc ) { s_glc = glc; }
+
         SToken next();
         SToken& current() { return m_cur_token; }
         void skip_to( SToken::Type type );
@@ -104,6 +108,8 @@ namespace glich {
         void set_type( SToken::Type type ) { m_cur_token.set_type( type ); }
         void set_current( SToken::Type type, const std::string& str );
         void set_current( SToken::Type type, Num num );
+
+        static Glich* s_glc;
 
         std::istream* m_in;
         std::ostream* m_err;

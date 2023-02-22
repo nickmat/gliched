@@ -103,6 +103,7 @@ namespace glich {
         void sym_difference( const SValue& value );
 
         void range_op( const SValue& value );
+        void property_op( const SValue& value );
 
         void negate(); // Unitary minus
         void logical_not();

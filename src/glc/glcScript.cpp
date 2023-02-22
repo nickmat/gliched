@@ -719,21 +719,56 @@ SValue Script::sum( bool get )
 
 SValue Script::term( bool get )
 {
-    SValue left = primary( get );
+    SValue left = subscript( get );
 
     for( ;;) {
         SToken token = m_ts.current();
         switch( token.type() )
         {
         case SToken::Type::Star:
-            left.multiply( primary( true ) );
+            left.multiply( subscript( true ) );
             break;
         case SToken::Type::Divide:
-            left.divide( primary( true ) );
+            left.divide( subscript( true ) );
             break;
         case SToken::Type::Mod:
-            left.modulus( primary( true ) );
+            left.modulus( subscript( true ) );
             break;
+        default:
+            return left;
+        }
+    }
+}
+
+SValue Script::subscript( bool get )
+{
+    SValue left = primary( get );
+
+    for( ;;) {
+        SToken token = m_ts.current();
+        switch( token.type() )
+        {
+        case SToken::Type::LSbracket:
+        {
+            SValue right;
+            token = m_ts.next();
+            if( token.type() == SToken::Type::Dot ) {
+                token = m_ts.next();
+                if( token.type() == SToken::Type::Name ) {
+                    right.set_str( token.get_str() );
+                    m_ts.next();
+                }
+                else {
+                    right = expr( false );
+                }
+                left.property_op( right );
+            }
+            if( m_ts.current().type() != SToken::Type::RSbracket ) {
+                error( "']' expected." );
+            }
+            m_ts.next();
+        }
+        break;
         default:
             return left;
         }

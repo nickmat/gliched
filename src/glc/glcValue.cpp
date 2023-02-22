@@ -874,6 +874,142 @@ void SValue::range_op( const SValue& value )
     set_range( lhs );
 }
 
+void SValue::property_op( const SValue& value )
+{
+    if( propagate_error( value ) ) {
+        return;
+    }
+    if( value.m_type != Type::String ) {
+        set_error( "Subscript property must be string type." );
+        return;
+    }
+    string property = value.get_str();
+    const char* type_err_mess = "Property not available or this type.";
+    const char* empty_rlist_err_mess = "Empty rlist.";
+    if( property == "low" ) {
+        switch( m_type )
+        {
+        case Type::field:
+            return;
+        case Type::range:
+            set_field( get_range().m_beg );
+            return;
+        case Type::rlist: {
+            RList rlist = get_rlist();
+            if( rlist.empty() ) {
+                set_field( f_invalid );
+                return;
+            }
+            set_field( rlist[0].m_beg );
+            return;
+        }
+        }
+        set_error( type_err_mess );
+        return;
+    }
+    if( property == "high" ) {
+        switch( m_type )
+        {
+        case Type::field:
+            return;
+        case Type::range:
+            set_field( get_range().m_end );
+            return;
+        case Type::rlist: {
+            RList rlist = get_rlist();
+            if( rlist.empty() ) {
+                set_field( f_invalid );
+                return;
+            }
+            set_field( rlist[rlist.size() - 1].m_end );
+            return;
+        }
+        }
+        set_error( type_err_mess );
+        return;
+    }
+    if( property == "span" ) {
+        switch( m_type )
+        {
+        case Type::field:
+            set_field( 1 );
+            return;
+        case Type::range:
+            if( get_range().m_beg <= f_minimum || get_range().m_end >= f_maximum ) {
+                set_field( f_invalid );
+            }
+            else {
+                set_field( get_range().m_end - get_range().m_beg + 1 );
+            }
+            return;
+        case Type::rlist: {
+            RList rlist = get_rlist();
+            if( rlist.empty() ) {
+                set_field( f_invalid );
+                return;
+            }
+            Field fld1 = rlist[0].m_beg;
+            Field fld2 = rlist[rlist.size() - 1].m_end;
+            if( fld1 <= f_minimum || fld2 >= f_maximum ) {
+                set_field( f_invalid );
+                return;
+            }
+            set_field( fld2 - fld1 + 1 );
+            return;
+        }
+        }
+        set_error( type_err_mess );
+        return;
+    }
+    if( property == "size" ) {
+        switch( m_type )
+        {
+        case Type::rlist:
+            set_field( get_rlist().size() );
+            return;
+        case Type::String:
+            set_field( get_str().size() );
+            return;
+        }
+        set_error( type_err_mess );
+        return;
+    }
+    if( property == "envelope" ) {
+        switch( m_type )
+        {
+        case Type::rlist: {
+            RList rlist = get_rlist();
+            if( rlist.empty() ) {
+                set_field( f_invalid );
+                return;
+            }
+            Range rng;
+            rng.m_beg = rlist[0].m_beg;
+            rng.m_end = rlist[rlist.size() - 1].m_end;
+            set_range( rng );
+            return;
+        }
+        }
+        set_error( type_err_mess );
+        return;
+    }
+    if( property == "type" ) {
+        switch( m_type )
+        {
+        case Type::Number: set_str( "number" ); return;
+        case Type::field:  set_str( "field" );  return;
+        case Type::range:  set_str( "range" );  return;
+        case Type::rlist:  set_str( "rlist" );  return;
+        case Type::String: set_str( "string" ); return;
+        case Type::Bool:   set_str( "bool" );   return;
+        case Type::Null:   set_str( "null" );   return;
+        case Type::Error:  set_str( "error" );  return;
+        default:           set_str( "unknown" );return;
+        }
+    }
+    set_error( "Property not recognised." );
+}
+
 void SValue::negate()
 {
     switch( m_type )

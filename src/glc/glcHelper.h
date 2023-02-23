@@ -40,6 +40,13 @@ namespace glich {
         return strtoll( str.c_str(), nullptr, 10 );
     }
 
+    inline double GetReal( const std::string& str ) {
+        if( str.empty() ) {
+            return 0.0;
+        }
+        return std::stod( str );
+    }
+
     inline Field NumToField( Num num )
     {
         if( num <= f_maximum && num >= f_minimum ) {
@@ -109,6 +116,7 @@ namespace glich {
         }
         return str;
     }
+
 }
 
 #endif // SRC_GLC_GLCHELPER_H

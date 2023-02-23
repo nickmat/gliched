@@ -782,21 +782,7 @@ SValue Script::primary( bool get )
     switch( token.type() )
     {
     case SToken::Type::Number:
-        {
-            Num num = token.get_number();
-            assert( num >= 0 ); // Literals are always positive.
-            value.set_number( num );
-        }
-        m_ts.next();
-        break;
     case SToken::Type::Field:
-        {
-            Field fld = token.get_field();
-            assert( fld >= 0 ); // Literals are always positive.
-            value.set_field( fld );
-        }
-        m_ts.next();
-        break;
     case SToken::Type::Real:
         value = token.value();
         m_ts.next();

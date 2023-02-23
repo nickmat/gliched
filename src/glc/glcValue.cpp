@@ -1005,6 +1005,7 @@ void SValue::property_op( const SValue& value )
         {
         case Type::Number: set_str( "number" ); return;
         case Type::field:  set_str( "field" );  return;
+        case Type::Real:   set_str( "real" );   return;
         case Type::range:  set_str( "range" );  return;
         case Type::rlist:  set_str( "rlist" );  return;
         case Type::String: set_str( "string" ); return;

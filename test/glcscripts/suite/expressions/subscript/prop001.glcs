@@ -4,8 +4,8 @@ write 1[.type] + ", " + 1f[.type] + ", " +
     "hi"[.type] + ", " +  null[.type] + ", " + 
     (3..5)[.type] + ", " + 
     (5..10|15..12)[.type] + ", " + 
-    true[.type];
+    true[.type] + ", " + 1.0[.type];
 
 /*[OUTPUT]
-number, field, string, null, range, rlist, bool
+number, field, string, null, range, rlist, bool, real
 [OUTPUT]*/

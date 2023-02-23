@@ -336,7 +336,11 @@ void SValue::logical_or( const SValue& value )
     if( propagate_error( value ) ) {
         return;
     }
-    set_bool( get_bool() || value.get_bool() );
+    if( type() == Type::Bool && value.type() == Type::Bool ) {
+        set_bool( get_bool() || value.get_bool() );
+        return;
+    }
+    set_error( "Operator 'or' requires boolean values." );
 }
 
 void SValue::logical_and( const SValue& value )
@@ -344,7 +348,11 @@ void SValue::logical_and( const SValue& value )
     if( propagate_error( value ) ) {
         return;
     }
-    set_bool( get_bool() && value.get_bool() );
+    if( type() == Type::Bool && value.type() == Type::Bool ) {
+        set_bool( get_bool() && value.get_bool() );
+        return;
+    }
+    set_error( "Operator 'and' requires boolean values." );
 }
 
 void SValue::equal( const SValue& value )

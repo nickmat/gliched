@@ -38,7 +38,7 @@ namespace glich {
     {
     public:
         enum class Type {
-            Null, Error, String, Number, Bool, field, range, rlist
+            Null, Error, String, Bool, Number, field, range, rlist, Real
         };
         SValue() : m_type( Type::Null ) {}
         SValue( const SValue& value );
@@ -49,6 +49,7 @@ namespace glich {
         SValue( bool b ) : m_type( Type::Bool ), m_data( b ) {}
         SValue( Range r ) : m_type( Type::range ), m_data( r ) {}
         SValue( const RList& rl ) : m_type( Type::rlist ), m_data( rl ) {}
+        SValue( double real ) : m_type( Type::Real ), m_data( real) {}
 
         void set_str( const std::string& str ) { m_type = Type::String; m_data = str; }
         void set_bool( bool b ) { m_type = Type::Bool; m_data = b; }
@@ -56,6 +57,7 @@ namespace glich {
         void set_field( Field fld ) { m_type = Type::field; m_data = static_cast<Num>(fld); }
         void set_range( Range rng ) { m_type = Type::range; m_data = rng; }
         void set_rlist( const RList& rlist ) { m_type = Type::rlist; m_data = rlist; }
+        void set_real( double real ) { m_type = Type::Real; m_data = real; }
 
         void set_range_demote( Range rng );
         void set_rlist_demote( const RList& rlist );
@@ -70,6 +72,7 @@ namespace glich {
         Field get_field() const;
         Range get_range() const;
         RList get_rlist() const;
+        double get_real() const;
         Field get_num_as_field() const;
 
         std::string get_str( bool& success ) const;
@@ -78,6 +81,7 @@ namespace glich {
         Field get_field( bool& success ) const; // Demote if possible.
         Range get_range( bool& success ) const; // Promote or demote if possible.
         RList get_rlist( bool& success ) const; // Promote if possible.
+        double get_real( bool& success ) const;
 
         Num get_integer( bool& success ) const; // Num or Field as Num
         Field get_int_as_field( bool& success ) const; // Num or Field as Field
@@ -121,8 +125,7 @@ namespace glich {
         Field multiply( Field left, Field right ) const;
 
         Type        m_type;
-        enum class di { di_bool, di_Num, di_string };
-        std::variant<bool, Num, std::string, Range, RList> m_data;
+        std::variant<bool, Num, std::string, Range, RList, double> m_data;
     };
 
     using SValueVec = std::vector<SValue>;

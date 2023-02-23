@@ -62,6 +62,8 @@ string SValue::as_string() const
         return range_to_string( std::get<Range>( m_data ) );
     case Type::rlist:
         return rlist_to_string( std::get<RList>( m_data ) );
+    case Type::Real:
+        return std::to_string( std::get<double>( m_data ) );
     }
     return string();
 }
@@ -153,6 +155,15 @@ RList SValue::get_rlist() const
     }
     assert( false );
     return RList( 0 );
+}
+
+double SValue::get_real() const
+{
+    if( std::holds_alternative<double>( m_data ) ) {
+        return std::get<double>( m_data );
+    }
+    assert( false ); // Should only be called for Real type.
+    return 0.0;
 }
 
 Field glich::SValue::get_num_as_field() const
@@ -262,6 +273,16 @@ RList SValue::get_rlist( bool& success ) const
     }
     success = false;
     return RList( 0 );
+}
+
+double glich::SValue::get_real( bool& success ) const
+{
+    success = true;
+    if( std::holds_alternative<double>( m_data ) ) {
+        return std::get<double>( m_data );
+    }
+    success = false;
+    return 0.0;
 }
 
 Num glich::SValue::get_integer( bool& success ) const

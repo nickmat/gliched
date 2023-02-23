@@ -97,7 +97,7 @@ SToken STokenStream::next()
                             text += ch;
                         } while( m_in->get( ch ) && isdigit( ch ) );
                     }
-                    m_in->putback( ch );
+                    m_in->putback(ch);
                     set_current( SToken::Type::Real, text );
                     return m_cur_token;
                 }
@@ -353,7 +353,7 @@ void STokenStream::set_current( SToken::Type type, const std::string& str )
         m_cur_token.set_value_num( GetNum( str ) );
         return;
     case SToken::Type::Field:
-        m_cur_token.set_value_num( NumToField( GetNum( str ) ) );
+        m_cur_token.set_value_field( GetField( str ) );
         return;
     }
     m_cur_token.set_value_str( str );

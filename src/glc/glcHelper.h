@@ -47,8 +47,9 @@ namespace glich {
         return std::stod( str );
     }
 
-    inline Field NumToField( Num num )
+    inline Field GetField( const std::string& str )
     {
+        Num num = GetNum( str );
         if( num <= f_maximum && num >= f_minimum ) {
             return static_cast<Field>(num);
         }

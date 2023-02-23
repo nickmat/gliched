@@ -106,7 +106,7 @@ SToken STokenStream::next()
                     if( ch == 'f' ) {
                         type = SToken::Type::Field;
                     }
-                    set_current( type, GetNum( text ) );
+                    set_current( type, text );
                     return m_cur_token;
                 }
             }
@@ -117,7 +117,7 @@ SToken STokenStream::next()
         if( context == Context::field ) {
             type = SToken::Type::Field;
         }
-        set_current( type, GetNum( text ) );
+        set_current( type, text );
         return m_cur_token;
     }
 
@@ -344,23 +344,19 @@ std::istream* STokenStream::reset_in( std::istream* in )
 void STokenStream::set_current( SToken::Type type, const std::string& str )
 {
     m_cur_token.set_type( type );
-    if( type == SToken::Type::Real ) {
+    switch( type )
+    {
+    case SToken::Type::Real:
         m_cur_token.set_value_real( GetReal( str ) );
+        return;
+    case SToken::Type::Number:
+        m_cur_token.set_value_num( GetNum( str ) );
+        return;
+    case SToken::Type::Field:
+        m_cur_token.set_value_num( NumToField( GetNum( str ) ) );
+        return;
     }
-    else {
-        m_cur_token.set_value_str( str );
-    }
-}
-
-void STokenStream::set_current( SToken::Type type, Num num )
-{
-    m_cur_token.set_type( type );
-    if( type == SToken::Type::Number ) {
-        m_cur_token.set_value_num( num );
-    }
-    else if( type == SToken::Type::Field ) {
-        m_cur_token.set_value_field( NumToField( num ) );
-    }
+    m_cur_token.set_value_str( str );
 }
 
 

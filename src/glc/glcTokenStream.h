@@ -109,7 +109,6 @@ namespace glich {
     private:
         void set_type( SToken::Type type ) { m_cur_token.set_type( type ); }
         void set_current( SToken::Type type, const std::string& str );
-        void set_current( SToken::Type type, Num num );
 
         static Glich* s_glc;
 

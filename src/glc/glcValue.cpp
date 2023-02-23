@@ -285,20 +285,6 @@ double glich::SValue::get_real( bool& success ) const
     return 0.0;
 }
 
-Num glich::SValue::get_integer( bool& success ) const
-{
-    success = true;
-    if( std::holds_alternative<Num>( m_data ) ) {
-        Num num = std::get<Num>( m_data );
-        if( m_type == Type::field ) {
-            num = NumToField( success );
-        }
-        return num;
-    }
-    success = false;
-    return Num();
-}
-
 Field SValue::get_int_as_field( bool& success ) const
 {
     success = true;

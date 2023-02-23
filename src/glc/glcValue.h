@@ -83,7 +83,6 @@ namespace glich {
         RList get_rlist( bool& success ) const; // Promote if possible.
         double get_real( bool& success ) const;
 
-        Num get_integer( bool& success ) const; // Num or Field as Num
         Field get_int_as_field( bool& success ) const; // Num or Field as Field
 
         bool is_error() const { return m_type == Type::Error; }

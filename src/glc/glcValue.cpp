@@ -584,7 +584,7 @@ void SValue::plus( const SValue& value )
             set_rlist( add( get_rlist(), value.get_field() ) );
             return;
         case Type::range:
-            set_rlist( add( value.get_rlist(), get_range() ) );
+            set_rlist( add( get_rlist(), value.get_range() ) );
             return;
         case Type::rlist:
             set_error( "Unable to add or subtract rlists." );

@@ -70,7 +70,10 @@ string SValue::as_string() const
 
 void glich::SValue::set_range_demote( Range rng )
 {
-    if( rng.m_beg == rng.m_end ) {
+    if( rng.m_beg == f_invalid || rng.m_end == f_invalid ) {
+        set_error( "Invalid range." );
+    }
+    else if( rng.m_beg == rng.m_end ) {
         set_field( rng.m_beg );
     }
     else {
@@ -515,7 +518,7 @@ void SValue::plus( const SValue& value )
                 set_real( static_cast<double>(get_number()) + value.get_real() );
                 return;
             case Type::range:
-                set_range( add( value.get_range(), fld ) );
+                set_range_demote( add( value.get_range(), fld ) );
                 return;
             case Type::rlist:
                 set_rlist( add( value.get_rlist(), fld ) );
@@ -536,7 +539,7 @@ void SValue::plus( const SValue& value )
             set_real( add( value.get_real(), get_field() ) );
             return;
         case Type::range:
-            set_range( add( value.get_range(), get_field() ) );
+            set_range_demote( add( value.get_range(), get_field() ) );
             return;
         case Type::rlist:
             set_rlist( add( value.get_rlist(), get_field() ) );
@@ -561,13 +564,13 @@ void SValue::plus( const SValue& value )
         switch( value.type() )
         {
         case Type::Number:
-            set_range( add( get_range(), value.get_num_as_field() ) );
+            set_range_demote( add( get_range(), value.get_num_as_field() ) );
             return;
         case Type::field:
-            set_range( add( get_range(), value.get_field() ) );
+            set_range_demote( add( get_range(), value.get_field() ) );
             return;
         case Type::range:
-            set_range( add( value.get_range(), get_range() ) );
+            set_range_demote( add( value.get_range(), get_range() ) );
             return;
         case Type::rlist:
             set_rlist( add( value.get_rlist(), get_range() ) );

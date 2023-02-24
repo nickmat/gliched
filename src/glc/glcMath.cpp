@@ -318,4 +318,95 @@ Range glich::enclosing_range( const RList& rlist )
     return range;
 }
 
+double glich::add_real( double dbl, Field fld )
+{
+    if( fld > f_maximum || fld < f_minimum ) {
+        // This incudes f_invalid.
+        return std::numeric_limits<double>::quiet_NaN();
+    }
+    if( fld == f_maximum ) {
+        return std::numeric_limits<double>::infinity();
+    }
+    if( fld == f_minimum ) {
+        return -std::numeric_limits<double>::infinity();
+    }
+    return dbl + static_cast<double>(fld);
+}
+
+Field glich::add_field( Field left, Field right )
+{
+    if( left == f_invalid || right == f_invalid ) {
+        return f_invalid;
+    }
+    if( left == f_minimum ) {
+        return (right == f_maximum) ? f_invalid : f_minimum;
+    }
+    if( left == f_maximum ) {
+        return (right == f_minimum) ? f_invalid : f_maximum;
+    }
+    if( right == f_maximum || right == f_minimum ) {
+        return right;
+    }
+    LongField lf = static_cast<LongField>(left) + static_cast<LongField>(right);
+    if( lf <= static_cast<LongField>(f_minimum) ) {
+        return f_invalid;
+    }
+    if( lf >= static_cast<LongField>(f_maximum) ) {
+        return f_invalid;
+    }
+    return static_cast<Field>(lf);
+}
+
+Range glich::add_range( Range rng, Field fld, bool& success )
+{
+    success = true;
+    Field beg = add_field( rng.m_beg, fld );
+    Field end = add_field( rng.m_end, fld );
+    if( beg == f_invalid || end == f_invalid ) {
+        success = false;
+    }
+    return Range( beg, end );
+}
+
+Range glich::add_range( Range left, Range right, bool& success )
+{
+    success = true;
+    Field beg = add_field( left.m_beg, right.m_beg );
+    Field end = add_field( left.m_end, right.m_end );
+    if( beg == f_invalid || end == f_invalid ) {
+        success = false;
+    }
+    return Range( beg, end );
+}
+
+RList glich::add_rlist( const RList& rlist, Field fld, bool& success )
+{
+    success = true;
+    bool step = true;
+    RList result;
+    for( Range range : rlist ) {
+        Range r = add_range( range, fld, step );
+        if( !step ) {
+            success = false;
+        }
+        result.push_back( r );
+    }
+    return result;
+}
+
+RList glich::add_rlist( const RList& rlist, Range rng, bool& success )
+{
+    success = true;
+    bool step = true;
+    RList result;
+    for( Range range : rlist ) {
+        Range r = add_range( range, rng, step );
+        if( !step ) {
+            success = false;
+        }
+        result.push_back( r );
+    }
+    return result;
+}
+
 // End of src/glc/glcMath.cpp

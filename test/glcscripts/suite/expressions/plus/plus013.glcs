@@ -1,0 +1,7 @@
+// plus013.glcs Test file to test addition of special values.
+
+write (+infinity .. 500 | 100 .. 111) + -infinity;
+
+/*[OUTPUT]
+Error (3): Invalid rlist.
+[OUTPUT]*/

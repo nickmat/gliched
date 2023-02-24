@@ -1,0 +1,14 @@
+// plus006.glcs Test file for addition with rlists and ranges
+
+let a = 5 .. 8 | (12 .. 15) + (20 .. 22);
+let b = (5 .. 8 | 12 .. 15) + (20 .. 22);
+let c = (20 .. 22) + (5 .. 8 | 12 .. 15);
+let d = (8 .. 16 | 20 .. 50) + (10 .. 20);
+let e = (10 .. 25) + (-infinity .. 9 | 50 .. +infinity);
+
+write a +", "+ b +", "+ c +", "+ (b=c) +", "+ d +", "+ e;
+
+
+/*[OUTPUT]
+5..8 | 32..37, 25..30 | 32..37, 25..30 | 32..37, true, 18..36 | 30..70, -infinity..34 | 60..+infinity
+[OUTPUT]*/

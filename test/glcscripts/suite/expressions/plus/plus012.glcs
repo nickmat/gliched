@@ -1,0 +1,7 @@
+// plus012.glcs Test file to test addition of special values.
+
+write -infinity + (+infinity..5);
+
+/*[OUTPUT]
+Error (3): Invalid range.
+[OUTPUT]*/

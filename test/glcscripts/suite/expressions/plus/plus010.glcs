@@ -1,0 +1,20 @@
+// plus010.glcs Test file to test addition of special values.
+
+let a = 5 + -infinity;
+
+let b = infinity + 10;
+
+let c = ? + 100;
+
+let d = -infinity + +infinity;
+
+let e = -infinity + ?;
+
+let f = -infinity + -infinity;
+
+write a + ", " + b + ", " + c + ", " + d + ", " + e + ", " + f;
+
+
+/*[OUTPUT]
+-infinity, +infinity, ?, ?, ?, -infinity
+[OUTPUT]*/

@@ -1,0 +1,12 @@
+// plus003.glcs Test file to test addition of fields
+
+let a = 5 + 3;
+
+let b = 10 + 5 + a;
+
+write a + ", " + b;
+
+
+/*[OUTPUT]
+8, 23
+[OUTPUT]*/

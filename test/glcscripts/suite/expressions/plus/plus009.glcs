@@ -1,0 +1,20 @@
+// plus009.glcs Test file to test addition of strings.
+
+let a = "The answer is: " + true;
+let c = "This" + " is the day.";
+let d = 2432814 + " is the day.";
+let e = "The day is " + 2432814;
+
+writeln a;
+writeln c;
+writeln d;
+writeln e;
+
+
+/*[OUTPUT]
+The answer is: true
+This is the day.
+2432814 is the day.
+The day is 2432814
+
+[OUTPUT]*/

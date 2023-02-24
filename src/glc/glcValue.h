@@ -117,6 +117,7 @@ namespace glich {
 
     private:
         Field add( Field left, Field right ) const;
+        double add( double dbl, Field fld ) const;
         Range add( Range range, Field field ) const;
         Range add( Range left, Range right ) const;
         RList add( RList rlist, Field field ) const;

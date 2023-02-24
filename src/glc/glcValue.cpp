@@ -395,6 +395,9 @@ void SValue::equal( const SValue& value )
         case Type::rlist:
             result = (get_rlist() == value.get_rlist());
             break;
+        case Type::Real:
+            result = (get_real() == value.get_real());
+            break;
         case Type::Null:
             result = true;
             break;
@@ -458,6 +461,9 @@ void SValue::greater_than( const SValue& value )
                 result = (left > right);
             }
             break;
+        case Type::Real:
+            result = (get_real() > value.get_real());
+            break;
         case Type::Null:
             set_error( "Can only compare a null value for equal or not equal." );
             return;
@@ -505,6 +511,9 @@ void SValue::plus( const SValue& value )
             case Type::field:
                 set_field( add( fld, value.get_field() ) );
                 return;
+            case Type::Real:
+                set_real( static_cast<double>(get_number()) + value.get_real() );
+                return;
             case Type::range:
                 set_range( add( value.get_range(), fld ) );
                 return;
@@ -523,11 +532,28 @@ void SValue::plus( const SValue& value )
         case Type::field:
             set_field( add( get_field(), value.get_field() ) );
             return;
+        case Type::Real:
+            set_real( add( value.get_real(), get_field() ) );
+            return;
         case Type::range:
             set_range( add( value.get_range(), get_field() ) );
             return;
         case Type::rlist:
             set_rlist( add( value.get_rlist(), get_field() ) );
+            return;
+        }
+        break;
+    case Type::Real:
+        switch( value.type() )
+        {
+        case Type::Number:
+            set_real( get_real() + static_cast<double>(value.get_number()) );
+            return;
+        case Type::field:
+            set_real( add( get_real(), value.get_field() ) );
+            return;
+        case Type::Real:
+            set_real( get_real() + value.get_real() );
             return;
         }
         break;
@@ -1115,6 +1141,20 @@ Field SValue::add( Field left, Field right ) const
         return f_maximum;
     }
     return static_cast<Field>(lf);
+}
+
+double glich::SValue::add( double dbl, Field fld ) const
+{
+    if( fld > f_maximum || fld < f_minimum ) {
+        return std::numeric_limits<double>::quiet_NaN();
+    }
+    if( fld == f_maximum ) {
+        return std::numeric_limits<double>::infinity();
+    }
+    if( fld == f_minimum ) {
+        return -std::numeric_limits<double>::infinity();
+    }
+    return dbl + static_cast<double>(fld);
 }
 
 Range SValue::add( Range range, Field field ) const

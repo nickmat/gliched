@@ -1,0 +1,7 @@
+// minus010.glcs Test file to test subtraction of special values.
+
+write infinity - (infinity..500 | 100..111);
+
+/*[OUTPUT]
+Error (3): Invalid rlist.
+[OUTPUT]*/

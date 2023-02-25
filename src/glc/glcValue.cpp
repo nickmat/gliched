@@ -1111,12 +1111,13 @@ void SValue::negate()
             Field end = -rng.m_beg;
             rng.m_beg = -rng.m_end;
             rng.m_end = end;
+            set_range( rng );
         }
         return;
     }
     case Type::rlist: {
         RList rlist = get_rlist();
-        for( Range rng : rlist ) {
+        for( Range& rng : rlist ) {
             if( rng.m_beg != f_invalid && rng.m_end != f_invalid ) {
                 Field end = -rng.m_beg;
                 rng.m_beg = -rng.m_end;
@@ -1124,6 +1125,7 @@ void SValue::negate()
             }
         }
         std::reverse( rlist.begin(), rlist.end() );
+        set_rlist( rlist );
         return;
     }
     }

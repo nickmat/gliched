@@ -590,18 +590,6 @@ void SValue::plus( const SValue& value )
                 set_error( invalid_range_err );
             }
             return;
-        case Type::range:
-            set_range_demote( add_range( value.get_range(), get_range(), success ) );
-            if( !success ) {
-                set_error( invalid_range_err );
-            }
-            return;
-        case Type::rlist:
-            set_rlist( add_rlist( value.get_rlist(), get_range(), success ) );
-            if( !success ) {
-                set_error( invalid_rlist_err );
-            }
-            return;
         }
         break;
     case Type::rlist:
@@ -615,12 +603,6 @@ void SValue::plus( const SValue& value )
             return;
         case Type::field:
             set_rlist( add_rlist( get_rlist(), value.get_field(), success ) );
-            if( !success ) {
-                set_error( invalid_rlist_err );
-            }
-            return;
-        case Type::range:
-            set_rlist( add_rlist( get_rlist(), value.get_range(), success ) );
             if( !success ) {
                 set_error( invalid_rlist_err );
             }

@@ -368,17 +368,6 @@ Range glich::add_range( Range rng, Field fld, bool& success )
     return Range( beg, end );
 }
 
-Range glich::add_range( Range left, Range right, bool& success )
-{
-    success = true;
-    Field beg = add_field( left.m_beg, right.m_beg );
-    Field end = add_field( left.m_end, right.m_end );
-    if( beg == f_invalid || end == f_invalid ) {
-        success = false;
-    }
-    return Range( beg, end );
-}
-
 RList glich::add_rlist( const RList& rlist, Field fld, bool& success )
 {
     success = true;
@@ -386,21 +375,6 @@ RList glich::add_rlist( const RList& rlist, Field fld, bool& success )
     RList result;
     for( Range range : rlist ) {
         Range r = add_range( range, fld, step );
-        if( !step ) {
-            success = false;
-        }
-        result.push_back( r );
-    }
-    return result;
-}
-
-RList glich::add_rlist( const RList& rlist, Range rng, bool& success )
-{
-    success = true;
-    bool step = true;
-    RList result;
-    for( Range range : rlist ) {
-        Range r = add_range( range, rng, step );
         if( !step ) {
             success = false;
         }

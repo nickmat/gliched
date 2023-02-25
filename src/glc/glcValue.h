@@ -116,17 +116,6 @@ namespace glich {
         bool is_integer() const { return (m_type == Type::Number || m_type == Type::field); }
 
     private:
-#if 0
-        static bool do_add( Field& left, Field right );
-        static bool do_add( Range& rlist, const Range& range );
-        static bool do_add( RList& rlist, const Range& range );
-//        Field add( Field left, Field right ) const;
-        double add( double dbl, Field fld ) const;
-        Range add( Range range, Field field ) const;
-        Range add( Range left, Range right ) const;
-        RList add( RList rlist, Field field ) const;
-        RList add( RList rlist, Range range ) const;
-#endif
         Field multiply( Field left, Field right ) const;
 
         Type        m_type;

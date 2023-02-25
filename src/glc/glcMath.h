@@ -101,9 +101,7 @@ namespace glich {
     extern double add_real( double dbl, Field fld );
     extern Field add_field( Field left, Field right );
     extern Range add_range( Range rng, Field fld, bool& success );
-    extern Range add_range( Range left, Range right, bool& success );
     extern RList add_rlist( const RList& rlist, Field fld, bool& success );
-    extern RList add_rlist( const RList& rlist, Range rng, bool& success );
 }
 
 #endif // SRC_GLC_GLCMATH_H_GUARD

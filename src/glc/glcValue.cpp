@@ -1079,6 +1079,11 @@ void SValue::negate()
     {
     case Type::Error:
         return;
+    case Type::Real:
+        if( !isnan( get_real() ) ) {
+            set_real( -get_real() );
+        }
+        return;
     case Type::Number:
         set_number( -get_number() );
         return;

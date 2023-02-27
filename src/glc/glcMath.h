@@ -98,7 +98,7 @@ namespace glich {
 
     extern Range enclosing_range( const RList& rlist ); // Assumes well ordered list
 
-    extern double add_real( double dbl, Field fld );
+    extern double add_real_field( double dbl, Field fld );
     extern Field add_field( Field left, Field right );
     extern Range add_range( Range rng, Field fld, bool& success );
     extern RList add_rlist( const RList& rlist, Field fld, bool& success );

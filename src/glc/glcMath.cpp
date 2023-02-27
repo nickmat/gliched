@@ -318,17 +318,27 @@ Range glich::enclosing_range( const RList& rlist )
     return range;
 }
 
-double glich::add_real( double dbl, Field fld )
+double glich::add_real_field( double dbl, Field fld )
 {
-    if( fld > f_maximum || fld < f_minimum ) {
+    if( fld > f_maximum || fld < f_minimum || isnan( dbl ) ) {
         // This incudes f_invalid.
         return std::numeric_limits<double>::quiet_NaN();
     }
     if( fld == f_maximum ) {
-        return std::numeric_limits<double>::infinity();
+        if( -dbl == std::numeric_limits<double>::infinity() ) {
+            return std::numeric_limits<double>::quiet_NaN();
+        }
+        else {
+            return std::numeric_limits<double>::infinity();
+        }
     }
     if( fld == f_minimum ) {
-        return -std::numeric_limits<double>::infinity();
+        if( dbl == std::numeric_limits<double>::infinity() ) {
+            return std::numeric_limits<double>::quiet_NaN();
+        }
+        else {
+            return -std::numeric_limits<double>::infinity();
+        }
     }
     return dbl + static_cast<double>(fld);
 }

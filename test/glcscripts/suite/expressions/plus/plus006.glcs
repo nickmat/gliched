@@ -1,0 +1,20 @@
+// plus006.glcs Test file to test addition of special values.
+
+let a = 5.0 + -inf;
+
+let b = inf + 10.0;
+
+let c = nan + 100.0;
+
+let d = -inf + +inf;
+
+let e = -inf + nan;
+
+let f = -inf + -inf;
+
+write a + ", " + b + ", " + c + ", " + d + ", " + e + ", " + f;
+
+
+/*[OUTPUT]
+-inf, inf, nan, nan, nan, -inf
+[OUTPUT]*/

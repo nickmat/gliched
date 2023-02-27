@@ -1,0 +1,14 @@
+// minus014.glcs Test file to test subtraction of special values.
+
+let d = +infinity - inf;
+
+let e = ? - inf;
+
+let f = -infinity - inf;
+
+
+write d + ", " + e + ", " + f;
+
+/*[OUTPUT]
+nan, nan, -inf
+[OUTPUT]*/

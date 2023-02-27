@@ -63,6 +63,9 @@ string SValue::as_string() const
     case Type::rlist:
         return rlist_to_string( std::get<RList>( m_data ) );
     case Type::Real:
+        if( isnan( std::get<double>( m_data ) ) ) {
+            return "nan";
+        }
         return std::to_string( std::get<double>( m_data ) );
     }
     return string();
@@ -545,7 +548,7 @@ void SValue::plus( const SValue& value )
             set_field( add_field( get_field(), value.get_field() ) );
             return;
         case Type::Real:
-            set_real( add_real( value.get_real(), get_field() ) );
+            set_real( add_real_field( value.get_real(), get_field() ) );
             return;
         case Type::range:
             set_range_demote( add_range( value.get_range(), get_field(), success ) );
@@ -568,7 +571,7 @@ void SValue::plus( const SValue& value )
             set_real( get_real() + static_cast<double>(value.get_number()) );
             return;
         case Type::field:
-            set_real( add_real( get_real(), value.get_field() ) );
+            set_real( add_real_field( get_real(), value.get_field() ) );
             return;
         case Type::Real:
             set_real( get_real() + value.get_real() );
@@ -621,10 +624,12 @@ void SValue::minus( const SValue& value )
     if( propagate_error( value ) ) {
         return;
     }
-    if( ( m_type == Type::Number || m_type == Type::field ||
-        m_type == Type::range || m_type == Type::rlist ) &&
-        ( value.m_type == Type::Number || value.m_type == Type::field ||
-            value.m_type == Type::range || value.m_type == Type::rlist )
+    if( ( m_type == Type::Number || m_type == Type::Real ||
+        m_type == Type::field || m_type == Type::range ||
+        m_type == Type::rlist ) &&
+        ( value.m_type == Type::Number || value.m_type == Type::Real ||
+            value.m_type == Type::field || value.m_type == Type::range ||
+            value.m_type == Type::rlist )
         ) {
         SValue v( value );
         v.negate();

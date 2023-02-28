@@ -34,11 +34,14 @@
 
 namespace glich {
 
+    class SValue;
+    using SValueVec = std::vector<SValue>;
+
     class SValue
     {
     public:
         enum class Type {
-            Null, Error, String, Bool, Number, field, range, rlist, Real
+            Null, Error, String, Bool, Number, field, range, rlist, Real, Object
         };
         SValue() : m_type( Type::Null ) {}
         SValue( const SValue& value );
@@ -50,6 +53,7 @@ namespace glich {
         SValue( Range r ) : m_type( Type::range ), m_data( r ) {}
         SValue( const RList& rl ) : m_type( Type::rlist ), m_data( rl ) {}
         SValue( double real ) : m_type( Type::Real ), m_data( real) {}
+        SValue( SValueVec obj ) : m_type( Type::Object ), m_data( obj ) {}
 
         void set_str( const std::string& str ) { m_type = Type::String; m_data = str; }
         void set_bool( bool b ) { m_type = Type::Bool; m_data = b; }
@@ -58,6 +62,7 @@ namespace glich {
         void set_range( Range rng ) { m_type = Type::range; m_data = rng; }
         void set_rlist( const RList& rlist ) { m_type = Type::rlist; m_data = rlist; }
         void set_real( double real ) { m_type = Type::Real; m_data = real; }
+        void set_object( SValueVec obj ) { m_type = Type::Object; m_data = obj; }
 
         void set_range_demote( Range rng );
         void set_rlist_demote( const RList& rlist );
@@ -73,6 +78,7 @@ namespace glich {
         Range get_range() const;
         RList get_rlist() const;
         double get_real() const;
+        SValueVec get_object() const;
         Field get_num_as_field() const;
 
         std::string get_str( bool& success ) const;
@@ -82,6 +88,7 @@ namespace glich {
         Range get_range( bool& success ) const; // Promote or demote if possible.
         RList get_rlist( bool& success ) const; // Promote if possible.
         double get_real( bool& success ) const;
+        SValueVec get_object( bool& success ) const;
 
         Field get_int_as_field( bool& success ) const; // Num or Field as Field
 
@@ -118,8 +125,8 @@ namespace glich {
     private:
         Field multiply( Field left, Field right ) const;
 
-        Type        m_type;
-        std::variant<bool, Num, std::string, Range, RList, double> m_data;
+        Type m_type;
+        std::variant<bool, Num, std::string, Range, RList, double, SValueVec> m_data;
     };
 
     using SValueVec = std::vector<SValue>;

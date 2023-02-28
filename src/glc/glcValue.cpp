@@ -172,6 +172,15 @@ double SValue::get_real() const
     return 0.0;
 }
 
+SValueVec glich::SValue::get_object() const
+{
+    if( std::holds_alternative<SValueVec>( m_data ) ) {
+        return std::get<SValueVec>( m_data );
+    }
+    assert( false ); // Should only be called for Object type.
+    return SValueVec();
+}
+
 Field glich::SValue::get_num_as_field() const
 {
     if( std::holds_alternative<Num>( m_data ) && m_type == Type::Number ) {
@@ -289,6 +298,16 @@ double glich::SValue::get_real( bool& success ) const
     }
     success = false;
     return 0.0;
+}
+
+SValueVec glich::SValue::get_object( bool& success ) const
+{
+    success = true;
+    if( std::holds_alternative<SValueVec>( m_data ) ) {
+        return std::get<SValueVec>( m_data );
+    }
+    success = false;
+    return SValueVec();
 }
 
 Field SValue::get_int_as_field( bool& success ) const

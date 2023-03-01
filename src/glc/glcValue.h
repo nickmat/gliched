@@ -116,7 +116,6 @@ namespace glich {
         bool is_integer() const { return (m_type == Type::Number || m_type == Type::field); }
 
     private:
-        Field multiply( Field left, Field right ) const;
 
         Type        m_type;
         std::variant<bool, Num, std::string, Range, RList, double> m_data;

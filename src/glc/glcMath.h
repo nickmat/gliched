@@ -102,6 +102,10 @@ namespace glich {
     extern Field add_field( Field left, Field right );
     extern Range add_range( Range rng, Field fld, bool& success );
     extern RList add_rlist( const RList& rlist, Field fld, bool& success );
+
+    extern double mult_real_field( double dbl, Field fld );
+    extern Field mult_field( Field left, Field right );
+
 }
 
 #endif // SRC_GLC_GLCMATH_H_GUARD

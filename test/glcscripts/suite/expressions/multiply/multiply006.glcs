@@ -1,0 +1,23 @@
+// multiply006.glcs Test file for multiplication of mixed types
+
+let a = 15 * 3.0;
+let b = -15 * 3.0;
+let c = 15 * -3.0;
+let d = -15 * -3.0;
+let e = 0 * 3.0;
+
+let f = -infinity * 3.0;
+let g = infinity * 3.0;
+let h = 15 * -inf;
+let i = 15 * inf;
+
+let j = -infinity * -inf;
+let k = infinity * inf;
+
+write a + ", " + b + ", " + c + ", " + d + ", " + e
+ + ", " + f + ", " + g + ", " + h + ", " + i + ", " + j + ", " + k;
+
+
+/*[OUTPUT]
+45.000000, -45.000000, -45.000000, 45.000000, 0.000000, -inf, inf, -inf, inf, -inf, inf
+[OUTPUT]*/

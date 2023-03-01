@@ -63,6 +63,14 @@ namespace glich {
     extern double fmod_r( double x, double y );
 
     // Inline functions
+    inline bool is_equal( double x, double y )
+    {
+        const double epsilon = 1e-5;
+        return std::abs( x - y ) <= epsilon * std::abs( x );
+        // see Knuth section 4.2.2 pages 217-218
+    }
+    inline bool is_zero( double x ) { return is_equal( x, 0.0 ); }
+
     double inline deg_to_rad( double deg ) { return deg * cal_pi / 180; }
 
     double inline rad_to_deg( double rad ) { return rad * 180 / cal_pi; }

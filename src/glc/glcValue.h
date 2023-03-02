@@ -74,6 +74,7 @@ namespace glich {
         RList get_rlist() const;
         double get_real() const;
         Field get_num_as_field() const;
+        double get_field_as_real() const;
 
         std::string get_str( bool& success ) const;
         Num get_number( bool& success ) const;
@@ -98,6 +99,7 @@ namespace glich {
         void minus( const SValue& value );
         void multiply( const SValue& value );
         void divide( const SValue& value );
+        void int_div( const SValue& value );
         void modulus( const SValue& value );
 
         void rlist_union( const SValue& value );

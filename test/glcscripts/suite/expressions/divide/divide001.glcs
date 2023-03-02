@@ -1,8 +1,8 @@
 // divide001.glcs Test file to test division of fields
 
-let a = 15 / 3;
+let a = 15 div 3;
 
-let b = 99 / a;
+let b = 99 div a;
 
 write a + ", " + b;
 

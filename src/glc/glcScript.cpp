@@ -731,6 +731,9 @@ SValue Script::term( bool get )
         case SToken::Type::Divide:
             left.divide( subscript( true ) );
             break;
+        case SToken::Type::Div:
+            left.int_div( subscript( true ) );
+            break;
         case SToken::Type::Mod:
             left.modulus( subscript( true ) );
             break;

@@ -4,14 +4,14 @@ writeln "";
 
 let a = +infinity;
 let n = 4;
-let q = a / n;
+let q = a div n;
 let r = a mod n;
 let b = (a = n * q + r);
 writeln b + ", " + q + ", " + r;
 
 let a = -infinity;
 let n = 4;
-let q = a / n;
+let q = a div n;
 let r = a mod n;
 let b = (a = n * q + r);
 writeln b + ", " + q + ", " + r;

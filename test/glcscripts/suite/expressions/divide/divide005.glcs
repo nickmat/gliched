@@ -2,12 +2,12 @@
 
 writeln "";
 
-writeln 10 / 0;
-writeln 10f / 0;
-writeln 10 / ?;
-writeln 10 / -infinity;
-writeln 10 / +infinity;
-writeln ? / 2;
+writeln 10 div 0;
+writeln 10f div 0;
+writeln 10 div ?;
+writeln 10 div -infinity;
+writeln 10 div +infinity;
+writeln ? div 2;
 
 /*[OUTPUT]
 

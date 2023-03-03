@@ -731,7 +731,7 @@ void SValue::divide( const SValue& value )
         case Type::Number: 
             left = static_cast<double>(get_number());
             right = static_cast<double>(value.get_number());
-            return;
+            break;
         case Type::field:
             left = static_cast<double>(get_number());
             right = value.get_field_as_real();

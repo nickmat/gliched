@@ -63,10 +63,7 @@ string SValue::as_string() const
     case Type::rlist:
         return rlist_to_string( std::get<RList>( m_data ) );
     case Type::Real:
-        if( isnan( std::get<double>( m_data ) ) ) {
-            return "nan";
-        }
-        return std::to_string( std::get<double>( m_data ) );
+        return real_to_string( std::get<double>( m_data ) );
     }
     return string();
 }

@@ -30,6 +30,8 @@
 
 #include <glc/glcDefs.h>
 
+#include <sstream>
+
 namespace glich {
 
     inline Num GetNum( const std::string& str )
@@ -78,6 +80,28 @@ namespace glich {
 
     inline std::string bool_to_string( bool b ) {
         return b ? "true" : "false";
+    }
+
+    inline std::string real_to_string( double real ) {
+        if( isnan( real ) ) {
+            return "nan";
+        }
+        std::stringstream ss;
+        ss.precision( 6 );
+        ss << std::fixed;
+        ss << real;
+        std::string res = ss.str();
+        if( res.find( '.' ) != std::string::npos ) {
+            size_t pos = res.length();
+            while( res[pos - 1] == '0' ) {
+                --pos;
+            }
+            if( res[pos - 1] == '.' && pos < res.length() ) {
+                pos++;
+            }
+            res = res.substr( 0, pos );
+        }
+        return res;
     }
 
     inline std::string field_to_string( Field fld ) {

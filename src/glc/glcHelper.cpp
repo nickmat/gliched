@@ -88,6 +88,9 @@ string glich::real_to_string( double real ) {
     if( isnan( real ) ) {
         return "nan";
     }
+    if( is_zero( real ) ) {
+        return "0.0";
+    }
     std::stringstream ss;
     ss.precision( 6 );
     ss << std::fixed;

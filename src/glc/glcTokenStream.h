@@ -48,7 +48,7 @@ namespace glich {
             Vline, Ampersand, Exclamation, Carrot, At,
             Lbracket, Rbracket, LCbracket, RCbracket,
             LSbracket, RSbracket,
-            Mod, And, Or, Not,
+            Div, Mod, And, Or, Not,
             str_cast, date, record, convert, Error,
             DotDot,      //  ".."
             NotEqual,    //  "<>"

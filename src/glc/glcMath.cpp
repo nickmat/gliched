@@ -393,4 +393,62 @@ RList glich::add_rlist( const RList& rlist, Field fld, bool& success )
     return result;
 }
 
+double glich::mult_real_field( double dbl, Field fld )
+{
+    if( fld > f_maximum || fld < f_minimum || isnan( dbl ) ) {
+        // This incudes f_invalid.
+        return std::numeric_limits<double>::quiet_NaN();
+    }
+    if( fld == f_maximum ) {
+        if( -dbl == std::numeric_limits<double>::infinity() ) {
+            return std::numeric_limits<double>::quiet_NaN();
+        }
+        else {
+            return std::numeric_limits<double>::infinity();
+        }
+    }
+    if( fld == f_minimum ) {
+        if( dbl == std::numeric_limits<double>::infinity() ) {
+            return std::numeric_limits<double>::quiet_NaN();
+        }
+        else {
+            return -std::numeric_limits<double>::infinity();
+        }
+    }
+    return dbl * static_cast<double>(fld);
+}
+
+Field glich::mult_field( Field left, Field right )
+{
+    // Checks for f_invalid
+    if( left == f_invalid || right == f_invalid ) {
+        return f_invalid;
+    }
+    if( left == f_minimum || right == f_minimum ) {
+        if( left == f_maximum || right == f_maximum ) {
+            return f_invalid; // +infinity * -infinity = invalid
+        }
+        if( left == 0 || right == 0 ) {
+            return f_invalid; // -infinity * 0 = invalid
+        }
+        return f_minimum;
+    }
+    if( left == f_maximum || right == f_maximum ) {
+        if( left == 0 || right == 0 ) {
+            return f_invalid; // +infinity * 0 = invalid
+        }
+        return f_maximum;
+    }
+
+    // Checks for overflow.
+    LongField lf = static_cast<LongField>(left) * static_cast<LongField>(right);
+    if( lf <= static_cast<LongField>(f_minimum) ) {
+        return f_invalid;
+    }
+    if( lf >= static_cast<LongField>(f_maximum) ) {
+        return f_invalid;
+    }
+    return static_cast<Field>(lf);
+}
+
 // End of src/glc/glcMath.cpp

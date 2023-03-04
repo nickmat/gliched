@@ -63,10 +63,7 @@ string SValue::as_string() const
     case Type::rlist:
         return rlist_to_string( std::get<RList>( m_data ) );
     case Type::Real:
-        if( isnan( std::get<double>( m_data ) ) ) {
-            return "nan";
-        }
-        return std::to_string( std::get<double>( m_data ) );
+        return real_to_string( std::get<double>( m_data ) );
     }
     return string();
 }
@@ -192,6 +189,22 @@ Field glich::SValue::get_num_as_field() const
     }
     assert( false );
     return Field();
+}
+
+double glich::SValue::get_field_as_real() const
+{
+    if( std::holds_alternative<Num>( m_data ) && m_type == Type::field ) {
+        Field fld = std::get<Num>( m_data );
+        switch( fld )
+        {
+        case f_invalid: return std::numeric_limits<double>::quiet_NaN();
+        case f_minimum: return -std::numeric_limits<double>::infinity();
+        case f_maximum: return std::numeric_limits<double>::infinity();
+        }
+        return static_cast<double>(fld);
+    }
+    assert( false );
+    return f_invalid;
 }
 
 std::string glich::SValue::get_str( bool& success ) const
@@ -673,19 +686,39 @@ void SValue::multiply( const SValue& value )
             set_number( get_number() * value.get_number() );
             return;
         case Type::field:
-            set_field( multiply( get_num_as_field(), value.get_field() ) );
+            set_field( mult_field( get_num_as_field(), value.get_field() ) );
             break;
+        case Type::Real:
+            set_real( static_cast<double>(get_number()) * value.get_real() );
+            return;
         }
         break;
     case Type::field:
         switch( value.type() )
         {
         case Type::Number:
-            set_field( multiply( get_field(), value.get_num_as_field() ) );
+            set_field( mult_field( get_field(), value.get_num_as_field() ) );
             break;
         case Type::field:
-            set_field( multiply( get_field(), value.get_field() ) );
+            set_field( mult_field( get_field(), value.get_field() ) );
             break;
+        case Type::Real:
+            set_real( mult_real_field( value.get_real(), get_field() ) );
+            return;
+        }
+        break;
+    case Type::Real:
+        switch( value.type() )
+        {
+        case Type::Number:
+            set_real( get_real() * static_cast<double>(value.get_number()) );
+            return;
+        case Type::field:
+            set_real( mult_real_field( get_real(), value.get_field() ) );
+            return;
+        case Type::Real:
+            set_real( get_real() * value.get_real() );
+            return;
         }
         break;
     }
@@ -703,6 +736,100 @@ void SValue::divide( const SValue& value )
     if( propagate_error( value ) ) {
         return;
     }
+    const char* only_ints_err = "Can only divide numeric values.";
+    double left = 0.0;
+    double right = 0.0;
+    switch( type() )
+    {
+    case Type::Number:
+        switch( value.type() )
+        {
+        case Type::Number: 
+            left = static_cast<double>(get_number());
+            right = static_cast<double>(value.get_number());
+            break;
+        case Type::field:
+            left = static_cast<double>(get_number());
+            right = value.get_field_as_real();
+            break;
+        case Type::Real:
+            left = static_cast<double>(get_number());
+            right = value.get_real();
+            break;
+        default:
+            set_error( only_ints_err );
+            return;
+        }
+        break;
+    case Type::field:
+        switch( value.type() )
+        {
+        case Type::Number:
+            left = get_field_as_real();
+            right = static_cast<double>(value.get_number());
+            break;
+        case Type::field:
+            left = get_field_as_real();
+            right = value.get_field_as_real();
+            break;
+        case Type::Real:
+            left = get_field_as_real();
+            right = value.get_real();
+            break;
+        default:
+            set_error( only_ints_err );
+            return;
+        }
+        break;
+    case Type::Real:
+        switch( value.type() )
+        {
+        case Type::Number:
+            left = get_real();
+            right = static_cast<double>(value.get_number());
+            break;
+        case Type::field:
+            left = get_real();
+            right = value.get_field_as_real();
+            break;
+        case Type::Real:
+            left = get_real();
+            right = value.get_real();
+            break;
+        default:
+            set_error( only_ints_err );
+            return;
+        }
+        break;
+    default:
+        set_error( only_ints_err );
+        return;
+    }
+    if( isnan( right ) ) {
+        set_error( "Division by nan." );
+        return;
+    }
+    if( isinf( right ) ) {
+        string sign = (right > 0) ? "+" : "-";
+        set_error( "Division by " + sign + "inf." );
+        return;
+    }
+    if( is_zero( right ) ) {
+        set_error( "Division by zero." );
+        return;
+    }
+    if( isnan( left ) ) {
+        set_error( "Cannot divide nan." );
+        return;
+    }
+    set_real( left / right );
+}
+
+void glich::SValue::int_div( const SValue& value )
+{
+    if( propagate_error( value ) ) {
+        return;
+    }
     const char* only_ints_err = "Can only divide fields and numbers.";
     const char* divide_zero_err = "Division by zero.";
     Field left = f_invalid;
@@ -713,16 +840,16 @@ void SValue::divide( const SValue& value )
         switch( value.type() )
         {
         case Type::Number:
-            {
-                Num num1 = get_number();
-                Num num2 = value.get_number();
-                if( num2 == 0 ) {
-                    set_error( divide_zero_err );
-                    return;
-                }
-                set_number( div_e( num1, num2 ) );
+        {
+            Num num1 = get_number();
+            Num num2 = value.get_number();
+            if( num2 == 0 ) {
+                set_error( divide_zero_err );
+                return;
             }
-            return;
+            set_number( div_e( num1, num2 ) );
+        }
+        return;
         case Type::field:
             left = get_num_as_field();
             right = value.get_field();
@@ -1168,39 +1295,6 @@ void SValue::compliment()
         return;
     }
     set_error( "Cannot convert to RList." );
-}
-
-Field SValue::multiply( Field left, Field right ) const
-{
-    // Checks for f_invalid
-    if( left == f_invalid || right == f_invalid ) {
-        return f_invalid;
-    }
-    if( left == f_minimum || right == f_minimum ) {
-        if( left == f_maximum || right == f_maximum ) {
-            return f_invalid; // +infinity * -infinity = invalid
-        }
-        if( left == 0 || right == 0 ) {
-            return f_invalid; // -infinity * 0 = invalid
-        }
-        return f_minimum;
-    }
-    if( left == f_maximum || right == f_maximum ) {
-        if( left == 0 || right == 0 ) {
-            return f_invalid; // +infinity * 0 = invalid
-        }
-        return f_maximum;
-    }
-
-    // Checks for overflow.
-    LongField lf = static_cast<LongField>(left) * static_cast<LongField>(right);
-    if( lf <= static_cast<LongField>(f_minimum) ) {
-        return f_invalid;
-    }
-    if( lf >= static_cast<LongField>(f_maximum) ) {
-        return f_invalid;
-    }
-    return static_cast<Field>(lf);
 }
 
 

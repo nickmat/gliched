@@ -10,6 +10,7 @@
 
 set( GLC_SOURCES
     glcFile.cpp
+    glcHelper.cpp
     glcMark.cpp
     glcMath.cpp
     glcScript.cpp

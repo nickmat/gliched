@@ -4,84 +4,84 @@ writeln "";
 
 let a = 15;
 let n = 4;
-let q = a / n;
+let q = a div n;
 let r = a mod n;
 let b = (a = n * q + r);
 write b + ", " + q + ", " + r;
 
 let a = -15;
 let n = 4;
-let q = a / n;
+let q = a div n;
 let r = a mod n;
 let b = (a = n * q + r);
 write ", " + b + ", " + q + ", " + r;
 
 let a = 15;
 let n = -4;
-let q = a / n;
+let q = a div n;
 let r = a mod n;
 let b = (a = n * q + r);
 write ", " + b + ", " + q + ", " + r;
 
 let a = -15;
 let n = -4;
-let q = a / n;
+let q = a div n;
 let r = a mod n;
 let b = (a = n * q + r);
 writeln ", " + b + ", " + q + ", " + r;
 
 let a = 16;
 let n = 4;
-let q = a / n;
+let q = a div n;
 let r = a mod n;
 let b = (a = n * q + r);
 write b + ", " + q + ", " + r;
 
 let a = -16;
 let n = 4;
-let q = a / n;
+let q = a div n;
 let r = a mod n;
 let b = (a = n * q + r);
 write ", " + b + ", " + q + ", " + r;
 
 let a = 16;
 let n = -4;
-let q = a / n;
+let q = a div n;
 let r = a mod n;
 let b = (a = n * q + r);
 write ", " + b + ", " + q + ", " + r;
 
 let a = -16;
 let n = -4;
-let q = a / n;
+let q = a div n;
 let r = a mod n;
 let b = (a = n * q + r);
 writeln ", " + b + ", " + q + ", " + r;
 
 let a = 17;
 let n = 4;
-let q = a / n;
+let q = a div n;
 let r = a mod n;
 let b = (a = n * q + r);
 write b + ", " + q + ", " + r;
 
 let a = -17;
 let n = 4;
-let q = a / n;
+let q = a div n;
 let r = a mod n;
 let b = (a = n * q + r);
 write ", " + b + ", " + q + ", " + r;
 
 let a = 17;
 let n = -4;
-let q = a / n;
+let q = a div n;
 let r = a mod n;
 let b = (a = n * q + r);
 write ", " + b + ", " + q + ", " + r;
 
 let a = -17;
 let n = -4;
-let q = a / n;
+let q = a div n;
 let r = a mod n;
 let b = (a = n * q + r);
 writeln ", " + b + ", " + q + ", " + r;

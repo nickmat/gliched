@@ -1,0 +1,19 @@
+// multiply007.glcs Test file for multiplication of mixed types
+
+let a = 15.0 * 3f;
+let b = -15.0 * 3f;
+let c = 15.0 * -3f;
+let d = -15.0 * -3f;
+let e = 0.0 * 3f;
+
+let f = -inf * 3f;
+let g = inf * 3f;
+
+
+write a + ", " + b + ", " + c + ", " + d + ", " + e
+ + ", " + f + ", " + g;
+
+
+/*[OUTPUT]
+45.0, -45.0, -45.0, 45.0, 0.0, -inf, inf
+[OUTPUT]*/

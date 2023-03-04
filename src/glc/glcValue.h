@@ -80,6 +80,7 @@ namespace glich {
         double get_real() const;
         SValueVec get_object() const;
         Field get_num_as_field() const;
+        double get_field_as_real() const;
 
         std::string get_str( bool& success ) const;
         Num get_number( bool& success ) const;
@@ -105,6 +106,7 @@ namespace glich {
         void minus( const SValue& value );
         void multiply( const SValue& value );
         void divide( const SValue& value );
+        void int_div( const SValue& value );
         void modulus( const SValue& value );
 
         void rlist_union( const SValue& value );
@@ -123,7 +125,6 @@ namespace glich {
         bool is_integer() const { return (m_type == Type::Number || m_type == Type::field); }
 
     private:
-        Field multiply( Field left, Field right ) const;
 
         Type m_type;
         std::variant<bool, Num, std::string, Range, RList, double, SValueVec> m_data;

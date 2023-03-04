@@ -63,6 +63,17 @@ namespace glich {
     extern double fmod_r( double x, double y );
 
     // Inline functions
+    inline bool is_equal( double x, double y )
+    {
+        const double epsilon = 1e-5;
+        return std::abs( x - y ) <= epsilon * std::abs( x );
+        // see Knuth section 4.2.2 pages 217-218
+    }
+    inline bool is_zero( double x ) {
+        if( isinf( x ) ) return false;
+        return is_equal( x, 0.0 );
+    }
+
     double inline deg_to_rad( double deg ) { return deg * cal_pi / 180; }
 
     double inline rad_to_deg( double rad ) { return rad * 180 / cal_pi; }
@@ -102,6 +113,10 @@ namespace glich {
     extern Field add_field( Field left, Field right );
     extern Range add_range( Range rng, Field fld, bool& success );
     extern RList add_rlist( const RList& rlist, Field fld, bool& success );
+
+    extern double mult_real_field( double dbl, Field fld );
+    extern Field mult_field( Field left, Field right );
+
 }
 
 #endif // SRC_GLC_GLCMATH_H_GUARD

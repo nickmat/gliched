@@ -144,6 +144,9 @@ SToken STokenStream::next()
         else if( str == "not" ) {
             set_type( SToken::Type::Not );
         }
+        else if( str == "div" ) {
+            set_type( SToken::Type::Div );
+        }
         else if( str == "mod" ) {
             set_type( SToken::Type::Mod );
         }

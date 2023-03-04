@@ -69,7 +69,10 @@ namespace glich {
         return std::abs( x - y ) <= epsilon * std::abs( x );
         // see Knuth section 4.2.2 pages 217-218
     }
-    inline bool is_zero( double x ) { return is_equal( x, 0.0 ); }
+    inline bool is_zero( double x ) {
+        if( isinf( x ) ) return false;
+        return is_equal( x, 0.0 );
+    }
 
     double inline deg_to_rad( double deg ) { return deg * cal_pi / 180; }
 

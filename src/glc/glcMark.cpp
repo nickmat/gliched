@@ -29,6 +29,7 @@
 
 #include "glcFile.h"
 #include "glcFunction.h"
+#include "glcObject.h"
 
 using namespace glich;
 using std::string;
@@ -57,7 +58,7 @@ string Mark::remove_next_function()
     return code;
 }
 
-std::string glich::Mark::remove_next_command()
+std::string Mark::remove_next_command()
 {
     string code;
     if( !m_commands.empty() ) {
@@ -65,6 +66,18 @@ std::string glich::Mark::remove_next_command()
         code = com->get_code();
         delete com;
         m_commands.pop_back();
+    }
+    return code;
+}
+
+std::string Mark::remove_next_object()
+{
+    string code;
+    if( !m_objects.empty() ) {
+        Object* obj = m_objects[m_objects.size() - 1];
+        code = obj->get_code();
+        delete obj;
+        m_objects.pop_back();
     }
     return code;
 }

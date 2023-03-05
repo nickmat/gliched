@@ -59,6 +59,7 @@ namespace glich {
         bool do_function();
         bool do_command();
         bool do_call();
+        bool do_object();
         bool do_file();
 
         SValue expr( bool get );
@@ -70,6 +71,7 @@ namespace glich {
         SValue subscript( bool get );
         SValue primary( bool get );
         std::string get_name_or_primary( bool get );
+        StdStrVec get_string_list( bool get );
 
         SValue error_cast();
         SValueVec get_args( SValue& value );

@@ -30,6 +30,7 @@
 #include "glcFile.h"
 #include "glcFunction.h"
 #include "glcMark.h"
+#include "glcObject.h"
 #include "glcScript.h"
 
 #include <cassert>
@@ -103,6 +104,23 @@ Command* Glich::get_command( const std::string& code ) const
     return nullptr;
 }
 
+Object* glich::Glich::create_object( const std::string& code )
+{
+    Object* obj = new Object( code );
+    assert( m_marks.size() > 0 );
+    m_marks[m_marks.size() - 1]->add_object( obj );
+    m_objects[code] = obj;
+    return obj;
+}
+
+Object* Glich::get_object( const std::string& code ) const
+{
+    if( m_objects.count( code ) > 0 ) {
+        return m_objects.find( code )->second;
+    }
+    return nullptr;
+}
+
 File* Glich::create_file( const std::string& code )
 {
     File* file = new File( code );
@@ -159,6 +177,13 @@ bool Glich::clear_mark( const std::string& name )
                 break;
             }
             m_commands.erase( code );
+        }
+        for( ;;) {
+            code = m_marks[i]->remove_next_object();
+            if( code.empty() ) {
+                break;
+            }
+            m_objects.erase( code );
         }
         for( ;;) {
             code = m_marks[i]->remove_next_file();

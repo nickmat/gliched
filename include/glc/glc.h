@@ -36,6 +36,8 @@ namespace glich {
     using FunctionMap = std::map<std::string, Function*>;
     class Command;
     using CommandMap = std::map<std::string, Command*>;
+    class Object;
+    using ObjectMap = std::map<std::string, Object*>;
     class File;
     using FileMap = std::map<std::string, File*>;
     class Mark;
@@ -60,6 +62,8 @@ namespace glich {
         Function* get_function( const std::string& code ) const;
         Command* create_command( const std::string& code );
         Command* get_command( const std::string& code ) const;
+        Object* create_object( const std::string & code );
+        Object* get_object( const std::string& code ) const;
         File* create_file( const std::string& code );
         File* get_file( const std::string& code ) const;
         void add_or_replace_mark( const std::string& name );
@@ -75,6 +79,7 @@ namespace glich {
     private:
         FunctionMap m_functions;
         CommandMap m_commands;
+        ObjectMap m_objects;
         FileMap m_files;
         MarkVec m_marks;
         ScriptStore* m_store;

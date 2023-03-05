@@ -29,6 +29,7 @@
 
 #include "glcFile.h"
 #include "glcFunction.h"
+#include "glcObject.h"
 
 #include <cassert>
 #include <fstream>
@@ -91,6 +92,7 @@ bool Script::statement()
         if( name == "call" ) return do_call();
         if( name == "function" ) return do_function();
         if( name == "command" ) return do_command();
+        if( name == "object" ) return do_object();
         if( name == "file" ) return do_file();
         if( store()->exists( name ) ) return do_assign( name );
     }
@@ -558,6 +560,43 @@ bool Script::do_call()
     return true;
 }
 
+bool glich::Script::do_object()
+{
+    string code = get_name_or_primary( true );
+    if( code.empty() ) {
+        error( "Object name missing." );
+        return false;
+    }
+    if( m_glc->get_object( code ) != nullptr ) {
+        error( "object \"" + code + "\" already exists." );
+        return false;
+    }
+    if( m_ts.current().type() != SToken::Type::LCbracket ) {
+        error( "'{' expected." );
+        return false;
+    }
+    Object* obj = m_glc->create_object( code );
+    string str;
+    for( ;;) {
+        SToken token = m_ts.next();
+        if( token.type() == SToken::Type::RCbracket ||
+            token.type() == SToken::Type::End ) {
+            break; // All done.
+        }
+        else if( token.type() == SToken::Type::Name ) {
+            string name = token.get_str();
+            if( name == "values" ) {
+                StdStrVec values = get_string_list( true );
+                obj->set_value_names( values );
+            }
+            else {
+                error( "Unknown vocab subcommand." );
+            }
+        }
+    }
+    return true;
+}
+
 bool Script::do_file()
 {
     string code = get_name_or_primary( true );
@@ -852,6 +891,25 @@ std::string Script::get_name_or_primary( bool get )
         }
     }
     return str;
+}
+
+StdStrVec glich::Script::get_string_list( bool get )
+{
+    StdStrVec vec;
+    SToken token = get ? m_ts.next() : m_ts.current();
+    while( token.type() != SToken::SToken::Type::Semicolon &&
+        token.type() != SToken::SToken::Type::End )
+    {
+        string str = get_name_or_primary( false );
+        if( !str.empty() ) {
+            vec.push_back( str );
+        }
+        token = m_ts.current();
+        if( token.type() == SToken::SToken::Type::Comma ) {
+            token = m_ts.next();
+        }
+    }
+    return vec;
 }
 
 SValue Script::error_cast()

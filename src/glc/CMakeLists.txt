@@ -13,6 +13,7 @@ set( GLC_SOURCES
     glcHelper.cpp
     glcMark.cpp
     glcMath.cpp
+    glcObject.cpp
     glcScript.cpp
     glcTokenStream.cpp
     glcValue.cpp
@@ -27,6 +28,7 @@ set( GLC_HEADERS
     glcHelper.h
     glcMark.h
     glcMath.h
+    glcObject.h
     glcScript.h
     glcScriptStore.h
     glcTokenStream.h

@@ -45,6 +45,7 @@ namespace glich {
     std::string range_to_string( Range rng );
     std::string rlist_to_string( RList rlist );
 
+    bool is_name( const std::string& str );
 }
 
 #endif // SRC_GLC_GLCHELPER_H

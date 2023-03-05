@@ -147,5 +147,32 @@ string glich::rlist_to_string( RList rlist ) {
     return str;
 }
 
+bool glich::is_name( const std::string& str )
+{
+    if( str.empty() ) return false;
+    bool first = true;
+    for( auto ch : str ) {
+        if( first ) {
+            if( isdigit( ch ) ) return false;
+            first = false;
+        }
+        if( isalnum( ch ) || ch == '_' || ch == ':' ) {
+            continue;
+        }
+        return false;
+    }
+    // check for keywords
+    const char* keywords[] =
+    {
+        "or", "and", "not", "div", "mod", "error"
+    };
+    for( auto word : keywords ) {
+        if( strcmp( str.c_str(), word) == 0 ) {
+            return false;
+        }
+    }
+    return true;
+}
+
 
 // End of src/glc/glcHelper.cpp

@@ -64,8 +64,44 @@ string SValue::as_string() const
         return rlist_to_string( std::get<RList>( m_data ) );
     case Type::Real:
         return real_to_string( std::get<double>( m_data ) );
+    case Type::Object:
+        return object_to_string( std::get<SValueVec>( m_data ) );
     }
     return string();
+}
+
+std::string glich::SValue::object_to_string( const SValueVec& values ) const
+{
+    if( values.empty() ) {
+        return "{}";
+    }
+    string result = "{";
+    int i = 0;
+    for( const auto& value : values ) {
+        if( i == 0 && value.m_type == Type::String ) {
+            string str = value.get_str();
+            if( is_name( str ) ) {
+                result += str;
+            }
+            else {
+                result += "\"" + str + "\"";
+            }
+            i++;
+            continue;
+        }
+        if( i != 1 ) {
+            result += ",";
+        }
+        i++;
+        result += " ";
+        if( value.m_type == Type::String ) {
+            result += "\"" + value.get_str() + "\"";
+            continue;
+        }
+        result += value.as_string();
+
+    }
+    return result + "}";
 }
 
 void glich::SValue::set_range_demote( Range rng )

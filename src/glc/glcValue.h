@@ -70,6 +70,7 @@ namespace glich {
         void set_error( const std::string& str );
 
         std::string as_string() const;
+        std::string object_to_string( const SValueVec& values ) const;
 
         std::string get_str() const;
         Num get_number() const;

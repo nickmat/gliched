@@ -29,7 +29,7 @@
 
 void glich::Object::set_value_names( const StdStrVec& vnames )
 {
-    size_t i = 0;
+    size_t i = 1;
     for( auto& vname : vnames ) {
         m_vnames[vname] = i;
         i++;

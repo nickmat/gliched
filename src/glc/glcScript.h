@@ -72,6 +72,7 @@ namespace glich {
         SValue primary( bool get );
         std::string get_name_or_primary( bool get );
         StdStrVec get_string_list( bool get );
+        SValue get_object( bool get );
 
         SValue error_cast();
         SValueVec get_args( SValue& value );

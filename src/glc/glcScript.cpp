@@ -849,6 +849,10 @@ SValue Script::primary( bool get )
         }
         m_ts.next();
         break;
+    case SToken::Type::LCbracket:
+        value = get_object( true );
+        m_ts.next();
+        break;
     case SToken::Type::Error:
         value = error_cast();
         break;
@@ -910,6 +914,50 @@ StdStrVec glich::Script::get_string_list( bool get )
         }
     }
     return vec;
+}
+
+SValue glich::Script::get_object( bool get )
+{
+    string ocode = get_name_or_primary( get );
+
+    SValueVec vlist;
+    SValue vo( ocode );
+    vlist.push_back( vo );
+
+    SToken token = m_ts.current();
+    bool comma_next = true;
+    bool done = false;
+    for( ;;) {
+        switch( token.type() )
+        {
+        case SToken::Type::End:
+        case SToken::Type::RCbracket:
+            if( !comma_next ) {
+                vlist.push_back( SValue() );
+            }
+            done = true;
+            break;
+        case SToken::Type::Comma:
+            if( comma_next ) {
+                comma_next = false;
+            }
+            else {
+                vlist.push_back( SValue() );
+                comma_next = true;
+            }
+            break;
+        default: {
+                SValue value = expr( false );
+                vlist.push_back( value );
+            }
+            token = m_ts.current();
+            comma_next = true;
+            continue;
+        }
+        if( done ) break;
+        token = m_ts.next();
+    }
+    return SValue( vlist );
 }
 
 SValue Script::error_cast()

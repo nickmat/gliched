@@ -590,7 +590,8 @@ bool glich::Script::do_object()
                 obj->set_value_names( values );
             }
             else {
-                error( "Unknown vocab subcommand." );
+                error( "Unknown object subcommand." );
+                return false;
             }
         }
     }

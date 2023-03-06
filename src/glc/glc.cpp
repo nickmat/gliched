@@ -70,13 +70,12 @@ string Glich::run_script( const string& script )
     return oss.str();
 }
 
-Function* Glich::create_function( const std::string& code )
+bool Glich::add_function( Function* fun )
 {
-    Function* fun = new Function( code );
     assert( m_marks.size() > 0 );
     m_marks[m_marks.size() - 1]->add_function( fun );
-    m_functions[code] = fun;
-    return fun;
+    m_functions[fun->get_code()] = fun;
+    return true;
 }
 
 Function* Glich::get_function( const std::string& code ) const

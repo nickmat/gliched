@@ -58,7 +58,7 @@ namespace glich {
 
         std::string run_script( const std::string& cmnd );
 
-        Function* create_function( const std::string& code );
+        bool add_function( Function* fun );
         Function* get_function( const std::string& code ) const;
         Command* create_command( const std::string& code );
         Command* get_command( const std::string& code ) const;

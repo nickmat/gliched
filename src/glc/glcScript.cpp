@@ -419,23 +419,23 @@ bool Script::do_write( const std::string& term )
     return true;
 }
 
-bool Script::do_function()
+Function* Script::create_function()
 {
     string code = get_name_or_primary( true );
     if( code.empty() ) {
         error( "Function name missing." );
-        return false;
+        return nullptr;
     }
     const char* builtin[] = { "if", "read" };
     for( auto bi : builtin ) {
         if( code.compare( bi ) == 0 ) {
             error( "Can not redefine built-in function \"@" + string( bi ) + "\"." );
-            return false;
+            return nullptr;
         }
     }
-    if( m_glc->get_function( code ) != NULL ) {
+    if( m_glc->get_function( code ) != nullptr ) {
         error( "function \"" + code + "\" already exists." );
-        return false;
+        return nullptr;
     }
     SToken token = m_ts.current();
     StdStrVec args;
@@ -449,7 +449,7 @@ bool Script::do_function()
             string str = m_ts.current().get_str();
             if( token.type() != SToken::Type::Name || str.empty() ) {
                 error( "Argument name expected." );
-                return false;
+                return nullptr;
             }
             args.push_back( str );
             token = m_ts.next();
@@ -467,23 +467,32 @@ bool Script::do_function()
     }
     if( token.type() != SToken::Type::LCbracket ) {
         error( "'{' expected." );
-        return false;
+        return nullptr;
     }
     int line = m_ts.get_line();
     string script = m_ts.read_until( "}", "{" );
     if( script.empty() ) {
         error( "Terminating '}' not found." );
-        return false;
+        return nullptr;
     }
-    Function* fun = m_glc->create_function( code );
+    Function* fun = new Function( code );
     if( fun == nullptr ) {
-        return false;
+        return nullptr;
     }
     fun->set_args( args );
     fun->set_defaults( defs );
     fun->set_line( line );
     fun->set_script( script );
-    return true;
+    return fun;
+}
+
+bool glich::Script::do_function()
+{
+    Function* fun = create_function();
+    if( fun == nullptr ) {
+        return false;
+    }
+    return m_glc->add_function( fun );
 }
 
 bool glich::Script::do_command()

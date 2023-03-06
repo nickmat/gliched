@@ -27,13 +27,26 @@
 
 #include "glcObject.h"
 
-void glich::Object::set_value_names( const StdStrVec& vnames )
+using namespace glich;
+using std::string;
+using std::vector;
+
+
+void Object::set_value_names( const StdStrVec& vnames )
 {
     size_t i = 1;
     for( auto& vname : vnames ) {
         m_vnames[vname] = i;
         i++;
     }
+}
+
+size_t Object::get_vindex( const string& str ) const
+{
+    if( m_vnames.count( str ) > 0 ) {
+        return m_vnames.find(str)->second;
+    }
+    return 0;
 }
 
 // End of src/glc/glcValue.cpp

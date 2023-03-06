@@ -805,6 +805,16 @@ SValue Script::subscript( bool get )
                 }
                 left.property_op( right );
             }
+            else {
+                if( token.type() == SToken::Type::Name ) {
+                    right.set_str( token.get_str() );
+                    m_ts.next();
+                }
+                else {
+                    right = expr( false );
+                }
+                left = do_subscript( left, right );
+            }
             if( m_ts.current().type() != SToken::Type::RSbracket ) {
                 error( "']' expected." );
             }
@@ -958,6 +968,34 @@ SValue glich::Script::get_object( bool get )
         token = m_ts.next();
     }
     return SValue( vlist );
+}
+
+SValue Script::do_subscript( const SValue& left, const SValue& right )
+{
+    SValue value( left );
+    if( left.type() == SValue::Type::Object ) {
+        SValueVec values = left.get_object();
+        if( values.empty() || values[0].type() != SValue::Type::String ) {
+            value.set_error( "Malformed Object." );
+            return value;
+        }
+        string code = values[0].get_str();
+        Object* obj = m_glc->get_object( code );
+        if( right.type() == SValue::Type::String ) {
+            size_t index = obj->get_vindex( right.get_str() );
+            if( index < values.size() ) {
+                return values[index];
+            }
+        }
+        else {
+            bool success = true;
+            Num num = right.get_number( success );
+            if( success && num > 0 && num < values.size() ) {
+                return values[num];
+            }
+        }
+    }
+    return SValue();
 }
 
 SValue Script::error_cast()

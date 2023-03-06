@@ -74,6 +74,7 @@ namespace glich {
         StdStrVec get_string_list( bool get );
         SValue get_object( bool get );
 
+        SValue do_subscript( const SValue& left, const SValue& right );
         SValue error_cast();
         SValueVec get_args( SValue& value );
         SValue function_call();

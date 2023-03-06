@@ -1,0 +1,13 @@
+// object002.glcs  Test creating and using objects.
+
+object complex {
+    values real imaginary;
+}
+
+let c = {complex 5, 9};
+
+write c[real] + ", " + c[2];
+
+/*[OUTPUT]
+5, 9
+[OUTPUT]*/

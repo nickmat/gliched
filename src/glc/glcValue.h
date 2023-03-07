@@ -46,7 +46,7 @@ namespace glich {
         SValue() : m_type( Type::Null ) {}
         SValue( const SValue& value );
         SValue( const std::string& str ) : m_type( Type::String ), m_data( str ) {}
-        SValue( const char* str ) : m_type( Type::String ), m_data( std::string( str ) ) {}
+        SValue( const char* str, Type type = Type::String ) : m_type( type ), m_data( std::string( str ) ) {}
         SValue( Num num, Type type ) : m_type( type ), m_data( num ) {}
         SValue( int num ) : m_type( Type::Number ), m_data( static_cast<Num>(num) ) {}
         SValue( bool b ) : m_type( Type::Bool ), m_data( b ) {}

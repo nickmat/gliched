@@ -101,6 +101,8 @@ namespace glich {
 
     enum class Context { number, field };
 
+    enum class GetToken { current, next };
+
 }
 
 #endif // INCLUDE_GLC_GLCDEFS_H

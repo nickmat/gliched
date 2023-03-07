@@ -359,6 +359,17 @@ SValueVec glich::SValue::get_object( bool& success ) const
     return SValueVec();
 }
 
+std::string glich::SValue::get_object_code() const
+{
+    if( std::holds_alternative<SValueVec>( m_data ) ) {
+        SValueVec values = std::get<SValueVec>( m_data );
+        if( values.size() > 0 && values[0].m_type == Type::String ) {
+            return values[0].get_str();
+        }
+    }
+    return std::string();
+}
+
 Field SValue::get_int_as_field( bool& success ) const
 {
     success = true;

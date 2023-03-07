@@ -91,6 +91,7 @@ namespace glich {
         RList get_rlist( bool& success ) const; // Promote if possible.
         double get_real( bool& success ) const;
         SValueVec get_object( bool& success ) const;
+        std::string get_object_code() const;
 
         Field get_int_as_field( bool& success ) const; // Num or Field as Field
 

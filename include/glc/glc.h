@@ -32,8 +32,6 @@
 
 namespace glich {
 
-    class Function;
-    using FunctionMap = std::map<std::string, Function*>;
     class Command;
     using CommandMap = std::map<std::string, Command*>;
     class Object;

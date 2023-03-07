@@ -98,6 +98,8 @@ namespace glich {
         return !(left == right);
     }
 
+    class Function;
+    using FunctionMap = std::map<std::string, Function*>;
 
     enum class Context { number, field };
 

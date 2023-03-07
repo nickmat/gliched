@@ -105,7 +105,7 @@ bool Script::statement()
 
 bool Script::do_mark()
 {
-    string mark = get_name_or_primary( true );
+    string mark = get_name_or_primary( GetToken::next );
     if( m_ts.current().type() != SToken::Type::Semicolon ) {
         error( "';' expected." );
         return false;
@@ -123,7 +123,7 @@ bool Script::do_clear()
     string mark;
     SToken token = m_ts.next();
     if( token.type() != SToken::Type::Semicolon ) {
-        mark = get_name_or_primary( false );
+        mark = get_name_or_primary( GetToken::current );
         token = m_ts.current();
     }
     if( token.type() != SToken::Type::Semicolon ) {
@@ -312,7 +312,7 @@ bool Script::do_set()
         error( "Set property expected." );
         return false;
     }
-    string value = get_name_or_primary( true );
+    string value = get_name_or_primary( GetToken::next );
     if( m_ts.current().type() != SToken::Type::Semicolon ) {
         error( "set statement is \"set propery value;\"." );
         return false;
@@ -391,7 +391,7 @@ bool Script::do_write( const std::string& term )
     SToken token = m_ts.next();
     string filecode;
     if( token.type() == SToken::Type::Dot ) {
-        filecode = get_name_or_primary( true );
+        filecode = get_name_or_primary( GetToken::next );
     }
     std::ostream* out = nullptr;
     if( !filecode.empty() ) {
@@ -421,7 +421,7 @@ bool Script::do_write( const std::string& term )
 
 Function* Script::create_function()
 {
-    string code = get_name_or_primary( true );
+    string code = get_name_or_primary( GetToken::next );
     if( code.empty() ) {
         error( "Function name missing." );
         return nullptr;
@@ -497,7 +497,7 @@ bool glich::Script::do_function()
 
 bool glich::Script::do_command()
 {
-    string code = get_name_or_primary( true );
+    string code = get_name_or_primary( GetToken::next );
     if( code.empty() ) {
         error( "Command name missing." );
         return false;
@@ -571,7 +571,7 @@ bool Script::do_call()
 
 bool glich::Script::do_object()
 {
-    string code = get_name_or_primary( true );
+    string code = get_name_or_primary( GetToken::next );
     if( code.empty() ) {
         error( "Object name missing." );
         return false;
@@ -595,7 +595,7 @@ bool glich::Script::do_object()
         else if( token.type() == SToken::Type::Name ) {
             string name = token.get_str();
             if( name == "values" ) {
-                StdStrVec values = get_string_list( true );
+                StdStrVec values = get_string_list( GetToken::next );
                 obj->set_value_names( values );
             }
             else if( name == "function" ) {
@@ -617,7 +617,7 @@ bool glich::Script::do_object()
 
 bool Script::do_file()
 {
-    string code = get_name_or_primary( true );
+    string code = get_name_or_primary( GetToken::next );
     if( code.empty() ) {
         error( "File code missing." );
         return false;
@@ -629,7 +629,7 @@ bool Script::do_file()
     }
     File::FileType type = File::FT_null;
     if( m_ts.current().type() != SToken::Type::Semicolon ) {
-        string type = get_name_or_primary( true );
+        string type = get_name_or_primary( GetToken::next );
         if( type.empty() ) {
             error( "';' or switch expected." );
             return false;
@@ -839,7 +839,7 @@ SValue Script::subscript( GetToken get )
             }
             break;
         case SToken::Type::Dot:
-            left = do_dot( left, get_name_or_primary( true ) );
+            left = do_dot( left, get_name_or_primary( GetToken::next ) );
             break;
         default:
             return left;
@@ -880,7 +880,7 @@ SValue Script::primary( GetToken get )
         m_ts.next();
         break;
     case SToken::Type::LCbracket:
-        value = get_object( true );
+        value = get_object( GetToken::next );
         m_ts.next();
         break;
     case SToken::Type::Error:
@@ -910,10 +910,10 @@ SValue Script::primary( GetToken get )
     return value;
 }
 
-std::string Script::get_name_or_primary( bool get )
+std::string Script::get_name_or_primary( GetToken get )
 {
     string str;
-    SToken token = get ? m_ts.next() : m_ts.current();
+    SToken token = (get == GetToken::next) ? m_ts.next() : m_ts.current();
     if( token.type() == SToken::Type::Name ) {
         str = token.get_str();
         m_ts.next();
@@ -927,14 +927,14 @@ std::string Script::get_name_or_primary( bool get )
     return str;
 }
 
-StdStrVec glich::Script::get_string_list( bool get )
+StdStrVec glich::Script::get_string_list( GetToken get )
 {
     StdStrVec vec;
-    SToken token = get ? m_ts.next() : m_ts.current();
+    SToken token = (get == GetToken::next) ? m_ts.next() : m_ts.current();
     while( token.type() != SToken::SToken::Type::Semicolon &&
         token.type() != SToken::SToken::Type::End )
     {
-        string str = get_name_or_primary( false );
+        string str = get_name_or_primary( GetToken::current );
         if( !str.empty() ) {
             vec.push_back( str );
         }
@@ -946,7 +946,7 @@ StdStrVec glich::Script::get_string_list( bool get )
     return vec;
 }
 
-SValue glich::Script::get_object( bool get )
+SValue glich::Script::get_object( GetToken get )
 {
     string ocode = get_name_or_primary( get );
 

@@ -71,9 +71,9 @@ namespace glich {
         SValue term( GetToken get );
         SValue subscript( GetToken get );
         SValue primary( GetToken get );
-        std::string get_name_or_primary( bool get );
-        StdStrVec get_string_list( bool get );
-        SValue get_object( bool get );
+        std::string get_name_or_primary( GetToken get );
+        StdStrVec get_string_list( GetToken get );
+        SValue get_object( GetToken get );
 
         SValue do_subscript( const SValue& left, const SValue& right );
         SValue do_dot( const SValue& left, const SValue& right );

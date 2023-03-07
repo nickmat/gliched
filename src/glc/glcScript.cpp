@@ -598,6 +598,14 @@ bool glich::Script::do_object()
                 StdStrVec values = get_string_list( true );
                 obj->set_value_names( values );
             }
+            else if( name == "function" ) {
+                Function* fun = create_function();
+                if( fun == nullptr ) {
+                    error( "Unable to create function." );
+                    return false;
+                }
+                obj->add_function( fun );
+            }
             else {
                 error( "Unknown object subcommand." );
                 return false;
@@ -800,37 +808,39 @@ SValue Script::subscript( bool get )
         SToken token = m_ts.current();
         switch( token.type() )
         {
-        case SToken::Type::LSbracket:
-        {
-            SValue right;
-            token = m_ts.next();
-            if( token.type() == SToken::Type::Dot ) {
+        case SToken::Type::LSbracket: {
+                SValue right;
                 token = m_ts.next();
-                if( token.type() == SToken::Type::Name ) {
-                    right.set_str( token.get_str() );
-                    m_ts.next();
+                if( token.type() == SToken::Type::Dot ) {
+                    token = m_ts.next();
+                    if( token.type() == SToken::Type::Name ) {
+                        right.set_str( token.get_str() );
+                        m_ts.next();
+                    }
+                    else {
+                        right = expr( false );
+                    }
+                    left.property_op( right );
                 }
                 else {
-                    right = expr( false );
+                    if( token.type() == SToken::Type::Name ) {
+                        right.set_str( token.get_str() );
+                        m_ts.next();
+                    }
+                    else {
+                        right = expr( false );
+                    }
+                    left = do_subscript( left, right );
                 }
-                left.property_op( right );
-            }
-            else {
-                if( token.type() == SToken::Type::Name ) {
-                    right.set_str( token.get_str() );
-                    m_ts.next();
+                if( m_ts.current().type() != SToken::Type::RSbracket ) {
+                    error( "']' expected." );
                 }
-                else {
-                    right = expr( false );
-                }
-                left = do_subscript( left, right );
+                m_ts.next();
             }
-            if( m_ts.current().type() != SToken::Type::RSbracket ) {
-                error( "']' expected." );
-            }
-            m_ts.next();
-        }
-        break;
+            break;
+        case SToken::Type::Dot:
+            left = do_dot( left, get_name_or_primary( true ) );
+            break;
         default:
             return left;
         }
@@ -1008,6 +1018,27 @@ SValue Script::do_subscript( const SValue& left, const SValue& right )
     return SValue();
 }
 
+SValue glich::Script::do_dot( const SValue& left, const SValue& right )
+{
+    string ocode = left.get_object_code();
+    if( ocode.empty() ) {
+        return SValue( "Object expected.", SValue::Type::Error );
+    }
+    Object* obj = m_glc->get_object( ocode );
+    if( obj == nullptr ) {
+        return SValue( "Object not found.", SValue::Type::Error );
+    }
+    string fcode = right.as_string();
+    if( fcode.empty() ) {
+        return SValue( "Object function expected.", SValue::Type::Error );
+    }
+    Function* fun = obj->get_function( fcode );
+    if( fun == nullptr ) {
+        return SValue( "Function not found.", SValue::Type::Error );
+    }
+    return run_function( fun, GetToken::current );
+}
+
 SValue Script::error_cast()
 {
     SValue value = primary( true );
@@ -1020,9 +1051,9 @@ SValue Script::error_cast()
     return value;
 }
 
-SValueVec Script::get_args( SValue& value )
+SValueVec Script::get_args( SValue& value, GetToken get )
 {
-    SToken token = m_ts.next();
+    SToken token = (get == GetToken::next) ? m_ts.next() : m_ts.current();
     SValueVec args;
     if( token.type() == SToken::Type::Lbracket ) {
         for( ;; ) {
@@ -1046,11 +1077,9 @@ SValueVec Script::get_args( SValue& value )
 
 SValue Script::function_call()
 {
-    SValue value;
     SToken token = m_ts.next();
     if( token.type() != SToken::Type::Name ) {
-        value.set_error( "Function name expected." );
-        return value;
+        return SValue( "Function name expected.", SValue::Type::Error );
     }
     string name = token.get_str();
     if( name == "if" ) {
@@ -1059,17 +1088,21 @@ SValue Script::function_call()
     else if( name == "read" ) {
         return at_read();
     }
+    Function* fun = m_glc->get_function( name );
+    if( fun == nullptr ) {
+        string mess = "Function \"" + name + "\" not found.";
+        return SValue( mess.c_str(), SValue::Type::Error);
+    }
+    return run_function( fun, GetToken::next );
+}
 
-    SValueVec args = get_args( value );
+SValue Script::run_function( Function* fun, GetToken get )
+{
+    SValue value;
+    SValueVec args = get_args( value, get );
     if( value.is_error() ) {
         return value;
     }
-    Function* fun = m_glc->get_function( name );
-    if( fun == nullptr ) {
-        value.set_error( "Function " + name + " not found." );
-        return value;
-    }
-
     STokenStream prev_ts = m_ts;
     m_ts.set_line( fun->get_line() );
     std::istringstream iss( fun->get_script() );
@@ -1110,7 +1143,7 @@ SValue glich::Script::command_call()
     }
     string name = token.get_str();
 
-    SValueVec args = get_args( value );
+    SValueVec args = get_args( value, GetToken::next );
     if( value.is_error() ) {
         return value;
     }
@@ -1157,7 +1190,7 @@ SValue glich::Script::command_call()
 SValue Script::at_if()
 {
     SValue value;
-    SValueVec args = get_args( value );
+    SValueVec args = get_args( value, GetToken::next );
     if( value.is_error() ) {
         return value;
     }
@@ -1183,7 +1216,7 @@ SValue Script::at_if()
 SValue Script::at_read()
 {
     SValue value;
-    SValueVec args = get_args( value );
+    SValueVec args = get_args( value, GetToken::next );
     if( value.is_error() ) {
         return value;
     }

@@ -1,0 +1,16 @@
+// object003.glcs  Test creating and using objects.
+
+object test {
+    function hi {
+        result = "Hello";
+    }
+}
+
+let t = {test};
+
+write t.hi;
+
+
+/*[OUTPUT]
+Hello
+[OUTPUT]*/

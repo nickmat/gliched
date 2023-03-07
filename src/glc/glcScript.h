@@ -76,9 +76,11 @@ namespace glich {
         SValue get_object( bool get );
 
         SValue do_subscript( const SValue& left, const SValue& right );
+        SValue do_dot( const SValue& left, const SValue& right );
         SValue error_cast();
-        SValueVec get_args( SValue& value );
+        SValueVec get_args( SValue& value, GetToken get );
         SValue function_call();
+        SValue run_function( Function* fun, GetToken get );
         SValue command_call();
         SValue at_if();
         SValue at_read();

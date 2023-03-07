@@ -27,10 +27,19 @@
 
 #include "glcObject.h"
 
+#include "glcFunction.h"
+
 using namespace glich;
 using std::string;
 using std::vector;
 
+
+Object::~Object()
+{
+    for( auto fun : m_functions ) {
+        delete fun.second;
+    }
+}
 
 void Object::set_value_names( const StdStrVec& vnames )
 {
@@ -47,6 +56,23 @@ size_t Object::get_vindex( const string& str ) const
         return m_vnames.find(str)->second;
     }
     return 0;
+}
+
+bool Object::add_function( Function* fun )
+{
+    if( m_functions.count( fun->get_code() ) > 0 ) {
+        return false;
+    }
+    m_functions[fun->get_code()] = fun;
+    return true;
+}
+
+Function* glich::Object::get_function( const std::string& fcode )
+{
+    if( m_functions.count( fcode ) == 0 ) {
+        return nullptr;
+    }
+    return m_functions[fcode];
 }
 
 // End of src/glc/glcValue.cpp

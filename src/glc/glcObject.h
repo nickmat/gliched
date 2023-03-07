@@ -39,13 +39,18 @@ namespace glich {
     {
     public:
         Object( const std::string& ocode ) : m_ocode( ocode ) {}
+        ~Object();
 
         void set_value_names( const StdStrVec& vnames );
 
         std::string get_code() const { return m_ocode; }
         size_t get_vindex( const std::string& str ) const;
 
+        bool add_function( Function* fun );
+        Function* get_function( const std::string& fcode );
+
     private:
+        FunctionMap m_functions;
         std::string  m_ocode;
         std::map<std::string, size_t> m_vnames; // map variable name to value index
     };

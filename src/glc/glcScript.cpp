@@ -144,7 +144,7 @@ bool Script::do_if()
     const char* enderr = "if ended unexpectedly.";
     for( ;;) {
         if( !result && !done ) {
-            result = expr( true ).get_bool( ok );
+            result = expr( GetToken::next ).get_bool( ok );
             if( !ok ) {
                 error( "Boolean expression expected." );
                 return false;
@@ -265,7 +265,7 @@ bool Script::do_do()
                 string name = token.get_str();
                 if( name == "until" || name == "while" ) {
                     bool ok = false;
-                    exit = expr( true ).get_bool( ok );
+                    exit = expr( GetToken::next ).get_bool( ok );
                     if( !ok ) {
                         error( "Boolean expression expected." );
                         exit = true;
@@ -349,22 +349,22 @@ bool Script::do_assign( const std::string& name )
     SToken token = m_ts.next();
     SValue value;
     if( token.type() == SToken::Type::Equal ) {
-        value = expr( true );
+        value = expr( GetToken::next );
     }
     else if( store()->get( &value, name ) ) {
         switch( token.type() )
         {
         case SToken::Type::PlusEq:
-            value.plus( expr( true ) );
+            value.plus( expr( GetToken::next ) );
             break;
         case SToken::Type::MinusEq:
-            value.minus( expr( true ) );
+            value.minus( expr( GetToken::next ) );
             break;
         case SToken::Type::DivideEq:
-            value.divide( expr( true ) );
+            value.divide( expr( GetToken::next ) );
             break;
         case SToken::Type::StarEq:
-            value.multiply( expr( true ) );
+            value.multiply( expr( GetToken::next ) );
             break;
         default:
             error( "Assign operator expected." );
@@ -406,7 +406,7 @@ bool Script::do_write( const std::string& term )
         out = m_out;
     }
 
-    SValue value = expr( false );
+    SValue value = expr( GetToken::current );
     *out << value.as_string() << term;
 
     if( value.type() == SValue::Type::Error ) {
@@ -455,7 +455,7 @@ Function* Script::create_function()
             token = m_ts.next();
             SValue value;
             if( token.type() == SToken::Type::Equal ) {
-                value = expr( true );
+                value = expr( GetToken::next );
             }
             defs.push_back( value );
             token = m_ts.current();
@@ -524,7 +524,7 @@ bool glich::Script::do_command()
             token = m_ts.next();
             SValue value;
             if( token.type() == SToken::Type::Equal ) {
-                value = expr( true );
+                value = expr( GetToken::next );
             }
             defs.push_back( value );
             token = m_ts.current();
@@ -622,7 +622,7 @@ bool Script::do_file()
         error( "File code missing." );
         return false;
     }
-    string name = expr( false ).as_string();
+    string name = expr( GetToken::current ).as_string();
     if( name.empty() ) {
         error( "Filename missing." );
         return false;
@@ -659,7 +659,7 @@ bool Script::do_file()
     return true;
 }
 
-SValue Script::expr( bool get )
+SValue Script::expr( GetToken get )
 {
     SValue left = compare( get );
     for( ;;) {
@@ -667,10 +667,10 @@ SValue Script::expr( bool get )
         switch( token.type() )
         {
         case SToken::Type::Or:
-            left.logical_or( compare( true ) );
+            left.logical_or( compare( GetToken::next ) );
             break;
         case SToken::Type::And:
-            left.logical_and( compare( true ) );
+            left.logical_and( compare( GetToken::next ) );
             break;
         default:
             return left;
@@ -678,7 +678,7 @@ SValue Script::expr( bool get )
     }
 }
 
-SValue Script::compare( bool get )
+SValue Script::compare( GetToken get )
 {
     SValue left = combine( get );
     for( ;;) {
@@ -686,24 +686,24 @@ SValue Script::compare( bool get )
         switch( token.type() )
         {
         case SToken::Type::Equal:
-            left.equal( combine( true ) );
+            left.equal( combine( GetToken::next ) );
             break;
         case SToken::Type::NotEqual:
-            left.equal( combine( true ) );
+            left.equal( combine( GetToken::next ) );
             left.logical_not();
             break;
         case SToken::Type::GtThan:
-            left.greater_than( combine( true ) );
+            left.greater_than( combine( GetToken::next ) );
             break;
         case SToken::Type::GtThanEq:
-            left.less_than( combine( true ) );
+            left.less_than( combine( GetToken::next ) );
             left.logical_not();
             break;
         case SToken::Type::LessThan:
-            left.less_than( combine( true ) );
+            left.less_than( combine( GetToken::next ) );
             break;
         case SToken::Type::LessThanEq:
-            left.greater_than( combine( true ) );
+            left.greater_than( combine( GetToken::next ) );
             left.logical_not();
             break;
         default:
@@ -712,7 +712,7 @@ SValue Script::compare( bool get )
     }
 }
 
-SValue Script::combine( bool get )
+SValue Script::combine( GetToken get )
 {
     SValue left = range( get );
 
@@ -721,16 +721,16 @@ SValue Script::combine( bool get )
         switch( token.type() )
         {
         case SToken::Type::UNION:
-            left.rlist_union( range( true ) );
+            left.rlist_union( range( GetToken::next ) );
             break;
         case SToken::Type::INTERSECTION:
-            left.intersection( range( true ) );
+            left.intersection( range( GetToken::next ) );
             break;
         case SToken::Type::REL_COMPLEMENT:
-            left.rel_complement( range( true ) );
+            left.rel_complement( range( GetToken::next ) );
             break;
         case SToken::Type::SYM_DIFFERENCE:
-            left.sym_difference( range( true ) );
+            left.sym_difference( range( GetToken::next ) );
             break;
         default:
             return left;
@@ -738,7 +738,7 @@ SValue Script::combine( bool get )
     }
 }
 
-SValue Script::range( bool get )
+SValue Script::range( GetToken get )
 {
     SValue left = sum( get );
 
@@ -747,7 +747,7 @@ SValue Script::range( bool get )
         switch( token.type() )
         {
         case SToken::Type::DotDot:
-            left.range_op( sum( true ) );
+            left.range_op( sum( GetToken::next ) );
             break;
         default:
             return left;
@@ -755,7 +755,7 @@ SValue Script::range( bool get )
     }
 }
 
-SValue Script::sum( bool get )
+SValue Script::sum( GetToken get )
 {
     SValue left = term( get );
     for( ;;) {
@@ -763,10 +763,10 @@ SValue Script::sum( bool get )
         switch( token.type() )
         {
         case SToken::Type::Plus:
-            left.plus( term( true ) );
+            left.plus( term( GetToken::next ) );
             break;
         case SToken::Type::Minus:
-            left.minus( term( true ) );
+            left.minus( term( GetToken::next ) );
             break;
         default:
             return left;
@@ -774,7 +774,7 @@ SValue Script::sum( bool get )
     }
 }
 
-SValue Script::term( bool get )
+SValue Script::term( GetToken get )
 {
     SValue left = subscript( get );
 
@@ -783,16 +783,16 @@ SValue Script::term( bool get )
         switch( token.type() )
         {
         case SToken::Type::Star:
-            left.multiply( subscript( true ) );
+            left.multiply( subscript( GetToken::next ) );
             break;
         case SToken::Type::Divide:
-            left.divide( subscript( true ) );
+            left.divide( subscript( GetToken::next ) );
             break;
         case SToken::Type::Div:
-            left.int_div( subscript( true ) );
+            left.int_div( subscript( GetToken::next ) );
             break;
         case SToken::Type::Mod:
-            left.modulus( subscript( true ) );
+            left.modulus( subscript( GetToken::next ) );
             break;
         default:
             return left;
@@ -800,7 +800,7 @@ SValue Script::term( bool get )
     }
 }
 
-SValue Script::subscript( bool get )
+SValue Script::subscript( GetToken get )
 {
     SValue left = primary( get );
 
@@ -818,7 +818,7 @@ SValue Script::subscript( bool get )
                         m_ts.next();
                     }
                     else {
-                        right = expr( false );
+                        right = expr( GetToken::current );
                     }
                     left.property_op( right );
                 }
@@ -828,7 +828,7 @@ SValue Script::subscript( bool get )
                         m_ts.next();
                     }
                     else {
-                        right = expr( false );
+                        right = expr( GetToken::current );
                     }
                     left = do_subscript( left, right );
                 }
@@ -847,10 +847,10 @@ SValue Script::subscript( bool get )
     }
 }
 
-SValue Script::primary( bool get )
+SValue Script::primary( GetToken get )
 {
     SValue value;
-    SToken token = get ? m_ts.next() : m_ts.current();
+    SToken token = (get == GetToken::next) ? m_ts.next() : m_ts.current();
     switch( token.type() )
     {
     case SToken::Type::Number:
@@ -872,7 +872,7 @@ SValue Script::primary( bool get )
         m_ts.next();
         break;
     case SToken::Type::Lbracket:
-        value = expr( true );
+        value = expr( GetToken::next );
         if( m_ts.current().type() != SToken::Type::Rbracket ) {
             error( "')' expected." );
             break;
@@ -890,18 +890,18 @@ SValue Script::primary( bool get )
         value = function_call();
         break;
     case SToken::Type::Minus:
-        value = primary( true );
+        value = primary( GetToken::next );
         value.negate();
         break;
     case SToken::Type::Plus:
-        value = primary( true );
+        value = primary( GetToken::next );
         break;
     case SToken::Type::Not:
-        value = primary( true );
+        value = primary( GetToken::next );
         value.logical_not();
         break;
     case SToken::Type::COMPLEMENT:
-        value = primary( true );
+        value = primary( GetToken::next );
         value.compliment();
         break;
     default:
@@ -919,7 +919,7 @@ std::string Script::get_name_or_primary( bool get )
         m_ts.next();
     }
     else {
-        SValue value = primary( false );
+        SValue value = primary( GetToken::current );
         if( value.type() == SValue::Type::String || value.type() == SValue::Type::Number ) {
             str = value.as_string();
         }
@@ -977,7 +977,7 @@ SValue glich::Script::get_object( bool get )
             }
             break;
         default: {
-                SValue value = expr( false );
+                SValue value = expr( GetToken::current );
                 vlist.push_back( value );
             }
             token = m_ts.current();
@@ -1041,7 +1041,7 @@ SValue glich::Script::do_dot( const SValue& left, const SValue& right )
 
 SValue Script::error_cast()
 {
-    SValue value = primary( true );
+    SValue value = primary( GetToken::next );
     bool ok = false;
     string mess = value.get_str( ok );
     if( !ok ) {
@@ -1057,7 +1057,7 @@ SValueVec Script::get_args( SValue& value, GetToken get )
     SValueVec args;
     if( token.type() == SToken::Type::Lbracket ) {
         for( ;; ) {
-            SValue arg = expr( true );
+            SValue arg = expr( GetToken::next );
             args.push_back( arg );
             token = m_ts.current();
             if( token.type() == SToken::Type::Rbracket ||

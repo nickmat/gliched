@@ -63,14 +63,14 @@ namespace glich {
         bool do_object();
         bool do_file();
 
-        SValue expr( bool get );
-        SValue compare( bool get );
-        SValue combine( bool get );
-        SValue range( bool get );
-        SValue sum( bool get );
-        SValue term( bool get );
-        SValue subscript( bool get );
-        SValue primary( bool get );
+        SValue expr( GetToken get );
+        SValue compare( GetToken get );
+        SValue combine( GetToken get );
+        SValue range( GetToken get );
+        SValue sum( GetToken get );
+        SValue term( GetToken get );
+        SValue subscript( GetToken get );
+        SValue primary( GetToken get );
         std::string get_name_or_primary( bool get );
         StdStrVec get_string_list( bool get );
         SValue get_object( bool get );

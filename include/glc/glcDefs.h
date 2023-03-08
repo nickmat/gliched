@@ -100,6 +100,7 @@ namespace glich {
 
     class Function;
     using FunctionMap = std::map<std::string, Function*>;
+    using NameIndexMap = std::map<std::string, size_t>;
 
     enum class Context { number, field };
 

@@ -45,6 +45,7 @@ namespace glich {
 
         std::string get_code() const { return m_ocode; }
         size_t get_vindex( const std::string& str ) const;
+        const NameIndexMap& get_vnames_map() const { return m_vnames; }
 
         bool add_function( Function* fun );
         Function* get_function( const std::string& fcode );
@@ -52,7 +53,7 @@ namespace glich {
     private:
         FunctionMap m_functions;
         std::string  m_ocode;
-        std::map<std::string, size_t> m_vnames; // map variable name to value index
+        NameIndexMap m_vnames; // map variable name to value index
     };
 
 }

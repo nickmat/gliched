@@ -1010,7 +1010,7 @@ SValue Script::do_subscript( const SValue& left, const SValue& right )
         else {
             bool success = true;
             Num num = right.get_number( success );
-            if( success && num > 0 && num < values.size() ) {
+            if( success && num >= 0 && num < values.size() ) {
                 return values[num];
             }
         }
@@ -1018,7 +1018,7 @@ SValue Script::do_subscript( const SValue& left, const SValue& right )
     return SValue();
 }
 
-SValue glich::Script::do_dot( const SValue& left, const SValue& right )
+SValue Script::do_dot( const SValue& left, const SValue& right )
 {
     string ocode = left.get_object_code();
     if( ocode.empty() ) {
@@ -1036,7 +1036,7 @@ SValue glich::Script::do_dot( const SValue& left, const SValue& right )
     if( fun == nullptr ) {
         return SValue( "Function not found.", SValue::Type::Error );
     }
-    return run_function( fun, GetToken::current );
+    return run_function( fun, obj, &left );
 }
 
 SValue Script::error_cast()
@@ -1093,12 +1093,13 @@ SValue Script::function_call()
         string mess = "Function \"" + name + "\" not found.";
         return SValue( mess.c_str(), SValue::Type::Error);
     }
-    return run_function( fun, GetToken::next );
+    return run_function( fun );
 }
 
-SValue Script::run_function( Function* fun, GetToken get )
+SValue Script::run_function( Function* fun, const Object* obj, const SValue* left )
 {
     SValue value;
+    GetToken get = (obj == nullptr) ? GetToken::next : GetToken::current;
     SValueVec args = get_args( value, get );
     if( value.is_error() ) {
         return value;
@@ -1110,6 +1111,19 @@ SValue Script::run_function( Function* fun, GetToken get )
     m_glc->push_store();
 
     store()->set( "result", SValue() );
+    if( obj != nullptr && left != nullptr && left->type() == SValue::Type::Object ) {
+        SValueVec left_values = left->get_object();
+        const NameIndexMap& vnames = obj->get_vnames_map();
+        for( const auto& vname : vnames ) {
+            size_t index = vname.second;
+            if( index < left_values.size() ) {
+                store()->set( vname.first, left_values[vname.second] );
+            }
+            else {
+                store()->set( vname.first, SValue() );
+            }
+        }
+    }
     for( size_t i = 0; i < fun->get_arg_size(); i++ ) {
         if( i < args.size() ) {
             store()->set( fun->get_arg_name( i ), args[i] );

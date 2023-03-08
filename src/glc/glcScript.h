@@ -34,6 +34,8 @@
 
 namespace glich {
 
+    class Object;
+
     class Script {
     public:
         Script( Glich* db, std::istream& in, std::ostream& out );
@@ -80,7 +82,7 @@ namespace glich {
         SValue error_cast();
         SValueVec get_args( SValue& value, GetToken get );
         SValue function_call();
-        SValue run_function( Function* fun, GetToken get );
+        SValue run_function( Function* fun, const Object* obj = nullptr, const SValue* left = nullptr );
         SValue command_call();
         SValue at_if();
         SValue at_read();

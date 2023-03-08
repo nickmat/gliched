@@ -67,7 +67,7 @@ bool Object::add_function( Function* fun )
     return true;
 }
 
-Function* glich::Object::get_function( const std::string& fcode )
+Function* Object::get_function( const std::string& fcode )
 {
     if( m_functions.count( fcode ) == 0 ) {
         return nullptr;

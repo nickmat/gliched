@@ -1262,6 +1262,7 @@ void SValue::property_op( const SValue& value )
         case Type::range:  set_str( "range" );  return;
         case Type::rlist:  set_str( "rlist" );  return;
         case Type::String: set_str( "string" ); return;
+        case Type::Object: set_str( "object" ); return;
         case Type::Bool:   set_str( "bool" );   return;
         case Type::Null:   set_str( "null" );   return;
         case Type::Error:  set_str( "error" );  return;

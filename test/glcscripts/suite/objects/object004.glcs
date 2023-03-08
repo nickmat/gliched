@@ -1,0 +1,27 @@
+// object004.glcs  Test creating and using objects.
+
+object complex {
+    values real imaginary;
+    function add( comp ) {
+        if (comp[.type] = "object" and comp[0] = "complex")
+            result = {complex real+comp[real], imaginary+comp[imaginary]};
+        else
+            result = error "Must have 'complex' argument";
+        endif
+    }
+}
+
+let c1 = {complex 5, 9};
+let c2 = {complex 20, 6};
+
+writeln "";
+writeln c1.add( c2 );
+writeln c1.add( 1 );
+
+
+/*[OUTPUT]
+
+{complex 25, 15}
+Error (9): Must have 'complex' argument
+
+[OUTPUT]*/

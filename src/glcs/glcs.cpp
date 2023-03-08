@@ -431,7 +431,7 @@ int main( int argc, char* argv[] )
                 }
             }
             else if(
-                word == "function" || word == "command" )
+                word == "function" || word == "command" || word == "object" )
             {
                 if( !terminated_curlybracket( tail ) ) {
                     cmnd = get_statement( cmnd, StmtType::curlybracket );

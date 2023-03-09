@@ -350,7 +350,7 @@ void STokenStream::set_current( SToken::Type type, const std::string& str )
     switch( type )
     {
     case SToken::Type::Real:
-        m_cur_token.set_value_real( GetReal( str ) );
+        m_cur_token.set_value_real( GetFloat( str ) );
         return;
     case SToken::Type::Number:
         m_cur_token.set_value_num( GetNum( str ) );

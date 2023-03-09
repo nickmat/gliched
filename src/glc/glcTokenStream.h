@@ -71,7 +71,7 @@ namespace glich {
         void set_value_str( const std::string& str ) { m_value.set_str( str ); }
         void set_value_num( Num num ) { m_value.set_number( num ); }
         void set_value_field( Field fld ) { m_value.set_field( fld ); }
-        void set_value_real( double real ) { m_value.set_real( real ); }
+        void set_value_real( double real ) { m_value.set_float( real ); }
 
         Type type() const { return m_type; }
         SValue value() const { return m_value; }
@@ -79,7 +79,7 @@ namespace glich {
         bool get_bool() const { return m_value.get_bool(); }
         Num get_number() const { return m_value.get_number(); }
         Field get_field() const { return m_value.get_field(); }
-        Field get_real() const { return m_value.get_real(); }
+        Field get_real() const { return m_value.get_float(); }
 
     private:
         Type m_type;

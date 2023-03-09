@@ -7,5 +7,5 @@ write 1[.type] + ", " + 1f[.type] + ", " +
     true[.type] + ", " + 1.0[.type];
 
 /*[OUTPUT]
-number, field, string, null, range, rlist, bool, real
+number, field, string, null, range, rlist, bool, float
 [OUTPUT]*/

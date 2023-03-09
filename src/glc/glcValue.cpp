@@ -62,8 +62,8 @@ string SValue::as_string() const
         return range_to_string( std::get<Range>( m_data ) );
     case Type::rlist:
         return rlist_to_string( std::get<RList>( m_data ) );
-    case Type::Real:
-        return real_to_string( std::get<double>( m_data ) );
+    case Type::Float:
+        return float_to_string( std::get<double>( m_data ) );
     case Type::Object:
         return object_to_string( std::get<SValueVec>( m_data ) );
     }
@@ -196,12 +196,12 @@ RList SValue::get_rlist() const
     return RList( 0 );
 }
 
-double SValue::get_real() const
+double SValue::get_float() const
 {
     if( std::holds_alternative<double>( m_data ) ) {
         return std::get<double>( m_data );
     }
-    assert( false ); // Should only be called for Real type.
+    assert( false ); // Should only be called for Float type.
     return 0.0;
 }
 
@@ -227,7 +227,7 @@ Field glich::SValue::get_num_as_field() const
     return Field();
 }
 
-double glich::SValue::get_field_as_real() const
+double glich::SValue::get_field_as_float() const
 {
     if( std::holds_alternative<Num>( m_data ) && m_type == Type::field ) {
         Field fld = std::get<Num>( m_data );
@@ -240,7 +240,7 @@ double glich::SValue::get_field_as_real() const
         return static_cast<double>(fld);
     }
     assert( false );
-    return f_invalid;
+    return std::numeric_limits<double>::quiet_NaN();
 }
 
 std::string glich::SValue::get_str( bool& success ) const
@@ -339,7 +339,7 @@ RList SValue::get_rlist( bool& success ) const
     return RList( 0 );
 }
 
-double glich::SValue::get_real( bool& success ) const
+double glich::SValue::get_float( bool& success ) const
 {
     success = true;
     if( std::holds_alternative<double>( m_data ) ) {
@@ -480,8 +480,8 @@ void SValue::equal( const SValue& value )
         case Type::rlist:
             result = (get_rlist() == value.get_rlist());
             break;
-        case Type::Real:
-            result = (get_real() == value.get_real());
+        case Type::Float:
+            result = (get_float() == value.get_float());
             break;
         case Type::Null:
             result = true;
@@ -546,8 +546,8 @@ void SValue::greater_than( const SValue& value )
                 result = (left > right);
             }
             break;
-        case Type::Real:
-            result = (get_real() > value.get_real());
+        case Type::Float:
+            result = (get_float() > value.get_float());
             break;
         case Type::Null:
             set_error( "Can only compare a null value for equal or not equal." );
@@ -599,8 +599,8 @@ void SValue::plus( const SValue& value )
             case Type::field:
                 set_field( add_field( fld, value.get_field() ) );
                 return;
-            case Type::Real:
-                set_real( static_cast<double>(get_number()) + value.get_real() );
+            case Type::Float:
+                set_float( static_cast<double>(get_number()) + value.get_float() );
                 return;
             case Type::range:
                 set_range_demote( add_range( value.get_range(), fld, success ) );
@@ -626,8 +626,8 @@ void SValue::plus( const SValue& value )
         case Type::field:
             set_field( add_field( get_field(), value.get_field() ) );
             return;
-        case Type::Real:
-            set_real( add_real_field( value.get_real(), get_field() ) );
+        case Type::Float:
+            set_float( add_float_field( value.get_float(), get_field() ) );
             return;
         case Type::range:
             set_range_demote( add_range( value.get_range(), get_field(), success ) );
@@ -643,17 +643,17 @@ void SValue::plus( const SValue& value )
             return;
         }
         break;
-    case Type::Real:
+    case Type::Float:
         switch( value.type() )
         {
         case Type::Number:
-            set_real( get_real() + static_cast<double>(value.get_number()) );
+            set_float( get_float() + static_cast<double>(value.get_number()) );
             return;
         case Type::field:
-            set_real( add_real_field( get_real(), value.get_field() ) );
+            set_float( add_float_field( get_float(), value.get_field() ) );
             return;
-        case Type::Real:
-            set_real( get_real() + value.get_real() );
+        case Type::Float:
+            set_float( get_float() + value.get_float() );
             return;
         }
         break;
@@ -703,10 +703,10 @@ void SValue::minus( const SValue& value )
     if( propagate_error( value ) ) {
         return;
     }
-    if( ( m_type == Type::Number || m_type == Type::Real ||
+    if( ( m_type == Type::Number || m_type == Type::Float ||
         m_type == Type::field || m_type == Type::range ||
         m_type == Type::rlist ) &&
-        ( value.m_type == Type::Number || value.m_type == Type::Real ||
+        ( value.m_type == Type::Number || value.m_type == Type::Float ||
             value.m_type == Type::field || value.m_type == Type::range ||
             value.m_type == Type::rlist )
         ) {
@@ -735,8 +735,8 @@ void SValue::multiply( const SValue& value )
         case Type::field:
             set_field( mult_field( get_num_as_field(), value.get_field() ) );
             break;
-        case Type::Real:
-            set_real( static_cast<double>(get_number()) * value.get_real() );
+        case Type::Float:
+            set_float( static_cast<double>(get_number()) * value.get_float() );
             return;
         }
         break;
@@ -749,22 +749,22 @@ void SValue::multiply( const SValue& value )
         case Type::field:
             set_field( mult_field( get_field(), value.get_field() ) );
             break;
-        case Type::Real:
-            set_real( mult_real_field( value.get_real(), get_field() ) );
+        case Type::Float:
+            set_float( mult_float_field( value.get_float(), get_field() ) );
             return;
         }
         break;
-    case Type::Real:
+    case Type::Float:
         switch( value.type() )
         {
         case Type::Number:
-            set_real( get_real() * static_cast<double>(value.get_number()) );
+            set_float( get_float() * static_cast<double>(value.get_number()) );
             return;
         case Type::field:
-            set_real( mult_real_field( get_real(), value.get_field() ) );
+            set_float( mult_float_field( get_float(), value.get_field() ) );
             return;
-        case Type::Real:
-            set_real( get_real() * value.get_real() );
+        case Type::Float:
+            set_float( get_float() * value.get_float() );
             return;
         }
         break;
@@ -797,11 +797,11 @@ void SValue::divide( const SValue& value )
             break;
         case Type::field:
             left = static_cast<double>(get_number());
-            right = value.get_field_as_real();
+            right = value.get_field_as_float();
             break;
-        case Type::Real:
+        case Type::Float:
             left = static_cast<double>(get_number());
-            right = value.get_real();
+            right = value.get_float();
             break;
         default:
             set_error( only_ints_err );
@@ -812,36 +812,36 @@ void SValue::divide( const SValue& value )
         switch( value.type() )
         {
         case Type::Number:
-            left = get_field_as_real();
+            left = get_field_as_float();
             right = static_cast<double>(value.get_number());
             break;
         case Type::field:
-            left = get_field_as_real();
-            right = value.get_field_as_real();
+            left = get_field_as_float();
+            right = value.get_field_as_float();
             break;
-        case Type::Real:
-            left = get_field_as_real();
-            right = value.get_real();
+        case Type::Float:
+            left = get_field_as_float();
+            right = value.get_float();
             break;
         default:
             set_error( only_ints_err );
             return;
         }
         break;
-    case Type::Real:
+    case Type::Float:
         switch( value.type() )
         {
         case Type::Number:
-            left = get_real();
+            left = get_float();
             right = static_cast<double>(value.get_number());
             break;
         case Type::field:
-            left = get_real();
-            right = value.get_field_as_real();
+            left = get_float();
+            right = value.get_field_as_float();
             break;
-        case Type::Real:
-            left = get_real();
-            right = value.get_real();
+        case Type::Float:
+            left = get_float();
+            right = value.get_float();
             break;
         default:
             set_error( only_ints_err );
@@ -869,7 +869,7 @@ void SValue::divide( const SValue& value )
         set_error( "Cannot divide nan." );
         return;
     }
-    set_real( left / right );
+    set_float( left / right );
 }
 
 void glich::SValue::int_div( const SValue& value )
@@ -1258,7 +1258,7 @@ void SValue::property_op( const SValue& value )
         {
         case Type::Number: set_str( "number" ); return;
         case Type::field:  set_str( "field" );  return;
-        case Type::Real:   set_str( "real" );   return;
+        case Type::Float:  set_str( "float" );   return;
         case Type::range:  set_str( "range" );  return;
         case Type::rlist:  set_str( "rlist" );  return;
         case Type::String: set_str( "string" ); return;
@@ -1278,9 +1278,9 @@ void SValue::negate()
     {
     case Type::Error:
         return;
-    case Type::Real:
-        if( !isnan( get_real() ) ) {
-            set_real( -get_real() );
+    case Type::Float:
+        if( !isnan( get_float() ) ) {
+            set_float( -get_float() );
         }
         return;
     case Type::Number:

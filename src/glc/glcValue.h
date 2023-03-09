@@ -41,7 +41,7 @@ namespace glich {
     {
     public:
         enum class Type {
-            Null, Error, String, Bool, Number, field, range, rlist, Real, Object
+            Null, Error, String, Bool, Number, field, range, rlist, Float, Object
         };
         SValue() : m_type( Type::Null ) {}
         SValue( const SValue& value );
@@ -52,7 +52,7 @@ namespace glich {
         SValue( bool b ) : m_type( Type::Bool ), m_data( b ) {}
         SValue( Range r ) : m_type( Type::range ), m_data( r ) {}
         SValue( const RList& rl ) : m_type( Type::rlist ), m_data( rl ) {}
-        SValue( double real ) : m_type( Type::Real ), m_data( real) {}
+        SValue( double real ) : m_type( Type::Float ), m_data( real) {}
         SValue( SValueVec obj ) : m_type( Type::Object ), m_data( obj ) {}
 
         void set_str( const std::string& str ) { m_type = Type::String; m_data = str; }
@@ -61,7 +61,7 @@ namespace glich {
         void set_field( Field fld ) { m_type = Type::field; m_data = static_cast<Num>(fld); }
         void set_range( Range rng ) { m_type = Type::range; m_data = rng; }
         void set_rlist( const RList& rlist ) { m_type = Type::rlist; m_data = rlist; }
-        void set_real( double real ) { m_type = Type::Real; m_data = real; }
+        void set_float( double real ) { m_type = Type::Float; m_data = real; }
         void set_object( SValueVec obj ) { m_type = Type::Object; m_data = obj; }
 
         void set_range_demote( Range rng );
@@ -78,10 +78,10 @@ namespace glich {
         Field get_field() const;
         Range get_range() const;
         RList get_rlist() const;
-        double get_real() const;
+        double get_float() const;
         SValueVec get_object() const;
         Field get_num_as_field() const;
-        double get_field_as_real() const;
+        double get_field_as_float() const;
 
         std::string get_str( bool& success ) const;
         Num get_number( bool& success ) const;
@@ -89,7 +89,7 @@ namespace glich {
         Field get_field( bool& success ) const; // Demote if possible.
         Range get_range( bool& success ) const; // Promote or demote if possible.
         RList get_rlist( bool& success ) const; // Promote if possible.
-        double get_real( bool& success ) const;
+        double get_float( bool& success ) const;
         SValueVec get_object( bool& success ) const;
         std::string get_object_code() const;
 

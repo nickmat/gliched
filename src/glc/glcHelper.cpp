@@ -44,7 +44,7 @@ Num glich::GetNum( const string& str )
     return strtoll( str.c_str(), nullptr, 10 );
 }
 
-double glich::GetReal( const string& str ) {
+double glich::GetFloat( const string& str ) {
     if( str.empty() ) {
         return 0.0;
     }
@@ -84,7 +84,7 @@ string glich::bool_to_string( bool b ) {
     return b ? "true" : "false";
 }
 
-string glich::real_to_string( double real ) {
+string glich::float_to_string( double real ) {
     if( isnan( real ) ) {
         return "nan";
     }

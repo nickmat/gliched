@@ -34,13 +34,13 @@
 namespace glich {
 
     Num GetNum( const std::string& str );
-    double GetReal( const std::string& str );
+    double GetFloat( const std::string& str );
     Field GetField( const std::string& str );
     Field NumToField( Num num, bool& success );
     Num FieldToNum( Field fld, bool& success );
 
     std::string bool_to_string( bool b );
-    std::string real_to_string( double real );
+    std::string float_to_string( double real );
     std::string field_to_string( Field fld );
     std::string range_to_string( Range rng );
     std::string rlist_to_string( RList rlist );

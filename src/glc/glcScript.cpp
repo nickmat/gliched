@@ -1010,8 +1010,8 @@ SValue Script::do_subscript( const SValue& left, const SValue& right )
         else {
             bool success = true;
             Num num = right.get_number( success );
-            if( success && num >= 0 && num < values.size() ) {
-                return values[num];
+            if( success && num >= 0 && num < (values.size() - 1) ) {
+                return values[num + 1];
             }
         }
     }

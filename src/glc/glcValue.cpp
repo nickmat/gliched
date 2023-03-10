@@ -1224,6 +1224,9 @@ void SValue::property_op( const SValue& value )
     if( property == "size" ) {
         switch( m_type )
         {
+        case Type::Object:
+            set_field( get_object().size() - 1 );
+            return;
         case Type::rlist:
             set_field( get_rlist().size() );
             return;

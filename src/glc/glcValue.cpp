@@ -1269,6 +1269,10 @@ void SValue::property_op( const SValue& value )
         default:           set_str( "unknown" );return;
         }
     }
+    if( property == "object" ) {
+        set_str( get_object_code() );
+        return;
+    }
     set_error( "Property not recognised." );
 }
 

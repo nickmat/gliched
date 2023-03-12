@@ -1,0 +1,19 @@
+// literal002.hcs Test literal number corner cases.
+
+let a = 2147483646f;
+
+let b = 2147483645f;
+
+let c = 2147483644f;
+
+let d = 0f;
+
+write a +", "+ b +", "+ c +", "+ d;
+
+clear;
+
+/*[OUTPUT]
+?, +infinity, 2147483644, 0
+[OUTPUT]*/
+
+

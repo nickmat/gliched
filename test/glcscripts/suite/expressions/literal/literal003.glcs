@@ -1,0 +1,23 @@
+// literal003.hcs Test negative literal number corner cases.
+// Note, these are interpreted as positive numbers
+// with the unitary minus operator.
+
+let a = -2147483646f;
+
+let b = -2147483645f;
+
+let c = -2147483644f;
+
+let d = -2147483648f;
+
+let e = -0f;
+
+write a +", "+ b +", "+ c +", "+ d +", "+ e;
+
+clear;
+
+/*[OUTPUT]
+?, -infinity, -2147483644, ?, 0
+[OUTPUT]*/
+
+

@@ -1,0 +1,18 @@
+// literal001.hcs Test literal number constants.
+// Note, it's not possible to test the 'today' keyword.
+
+let a = ?;
+
+let b = -infinity;
+
+let c = +infinity;
+
+write a +", "+ b +", "+ c;
+
+clear;
+
+/*[OUTPUT]
+?, -infinity, +infinity
+[OUTPUT]*/
+
+

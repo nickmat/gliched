@@ -142,6 +142,17 @@ void SValue::set_error( const std::string& str )
     }
 }
 
+SValue* SValue::get_object_element( size_t index )
+{
+    if( std::holds_alternative<SValueVec>( m_data ) ) {
+        SValueVec& vv = std::get<SValueVec>( m_data );
+        if( index >= 0 && index < vv.size() - 2 ) {
+            return &vv[index + 1];
+        }
+    }
+    return nullptr;
+}
+
 string SValue::get_str() const
 {
     if( std::holds_alternative<string>( m_data ) ) {

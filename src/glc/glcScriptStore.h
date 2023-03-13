@@ -32,8 +32,6 @@
 
 namespace glich {
 
-    class Scheme;
-
     typedef std::map<std::string, SValue> SValueMap;
 
     class ScriptStore {
@@ -53,6 +51,12 @@ namespace glich {
                 return true;
             }
             return false;
+        }
+        SValue* get_vp( const std::string& name ) {
+            if( exists( name ) ) {
+                return &m_table.at( name );
+            }
+            return nullptr;
         }
         void clear() {
             m_table.clear();

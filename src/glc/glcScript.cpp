@@ -341,13 +341,46 @@ bool Script::do_let()
         error( "Variable name expected." );
         return false;
     }
-    return do_assign( token.get_str() );
+    ScriptStore* vars = store();
+    assert( vars != nullptr );
+    string name = token.get_str();
+    if( !vars->exists( name ) ) {
+        store()->set( name, SValue() ); // Put a null SValue into store
+    }
+    return do_assign( name );
 }
 
 bool Script::do_assign( const std::string& name )
 {
     SToken token = m_ts.next();
+    SValue* vp = store()->get_vp( name );
+    assert( vp != nullptr );
     SValue value;
+
+    while( token.type() == SToken::Type::LSbracket ) {
+        if( !vp || vp->type() != SValue::Type::Object ) {
+            error( "Object type expected." );
+            return false;
+        }
+        value = expr( GetToken::next );
+        bool success = false;
+        size_t index = value.get_int_as_size_t( success );
+        if( !success ) {
+            error( "Positive number expected." );
+            return false;
+        }
+        vp = vp->get_object_element( index );
+        if( vp == nullptr ) {
+            error( "Unable to access object" );
+            return false;
+        }
+        if( m_ts.current().type() != SToken::Type::RSbracket ) {
+            error( "']' expected." );
+            return false;
+        }
+        token = m_ts.next();
+    }
+
     if( token.type() == SToken::Type::Equal ) {
         value = expr( GetToken::next );
     }
@@ -375,7 +408,7 @@ bool Script::do_assign( const std::string& name )
         error( "'=' expected." );
         return false;
     }
-    store()->set( name, value );
+    *vp = value;
     if( value.type() == SValue::Type::Error ) {
         m_ts.skip_to( SToken::Type::Semicolon );
     }

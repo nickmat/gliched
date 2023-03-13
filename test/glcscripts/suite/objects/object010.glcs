@@ -1,0 +1,14 @@
+// object011.glcs  Test creating and using objects.
+
+object array {}
+
+let a = {array 10,20,30,40};
+
+a[1] = 99;
+
+write a;
+
+
+/*[OUTPUT]
+{array 10, 99, 30, 40}
+[OUTPUT]*/

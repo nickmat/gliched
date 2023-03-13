@@ -96,6 +96,7 @@ namespace glich {
         std::string get_object_code() const;
 
         Field get_int_as_field( bool& success ) const; // Num or Field as Field
+        size_t get_int_as_size_t( bool& success ) const; // Num or Field as size_t
 
         bool is_error() const { return m_type == Type::Error; }
         bool propagate_error( const SValue& value );

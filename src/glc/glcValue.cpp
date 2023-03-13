@@ -395,6 +395,29 @@ Field SValue::get_int_as_field( bool& success ) const
     return Field();
 }
 
+size_t SValue::get_int_as_size_t( bool& success ) const
+{
+    success = true;
+    if( type() == Type::Number ) {
+        Num num = get_number();
+        if( num < 0 ) {
+            success = false;
+            num = 0;
+        }
+        return static_cast<size_t>(num);
+    }
+    if( type() == Type::field ) {
+        Field fld = get_field();
+        if( fld < 0 || fld >= f_maximum ) {
+            success = false;
+            fld = 0;
+        }
+        return static_cast<size_t>(fld);
+    }
+    success = false;
+    return 0;
+}
+
 bool SValue::propagate_error( const SValue& value )
 {
     if( is_error() ) {

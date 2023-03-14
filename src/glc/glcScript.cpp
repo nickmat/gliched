@@ -989,6 +989,10 @@ SValue glich::Script::get_object( GetToken get )
 
     SToken token = m_ts.current();
     bool comma_next = true;
+    if( token.type() == SToken::Type::Comma ) {
+        token = m_ts.next();
+        comma_next = false;
+    }
     bool done = false;
     for( ;;) {
         switch( token.type() )
@@ -1006,7 +1010,6 @@ SValue glich::Script::get_object( GetToken get )
             }
             else {
                 vlist.push_back( SValue() );
-                comma_next = true;
             }
             break;
         default: {

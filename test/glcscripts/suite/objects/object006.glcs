@@ -1,4 +1,4 @@
-// object008.glcs  Test creating and using objects.
+// object006.glcs  Test creating and using objects.
 
 object greet {
     values greeting;

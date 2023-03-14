@@ -69,7 +69,7 @@ namespace glich {
 
         void set_error( const std::string& str );
 
-        SValue* get_object_element( size_t index );
+        SValue* get_object_element( size_t index, size_t expand = 10 );
 
         std::string as_string() const;
         std::string object_to_string( const SValueVec& values ) const;

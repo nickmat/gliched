@@ -1,0 +1,15 @@
+// object015.glcs  Test creating and using objects.
+
+object array {}
+
+let a = {array};
+
+a[10] = 99;
+
+write a;
+
+
+/*[OUTPUT]
+Error (7): Unable to access object.
+
+[OUTPUT]*/

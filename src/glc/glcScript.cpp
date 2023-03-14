@@ -371,7 +371,7 @@ bool Script::do_assign( const std::string& name )
         }
         vp = vp->get_object_element( index );
         if( vp == nullptr ) {
-            error( "Unable to access object" );
+            error( "Unable to access object." );
             return false;
         }
         if( m_ts.current().type() != SToken::Type::RSbracket ) {

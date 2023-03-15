@@ -55,8 +55,8 @@ bool Script::run()
     STokenStream* prev_ts = s_current_ts;
     s_current_ts = &m_ts;
     for( ;;) {
-        m_ts.next();
-        if( m_ts.current().type() == SToken::Type::End ) {
+        next_token();
+        if( current_token().type() == SToken::Type::End ) {
             ret = true;
             break;
         }
@@ -76,7 +76,7 @@ ScriptStore* Script::store() const
 
 bool Script::statement()
 {
-    SToken token = m_ts.current();
+    SToken token = current_token();
 
     if( token.type() == SToken::Type::Name ) {
         string name = token.get_str();
@@ -106,7 +106,7 @@ bool Script::statement()
 bool Script::do_mark()
 {
     string mark = get_name_or_primary( GetToken::next );
-    if( m_ts.current().type() != SToken::Type::Semicolon ) {
+    if( current_token().type() != SToken::Type::Semicolon ) {
         error( "';' expected." );
         return false;
     }
@@ -121,10 +121,10 @@ bool Script::do_mark()
 bool Script::do_clear()
 {
     string mark;
-    SToken token = m_ts.next();
+    SToken token = next_token();
     if( token.type() != SToken::Type::Semicolon ) {
         mark = get_name_or_primary( GetToken::current );
-        token = m_ts.current();
+        token = current_token();
     }
     if( token.type() != SToken::Type::Semicolon ) {
         error( "';' expected." );
@@ -150,7 +150,7 @@ bool Script::do_if()
                 return false;
             }
         }
-        SToken token = m_ts.current();
+        SToken token = current_token();
         if( result ) {
             // Run the statements
             for( ;;) {
@@ -170,7 +170,7 @@ bool Script::do_if()
                 if( statement() == false ) {
                     return false;
                 }
-                token = m_ts.next();
+                token = next_token();
             }
             done = true;
             result = false;
@@ -180,8 +180,8 @@ bool Script::do_if()
             nested = 0;
             for( ;;) {
                 if( token.type() == SToken::Type::At ) {
-                    token = m_ts.next();
-                    token = m_ts.next(); // Ignore function name
+                    token = next_token();
+                    token = next_token(); // Ignore function name
                 }
                 if( token.type() == SToken::Type::End ) {
                     error( enderr );
@@ -201,7 +201,7 @@ bool Script::do_if()
                         }
                     }
                     else if( name == "else" && nested == 0 ) {
-                        m_ts.next();
+                        next_token();
                         result = true;
                         break;
                     }
@@ -209,14 +209,14 @@ bool Script::do_if()
                         break;
                     }
                 }
-                token = m_ts.next();
+                token = next_token();
             }
         }
         if( done ) {
             // Skip to "endif"
             nested = 0;
             for( ;;) {
-                token = m_ts.next();
+                token = next_token();
                 if( token.type() == SToken::Type::End ) {
                     error( enderr );
                     return false;
@@ -255,7 +255,7 @@ bool Script::do_do()
     for( size_t i = 1000; i > 0; --i ) {  // We have a limit of 1000 reiterations
         m_ts.set_line( start_line );
         bool exit = false;
-        SToken token = m_ts.next();
+        SToken token = next_token();
         for( ;;) {
             if( token.type() == SToken::Type::End ) {
                 exit = true;
@@ -277,7 +277,7 @@ bool Script::do_do()
                     if( exit ) {
                         break;
                     }
-                    token = m_ts.current();
+                    token = current_token();
                     continue;
                 }
                 if( name == "loop" ) {
@@ -288,7 +288,7 @@ bool Script::do_do()
                 exit = true;
                 break;
             }
-            token = m_ts.next();
+            token = next_token();
         }
         if( exit ) {
             break;
@@ -304,7 +304,7 @@ bool Script::do_do()
 bool Script::do_set()
 {
     string prop;
-    SToken token = m_ts.next();
+    SToken token = next_token();
     if( token.type() == SToken::Type::Name ) {
         prop = token.get_str();
     }
@@ -313,7 +313,7 @@ bool Script::do_set()
         return false;
     }
     string value = get_name_or_primary( GetToken::next );
-    if( m_ts.current().type() != SToken::Type::Semicolon ) {
+    if( current_token().type() != SToken::Type::Semicolon ) {
         error( "set statement is \"set propery value;\"." );
         return false;
     }
@@ -336,7 +336,7 @@ bool Script::do_set()
 
 bool Script::do_let()
 {
-    SToken token = m_ts.next();
+    SToken token = next_token();
     if( token.type() != SToken::Type::Name ) {
         error( "Variable name expected." );
         return false;
@@ -352,7 +352,7 @@ bool Script::do_let()
 
 bool Script::do_assign( const std::string& name )
 {
-    SToken token = m_ts.next();
+    SToken token = next_token();
     SValue* vp = store()->get_vp( name );
     assert( vp != nullptr );
     SValue value;
@@ -374,11 +374,11 @@ bool Script::do_assign( const std::string& name )
             error( "Unable to access object." );
             return false;
         }
-        if( m_ts.current().type() != SToken::Type::RSbracket ) {
+        if( current_token().type() != SToken::Type::RSbracket ) {
             error( "']' expected." );
             return false;
         }
-        token = m_ts.next();
+        token = next_token();
     }
 
     if( token.type() == SToken::Type::Equal ) {
@@ -412,7 +412,7 @@ bool Script::do_assign( const std::string& name )
     if( value.type() == SValue::Type::Error ) {
         m_ts.skip_to( SToken::Type::Semicolon );
     }
-    if( m_ts.current().type() != SToken::Type::Semicolon ) {
+    if( current_token().type() != SToken::Type::Semicolon ) {
         error( "';' expected." );
         return false;
     }
@@ -421,7 +421,7 @@ bool Script::do_assign( const std::string& name )
 
 bool Script::do_write( const std::string& term )
 {
-    SToken token = m_ts.next();
+    SToken token = next_token();
     string filecode;
     if( token.type() == SToken::Type::Dot ) {
         filecode = get_name_or_primary( GetToken::next );
@@ -445,7 +445,7 @@ bool Script::do_write( const std::string& term )
     if( value.type() == SValue::Type::Error ) {
         m_ts.skip_to( SToken::Type::Semicolon );
     }
-    if( m_ts.current().type() != SToken::Type::Semicolon ) {
+    if( current_token().type() != SToken::Type::Semicolon ) {
         error( "';' expected." );
         return false;
     }
@@ -470,33 +470,33 @@ Function* Script::create_function()
         error( "function \"" + code + "\" already exists." );
         return nullptr;
     }
-    SToken token = m_ts.current();
+    SToken token = current_token();
     StdStrVec args;
     SValueVec defs;
     if( token.type() == SToken::Type::Lbracket ) {
-        token = m_ts.next();
+        token = next_token();
         for( ;;) {
             if( token.type() == SToken::Type::Rbracket ) {
                 break;
             }
-            string str = m_ts.current().get_str();
+            string str = current_token().get_str();
             if( token.type() != SToken::Type::Name || str.empty() ) {
                 error( "Argument name expected." );
                 return nullptr;
             }
             args.push_back( str );
-            token = m_ts.next();
+            token = next_token();
             SValue value;
             if( token.type() == SToken::Type::Equal ) {
                 value = expr( GetToken::next );
             }
             defs.push_back( value );
-            token = m_ts.current();
+            token = current_token();
             if( token.type() == SToken::Type::Comma ) {
-                token = m_ts.next();
+                token = next_token();
             }
         }
-        token = m_ts.next();
+        token = next_token();
     }
     if( token.type() != SToken::Type::LCbracket ) {
         error( "'{' expected." );
@@ -539,33 +539,33 @@ bool glich::Script::do_command()
         error( "command \"" + code + "\" already exists." );
         return false;
     }
-    SToken token = m_ts.current();
+    SToken token = current_token();
     StdStrVec args;
     SValueVec defs;
     if( token.type() == SToken::Type::Lbracket ) {
-        token = m_ts.next();
+        token = next_token();
         for( ;;) {
             if( token.type() == SToken::Type::Rbracket ) {
                 break;
             }
-            string str = m_ts.current().get_str();
+            string str = current_token().get_str();
             if( token.type() != SToken::Type::Name || str.empty() ) {
                 error( "Argument name expected." );
                 return false;
             }
             args.push_back( str );
-            token = m_ts.next();
+            token = next_token();
             SValue value;
             if( token.type() == SToken::Type::Equal ) {
                 value = expr( GetToken::next );
             }
             defs.push_back( value );
-            token = m_ts.current();
+            token = current_token();
             if( token.type() == SToken::Type::Comma ) {
-                token = m_ts.next();
+                token = next_token();
             }
         }
-        token = m_ts.next();
+        token = next_token();
     }
     if( token.type() != SToken::Type::LCbracket ) {
         error( "'{' expected." );
@@ -595,7 +595,7 @@ bool Script::do_call()
         error( value.get_str() );
         return false;
     }
-    if( m_ts.current().type() != SToken::Type::Semicolon ) {
+    if( current_token().type() != SToken::Type::Semicolon ) {
         error( "';' expected." );
         return false;
     }
@@ -613,14 +613,14 @@ bool glich::Script::do_object()
         error( "object \"" + code + "\" already exists." );
         return false;
     }
-    if( m_ts.current().type() != SToken::Type::LCbracket ) {
+    if( current_token().type() != SToken::Type::LCbracket ) {
         error( "'{' expected." );
         return false;
     }
     Object* obj = m_glc->create_object( code );
     string str;
     for( ;;) {
-        SToken token = m_ts.next();
+        SToken token = next_token();
         if( token.type() == SToken::Type::RCbracket ||
             token.type() == SToken::Type::End ) {
             break; // All done.
@@ -661,7 +661,7 @@ bool Script::do_file()
         return false;
     }
     File::FileType type = File::FT_null;
-    if( m_ts.current().type() != SToken::Type::Semicolon ) {
+    if( current_token().type() != SToken::Type::Semicolon ) {
         string type = get_name_or_primary( GetToken::next );
         if( type.empty() ) {
             error( "';' or switch expected." );
@@ -674,7 +674,7 @@ bool Script::do_file()
             type = File::FT_append;
         }
     }
-    if( m_ts.current().type() != SToken::Type::Semicolon ) {
+    if( current_token().type() != SToken::Type::Semicolon ) {
         error( "';' expected." );
         return false;
     }
@@ -696,7 +696,7 @@ SValue Script::expr( GetToken get )
 {
     SValue left = compare( get );
     for( ;;) {
-        SToken token = m_ts.current();
+        SToken token = current_token();
         switch( token.type() )
         {
         case SToken::Type::Or:
@@ -715,7 +715,7 @@ SValue Script::compare( GetToken get )
 {
     SValue left = combine( get );
     for( ;;) {
-        SToken token = m_ts.current();
+        SToken token = current_token();
         switch( token.type() )
         {
         case SToken::Type::Equal:
@@ -750,7 +750,7 @@ SValue Script::combine( GetToken get )
     SValue left = range( get );
 
     for( ;;) {
-        SToken token = m_ts.current();
+        SToken token = current_token();
         switch( token.type() )
         {
         case SToken::Type::UNION:
@@ -776,7 +776,7 @@ SValue Script::range( GetToken get )
     SValue left = sum( get );
 
     for( ;;) {
-        SToken token = m_ts.current();
+        SToken token = current_token();
         switch( token.type() )
         {
         case SToken::Type::DotDot:
@@ -792,7 +792,7 @@ SValue Script::sum( GetToken get )
 {
     SValue left = term( get );
     for( ;;) {
-        SToken token = m_ts.current();
+        SToken token = current_token();
         switch( token.type() )
         {
         case SToken::Type::Plus:
@@ -812,7 +812,7 @@ SValue Script::term( GetToken get )
     SValue left = subscript( get );
 
     for( ;;) {
-        SToken token = m_ts.current();
+        SToken token = current_token();
         switch( token.type() )
         {
         case SToken::Type::Star:
@@ -838,17 +838,17 @@ SValue Script::subscript( GetToken get )
     SValue left = primary( get );
 
     for( ;;) {
-        SToken token = m_ts.current();
+        SToken token = current_token();
         switch( token.type() )
         {
         case SToken::Type::LSbracket: {
                 SValue right;
-                token = m_ts.next();
+                token = next_token();
                 if( token.type() == SToken::Type::Dot ) {
-                    token = m_ts.next();
+                    token = next_token();
                     if( token.type() == SToken::Type::Name ) {
                         right.set_str( token.get_str() );
-                        m_ts.next();
+                        next_token();
                     }
                     else {
                         right = expr( GetToken::current );
@@ -858,17 +858,17 @@ SValue Script::subscript( GetToken get )
                 else {
                     if( token.type() == SToken::Type::Name ) {
                         right.set_str( token.get_str() );
-                        m_ts.next();
+                        next_token();
                     }
                     else {
                         right = expr( GetToken::current );
                     }
                     left = do_subscript( left, right );
                 }
-                if( m_ts.current().type() != SToken::Type::RSbracket ) {
+                if( current_token().type() != SToken::Type::RSbracket ) {
                     error( "']' expected." );
                 }
-                m_ts.next();
+                next_token();
             }
             break;
         case SToken::Type::Dot:
@@ -883,38 +883,38 @@ SValue Script::subscript( GetToken get )
 SValue Script::primary( GetToken get )
 {
     SValue value;
-    SToken token = (get == GetToken::next) ? m_ts.next() : m_ts.current();
+    SToken token = (get == GetToken::next) ? next_token() : current_token();
     switch( token.type() )
     {
     case SToken::Type::Number:
     case SToken::Type::Field:
     case SToken::Type::Real:
         value = token.value();
-        m_ts.next();
+        next_token();
         break;
     case SToken::Type::Qmark:
         value.set_field( f_invalid );
-        m_ts.next();
+        next_token();
         break;
     case SToken::Type::String:
         value.set_str( token.get_str() );
-        m_ts.next();
+        next_token();
         break;
     case SToken::Type::Name:
         value = get_value_var( token.get_str() );
-        m_ts.next();
+        next_token();
         break;
     case SToken::Type::Lbracket:
         value = expr( GetToken::next );
-        if( m_ts.current().type() != SToken::Type::Rbracket ) {
+        if( current_token().type() != SToken::Type::Rbracket ) {
             error( "')' expected." );
             break;
         }
-        m_ts.next();
+        next_token();
         break;
     case SToken::Type::LCbracket:
         value = get_object( GetToken::next );
-        m_ts.next();
+        next_token();
         break;
     case SToken::Type::Error:
         value = error_cast();
@@ -946,10 +946,10 @@ SValue Script::primary( GetToken get )
 std::string Script::get_name_or_primary( GetToken get )
 {
     string str;
-    SToken token = (get == GetToken::next) ? m_ts.next() : m_ts.current();
+    SToken token = (get == GetToken::next) ? next_token() : current_token();
     if( token.type() == SToken::Type::Name ) {
         str = token.get_str();
-        m_ts.next();
+        next_token();
     }
     else {
         SValue value = primary( GetToken::current );
@@ -963,7 +963,7 @@ std::string Script::get_name_or_primary( GetToken get )
 StdStrVec glich::Script::get_string_list( GetToken get )
 {
     StdStrVec vec;
-    SToken token = (get == GetToken::next) ? m_ts.next() : m_ts.current();
+    SToken token = (get == GetToken::next) ? next_token() : current_token();
     while( token.type() != SToken::SToken::Type::Semicolon &&
         token.type() != SToken::SToken::Type::End )
     {
@@ -971,9 +971,9 @@ StdStrVec glich::Script::get_string_list( GetToken get )
         if( !str.empty() ) {
             vec.push_back( str );
         }
-        token = m_ts.current();
+        token = current_token();
         if( token.type() == SToken::SToken::Type::Comma ) {
-            token = m_ts.next();
+            token = next_token();
         }
     }
     return vec;
@@ -987,10 +987,10 @@ SValue glich::Script::get_object( GetToken get )
     SValue vo( ocode );
     vlist.push_back( vo );
 
-    SToken token = m_ts.current();
+    SToken token = current_token();
     bool comma_next = true;
     if( token.type() == SToken::Type::Comma ) {
-        token = m_ts.next();
+        token = next_token();
         comma_next = false;
     }
     bool done = false;
@@ -1016,12 +1016,12 @@ SValue glich::Script::get_object( GetToken get )
                 SValue value = expr( GetToken::current );
                 vlist.push_back( value );
             }
-            token = m_ts.current();
+            token = current_token();
             comma_next = true;
             continue;
         }
         if( done ) break;
-        token = m_ts.next();
+        token = next_token();
     }
     return SValue( vlist );
 }
@@ -1089,13 +1089,13 @@ SValue Script::error_cast()
 
 SValueVec Script::get_args( SValue& value, GetToken get )
 {
-    SToken token = (get == GetToken::next) ? m_ts.next() : m_ts.current();
+    SToken token = (get == GetToken::next) ? m_ts.next() : current_token();
     SValueVec args;
     if( token.type() == SToken::Type::Lbracket ) {
         for( ;; ) {
             SValue arg = expr( GetToken::next );
             args.push_back( arg );
-            token = m_ts.current();
+            token = current_token();
             if( token.type() == SToken::Type::Rbracket ||
                 token.type() == SToken::Type::End )
             {
@@ -1106,14 +1106,14 @@ SValueVec Script::get_args( SValue& value, GetToken get )
                 return SValueVec();
             }
         }
-        token = m_ts.next();
+        token = next_token();
     }
     return args;
 }
 
 SValue Script::function_call()
 {
-    SToken token = m_ts.next();
+    SToken token = next_token();
     if( token.type() != SToken::Type::Name ) {
         return SValue( "Function name expected.", SValue::Type::Error );
     }
@@ -1169,9 +1169,9 @@ SValue Script::run_function( Function* fun, const Object* obj, const SValue* lef
         }
     }
 
-    m_ts.next();
+    next_token();
     while( statement() ) {
-        if( m_ts.next().type() == SToken::Type::End ) {
+        if( next_token().type() == SToken::Type::End ) {
             break;
         }
     }
@@ -1186,7 +1186,7 @@ SValue Script::run_function( Function* fun, const Object* obj, const SValue* lef
 SValue glich::Script::command_call()
 {
     SValue value;
-    SToken token = m_ts.next();
+    SToken token = next_token();
     if( token.type() != SToken::Type::Name ) {
         value.set_error( "Command name expected." );
         return value;
@@ -1218,9 +1218,9 @@ SValue glich::Script::command_call()
         }
     }
 
-    m_ts.next();
+    next_token();
     while( statement() ) {
-        if( m_ts.next().type() == SToken::Type::End ) {
+        if( next_token().type() == SToken::Type::End ) {
             break;
         }
     }

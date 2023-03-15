@@ -48,7 +48,7 @@ SToken::SToken( const SToken& token )
 
 Glich* STokenStream::s_glc = nullptr;
 
-SToken STokenStream::next()
+SToken& STokenStream::next()
 {
     char ch;
     SToken::Type str_token = SToken::Type::String;

@@ -44,6 +44,9 @@ namespace glich {
 
         static STokenStream* get_current_ts() { return s_current_ts; }
 
+        SToken& current_token() { return m_ts.current(); }
+        SToken& next_token() { return m_ts.next(); }
+
     private:
         bool error( const std::string& mess ) { return m_ts.error( mess ); }
         ScriptStore* store() const;

@@ -27,6 +27,8 @@
 
 #include "glcValue.h"
 
+#include <glc/glc.h>
+
 #include "glcHelper.h"
 #include "glcMath.h"
 #include "glcScript.h"
@@ -36,6 +38,7 @@
 using namespace glich;
 using std::string;
 
+Glich* SValue::s_glc = nullptr;
 
 SValue::SValue( const SValue& value )
 {
@@ -45,6 +48,7 @@ SValue::SValue( const SValue& value )
 
 string SValue::as_string() const
 {
+    Context context = s_glc->get_context();
     switch( m_type )
     {
     case Type::Null:
@@ -57,11 +61,11 @@ string SValue::as_string() const
     case Type::Number:
         return std::to_string( std::get<Num>( m_data ) );
     case Type::field:
-        return field_to_string( std::get<Num>( m_data ) );
+        return field_to_string( std::get<Num>( m_data ), context );
     case Type::range:
-        return range_to_string( std::get<Range>( m_data ) );
+        return range_to_string( std::get<Range>( m_data ), context );
     case Type::rlist:
-        return rlist_to_string( std::get<RList>( m_data ) );
+        return rlist_to_string( std::get<RList>( m_data ), context );
     case Type::Float:
         return float_to_string( std::get<double>( m_data ) );
     case Type::Object:

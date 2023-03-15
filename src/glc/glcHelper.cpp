@@ -109,29 +109,29 @@ string glich::float_to_string( double real ) {
     return res;
 }
 
-string glich::field_to_string( Field fld ) {
+string glich::field_to_string( Field fld, Context ctx ) {
     switch( fld )
     {
     case f_invalid:
         return "?";
     case f_maximum:
-        return "+infinity";
+        return (ctx == Context::number) ? "+infinity" : "future";
     case f_minimum:
-        return "-infinity";
+        return (ctx == Context::number) ? "-infinity" : "past";
     }
     return std::to_string( fld );
 }
 
-string glich::range_to_string( Range rng ){
+string glich::range_to_string( Range rng, Context ctx ){
     if( rng.m_beg == rng.m_end ) {
-        return field_to_string( rng.m_beg );
+        return field_to_string( rng.m_beg, ctx );
     }
     return 
-        field_to_string( rng.m_beg ) + ".." +
-        field_to_string( rng.m_end );
+        field_to_string( rng.m_beg, ctx ) + ".." +
+        field_to_string( rng.m_end, ctx );
 }
 
-string glich::rlist_to_string( RList rlist ) {
+string glich::rlist_to_string( RList rlist, Context ctx ) {
     if( rlist.empty() ) {
         return "empty";
     }
@@ -141,7 +141,7 @@ string glich::rlist_to_string( RList rlist ) {
         if( !first ) {
             str += " | ";
         }
-        str += range_to_string( rng );
+        str += range_to_string( rng, ctx );
         first = false;
     }
     return str;

@@ -1,0 +1,9 @@
+// mark001.glcs Test file to test mark statement
+
+mark "test";
+mark "test";
+write "Ok so far";
+
+/*[OUTPUT]
+Ok so far
+[OUTPUT]*/

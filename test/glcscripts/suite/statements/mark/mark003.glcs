@@ -1,0 +1,25 @@
+// mark003.hcs Test file to test repeated mark statement
+
+let a = 1;
+let b = infinity;
+let c = !empty;
+writeln "";
+writeln b + ", " + c + ", " + a[.type];
+
+mark "test";
+set context field;
+let d = 2;
+writeln b + ", " + c + ", " + a[.type] + ", " + d[.type];
+
+mark "test";
+let e = 3;
+writeln b + ", " + c + ", " + a[.type] + ", " + d[.type] + ", " + e[.type];
+
+
+/*[OUTPUT]
+
++infinity, -infinity..+infinity, number
+future, past..future, number, field
++infinity, -infinity..+infinity, number, field, number
+
+[OUTPUT]*/

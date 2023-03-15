@@ -34,6 +34,7 @@
 
 namespace glich {
 
+    class Glich;
     class SValue;
     using SValueVec = std::vector<SValue>;
 
@@ -54,6 +55,8 @@ namespace glich {
         SValue( const RList& rl ) : m_type( Type::rlist ), m_data( rl ) {}
         SValue( double real ) : m_type( Type::Float ), m_data( real) {}
         SValue( SValueVec obj ) : m_type( Type::Object ), m_data( obj ) {}
+
+        static void init( Glich* glc ) { s_glc = glc; }
 
         void set_str( const std::string& str ) { m_type = Type::String; m_data = str; }
         void set_bool( bool b ) { m_type = Type::Bool; m_data = b; }
@@ -130,6 +133,7 @@ namespace glich {
         bool is_integer() const { return (m_type == Type::Number || m_type == Type::field); }
 
     private:
+        static Glich* s_glc;
 
         Type m_type;
         std::variant<bool, Num, std::string, Range, RList, double, SValueVec> m_data;

@@ -1288,6 +1288,12 @@ SValue Script::get_value_var( const std::string& name )
     if( name == "infinity" ) {
         return SValue( f_maximum, SValue::Type::field );
     }
+    if( name == "past" ) {
+        return SValue( f_minimum, SValue::Type::field );
+    }
+    if( name == "future" ) {
+        return SValue( f_maximum, SValue::Type::field );
+    }
     if( name == "inf" ) {
         return SValue( std::numeric_limits<double>::infinity() );
     }

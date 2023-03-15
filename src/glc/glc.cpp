@@ -32,6 +32,7 @@
 #include "glcMark.h"
 #include "glcObject.h"
 #include "glcScript.h"
+#include "glcValue.h"
 
 #include <cassert>
 #include <fstream>
@@ -59,6 +60,7 @@ Glich::Glich( InOut* inout ) : m_store( new ScriptStore ), m_inout( inout )
         m_inout = new InOut;
     }
     STokenStream::init( this );
+    SValue::init( this );
 }
 
 string Glich::run_script( const string& script )

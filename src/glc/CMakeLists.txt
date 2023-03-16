@@ -38,4 +38,4 @@ set( GLC_HEADERS
 
 add_library( glc ${GLC_SOURCES} ${GLC_HEADERS} )
 
-#target_link_libraries( glc PRIVATE utf8api )
+target_link_libraries( glc PRIVATE utf8api )

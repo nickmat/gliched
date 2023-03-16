@@ -286,7 +286,7 @@ Num glich::SValue::get_number( bool& success ) const
     }
     Field fld = get_field( success );
     if( success ) {
-        return FieldToNum( fld, success );
+        return field_to_num( fld, success );
     }
     return 0;
 }
@@ -321,7 +321,7 @@ Field SValue::get_field( bool& success ) const
     }
     if( std::holds_alternative<Num>( m_data ) && m_type == Type::Number ) {
         Num num = std::get<Num>( m_data );
-        return FieldToNum( num, success );
+        return field_to_num( num, success );
     }
     success = false;
     return f_invalid;
@@ -400,7 +400,7 @@ Field SValue::get_int_as_field( bool& success ) const
     success = true;
     if( type() == Type::Number ) {
         Num num = get_number();
-        return NumToField( num, success );
+        return num_to_field( num, success );
     }
     if( type() == Type::field ) {
         return get_field();

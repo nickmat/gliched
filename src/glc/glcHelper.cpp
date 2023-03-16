@@ -36,7 +36,7 @@ using namespace glich;
 using std::string;
 
 
-Num glich::GetNum( const string& str )
+Num glich::str_to_num( const string& str )
 {
     if( str.empty() ) {
         return 0;
@@ -44,23 +44,23 @@ Num glich::GetNum( const string& str )
     return strtoll( str.c_str(), nullptr, 10 );
 }
 
-double glich::GetFloat( const string& str ) {
+double glich::str_to_float( const string& str ) {
     if( str.empty() ) {
         return 0.0;
     }
     return std::stod( str );
 }
 
-Field glich::GetField( const string& str )
+Field glich::str_to_field( const string& str )
 {
-    Num num = GetNum( str );
+    Num num = str_to_num( str );
     if( num <= f_maximum && num >= f_minimum ) {
         return static_cast<Field>(num);
     }
     return f_invalid;
 }
 
-Field glich::NumToField( Num num, bool& success )
+Field glich::num_to_field( Num num, bool& success )
 {
     if( num < f_maximum && num > f_minimum ) {
         success = true;
@@ -70,7 +70,7 @@ Field glich::NumToField( Num num, bool& success )
     return f_invalid;
 }
 
-Num glich::FieldToNum( Field fld, bool& success )
+Num glich::field_to_num( Field fld, bool& success )
 {
     success = true;
     if( fld < f_maximum && fld > f_minimum ) {

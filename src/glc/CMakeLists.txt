@@ -9,6 +9,7 @@
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
 set( GLC_SOURCES
+    glc.cpp
     glcFile.cpp
     glcHelper.cpp
     glcMark.cpp
@@ -17,12 +18,12 @@ set( GLC_SOURCES
     glcScript.cpp
     glcTokenStream.cpp
     glcValue.cpp
-    glc.cpp
 )
 
 set( GLC_HEADERS
     ../../include/glc/glc.h
     ../../include/glc/glcDefs.h
+    ../../include/glc/hicDefs.h
     glcFile.h
     glcFunction.h
     glcHelper.h
@@ -37,4 +38,4 @@ set( GLC_HEADERS
 
 add_library( glc ${GLC_SOURCES} ${GLC_HEADERS} )
 
-# target_link_libraries( glc PRIVATE utf8proc )
+#target_link_libraries( glc PRIVATE utf8api )

@@ -36,6 +36,7 @@ namespace glich {
 
     std::string get_roman_numerals( Field field, StrStyle style );
     std::string get_roman_numerals_style( StrStyle style );
+    Field convert_roman_numerals( const std::string& str );
 
 }
 

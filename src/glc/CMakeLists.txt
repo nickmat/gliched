@@ -18,8 +18,10 @@ set( GLC_SOURCES
     glcScript.cpp
     glcTokenStream.cpp
     glcValue.cpp
+    hicBase.cpp
     hicDatePhrase.cpp
     hicHelper.cpp
+    hicJdn.cpp
     hicMath.cpp
     hicRomanNum.cpp
 )
@@ -38,8 +40,10 @@ set( GLC_HEADERS
     glcScriptStore.h
     glcTokenStream.h
     glcValue.h
+    hicBase.h
     hicDatePhrase.h
     hicHelper.h
+    hicJdn.h
     hicMath.h
     hicRomanNum.h
 )

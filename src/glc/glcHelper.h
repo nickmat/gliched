@@ -38,6 +38,8 @@ namespace glich {
 
     Num str_to_num( const std::string& str );
     double str_to_float( const std::string& str );
+    // str_to_float refers to glich float. To avoid confusion add the following. 
+    inline double str_to_double( const std::string& str ) { return str_to_float( str ); }
     Field str_to_field( const std::string& str );
     Field num_to_field( Num num, bool& success );
     Num field_to_num( Field fld, bool& success );

@@ -37,6 +37,41 @@ namespace glich {
     std::string make_key( const std::string& str );
     bool split_code( std::string* scheme, std::string* format, const std::string& str );
 
+    class Vocab;
+
+    enum InputFieldType {
+        IFT_null, IFT_quest, IFT_number, IFT_dual1, IFT_dual2, IFT_vocab, IFT_calc
+    };
+
+    struct InputField
+    {
+        InputField() : value( f_invalid ), type( IFT_null ), vocab( NULL ) {}
+
+        Field          value;
+        InputFieldType type;
+        Vocab* vocab;
+    };
+
+    typedef std::vector<InputField> InputFieldVec;
+
+    enum Boundary { RB_none, RB_begin, RB_end };
+
+    struct LocaleData {
+        LocaleData() : lat( 51.4772 ), lon( 0.0 ) {} // Default to Greenwich, England.
+
+        double lat; // Degrees latitude from equator, positive North.
+        double lon; // Degrees longtitude from Greenwich Meridian, positive East.
+    };
+
+    template < class T, class V >
+    int find_in_vec( const T& item, const V& vec ) {
+        for( size_t i = 0; i < vec.size(); i++ ) {
+            if( item == vec[i] ) {
+                return int( i );
+            }
+        }
+        return -1;
+    }
 }
 
 #endif // SRC_GLC_HICHELPER_H_GUARD

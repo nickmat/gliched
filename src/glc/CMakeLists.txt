@@ -20,6 +20,7 @@ set( GLC_SOURCES
     glcValue.cpp
     hicDatePhrase.cpp
     hicHelper.cpp
+    hicMath.cpp
     hicRomanNum.cpp
 )
 
@@ -39,6 +40,7 @@ set( GLC_HEADERS
     glcValue.h
     hicDatePhrase.h
     hicHelper.h
+    hicMath.h
     hicRomanNum.h
 )
 

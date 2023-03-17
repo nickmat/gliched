@@ -18,6 +18,7 @@ set( GLC_SOURCES
     glcScript.cpp
     glcTokenStream.cpp
     glcValue.cpp
+    hicRomanNum.cpp
 )
 
 set( GLC_HEADERS
@@ -34,6 +35,7 @@ set( GLC_HEADERS
     glcScriptStore.h
     glcTokenStream.h
     glcValue.h
+    hicRomanNum.h
 )
 
 add_library( glc ${GLC_SOURCES} ${GLC_HEADERS} )

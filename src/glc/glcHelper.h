@@ -51,15 +51,16 @@ namespace glich {
 
     bool is_name( const std::string& str );
 
-    extern std::string dual_fields_to_str( Field field, Field dual );
-    extern std::string get_ordinal_suffix( Field field, StrStyle style = StrStyle::lowercase );
-    extern std::string get_ordinal_suffix_style( StrStyle style = StrStyle::lowercase );
-    extern std::string get_roman_numerals( Field field, StrStyle style );
-    extern std::string get_roman_numerals_style( StrStyle style );
+    std::string ascii_tolower( const std::string& str );
+    void ascii_tolower( std::string& str );
 
-    extern std::string get_left_padded( Field field, const std::string& specifier );
-    extern std::string get_left_padded( Field field, const std::string& ch, size_t width );
-    extern std::string get_left_pad_style(
+    std::string dual_fields_to_str( Field field, Field dual );
+    std::string get_ordinal_suffix( Field field, StrStyle style = StrStyle::lowercase );
+    std::string get_ordinal_suffix_style( StrStyle style = StrStyle::lowercase );
+
+    std::string get_left_padded( Field field, const std::string& specifier );
+    std::string get_left_padded( Field field, const std::string& ch, size_t width );
+    std::string get_left_pad_style(
         const std::string& fieldstyle, const std::string& specifier );
 }
 

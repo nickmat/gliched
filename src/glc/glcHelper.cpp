@@ -183,7 +183,8 @@ bool glich::is_name( const std::string& str )
     return true;
 }
 
-static string ascii_tolower( const string& str )
+// TODO: This should handle utf8
+string glich::ascii_tolower( const string& str )
 {
     string result;
     for( string::const_iterator it = str.begin(); it != str.end(); it++ ) {
@@ -197,7 +198,8 @@ static string ascii_tolower( const string& str )
     return result;
 }
 
-static void ascii_tolower( string& str )
+// TODO: This should handle utf8
+void glich::ascii_tolower( string& str )
 {
     for( string::iterator it = str.begin(); it != str.end(); it++ ) {
         if( *it >= 'A' && *it <= 'Z' ) {
@@ -263,39 +265,6 @@ string glich::get_ordinal_suffix_style( StrStyle style )
 {
     return style == StrStyle::uppercase ? "TH" : "th";
 }
-
-string glich::get_roman_numerals( Field field, StrStyle style )
-{
-    // We can only convert numbers 1 to 4999 (4000 = "MMMM")
-    if( field >= 5000 || field <= 0 ) {
-        return field_to_string( field, Context::hics );
-    }
-    static const char* units[10]
-        = { "", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX" };
-    static const char* tens[10]
-        = { "", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC" };
-    static const char* hunds[10]
-        = { "", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM" };
-    static const char* thous[5]
-        = { "", "M", "MM", "MMM", "MMMM" };
-
-    size_t n = field;
-    string result = string( thous[n / 1000] )
-        + string( hunds[(n / 100) % 10] )
-        + string( tens[(n / 10) % 10] )
-        + string( units[n % 10] );
-
-    if( style == StrStyle::lowercase ) {
-        ascii_tolower( result );
-    }
-    return result;
-}
-
-string glich::get_roman_numerals_style( StrStyle style )
-{
-    return style == StrStyle::lowercase ? "[x]" : "[X]";
-}
-
 
 static string left_padded_str( const string& str, const string& ch, size_t size )
 {

@@ -33,6 +33,9 @@
 
 namespace glich {
 
+    enum class StrStyle { undefined, lowercase, uppercase };
+    enum class ShowInvalid { blank, qmark, context };
+
     Num str_to_num( const std::string& str );
     double str_to_float( const std::string& str );
     Field str_to_field( const std::string& str );
@@ -41,11 +44,23 @@ namespace glich {
 
     std::string bool_to_string( bool b );
     std::string float_to_string( double real );
-    std::string field_to_string( Field fld, Context ctx = Context::glich );
+    std::string field_to_string( 
+        Field fld, Context ctx = Context::glich, ShowInvalid si = ShowInvalid::context );
     std::string range_to_string( Range rng, Context ctx = Context::glich );
     std::string rlist_to_string( RList rlist, Context ctx = Context::glich );
 
     bool is_name( const std::string& str );
+
+    extern std::string dual_fields_to_str( Field field, Field dual );
+    extern std::string get_ordinal_suffix( Field field, StrStyle style = StrStyle::lowercase );
+    extern std::string get_ordinal_suffix_style( StrStyle style = StrStyle::lowercase );
+    extern std::string get_roman_numerals( Field field, StrStyle style );
+    extern std::string get_roman_numerals_style( StrStyle style );
+
+    extern std::string get_left_padded( Field field, const std::string& specifier );
+    extern std::string get_left_padded( Field field, const std::string& ch, size_t width );
+    extern std::string get_left_pad_style(
+        const std::string& fieldstyle, const std::string& specifier );
 }
 
 #endif // SRC_GLC_GLCHELPER_H

@@ -30,6 +30,7 @@
 
 #include "glcMath.h"
 
+#include <cassert>
 #include <sstream>
 
 using namespace glich;
@@ -80,11 +81,13 @@ Num glich::field_to_num( Field fld, bool& success )
     return 0;
 }
 
-string glich::bool_to_string( bool b ) {
+string glich::bool_to_string( bool b )
+{
     return b ? "true" : "false";
 }
 
-string glich::float_to_string( double real ) {
+string glich::float_to_string( double real )
+{
     if( isnan( real ) ) {
         return "nan";
     }
@@ -109,11 +112,15 @@ string glich::float_to_string( double real ) {
     return res;
 }
 
-string glich::field_to_string( Field fld, Context ctx ) {
+string glich::field_to_string( Field fld, Context ctx, ShowInvalid si )
+{
     switch( fld )
     {
     case f_invalid:
-        return "?";
+        if( si == ShowInvalid::context ) {
+            return (ctx == Context::glich) ? "?" : "";
+        }
+        return (si == ShowInvalid::qmark) ? "?" : "";
     case f_maximum:
         return (ctx == Context::glich) ? "+infinity" : "future";
     case f_minimum:
@@ -122,7 +129,8 @@ string glich::field_to_string( Field fld, Context ctx ) {
     return std::to_string( fld );
 }
 
-string glich::range_to_string( Range rng, Context ctx ){
+string glich::range_to_string( Range rng, Context ctx )
+{
     if( rng.m_beg == rng.m_end ) {
         return field_to_string( rng.m_beg, ctx );
     }
@@ -131,7 +139,8 @@ string glich::range_to_string( Range rng, Context ctx ){
         field_to_string( rng.m_end, ctx );
 }
 
-string glich::rlist_to_string( RList rlist, Context ctx ) {
+string glich::rlist_to_string( RList rlist, Context ctx )
+{
     if( rlist.empty() ) {
         return "empty";
     }
@@ -172,6 +181,184 @@ bool glich::is_name( const std::string& str )
         }
     }
     return true;
+}
+
+static string ascii_tolower( const string& str )
+{
+    string result;
+    for( string::const_iterator it = str.begin(); it != str.end(); it++ ) {
+        if( *it >= 'A' && *it <= 'Z' ) {
+            result += *it + ('a' - 'A');
+        }
+        else {
+            result += *it;
+        }
+    }
+    return result;
+}
+
+static void ascii_tolower( string& str )
+{
+    for( string::iterator it = str.begin(); it != str.end(); it++ ) {
+        if( *it >= 'A' && *it <= 'Z' ) {
+            *it = *it + ('a' - 'A');
+        }
+    }
+}
+
+string glich::dual_fields_to_str( Field field, Field dual )
+{
+    string result = field_to_string( field, Context::hics );
+    string dualstr = field_to_string( dual, Context::hics );
+    if( result.size() && dualstr.size() && dualstr != result ) {
+        if( result.size() != dualstr.size() ) {
+            return result + "/" + dualstr;
+        }
+        string suffix = "/";
+        bool matched = true;
+        for( string::iterator rit = result.begin(), dit = dualstr.begin()
+            ; rit != result.end(); rit++, dit++
+            ) {
+            if( matched && *rit != *dit ) {
+                matched = false;
+            }
+            if( !matched ) {
+                suffix += *dit;
+            }
+        }
+        result += suffix;
+    }
+    return result;
+}
+
+
+string glich::get_ordinal_suffix( Field field, StrStyle style )
+{
+    if( field <= f_minimum || field >= f_maximum ) {
+        return "";
+    }
+    const char* result = "TH";
+    if( (field % 100) < 4 || (field % 100) > 20 ) {
+        switch( field % 10 )
+        {
+        case 1:
+            result = "ST";
+            break;
+        case 2:
+            result = "ND";
+            break;
+        case 3:
+            result = "RD";
+            break;
+        }
+    }
+    string str( result );
+    if( style != StrStyle::uppercase ) {
+        ascii_tolower( str );
+    }
+    return str;
+}
+
+string glich::get_ordinal_suffix_style( StrStyle style )
+{
+    return style == StrStyle::uppercase ? "TH" : "th";
+}
+
+string glich::get_roman_numerals( Field field, StrStyle style )
+{
+    // We can only convert numbers 1 to 4999 (4000 = "MMMM")
+    if( field >= 5000 || field <= 0 ) {
+        return field_to_string( field, Context::hics );
+    }
+    static const char* units[10]
+        = { "", "I", "II", "III", "IV", "V", "VI", "VII", "VIII", "IX" };
+    static const char* tens[10]
+        = { "", "X", "XX", "XXX", "XL", "L", "LX", "LXX", "LXXX", "XC" };
+    static const char* hunds[10]
+        = { "", "C", "CC", "CCC", "CD", "D", "DC", "DCC", "DCCC", "CM" };
+    static const char* thous[5]
+        = { "", "M", "MM", "MMM", "MMMM" };
+
+    size_t n = field;
+    string result = string( thous[n / 1000] )
+        + string( hunds[(n / 100) % 10] )
+        + string( tens[(n / 10) % 10] )
+        + string( units[n % 10] );
+
+    if( style == StrStyle::lowercase ) {
+        ascii_tolower( result );
+    }
+    return result;
+}
+
+string glich::get_roman_numerals_style( StrStyle style )
+{
+    return style == StrStyle::lowercase ? "[x]" : "[X]";
+}
+
+
+static string left_padded_str( const string& str, const string& ch, size_t size )
+{
+    assert( ch.size() > 0 );
+    string result = str;
+    while( result.size() < size ) {
+        result = ch + result;
+    }
+    return result;
+}
+
+string glich::get_left_padded( Field field, const std::string& specifier )
+{
+    // TODO: This assumes fieldstyle and specifier are ASCII.
+    // Rewrite for utf8.
+    if( specifier.size() < 2 ) {
+        return field_to_string( field );
+    }
+    size_t width = std::strtol( specifier.substr( 1 ).c_str(), nullptr, 10 );
+    string ch = specifier.substr( 0, 1 );
+    return get_left_padded( field, ch, width );
+}
+
+string glich::get_left_padded( Field field, const std::string& ch, size_t width )
+{
+    if( field == f_invalid ) {
+        return "";
+    }
+    if( ch.empty() ) {
+        return field_to_string( field );
+    }
+    bool neg = (field < 0 && ch == "0");
+    if( neg ) {
+        field = -field;
+    }
+    string result = field_to_string( field );
+    if( result.size() < width ) {
+        result = left_padded_str( result, ch, width );
+    }
+    if( neg ) {
+        result = "-" + result;
+    }
+    return result;
+}
+
+string glich::get_left_pad_style(
+    const string& fieldstyle, const string& specifier )
+{
+    // TODO: This assumes fieldstyle and specifier are ASCII.
+    // Rewrite for utf8.
+    if( specifier.size() < 2 ) {
+        return fieldstyle;
+    }
+    size_t width = std::strtol( specifier.substr( 1 ).c_str(), NULL, 10 );
+    if( width < 2 ) {
+        return fieldstyle;
+    }
+    string ch = specifier.substr( 0, 1 );
+    string style = fieldstyle;
+    if( style.size() >= width ) {
+        style = fieldstyle.substr( fieldstyle.size() - (width - 1), width - 1 );
+    }
+    return left_padded_str( style, ch, width );
 }
 
 

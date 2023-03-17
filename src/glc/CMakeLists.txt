@@ -18,6 +18,7 @@ set( GLC_SOURCES
     glcScript.cpp
     glcTokenStream.cpp
     glcValue.cpp
+    hicDatePhrase.cpp
     hicRomanNum.cpp
 )
 
@@ -35,6 +36,7 @@ set( GLC_HEADERS
     glcScriptStore.h
     glcTokenStream.h
     glcValue.h
+    hicDatePhrase.h
     hicRomanNum.h
 )
 

@@ -62,6 +62,15 @@ namespace glich {
     std::string get_left_padded( Field field, const std::string& ch, size_t width );
     std::string get_left_pad_style(
         const std::string& fieldstyle, const std::string& specifier );
+
+    std::string left_trim( const std::string& str );
+    std::string right_trim( const std::string& str );
+    std::string full_trim( const std::string& str );
+    std::string get_first_word( const std::string& str, std::string* tail = nullptr, char sep = ' ' );
+
+    inline bool u8_isspace( int ch ) { return (ch > 0 && isspace( ch )); }
+    inline bool u8_isdigit( int ch ) { return (ch > 0 && isdigit( ch )); }
+
 }
 
 #endif // SRC_GLC_GLCHELPER_H

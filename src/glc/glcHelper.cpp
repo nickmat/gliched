@@ -45,7 +45,8 @@ Num glich::str_to_num( const string& str )
     return strtoll( str.c_str(), nullptr, 10 );
 }
 
-double glich::str_to_float( const string& str ) {
+double glich::str_to_float( const string& str )
+{
     if( str.empty() ) {
         return 0.0;
     }
@@ -328,6 +329,35 @@ string glich::get_left_pad_style(
         style = fieldstyle.substr( fieldstyle.size() - (width - 1), width - 1 );
     }
     return left_padded_str( style, ch, width );
+}
+
+string glich::left_trim( const string& str )
+{
+    size_t pos = str.find_first_not_of( " " );
+    return (pos == string::npos) ? "" : str.substr( pos );
+}
+
+std::string glich::right_trim( const string& str )
+{
+    size_t pos = str.find_last_not_of( " " );
+    return (pos == string::npos) ? "" : str.substr( 0, pos + 1 );
+}
+
+string glich::full_trim( const string& str )
+{
+    return right_trim( left_trim( str ) );
+}
+
+string glich::get_first_word( const string& str, string* tail, char sep )
+{
+    size_t pos = str.find( sep );
+    // Note, tail may point str (ie, str and tail could be the same),
+    // so get result before setting tail.
+    string result = str.substr( 0, pos );
+    if( tail ) {
+        *tail = (pos == string::npos) ? "" : left_trim( str.substr( pos + 1 ) );
+    }
+    return result;
 }
 
 

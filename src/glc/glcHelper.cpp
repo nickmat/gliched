@@ -115,9 +115,9 @@ string glich::field_to_string( Field fld, Context ctx ) {
     case f_invalid:
         return "?";
     case f_maximum:
-        return (ctx == Context::number) ? "+infinity" : "future";
+        return (ctx == Context::glich) ? "+infinity" : "future";
     case f_minimum:
-        return (ctx == Context::number) ? "-infinity" : "past";
+        return (ctx == Context::glich) ? "-infinity" : "past";
     }
     return std::to_string( fld );
 }

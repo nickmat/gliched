@@ -234,7 +234,7 @@ Context Glich::get_context() const
     if( i >= 0 ) {
        return m_marks[i]->get_context();
     }
-    return Context::number;
+    return Context::glich;
 }
 
 // End of src/hg/historygen.cpp

@@ -35,7 +35,7 @@ using namespace glich;
 using std::string;
 using std::vector;
 
-Mark::Mark( const string& name, Mark* prev ) : m_name( name ), m_context( Context::number )
+Mark::Mark( const string& name, Mark* prev ) : m_name( name ), m_context( Context::glich )
 {
     if( prev != nullptr ) {
         m_context = prev->get_context();

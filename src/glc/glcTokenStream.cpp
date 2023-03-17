@@ -114,7 +114,7 @@ SToken& STokenStream::next()
         m_in->putback( ch );
         SToken::Type type = SToken::Type::Number;
         Context context = s_glc->get_context();
-        if( context == Context::field ) {
+        if( context == Context::hics ) {
             type = SToken::Type::Field;
         }
         set_current( type, text );

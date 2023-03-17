@@ -319,10 +319,10 @@ bool Script::do_set()
     }
     if( prop == "context" ) {
         if( value == "number" ) {
-            m_glc->set_context( Context::number );
+            m_glc->set_context( Context::glich );
         }
         else if( value == "field" ) {
-            m_glc->set_context( Context::field );
+            m_glc->set_context( Context::hics );
         }
         else {
             error( "Unknown context value \"" + value + "\"." );

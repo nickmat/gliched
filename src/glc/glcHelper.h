@@ -41,9 +41,9 @@ namespace glich {
 
     std::string bool_to_string( bool b );
     std::string float_to_string( double real );
-    std::string field_to_string( Field fld, Context ctx = Context::number );
-    std::string range_to_string( Range rng, Context ctx = Context::number );
-    std::string rlist_to_string( RList rlist, Context ctx = Context::number );
+    std::string field_to_string( Field fld, Context ctx = Context::glich );
+    std::string range_to_string( Range rng, Context ctx = Context::glich );
+    std::string rlist_to_string( RList rlist, Context ctx = Context::glich );
 
     bool is_name( const std::string& str );
 }

@@ -74,6 +74,14 @@ Field Scheme::str_to_jdn( const string& str, const string& fmt )
     return rec.get_jdn();
 }
 
+string Scheme::rlist_to_str( const RList& ranges, const string& fcode )
+{
+    if( ranges.empty() ) {
+        return string();
+    }
+    return "Require formatting to be installed.";
+}
+
 Base* Scheme::create_base( BaseName bs, const std::string& data ) 
 {
     switch( bs )

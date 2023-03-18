@@ -62,6 +62,7 @@ namespace glich {
         Field jdn_fieldname_to_field( Field jdn, const std::string& fieldname ) const;
 
         Field str_to_jdn( const std::string& str, const std::string& fmt );
+        std::string rlist_to_str( const RList& ranges, const std::string& fcode );
 
         static Base* create_base( BaseName bs, const std::string& data );
 

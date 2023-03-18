@@ -31,6 +31,8 @@
 #include "glcFunction.h"
 #include "glcObject.h"
 #include "hicCreateSch.h"
+#include "hicHelper.h"
+#include "hicScheme.h"
 
 #include <cassert>
 #include <fstream>
@@ -933,6 +935,9 @@ SValue Script::primary( GetToken get )
         value = get_object( GetToken::next );
         next_token();
         break;
+    case SToken::Type::text:
+        value = text_cast();
+        break;
     case SToken::Type::Error:
         value = error_cast();
         break;
@@ -1090,6 +1095,39 @@ SValue Script::do_dot( const SValue& left, const SValue& right )
         return SValue( "Function not found.", SValue::Type::Error );
     }
     return run_function( fun, obj, &left );
+}
+
+SValue glich::Script::text_cast()
+{
+    SToken token = next_token();
+    Scheme* sch = nullptr;
+    string sig, scode, fcode;
+    if( token.type() == SToken::Type::Dot ) {
+        // Includes scheme:format signiture
+        sig = get_name_or_primary( GetToken::next );
+        split_code( &scode, &fcode, sig );
+        sch = m_glc->get_scheme( scode );
+    }
+    SValue value = primary( GetToken::current );
+    if( value.type() == SValue::Type::Object ) {
+        value.set_error( "Connot convert object record yet." );
+        return value;
+    }
+    bool success;
+    RList rlist = value.get_rlist( success );
+    if( success == false ) {
+        value.set_error( "Expected field, range, rlist or object record type." );
+        return value;
+    }
+    if( sch == nullptr ) {
+        sch = m_glc->get_oscheme();
+        if( sch == nullptr ) {
+            value.set_error( "No default scheme set." );
+            return value;
+        }
+    }
+    value.set_str( sch->rlist_to_str( rlist, fcode ) );
+    return value;
 }
 
 SValue Script::error_cast()

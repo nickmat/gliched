@@ -67,6 +67,10 @@ namespace glich {
         File* get_file( const std::string& code ) const;
         bool add_scheme( Scheme* sch, std::string& code );
         Scheme* get_scheme( const std::string& code );
+        void set_ischeme( Scheme* sch ) {} // Get and set default input and output
+        void set_oscheme( Scheme* sch ) {} // schemes not yet active.
+        Scheme* get_ischeme() const { return nullptr; }
+        Scheme* get_oscheme() const { return nullptr; }
 
         void add_or_replace_mark( const std::string& name );
         bool clear_mark( const std::string& name );

@@ -150,6 +150,18 @@ SToken& STokenStream::next()
         else if( str == "mod" ) {
             set_type( SToken::Type::Mod );
         }
+        else if( str == "text" ) {
+            set_type( SToken::Type::text );
+        }
+        else if( str == "date" ) {
+            set_type( SToken::Type::date );
+        }
+        else if( str == "record" ) {
+            set_type( SToken::Type::record );
+        }
+        else if( str == "convert" ) {
+            set_type( SToken::Type::convert );
+        }
         else if( str == "error" ) {
             set_type( SToken::Type::Error );
         }

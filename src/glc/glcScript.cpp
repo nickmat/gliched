@@ -322,10 +322,10 @@ bool Script::do_set()
         return false;
     }
     if( prop == "context" ) {
-        if( value == "number" ) {
+        if( value == "glich" ) {
             m_glc->set_context( Context::glich );
         }
-        else if( value == "field" ) {
+        else if( value == "hics" ) {
             m_glc->set_context( Context::hics );
         }
         else {

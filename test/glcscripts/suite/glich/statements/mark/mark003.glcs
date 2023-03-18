@@ -7,7 +7,7 @@ writeln "";
 writeln b + ", " + c + ", " + a[.type];
 
 mark "test";
-set context field;
+set context hics;
 let d = 2;
 writeln b + ", " + c + ", " + a[.type] + ", " + d[.type];
 

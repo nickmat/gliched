@@ -33,6 +33,7 @@
 #include "glcObject.h"
 #include "glcScript.h"
 #include "glcValue.h"
+#include "hicScheme.h"
 
 #include <cassert>
 #include <fstream>
@@ -135,6 +136,27 @@ File* Glich::get_file( const std::string& code ) const
 {
     if( m_files.count( code ) > 0 ) {
         return m_files.find( code )->second;
+    }
+    return nullptr;
+}
+
+bool Glich::add_scheme( Scheme* sch, std::string& code )
+{
+    // Only add initialised schemes and that are not already there.
+    if( sch == nullptr || sch->is_ok() == false || m_schemes.count( code ) ) {
+        delete sch;
+        return false;
+    }
+    assert( m_marks.size() > 0 );
+    m_marks[m_marks.size() - 1]->add_scheme( sch );
+    m_schemes[code] = sch;
+    return true;
+}
+
+Scheme* Glich::get_scheme( const std::string& code )
+{
+    if( m_schemes.count( code ) > 0 ) {
+        return m_schemes.find( code )->second;
     }
     return nullptr;
 }

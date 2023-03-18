@@ -30,6 +30,7 @@
 #include "glcFile.h"
 #include "glcFunction.h"
 #include "glcObject.h"
+#include "hicCreateSch.h"
 
 #include <cassert>
 #include <fstream>
@@ -94,6 +95,7 @@ bool Script::statement()
         if( name == "command" ) return do_command();
         if( name == "object" ) return do_object();
         if( name == "file" ) return do_file();
+        if( name == "scheme" ) return do_scheme();
         if( store()->exists( name ) ) return do_assign( name );
     }
     else if( token.type() == SToken::Type::Semicolon ) {
@@ -690,6 +692,21 @@ bool Script::do_file()
         return false;
     }
     return true;
+}
+
+bool Script::do_scheme()
+{
+    string code = get_name_or_primary( GetToken::next );
+    if( code.empty() ) {
+        error( "Scheme code missing." );
+        return false;
+    }
+    if( m_glc->get_scheme( code ) != nullptr ) {
+        error( "Scheme \"" + code + "\" already exists." );
+        return false;
+    }
+    Scheme* sch = do_create_scheme( *this, code );
+    return m_glc->add_scheme( sch, code );
 }
 
 SValue Script::expr( GetToken get )

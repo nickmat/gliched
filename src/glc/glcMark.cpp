@@ -30,6 +30,7 @@
 #include "glcFile.h"
 #include "glcFunction.h"
 #include "glcObject.h"
+#include "hicScheme.h"
 
 using namespace glich;
 using std::string;
@@ -85,11 +86,23 @@ std::string Mark::remove_next_object()
 string Mark::remove_next_file()
 {
     string code;
-    if ( m_files.size() ) {
+    if( m_files.size() ) {
         File* file = m_files[m_files.size() - 1];
         code = file->get_code();
         delete file;
         m_files.pop_back();
+    }
+    return code;
+}
+
+string Mark::remove_next_scheme()
+{
+    string code;
+    if( m_schemes.size() ) {
+        Scheme* sch = m_schemes[m_schemes.size() - 1];
+        code = sch->get_code();
+        delete sch;
+        m_schemes.pop_back();
     }
     return code;
 }

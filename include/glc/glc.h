@@ -29,6 +29,7 @@
 #define INCLUDE_GLC_GLC_H_GUARD
 
 #include "glcDefs.h"
+#include "hicDefs.h"
 
 namespace glich {
 
@@ -64,6 +65,9 @@ namespace glich {
         Object* get_object( const std::string& code ) const;
         File* create_file( const std::string& code );
         File* get_file( const std::string& code ) const;
+        bool add_scheme( Scheme* sch, std::string& code );
+        Scheme* get_scheme( const std::string& code );
+
         void add_or_replace_mark( const std::string& name );
         bool clear_mark( const std::string& name );
         ScriptStore* get_store() const { return m_store; }
@@ -79,6 +83,7 @@ namespace glich {
         CommandMap m_commands;
         ObjectMap m_objects;
         FileMap m_files;
+        SchemeMap m_schemes;
         MarkVec m_marks;
         ScriptStore* m_store;
         InOut* m_inout;

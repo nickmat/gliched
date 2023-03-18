@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        glc/hicMath.h
+ * Name:        glc/hicMath.cpp
  * Project:     Glich: Extendable Script Language.
  * Purpose:     Miscellaneous math functions header for HistoryCal.
  * Author:      Nick Matthews
@@ -31,6 +31,18 @@
 
 using namespace glich;
 
+// Days in the year at the start of each month (Jan = 1) (not leap year)
+Field glich::latin_diy[14] = {
+    // Note: we add an extra 0 to the beginning of the array to save
+    //       subtracting 1 from the month number
+    0, 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365
+};
+
+Field glich::latin_length_of_month[3][12] = {
+    { 31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }, // Nomal year
+    { 31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }, // Leap year
+    { 31, 30, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31 }  // For the Swedish calendar scheme
+};
 
 #define calSEARCH_MAX 30
 

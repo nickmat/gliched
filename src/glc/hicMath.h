@@ -34,6 +34,9 @@
 
 namespace glich {
 
+    extern Field latin_diy[14];
+    extern Field latin_length_of_month[3][12];
+
     using calSearchFunc = bool (*)(Field value, const void* data);
 
     Field min_search( Field start, calSearchFunc func, const void* data );

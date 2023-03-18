@@ -47,7 +47,6 @@ namespace glich {
         SToken& current_token() { return m_ts.current(); }
         SToken& next_token() { return m_ts.next(); }
 
-    private:
         bool error( const std::string& mess ) { return m_ts.error( mess ); }
         ScriptStore* store() const;
         bool statement();
@@ -67,6 +66,7 @@ namespace glich {
         bool do_call();
         bool do_object();
         bool do_file();
+        bool do_scheme();
 
         SValue expr( GetToken get );
         SValue compare( GetToken get );

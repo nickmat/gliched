@@ -40,7 +40,7 @@ namespace glich {
     class Scheme
     {
     public:
-        enum class BaseName { null, jdn };
+        enum class BaseName { null, jdn, julian };
         Scheme( const std::string& name, const Base* base );
         ~Scheme();
 
@@ -49,12 +49,7 @@ namespace glich {
         std::string get_name() const { return m_name; }
         Scheme_style get_style() const { return m_style; }
 
-//        std::string get_pref_input_format() const;
-//        void get_info( Scheme_info* info ) const; 
-//        std::string get_input_fcode() const;
-//        std::string get_output_fcode() const;
         const Base* get_base() const { return m_base; }
-//        Format* get_output_format( const std::string& fcode ) const;
 
         void set_code( const std::string& code ) { m_code = code; }
         void set_style( Scheme_style style ) { m_style = style; }
@@ -67,13 +62,6 @@ namespace glich {
         Field jdn_fieldname_to_field( Field jdn, const std::string& fieldname ) const;
 
         Field str_to_jdn( const std::string& str, const std::string& fmt );
-//        std::string jdn_to_str( Field jdn, const std::string& fcode );
-//        std::string range_to_str( Range range, const std::string& fcode );
-//        std::string rlist_to_str( const RList& ranges, const std::string& fcode );
-
-//        Field add_to_jdn( Field jdn, Field value, Unit unit, Norm norm );
-//        bool str_to_rel_info( const std::string& str, Rel_info* info ) const;
-//        RList rel_rlist( const RList& ranges, Rel_info* info );
 
         static Base* create_base( BaseName bs, const std::string& data );
 

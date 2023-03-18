@@ -104,8 +104,7 @@ namespace glich {
 
     enum class Context { glich, hics };
 
-    enum class GetToken { current, next };
-
+    enum class GetToken { current, next }; // Was a bool, next=true : current=false
 }
 
 #endif // INCLUDE_GLC_GLCDEFS_H

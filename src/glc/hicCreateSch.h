@@ -33,6 +33,7 @@
 namespace glich {
 
     Scheme* do_create_scheme( Script& script, const std::string& code );
+    Lexicon* do_create_lexicon( Script& script, const std::string& code );
 }
 
 #endif // SRC_GLC_HICCREATESCH_H

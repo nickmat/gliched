@@ -98,6 +98,7 @@ bool Script::statement()
         if( name == "object" ) return do_object();
         if( name == "file" ) return do_file();
         if( name == "scheme" ) return do_scheme();
+        if( name == "lexicon" ) return do_lexicon();
         if( store()->exists( name ) ) return do_assign( name );
     }
     else if( token.type() == SToken::Type::Semicolon ) {
@@ -709,6 +710,21 @@ bool Script::do_scheme()
     }
     Scheme* sch = do_create_scheme( *this, code );
     return m_glc->add_scheme( sch, code );
+}
+
+bool Script::do_lexicon()
+{
+    string code = get_name_or_primary( GetToken::next );
+    if( code.empty() ) {
+        error( "Lexicon code missing." );
+        return false;
+    }
+    if( m_glc->get_lexicon( code ) != nullptr ) {
+        error( "Lexicon \"" + code + "\" already exists." );
+        return false;
+    }
+    Lexicon* lex = do_create_lexicon( *this, code );
+    return m_glc->add_lexicon( lex, code );
 }
 
 SValue Script::expr( GetToken get )

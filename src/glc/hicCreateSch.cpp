@@ -28,6 +28,7 @@
 #include "hicCreateSch.h"
 
 #include "glcScript.h"
+#include "hicLexicon.h"
 #include "hicScheme.h"
 
 using namespace glich;
@@ -110,5 +111,86 @@ Scheme* glich::do_create_scheme( Script& script, const std::string& code )
     return sch;
 }
 
+namespace {
+
+    bool do_lexicon_tokens( Script& script, Lexicon* voc )
+    {
+        SToken token = script.next_token();
+        if( token.type() != SToken::Type::LCbracket ) {
+            script.error( "'{' expected." );
+            return false;
+        }
+        while( script.next_token().type() != SToken::Type::RCbracket &&
+            script.current_token().type() != SToken::Type::End )
+        {
+            bool success = false;
+            Field number = script.expr( GetToken::current ).get_field( success );
+            if( !success ) {
+                script.error( "Number expected." );
+                return false;
+            }
+            if( script.current_token().type() != SToken::Type::Comma ) {
+                script.error( "',' expected." );
+                return false;
+            }
+            StdStrVec names = script.get_string_list( GetToken::next );
+            string name, abbrev;
+            if( names.size() > 0 ) {
+                name = names[0];
+            }
+            if( names.size() > 1 ) {
+                abbrev = names[1];
+            }
+            voc->add_token( number, name, abbrev );
+        }
+        return true;
+    }
+
+} // namespace
+
+Lexicon* glich::do_create_lexicon( Script& script, const std::string& code )
+{
+    SToken token = script.current_token();
+    if( token.type() != SToken::Type::LCbracket ) {
+        script.error( "'{' expected." );
+        return nullptr;
+    }
+    Lexicon* lex = new Lexicon( code );
+    string str;
+    for( ;;) {
+        token = script.next_token();
+        if( token.type() == SToken::Type::RCbracket ||
+            token.type() == SToken::Type::End ) {
+            break; // All done.
+        }
+        else if( token.type() == SToken::Type::Name ) {
+            string name = token.get_str();
+            if( name == "name" ) {
+                name = script.expr( GetToken::next ).as_string();
+                lex->set_name( str );
+            }
+            else if( name == "fieldname" ) {
+                str = script.get_name_or_primary( GetToken::next );
+                lex->set_fieldname( str );
+            }
+            else if( name == "lang" ) {
+                str = script.get_name_or_primary( GetToken::next );
+                lex->set_lang( str );
+            }
+            else if( name == "pseudo" ) {
+                StdStrVec pseudos = script.get_string_list( GetToken::next );
+                lex->set_pseudo_names( pseudos );
+            }
+            else if( name == "tokens" ) {
+                do_lexicon_tokens( script, lex );
+            }
+            else {
+                script.error( "Unknown lexicon subcommand." );
+            }
+        }
+    }
+    return lex;
+
+}
 
 // End of src/glc/hicCreateSch.cpp file

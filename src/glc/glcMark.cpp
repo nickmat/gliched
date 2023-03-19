@@ -30,11 +30,13 @@
 #include "glcFile.h"
 #include "glcFunction.h"
 #include "glcObject.h"
+#include "hicLexicon.h"
 #include "hicScheme.h"
 
 using namespace glich;
 using std::string;
 using std::vector;
+
 
 Mark::Mark( const string& name, Mark* prev ) : m_name( name ), m_context( Context::glich )
 {
@@ -103,6 +105,18 @@ string Mark::remove_next_scheme()
         code = sch->get_code();
         delete sch;
         m_schemes.pop_back();
+    }
+    return code;
+}
+
+std::string glich::Mark::remove_next_lexicon()
+{
+    string code;
+    if( m_lexicons.size() ) {
+        Lexicon* lex = m_lexicons[m_lexicons.size() - 1];
+        code = lex->get_code();
+        delete lex;
+        m_lexicons.pop_back();
     }
     return code;
 }

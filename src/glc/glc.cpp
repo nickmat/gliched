@@ -40,10 +40,10 @@
 #include <iostream>
 #include <sstream>
 
-
 using namespace glich;
 using std::string;
 using std::vector;
+
 
 string InOut::get_input( const string& prompt ) {
     if( !prompt.empty() ) {
@@ -157,6 +157,27 @@ Scheme* Glich::get_scheme( const std::string& code )
 {
     if( m_schemes.count( code ) > 0 ) {
         return m_schemes.find( code )->second;
+    }
+    return nullptr;
+}
+
+bool Glich::add_lexicon( Lexicon* lex, std::string& code )
+{
+    // Only add lexicons and that are not already there.
+    if( lex == nullptr || m_lexicons.count( code ) ) {
+        delete lex;
+        return false;
+    }
+    assert( m_marks.size() > 0 );
+    m_marks[m_marks.size() - 1]->add_lexicon( lex );
+    m_lexicons[code] = lex;
+    return true;
+}
+
+Lexicon* Glich::get_lexicon( const std::string& code )
+{
+    if( m_lexicons.count( code ) > 0 ) {
+        return m_lexicons.find( code )->second;
     }
     return nullptr;
 }

@@ -71,6 +71,8 @@ namespace glich {
         void set_oscheme( Scheme* sch ) {} // schemes not yet active.
         Scheme* get_ischeme() const { return nullptr; }
         Scheme* get_oscheme() const { return nullptr; }
+        bool add_lexicon( Lexicon* lex, std::string& code );
+        Lexicon* get_lexicon( const std::string& code );
 
         void add_or_replace_mark( const std::string& name );
         bool clear_mark( const std::string& name );
@@ -88,6 +90,7 @@ namespace glich {
         ObjectMap m_objects;
         FileMap m_files;
         SchemeMap m_schemes;
+        LexiconMap m_lexicons;
         MarkVec m_marks;
         ScriptStore* m_store;
         InOut* m_inout;

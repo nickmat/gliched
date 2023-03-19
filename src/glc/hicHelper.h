@@ -37,19 +37,19 @@ namespace glich {
     std::string make_key( const std::string& str );
     bool split_code( std::string* scheme, std::string* format, const std::string& str );
 
-    class Vocab;
-
     enum InputFieldType {
         IFT_null, IFT_quest, IFT_number, IFT_dual1, IFT_dual2, IFT_vocab, IFT_calc
     };
 
+    class Lexicon;
+
     struct InputField
     {
-        InputField() : value( f_invalid ), type( IFT_null ), vocab( NULL ) {}
+        InputField() : value( f_invalid ), type( IFT_null ), lexicon( nullptr ) {}
 
-        Field          value;
+        Field value;
         InputFieldType type;
-        Vocab* vocab;
+        Lexicon* lexicon;
     };
 
     typedef std::vector<InputField> InputFieldVec;

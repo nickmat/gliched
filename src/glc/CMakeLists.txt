@@ -21,6 +21,7 @@ set( GLC_SOURCES
     hicBase.cpp
     hicCreateSch.cpp
     hicDatePhrase.cpp
+    hicElement.cpp
     hicHelper.cpp
     hicJdn.cpp
     hicJulian.cpp
@@ -48,6 +49,7 @@ set( GLC_HEADERS
     hicBase.h
     hicCreateSch.h
     hicDatePhrase.h
+    hicElement.h
     hicHelper.h
     hicJdn.h
     hicJulian.h

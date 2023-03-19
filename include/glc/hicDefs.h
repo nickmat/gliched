@@ -50,8 +50,8 @@ namespace glich {
 
     class Grammar;
     typedef std::map<std::string,Grammar*> GrammarMap;
-    class Vocab;
-    typedef std::map<std::string,Vocab*> VocabMap;
+    class Lexicon;
+    typedef std::map<std::string, Lexicon*> LexiconMap;
     class Format;
     typedef std::map<std::string,Format*> FormatMap;
 
@@ -69,8 +69,8 @@ namespace glich {
         std::string code;
         Scheme_style style;
         std::string grammar_code;
-        StdStrVec vocab_codes;
-        StdStrVec vocab_names;
+        StdStrVec lexicon_codes;
+        StdStrVec lexicon_names;
     };
 
     enum Format_style { FMT_STYLE_Default, FMT_STYLE_Hide };

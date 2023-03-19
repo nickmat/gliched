@@ -64,6 +64,16 @@ Glich::Glich( InOut* inout ) : m_store( new ScriptStore ), m_inout( inout )
     SValue::init( this );
 }
 
+Glich::~Glich()
+{
+    for( size_t i = m_marks.size(); i > 0; --i ) {
+        delete m_marks[i - 1];
+    }
+    while( pop_store() );
+    delete m_store;
+    delete m_inout;
+}
+
 string Glich::run_script( const string& script )
 {
     std::istringstream iss( script );

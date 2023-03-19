@@ -54,6 +54,7 @@ namespace glich {
     class Glich {
     public:
         Glich( InOut* inout = nullptr );
+        ~Glich();
 
         std::string run_script( const std::string& cmnd );
 

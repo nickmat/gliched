@@ -35,7 +35,7 @@
 #include <cstdlib>
 
 using namespace glich;
-using namespace std;
+using std::string;
 
 
 Scheme::Scheme( const std::string& name, const Base* base ) 

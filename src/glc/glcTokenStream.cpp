@@ -159,8 +159,8 @@ SToken& STokenStream::next()
         else if( str == "record" ) {
             set_type( SToken::Type::record );
         }
-        else if( str == "convert" ) {
-            set_type( SToken::Type::convert );
+        else if( str == "element" ) {
+            set_type( SToken::Type::element );
         }
         else if( str == "error" ) {
             set_type( SToken::Type::Error );

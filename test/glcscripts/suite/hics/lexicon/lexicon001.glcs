@@ -1,0 +1,25 @@
+// lexicon001.glcs  Test lexicon creation
+
+lexicon W {
+    name "Weekday names";
+    fieldname wday;
+    lang en;
+    pseudo    Weekday,  WDay;
+    tokens {
+        1, "Monday",    "Mon";
+        2, "Tuesday",   "Tue";
+        3, "Wednesday", "Wed";
+        4, "Thursday",  "Thur";
+        5, "Friday",    "Fri";
+        6, "Saturday",  "Sat";
+        7, "Sunday",    "Sun";
+    }
+}
+
+write element.W 2 + ", " + element.W:a 7;
+
+write ", " + element.W "wed";
+
+/*[OUTPUT]
+Tuesday, Sun, 3
+[OUTPUT]*/

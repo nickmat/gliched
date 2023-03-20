@@ -31,6 +31,7 @@
 #include "glcFunction.h"
 #include "glcObject.h"
 #include "hicCreateSch.h"
+#include "hicElement.h"
 #include "hicHelper.h"
 #include "hicScheme.h"
 
@@ -954,6 +955,9 @@ SValue Script::primary( GetToken get )
     case SToken::Type::text:
         value = text_cast();
         break;
+    case SToken::Type::element:
+        value = element_cast();
+        break;
     case SToken::Type::Error:
         value = error_cast();
         break;
@@ -1143,6 +1147,33 @@ SValue glich::Script::text_cast()
         }
     }
     value.set_str( sch->rlist_to_str( rlist, fcode ) );
+    return value;
+}
+
+SValue Script::element_cast()
+{
+    SToken token = next_token();
+    string sig;
+    if( token.type() == SToken::Type::Dot ) {
+        sig = get_name_or_primary( GetToken::next );
+    }
+    SValue value = primary( GetToken::current );
+    Element ele;
+    if( !sig.empty() ) {
+        ele.add_char( ':' );
+        ele.add_string( sig );
+    }
+    bool success = false;
+    Field fld = value.get_field( success );
+    if( success ) {
+        value.set_str( ele.get_formatted_element( m_glc, fld ) );
+    }
+    else if( value.type() == SValue::Type::String ) {
+        value.set_field( ele.get_converted_field( m_glc, value.get_str() ) );
+    }
+    else {
+        value.set_error( "Element requires field like or string type." );
+    }
     return value;
 }
 

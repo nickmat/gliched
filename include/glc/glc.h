@@ -63,16 +63,15 @@ namespace glich {
         Command* create_command( const std::string& code );
         Command* get_command( const std::string& code ) const;
         Object* create_object( const std::string & code );
+        bool add_object( Object* obj, const std::string& code );
         Object* get_object( const std::string& code ) const;
         File* create_file( const std::string& code );
         File* get_file( const std::string& code ) const;
-        bool add_scheme( Scheme* sch, std::string& code );
-        Scheme* get_scheme( const std::string& code );
         void set_ischeme( Scheme* sch ) {} // Get and set default input and output
         void set_oscheme( Scheme* sch ) {} // schemes not yet active.
         Scheme* get_ischeme() const { return nullptr; }
         Scheme* get_oscheme() const { return nullptr; }
-        bool add_lexicon( Lexicon* lex, std::string& code );
+        bool add_lexicon( Lexicon* lex, const std::string& code );
         Lexicon* get_lexicon( const std::string& code );
 
         void add_or_replace_mark( const std::string& name );
@@ -90,7 +89,6 @@ namespace glich {
         CommandMap m_commands;
         ObjectMap m_objects;
         FileMap m_files;
-        SchemeMap m_schemes;
         LexiconMap m_lexicons;
         MarkVec m_marks;
         ScriptStore* m_store;

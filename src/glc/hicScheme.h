@@ -30,6 +30,7 @@
 
 #include <glc/glc.h>
 #include <glc/hicDefs.h>
+#include "glcObject.h"
 
 namespace glich {
 
@@ -37,47 +38,29 @@ namespace glich {
     class Grammar;
     class Base;
 
-    class Scheme
+    class Scheme : public Object
     {
     public:
         enum class BaseName { null, jdn, julian };
-        Scheme( const std::string& name, const Base* base );
-        ~Scheme();
 
-        bool is_ok() const;
-        std::string get_code() const { return m_code; }
+        Scheme( const std::string& code, const Base* base );
+        virtual ~Scheme();
+
         std::string get_name() const { return m_name; }
         Scheme_style get_style() const { return m_style; }
 
-        const Base* get_base() const { return m_base; }
-
-        void set_code( const std::string& code ) { m_code = code; }
+        void set_name( const std::string& name ) { m_name = name; }
         void set_style( Scheme_style style ) { m_style = style; }
-        void set_input_format( const std::string& code ) { m_input_fcode = code; }
-        void set_output_format( const std::string& code ) { m_output_fcode = code; }
-
-        Field fieldvec_to_jdn( const FieldVec& fieldv );
-        FieldVec jdn_to_fieldvec( Field jdn );
-        RList fieldvec_to_rlist( const FieldVec& fieldv );
-        Field jdn_fieldname_to_field( Field jdn, const std::string& fieldname ) const;
-
-        Field str_to_jdn( const std::string& str, const std::string& fmt );
-        std::string rlist_to_str( const RList& ranges, const std::string& fcode );
 
         static Base* create_base( BaseName bs, const std::string& data );
 
     private:
-        Unit str_to_unit( const std::string& str ) const;
-
-        std::string   m_name;
-        std::string   m_code;
-        Scheme_style  m_style;
-        const Base*   m_base;
-        std::string   m_input_fcode;
-        std::string   m_output_fcode;
+        std::string m_name;
+        Scheme_style m_style;
+        const Base* m_base;
+        StdStrVec m_fields;
     };
 
 }
-
 
 #endif // SRC_GLC_HICSCHEME_H_GUARD

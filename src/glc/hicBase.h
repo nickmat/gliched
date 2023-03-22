@@ -56,66 +56,27 @@ namespace glich {
     class Base
     {
     public:
-        Base();
-        Base( const std::string& data );
+        Base( const std::string& data = std::string() );
         virtual ~Base();
 
         // Set initial data from string.
         virtual void set_data( const std::string& data );
 
-        // Return true if in a usable state.
-        virtual bool is_ok() const { return true; }
-        // Return the maximum number of Fields required by the Record.
-        virtual size_t record_size() const = 0;
-        // Return the number of extended (read-only) Fields available.
-        virtual size_t extended_size() const { return record_size() + m_opt_fields.size(); }
-
-        // Returns the index to the named Record field, or -1 if not found.
-        virtual int get_fieldname_index( const std::string& fieldname ) const;
-        virtual std::string get_fieldname( size_t index ) const;
-        virtual OptFieldID get_opt_field_id( const std::string& fieldname ) const;
-        virtual std::string get_opt_fieldname( OptFieldID field_id ) const;
+        // Return the number of Required Fields.
+        virtual size_t required_size() const = 0;
+        // Return the number of of all Fields including optional and calculated.
+        size_t field_size() const { return m_fieldnames.size(); }
+        // Get list of fieldnames in default order.
+        StdStrVec get_fieldnames() const { return m_fieldnames; }
 
         // Converts the Field's into a jdn and returns it.
-        virtual Field get_jdn( const Field* fields ) const = 0;
-
-        // Get an optional field value.
-        virtual Field get_opt_field( const Field* fields, Field jdn, OptFieldID id ) const;
-        virtual Field get_opt_field( const Field* fields, Field jdn, int index ) const;
-
-        virtual bool set_fields_as_begin_first( Field* fields, const Field* mask ) const = 0;
-        virtual bool set_fields_as_next_first( Field* fields, const Field* mask ) const = 0;
-        virtual bool set_fields_as_begin_last( Field* fields, const Field* mask ) const = 0;
-        virtual bool set_fields_as_next_last( Field* fields, const Field* mask ) const = 0;
-
-        Field get_field( const Field* fields, Field jdn, size_t index ) const;
-        Field get_field_first( const Field* fields, Field jdn, size_t index ) const;
-        Field get_field_last( const Field* fields, Field jdn, size_t index ) const;
-        virtual Field get_rec_field_first( const Field* fields, size_t index ) const;
-        virtual Field get_rec_field_last( const Field* fields, size_t index ) const;
-        virtual Field get_opt_field_first( const Field* fields, Field jdn, OptFieldID id ) const;
-        virtual Field get_opt_field_last( const Field* fields, Field jdn, OptFieldID id ) const;
+        virtual Field get_jdn( const FieldVec& fields ) const = 0;
 
         // Converts the given jdn into the Records' Fields.
-        virtual void set_fields( Field* fields, Field jdn ) const = 0;
-
-        OptFieldID opt_index_to_id( size_t index ) const { return m_opt_fields[index-record_size()]; }
-        int opt_id_to_index( OptFieldID id ) const;
+        virtual void set_fields( FieldVec& fields, Field jdn ) const = 0;
 
     protected:
-        virtual int get_std_fieldname_index( const std::string& fieldname ) const { return get_ymd_fieldname_index( fieldname ); }
-        virtual std::string get_std_fieldname( size_t index ) const { return get_ymd_fieldname( index ); }
-
-        int get_ymd_fieldname_index( const std::string& fieldname ) const;
-        std::string get_ymd_fieldname( size_t index ) const;
-
-        size_t opt_fields_size() const { return m_opt_fields.size(); }
-
-    private:
-        static const char* s_ymd_fieldnames[];
-        static size_t s_sizeof_ymd_fieldnames;
-
-        std::vector<OptFieldID> m_opt_fields;
+        StdStrVec m_fieldnames;
         LocaleData m_locale;
     };
 

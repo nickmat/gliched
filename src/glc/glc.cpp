@@ -119,10 +119,19 @@ Command* Glich::get_command( const std::string& code ) const
 Object* glich::Glich::create_object( const std::string& code )
 {
     Object* obj = new Object( code );
-    assert( m_marks.size() > 0 );
+    add_object( obj, code );
+    return obj;
+}
+
+bool glich::Glich::add_object( Object* obj, const std::string& code )
+{
+    if( obj == nullptr || m_lexicons.count( code ) ) {
+        delete obj;
+        return false;
+    }
     m_marks[m_marks.size() - 1]->add_object( obj );
     m_objects[code] = obj;
-    return obj;
+    return true;
 }
 
 Object* Glich::get_object( const std::string& code ) const
@@ -150,28 +159,7 @@ File* Glich::get_file( const std::string& code ) const
     return nullptr;
 }
 
-bool Glich::add_scheme( Scheme* sch, std::string& code )
-{
-    // Only add initialised schemes and that are not already there.
-    if( sch == nullptr || sch->is_ok() == false || m_schemes.count( code ) ) {
-        delete sch;
-        return false;
-    }
-    assert( m_marks.size() > 0 );
-    m_marks[m_marks.size() - 1]->add_scheme( sch );
-    m_schemes[code] = sch;
-    return true;
-}
-
-Scheme* Glich::get_scheme( const std::string& code )
-{
-    if( m_schemes.count( code ) > 0 ) {
-        return m_schemes.find( code )->second;
-    }
-    return nullptr;
-}
-
-bool Glich::add_lexicon( Lexicon* lex, std::string& code )
+bool Glich::add_lexicon( Lexicon* lex, const std::string& code )
 {
     // Only add lexicons and that are not already there.
     if( lex == nullptr || m_lexicons.count( code ) ) {

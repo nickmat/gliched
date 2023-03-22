@@ -39,34 +39,16 @@ namespace glich {
     class Julian : public Base
     {
     public:
-        Julian() {}
-        Julian( const std::string& data ) : Base( data ) {}
+        Julian( const std::string& data = std::string() ) : Base( data ) {
+            m_fieldnames = { "year", "month", "day" };
+        }
+        ~Julian() {}
 
-        size_t record_size() const override { return 3; }
+        size_t required_size() const override { return 3; }
+    
+        Field get_jdn( const FieldVec& fields ) const override;
 
-        OptFieldID get_opt_field_id( const std::string& fieldname ) const override;
-        std::string get_opt_fieldname( OptFieldID field_id ) const override;
-
-        Field get_jdn( const Field* fields ) const override;
-
-        Field get_opt_field( const Field* fields, Field jdn, OptFieldID id ) const override;
-
-        bool set_fields_as_begin_first( Field* fields, const Field* mask ) const override;
-        bool set_fields_as_next_first( Field* fields, const Field* mask ) const override;
-        bool set_fields_as_begin_last( Field* fields, const Field* mask ) const override;
-        bool set_fields_as_next_last( Field* fields, const Field* mask ) const override;
-
-        void set_fields( Field* fields, Field jdn ) const override;
-
-        Field get_rec_field_last( const Field* fields, size_t index ) const override;
-
-        // Virtual members shared with Gregorian class.
-        virtual Field jdn( Field year, Field month, Field day ) const;
-        virtual Field easter( Field year ) const;
-
-    protected:
-        virtual bool is_leap_year( Field year ) const;
-        Field last_day_in_month( Field year, Field month ) const;
+        void set_fields( FieldVec& fields, Field jdn ) const override;
 
     };
 

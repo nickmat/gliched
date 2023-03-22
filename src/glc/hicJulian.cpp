@@ -89,127 +89,20 @@ Field glich::julian_easter( Field year )
     return kday_after( WDAY_Sunday, paschal_moon );
 }
 
-OptFieldID Julian::get_opt_field_id( const std::string& fieldname ) const
-{
-    return Base::get_opt_field_id( fieldname );
-}
 
-std::string Julian::get_opt_fieldname( OptFieldID field_id ) const
+Field glich::Julian::get_jdn( const FieldVec& fields ) const
 {
-    return Base::get_opt_fieldname( field_id );
-}
-
-Field Julian::get_jdn( const Field* fields ) const
-{
-    if( fields[0] == f_invalid || fields[1] == f_invalid || fields[2] == f_invalid ) {
+    if( fields.size() < 3 || fields[0] == f_invalid || fields[1] == f_invalid || fields[2] == f_invalid ) {
         return f_invalid;
     }
     return julian_to_jdn( fields[0], fields[1], fields[2] );
 }
 
-Field Julian::get_opt_field( const Field* fields, Field jdn, OptFieldID id ) const
+void glich::Julian::set_fields( FieldVec& fields, Field jdn ) const
 {
-    return Base::get_opt_field( fields, jdn, id );
-}
-
-bool Julian::set_fields_as_begin_first( Field* fields, const Field* mask ) const
-{
-    if( mask[0] == f_invalid ) {
-        return false; // Must have at least year
-    }
-    if( mask[1] == f_invalid && mask[2] != f_invalid ) {
-        return false; // Can't handle date lists
-    }
-    fields[0] = mask[0];
-    fields[1] = ( mask[1] == f_invalid ) ? 1 : mask[1];
-    fields[2] = ( mask[2] == f_invalid ) ? 1 : mask[2];
-    return true;
-}
-
-bool Julian::set_fields_as_next_first( Field* fields, const Field* mask ) const
-{
-    return false;
-}
-
-bool Julian::set_fields_as_begin_last( Field* fields, const Field* mask ) const
-{
-    if( mask[0] == f_invalid ) {
-        return false; // Must have at least year
-    }
-    if( mask[1] == f_invalid && mask[2] != f_invalid ) {
-        return false; // Can't handle date lists
-    }
-    fields[0] = mask[0];
-    fields[1] = ( mask[1] == f_invalid ) ? 12 : mask[1];
-    if( mask[2] == f_invalid ) {
-        fields[2] = last_day_in_month( fields[0], fields[1] );
-        if( fields[2] == f_invalid ) {
-            return false;
-        }
-    } else {
-        fields[2] = mask[2];
-    }
-    return true;
-}
-
-bool Julian::set_fields_as_next_last( Field* fields, const Field* mask ) const
-{
-    return false;
-}
-
-void Julian::set_fields( Field* fields, Field jdn ) const
-{
+    assert( fields.size() >= 3 );
     julian_from_jdn( &fields[0], &fields[1], &fields[2], jdn );
 }
 
-Field Julian::get_rec_field_last( const Field* fields, size_t index ) const
-{
-    switch( index )
-    {
-    case 1: // Last month of year
-        return 12;
-    case 2: // Last day of month
-        return last_day_in_month( fields[0], fields[1] );
-    }
-    return f_invalid;
-}
-
-/*! Returns the Julian Day Number for the given day, month and year
-*  in the Julian Calendar.
-*/
-Field Julian::jdn( Field year, Field month, Field day ) const
-{
-    return julian_to_jdn( year, month, day );
-}
-
-/*! Return the jdn for Easter Sunday in the given year.
- */
-Field Julian::easter( Field year ) const
-{
-    return julian_easter( year );
-}
-
-/*! Returns true if the year is a leap year in the Julian Calendar.
- */
-bool Julian::is_leap_year( Field year ) const
-{
-    return ( year % 4 ) == 0;
-}
-
-/*! Returns the last day of the month for the given month and year.
- */
-Field Julian::last_day_in_month( Field year, Field month ) const
-{
-    switch( month )
-    {
-    case 1: case 3: case 5: case 7: case 8: case 10: case 12:
-        return 31;
-    case 4: case 6: case 9: case 11:
-        return 30;
-    case 2:
-        return is_leap_year( year ) ? 29 : 28;
-    }
-    return f_invalid;
-}
 
 // End of src/glc/hicJulian.cpp file

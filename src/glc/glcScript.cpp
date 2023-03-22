@@ -705,12 +705,12 @@ bool Script::do_scheme()
         error( "Scheme code missing." );
         return false;
     }
-    if( m_glc->get_scheme( code ) != nullptr ) {
+    if( m_glc->get_object( code ) != nullptr ) {
         error( "Scheme \"" + code + "\" already exists." );
         return false;
     }
     Scheme* sch = do_create_scheme( *this, code );
-    return m_glc->add_scheme( sch, code );
+    return m_glc->add_object( sch, code );
 }
 
 bool Script::do_lexicon()
@@ -955,6 +955,12 @@ SValue Script::primary( GetToken get )
     case SToken::Type::text:
         value = text_cast();
         break;
+    case SToken::Type::date:
+        value = date_cast();
+        break;
+    case SToken::Type::record:
+        value = record_cast();
+        break;
     case SToken::Type::element:
         value = element_cast();
         break;
@@ -1117,36 +1123,24 @@ SValue Script::do_dot( const SValue& left, const SValue& right )
     return run_function( fun, obj, &left );
 }
 
-SValue glich::Script::text_cast()
+SValue Script::text_cast()
 {
-    SToken token = next_token();
-    Scheme* sch = nullptr;
-    string sig, scode, fcode;
-    if( token.type() == SToken::Type::Dot ) {
-        // Includes scheme:format signiture
-        sig = get_name_or_primary( GetToken::next );
-        split_code( &scode, &fcode, sig );
-        sch = m_glc->get_scheme( scode );
-    }
-    SValue value = primary( GetToken::current );
-    if( value.type() == SValue::Type::Object ) {
-        value.set_error( "Connot convert object record yet." );
-        return value;
-    }
-    bool success;
-    RList rlist = value.get_rlist( success );
-    if( success == false ) {
-        value.set_error( "Expected field, range, rlist or object record type." );
-        return value;
-    }
-    if( sch == nullptr ) {
-        sch = m_glc->get_oscheme();
-        if( sch == nullptr ) {
-            value.set_error( "No default scheme set." );
-            return value;
-        }
-    }
-    value.set_str( sch->rlist_to_str( rlist, fcode ) );
+    SValue value;
+    value.set_error( "text_cast not operational yet." );
+    return value;
+}
+
+SValue Script::date_cast()
+{
+    SValue value;
+    value.set_error( "date_cast not operational yet." );
+    return value;
+}
+
+SValue Script::record_cast()
+{
+    SValue value;
+    value.set_error( "record_cast not operational yet." );
     return value;
 }
 

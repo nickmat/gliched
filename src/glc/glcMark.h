@@ -36,7 +36,6 @@ namespace glich {
     class Command;
     class Object;
     class File;
-    class Scheme;
     class Lexicon;
 
     class Mark
@@ -51,14 +50,12 @@ namespace glich {
         void add_command( Command* command ) { m_commands.push_back( command ); }
         void add_object( Object* object ) { m_objects.push_back( object ); }
         void add_file( File* file ) { m_files.push_back( file ); }
-        void add_scheme( Scheme* sch ) { m_schemes.push_back( sch ); }
         void add_lexicon( Lexicon* lex ) { m_lexicons.push_back( lex ); }
 
         std::string remove_next_function();
         std::string remove_next_command();
         std::string remove_next_object();
         std::string remove_next_file();
-        std::string remove_next_scheme();
         std::string remove_next_lexicon();
 
         void set_context( Context ct ) { m_context = ct; }
@@ -71,7 +68,6 @@ namespace glich {
         std::vector<Command*>  m_commands;
         std::vector<Object*>   m_objects;
         std::vector<File*>     m_files;
-        std::vector<Scheme*>   m_schemes;
         std::vector<Lexicon*>  m_lexicons;
         Context m_context;
     };

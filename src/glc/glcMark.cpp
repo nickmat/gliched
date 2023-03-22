@@ -97,18 +97,6 @@ string Mark::remove_next_file()
     return code;
 }
 
-string Mark::remove_next_scheme()
-{
-    string code;
-    if( m_schemes.size() ) {
-        Scheme* sch = m_schemes[m_schemes.size() - 1];
-        code = sch->get_code();
-        delete sch;
-        m_schemes.pop_back();
-    }
-    return code;
-}
-
 std::string glich::Mark::remove_next_lexicon()
 {
     string code;

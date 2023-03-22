@@ -39,7 +39,7 @@ namespace glich {
     {
     public:
         Object( const std::string& ocode ) : m_ocode( ocode ) {}
-        ~Object();
+        virtual ~Object();
 
         void set_value_names( const StdStrVec& vnames );
 

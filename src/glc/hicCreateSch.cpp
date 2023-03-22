@@ -105,9 +105,9 @@ Scheme* glich::do_create_scheme( Script& script, const std::string& code )
         script.error( "Scheme \"" + code + "\" not created." );
         return nullptr;
     }
-    Scheme* sch = new Scheme( name, base );
+    Scheme* sch = new Scheme( code, base );
+    sch->set_name( name );
     sch->set_style( style );
-    sch->set_code( code );
     return sch;
 }
 

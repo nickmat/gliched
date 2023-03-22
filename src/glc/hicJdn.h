@@ -35,23 +35,16 @@ namespace glich {
     class Jdn : public Base
     {
     public:
-        Jdn() {}
-        Jdn( const std::string& data ) : Base( data ) {}
+        Jdn( const std::string& data = std::string() ) : Base( data ) {
+            m_fieldnames = { "day" };
+        }
 
-        size_t record_size() const override { return 1; }
+        size_t required_size() const override { return 1; }
 
-        bool set_fields_as_begin_first( Field* fields, const Field* mask ) const override;
-        bool set_fields_as_next_first( Field* fields, const Field* mask ) const override;
-        bool set_fields_as_begin_last( Field* fields, const Field* mask ) const override;
-        bool set_fields_as_next_last( Field* fields, const Field* mask ) const override;
+        Field get_jdn( const FieldVec& fields ) const override { return fields[0]; }
 
-        Field get_jdn( const Field* fields ) const override { return fields[0]; }
+        void set_fields( FieldVec& fields, Field jdn ) const override { fields[0] = jdn; }
 
-        void set_fields( Field* fields, Field jdn ) const override { fields[0] = jdn; }
-
-    protected:
-        int get_std_fieldname_index( const std::string& fieldname ) const override;
-        std::string get_std_fieldname( size_t index ) const override;
     };
 
 }

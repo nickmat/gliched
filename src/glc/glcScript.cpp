@@ -1133,8 +1133,51 @@ SValue Script::text_cast()
 
 SValue Script::date_cast()
 {
-    SValue value;
-    value.set_error( "date_cast not operational yet." );
+    SToken token = next_token();
+    Scheme* sch = nullptr;
+    string sig, scode, fcode;
+    if( token.type() == SToken::Type::Dot ) {
+        // Includes scheme:format signiture
+        sig = get_name_or_primary( GetToken::next );
+        split_code( &scode, &fcode, sig );
+        sch = dynamic_cast<Scheme*>(m_glc->get_object( scode ));
+    }
+    SValue value = primary( GetToken::current );
+    if( value.type() == SValue::Type::Object ) {
+        Object* obj = value.get_object_ptr();
+        if( obj == nullptr ) {
+            value.set_error( "Object type not recognised." );
+            return value;
+        }
+        // We ignore any suffix scheme setting
+        sch = dynamic_cast<Scheme*>(obj);
+        if( obj == nullptr ) {
+            value.set_error( "Object is not a scheme." );
+            return value;
+        }
+        SValueVec vals = value.get_object();
+        FieldVec fields = sch->get_object_fields( vals );
+        Field fld = sch->get_base().get_jdn( fields );
+        value.set_field( fld );
+        return value;
+    }
+    if( sch == nullptr ) {
+        sch = m_glc->get_ischeme();
+        if( sch == nullptr ) {
+            value.set_error( "No default scheme set." );
+            return value;
+        }
+        scode = sch->get_code();
+    }
+    if( scode.empty() ) {
+        value.set_error( "No scheme set." );
+        return value;
+    }
+    if( value.type() == SValue::Type::String ) {
+        value.set_error( "Unable to convert string type yet." );
+        return value;
+    }
+    value.set_error( "Expected an object or string type." );
     return value;
 }
 

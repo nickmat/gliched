@@ -179,6 +179,15 @@ SValue* SValue::get_object_element( size_t index, size_t expand )
     return nullptr;
 }
 
+Object* SValue::get_object_ptr()
+{
+    string ocode = get_object_code();
+    if( ocode.empty() ) {
+        return nullptr;
+    }
+    return s_glc->get_object( ocode );
+}
+
 string SValue::get_str() const
 {
     if( std::holds_alternative<string>( m_data ) ) {

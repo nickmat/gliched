@@ -30,6 +30,7 @@
 #include "glcFile.h"
 #include "glcFunction.h"
 #include "glcObject.h"
+#include "hicBase.h"
 #include "hicCreateSch.h"
 #include "hicElement.h"
 #include "hicHelper.h"
@@ -1012,15 +1013,15 @@ StdStrVec glich::Script::get_string_list( GetToken get )
 {
     StdStrVec vec;
     SToken token = (get == GetToken::next) ? next_token() : current_token();
-    while( token.type() != SToken::SToken::Type::Semicolon &&
-        token.type() != SToken::SToken::Type::End )
+    while( token.type() != SToken::Type::Semicolon &&
+        token.type() != SToken::Type::End )
     {
         string str = get_name_or_primary( GetToken::current );
         if( !str.empty() ) {
             vec.push_back( str );
         }
         token = current_token();
-        if( token.type() == SToken::SToken::Type::Comma ) {
+        if( token.type() == SToken::Type::Comma ) {
             token = next_token();
         }
     }
@@ -1139,8 +1140,40 @@ SValue Script::date_cast()
 
 SValue Script::record_cast()
 {
-    SValue value;
-    value.set_error( "record_cast not operational yet." );
+    SToken token = next_token();
+    Scheme* sch = nullptr;
+    string sig, scode, fcode;
+    if( token.type() == SToken::Type::Dot ) {
+        // Includes scheme:format signiture
+        sig = get_name_or_primary( GetToken::next );
+        split_code( &scode, &fcode, sig );
+        sch = dynamic_cast<Scheme*>(m_glc->get_object( scode ));
+    }
+    SValue value = primary( GetToken::current );
+    if( sch == nullptr ) {
+        sch = m_glc->get_ischeme();
+        if( sch == nullptr ) {
+            value.set_error( "No default scheme set." );
+            return value;
+        }
+        scode = sch->get_code();
+    }
+    if( scode.empty() ) {
+        value.set_error( "No scheme set." );
+        return value;
+    }
+    bool success = false;
+    Field jdn = value.get_field( success );
+    if( success ) {
+        FieldVec fields = sch->get_base().get_fields( jdn );
+        value.set_object( scode, fields );
+        return value;
+    }
+    if( value.type() == SValue::Type::String ) {
+        value.set_error( "Unable to convert string type yet." );
+        return value;
+    }
+    value.set_error( "Expected a field or string type." );
     return value;
 }
 

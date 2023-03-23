@@ -65,7 +65,7 @@ namespace glich {
         // Return the number of Required Fields.
         virtual size_t required_size() const = 0;
         // Return the number of of all Fields including optional and calculated.
-        size_t field_size() const { return m_fieldnames.size(); }
+        size_t record_size() const { return m_fieldnames.size(); }
         // Get list of fieldnames in default order.
         StdStrVec get_fieldnames() const { return m_fieldnames; }
 
@@ -73,7 +73,7 @@ namespace glich {
         virtual Field get_jdn( const FieldVec& fields ) const = 0;
 
         // Converts the given jdn into the Records' Fields.
-        virtual void set_fields( FieldVec& fields, Field jdn ) const = 0;
+        virtual FieldVec get_fields( Field jdn ) const = 0;
 
     protected:
         StdStrVec m_fieldnames;

@@ -1,4 +1,4 @@
-// jdn001.glcs  Test simplest scheme declaration
+// scheme001.glcs  Test simplest scheme declaration
 
 scheme J { base julian; }
 

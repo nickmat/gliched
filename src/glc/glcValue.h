@@ -67,6 +67,8 @@ namespace glich {
         void set_float( double real ) { m_type = Type::Float; m_data = real; }
         void set_object( SValueVec obj ) { m_type = Type::Object; m_data = obj; }
 
+        void set_object( const std::string& code, FieldVec fields );
+
         void set_range_demote( Range rng );
         void set_rlist_demote( const RList& rlist );
 

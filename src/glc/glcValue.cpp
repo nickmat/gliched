@@ -108,6 +108,18 @@ std::string glich::SValue::object_to_string( const SValueVec& values ) const
     return result + "}";
 }
 
+void glich::SValue::set_object( const std::string& code, FieldVec fields )
+{
+    SValueVec vals( fields.size() + 1 );
+    vals[0].set_str( code );
+    for( size_t i = 0; i < fields.size(); i++ ) {
+        if( fields[i] != f_invalid ) {
+            vals[i + 1].set_field( fields[i] );
+        }
+    }
+    set_object( vals );
+}
+
 void glich::SValue::set_range_demote( Range rng )
 {
     if( rng.m_beg == f_invalid || rng.m_end == f_invalid ) {

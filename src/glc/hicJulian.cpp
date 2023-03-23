@@ -82,7 +82,7 @@ void glich::julian_from_jdn( Field* year, Field* month, Field* day, Field jdn )
 
 /*! Return the jdn for Easter Sunday in the given year.
 */
-Field glich::julian_easter( Field year )
+Field julian_easter( Field year )
 {
     Field shifted_epact = ( 14 + 11 * ( year % 19 ) ) % 30;
     Field paschal_moon = julian_to_jdn( year, 4, 19 ) - shifted_epact;
@@ -90,7 +90,7 @@ Field glich::julian_easter( Field year )
 }
 
 
-Field glich::Julian::get_jdn( const FieldVec& fields ) const
+Field Julian::get_jdn( const FieldVec& fields ) const
 {
     if( fields.size() < 3 || fields[0] == f_invalid || fields[1] == f_invalid || fields[2] == f_invalid ) {
         return f_invalid;
@@ -98,10 +98,11 @@ Field glich::Julian::get_jdn( const FieldVec& fields ) const
     return julian_to_jdn( fields[0], fields[1], fields[2] );
 }
 
-void glich::Julian::set_fields( FieldVec& fields, Field jdn ) const
+FieldVec Julian::get_fields( Field jdn ) const
 {
-    assert( fields.size() >= 3 );
+    FieldVec fields( record_size(), f_invalid );
     julian_from_jdn( &fields[0], &fields[1], &fields[2], jdn );
+    return fields;
 }
 
 

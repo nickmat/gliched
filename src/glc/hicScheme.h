@@ -48,6 +48,7 @@ namespace glich {
 
         std::string get_name() const { return m_name; }
         Scheme_style get_style() const { return m_style; }
+        const Base& get_base() const { return *m_base; }
 
         void set_name( const std::string& name ) { m_name = name; }
         void set_style( Scheme_style style ) { m_style = style; }

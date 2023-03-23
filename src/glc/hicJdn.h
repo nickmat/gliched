@@ -43,7 +43,7 @@ namespace glich {
 
         Field get_jdn( const FieldVec& fields ) const override { return fields[0]; }
 
-        void set_fields( FieldVec& fields, Field jdn ) const override { fields[0] = jdn; }
+        FieldVec get_fields( Field jdn ) const override { return { jdn }; }
 
     };
 

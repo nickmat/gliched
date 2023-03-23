@@ -1,0 +1,9 @@
+// scheme002.glcs  Test casting field to record
+
+scheme J { base julian; }
+
+write record.J 2432814;
+
+/*[OUTPUT]
+{J 1948, 9, 6}
+[OUTPUT]*/

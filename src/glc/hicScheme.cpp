@@ -49,6 +49,23 @@ Scheme::~Scheme()
     delete m_base;
 }
 
+FieldVec Scheme::get_object_fields( const SValueVec& values ) const
+{
+    FieldVec fields( m_base->record_size(), f_invalid );
+    if( values.size() <= 1 ) {
+        return fields;
+    }
+    size_t size = std::min( m_base->record_size(), values.size() - 1 );
+    bool success = false;
+    for( size_t i = 0; i < size; i++ ) {
+        Field fld = values[i + 1].get_field( success );
+        if( success ) {
+            fields[i] = fld;
+        }
+    }
+    return fields;
+}
+
 Base* Scheme::create_base( BaseName bs, const std::string& data )
 {
     switch( bs )

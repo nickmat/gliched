@@ -46,6 +46,7 @@ namespace glich {
 
         SToken& current_token() { return m_ts.current(); }
         SToken& next_token() { return m_ts.next(); }
+        Glich* get_glich() { return m_glc; }
 
         bool error( const std::string& mess ) { return m_ts.error( mess ); }
         ScriptStore* store() const;

@@ -28,6 +28,8 @@
 #include "hicCreateSch.h"
 
 #include "glcScript.h"
+#include "hicBase.h"
+#include "hicGrammar.h"
 #include "hicLexicon.h"
 #include "hicScheme.h"
 
@@ -93,6 +95,19 @@ Scheme* glich::do_create_scheme( Script& script, const std::string& code )
             else if( token.get_str() == "base" ) {
                 base = do_base( script, GetToken::next );
             }
+            else if( token.get_str() == "grammar" ) {
+                token = script.next_token();
+                if( token.type() == SToken::Type::LCbracket ) {
+                    gmr = do_create_grammar( script, "", base );
+                    if( gmr == nullptr ) {
+                        script.error( "Unable to create grammar." );
+                    }
+                }
+                else {
+                    gmr_code = script.get_name_or_primary( GetToken::current );
+                    gmr = script.get_glich()->get_grammar( gmr_code );
+                }
+            }
             else {
                 script.error( "Scheme sub-statement expected." );
             }
@@ -103,6 +118,17 @@ Scheme* glich::do_create_scheme( Script& script, const std::string& code )
             delete gmr;
         }
         script.error( "Scheme \"" + code + "\" not created." );
+        return nullptr;
+    }
+    if( gmr == nullptr ) {
+        gmr = Grammar::create_default_grammar( base, script.get_glich() );
+    }
+    if( !base->attach_grammar( gmr ) ) {
+        if( gmr_code.empty() ) {
+            delete gmr;
+        }
+        delete base;
+        script.error( "Unable to attach grammar." );
         return nullptr;
     }
     Scheme* sch = new Scheme( code, base );
@@ -192,5 +218,80 @@ Lexicon* glich::do_create_lexicon( Script& script, const std::string& code )
     return lex;
 
 }
+
+Grammar* glich::do_create_grammar( Script& script, const std::string& code, const Base* base )
+{
+    SToken token = script.current_token();
+    if( token.type() != SToken::Type::LCbracket ) {
+        script.error( "'{' expected." );
+        return nullptr;
+    }
+    Grammar* gmr = new Grammar( code, script.get_glich() );
+    string str;
+    for( ;;) {
+        token = script.next_token();
+        if( token.type() == SToken::Type::LCbracket ) {
+            continue;
+        }
+        else if( token.type() == SToken::Type::RCbracket ||
+            token.type() == SToken::Type::End ) {
+            break; // All done.
+        }
+        else if( token.type() == SToken::Type::Name ) {
+            string name = token.get_str();
+            if( name == "lexicons" ) {
+                // TODO: do_grammar_vocabs( gmr );
+                script.error( "lexicons not yet done." );
+            }
+            else if( name == "format" ) {
+                // TODO: do_format( gmr );
+                script.error( "format not yet done." );
+            }
+            else if( name == "pref" ) {
+                // TODO: str = get_name_or_primary( true );
+                //       gmr->set_pref( str );
+                script.error( "pref not yet done." );
+            }
+            else if( name == "calculate" ) {
+                // TODO: do_grammar_calculate( gmr );
+                script.error( "calculate not yet done." );
+            }
+            else if( name == "alias" ) {
+                // TODO: do_grammar_alias( gmr );
+                script.error( "alias not yet done." );
+            }
+            else if( name == "inherit" ) {
+                // TODO: str = get_name_or_primary( true );
+                //       gmr->set_inherit( str );
+                script.error( "inherit not yet done." );
+            }
+            else if( name == "fields" ) {
+                StdStrVec basefields = script.get_string_list( GetToken::next );
+                gmr->set_base_fieldnames( basefields );
+            }
+            else if( name == "optional" ) {
+                // TODO: StringVec optfields = get_string_list( true );
+                //       gmr->set_opt_fieldnames( optfields );
+                script.error( "optional not yet done." );
+            }
+            else if( name == "rank" ) {
+                // TODO: StringVec rankfields = get_string_list( true );
+                //       gmr->set_rank_fieldnames( rankfields );
+                script.error( "rank not yet done." );
+            }
+        }
+        else {
+            script.error( "Grammar sub-statement expected." );
+        }
+    }
+    gmr->constuct( base );
+    if( !gmr->is_ok() ) {
+        delete gmr;
+        gmr = nullptr;
+        script.error( "Unable to construct grammar \"" + code + "\"." );
+    }
+    return gmr;
+}
+
 
 // End of src/glc/hicCreateSch.cpp file

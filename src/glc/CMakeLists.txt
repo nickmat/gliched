@@ -22,6 +22,7 @@ set( GLC_SOURCES
     hicCreateSch.cpp
     hicDatePhrase.cpp
     hicElement.cpp
+    hicGrammar.cpp
     hicHelper.cpp
     hicJulian.cpp
     hicLexicon.cpp
@@ -48,6 +49,7 @@ set( GLC_HEADERS
     hicCreateSch.h
     hicDatePhrase.h
     hicElement.h
+    hicGrammar.h
     hicHelper.h
     hicJdn.h
     hicJulian.h

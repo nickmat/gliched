@@ -62,6 +62,8 @@ namespace glich {
         // Set initial data from string.
         virtual void set_data( const std::string& data );
 
+        bool attach_grammar( Grammar* gmr );
+
         // Return the number of Required Fields.
         virtual size_t required_size() const = 0;
         // Return the number of of all Fields including optional and calculated.
@@ -78,6 +80,7 @@ namespace glich {
     protected:
         StdStrVec m_fieldnames;
         LocaleData m_locale;
+        Grammar* m_grammar;
     };
 
 }

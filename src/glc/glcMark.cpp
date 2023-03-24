@@ -30,6 +30,7 @@
 #include "glcFile.h"
 #include "glcFunction.h"
 #include "glcObject.h"
+#include "hicGrammar.h"
 #include "hicLexicon.h"
 #include "hicScheme.h"
 
@@ -105,6 +106,18 @@ std::string glich::Mark::remove_next_lexicon()
         code = lex->get_code();
         delete lex;
         m_lexicons.pop_back();
+    }
+    return code;
+}
+
+std::string glich::Mark::remove_next_grammar()
+{
+    string code;
+    if( m_grammars.size() ) {
+        Grammar* gmr = m_grammars[m_grammars.size() - 1];
+        code = gmr->get_code();
+        delete gmr;
+        m_grammars.pop_back();
     }
     return code;
 }

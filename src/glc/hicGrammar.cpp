@@ -1,10 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/glc/hicCreateSch.h
+ * Name:        src/glc/hicGrammar.cpp
  * Project:     Glich: Extendable Script Language.
- * Purpose:     Create Scheme and associated class implimentations.
+ * Purpose:     Grammar class to control date formatting.
  * Author:      Nick Matthews
  * Website:     https://github.com/nickmat/glich
- * Created:     17th March 2023
+ * Created:     24th March 2023
  * Copyright:   Copyright (c) 2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -25,18 +25,46 @@
 
 */
 
-#ifndef SRC_GLC_HICCREATESCH_H
-#define SRC_GLC_HICCREATESCH_H
+#include "hicGrammar.h"
 
-#include "glcScript.h"
+#include <glc/glc.h>
+#include "hicBase.h"
+//#include "hicFormat.h"
+//#include "hicFormatText.h"
+#include "hicLexicon.h"
 
-namespace glich {
-    
-    class Base;
+#include <cassert>
 
-    Scheme* do_create_scheme( Script& script, const std::string& code );
-    Lexicon* do_create_lexicon( Script& script, const std::string& code );
-    Grammar* do_create_grammar( Script& script, const std::string& code, const Base* base );
+using namespace glich;
+using std::string;
+
+
+Grammar::Grammar( const string& code, Glich* glc )
+    : m_code( code ), m_glc( glc ), m_ok( false )
+{
 }
 
-#endif // SRC_GLC_HICCREATESCH_H
+Grammar::~Grammar()
+{
+}
+
+bool Grammar::constuct( const Base* base )
+{
+    if( m_ok ) {
+        return false; // Only run construct once.
+    }
+    // TODO:
+    m_ok = true;
+    return true;
+}
+
+Grammar* Grammar::create_default_grammar( const Base* base, Glich* glc )
+{
+    Grammar* gmr = new Grammar( "", glc );
+    gmr->set_base_fieldnames( base->get_fieldnames() );
+    // TODO: Add default formats.
+    return gmr;
+}
+
+
+// End of src/cal/calgrammar.cpp file

@@ -28,13 +28,14 @@
 #include "hicBase.h"
 
 #include "glcHelper.h"
+#include "hicGrammar.h"
 #include "hicMath.h"
 
 
 using namespace glich;
 using std::string;
 
-Base::Base( const string& data )
+Base::Base( const string& data ) : m_grammar( nullptr )
 {
     string tail, word = get_first_word( data, &tail );
     while( !word.empty() ) {
@@ -59,5 +60,27 @@ void Base::set_data( const string& data )
     }
 }
 
+bool Base::attach_grammar( Grammar* gmr )
+{
+    if( gmr == nullptr || m_grammar != nullptr ) {
+        return false;
+    }
+    // Check base and gmr fieldnames are the same.
+    StdStrVec  base_fns = get_fieldnames();
+    StdStrVec gmr_fns = gmr->get_base_fieldnames();
+    size_t size = required_size();
+    if( base_fns.size() != size || gmr_fns.size() != size ) {
+        return false; // At lest one list is short.
+    }
+    for( size_t i = 0; i < size; i++ ) {
+        if( base_fns[i] != gmr_fns[i] ) {
+            return false;
+        }
+    }
+    // All checks ok
+    m_grammar = gmr;
+    // TODO: Add opt fields
+    return true;
+}
 
-// End of src/cal/calbase.cpp file
+// End of src/glc/hicBase.cpp file

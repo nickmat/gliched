@@ -69,6 +69,7 @@ namespace glich {
         bool do_file();
         bool do_scheme();
         bool do_lexicon();
+        bool do_grammar();
 
         SValue expr( GetToken get );
         SValue compare( GetToken get );

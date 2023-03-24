@@ -180,6 +180,27 @@ Lexicon* Glich::get_lexicon( const std::string& code )
     return nullptr;
 }
 
+bool Glich::add_grammar( Grammar* gmr, const std::string& code )
+{
+    // Only add lexicons and that are not already there.
+    if( gmr == nullptr || m_grammars.count( code ) ) {
+        delete gmr;
+        return false;
+    }
+    assert( m_marks.size() > 0 );
+    m_marks[m_marks.size() - 1]->add_grammar( gmr );
+    m_grammars[code] = gmr;
+    return true;
+}
+
+Grammar* Glich::get_grammar( const std::string& code )
+{
+    if( m_grammars.count( code ) > 0 ) {
+        return m_grammars.find( code )->second;
+    }
+    return nullptr;
+}
+
 void Glich::add_or_replace_mark( const std::string& name )
 {
     clear_mark( name );
@@ -233,6 +254,20 @@ bool Glich::clear_mark( const std::string& name )
                 break;
             }
             m_files.erase( code );
+        }
+        for( ;;) {
+            code = m_marks[i]->remove_next_lexicon();
+            if( code.empty() ) {
+                break;
+            }
+            m_lexicons.erase( code );
+        }
+        for( ;;) {
+            code = m_marks[i]->remove_next_grammar();
+            if( code.empty() ) {
+                break;
+            }
+            m_grammars.erase( code );
         }
         delete m_marks[i];
         m_marks.pop_back();

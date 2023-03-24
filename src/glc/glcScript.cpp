@@ -101,6 +101,7 @@ bool Script::statement()
         if( name == "file" ) return do_file();
         if( name == "scheme" ) return do_scheme();
         if( name == "lexicon" ) return do_lexicon();
+        if( name == "grammar" ) return do_grammar();
         if( store()->exists( name ) ) return do_assign( name );
     }
     else if( token.type() == SToken::Type::Semicolon ) {
@@ -727,6 +728,21 @@ bool Script::do_lexicon()
     }
     Lexicon* lex = do_create_lexicon( *this, code );
     return m_glc->add_lexicon( lex, code );
+}
+
+bool Script::do_grammar()
+{
+    string code = get_name_or_primary( GetToken::next );
+    if( code.empty() ) {
+        error( "Grammar code missing." );
+        return false;
+    }
+    if( m_glc->get_grammar( code ) != nullptr ) {
+        error( "Grammar \"" + code + "\" already exists." );
+        return false;
+    }
+    Grammar* gmr = do_create_grammar( *this, code, nullptr );
+    return m_glc->add_grammar( gmr, code );
 }
 
 SValue Script::expr( GetToken get )

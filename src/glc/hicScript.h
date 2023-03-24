@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/glc/hicCreateSch.h
+ * Name:        src/glc/hicScript.h
  * Project:     Glich: Extendable Script Language.
  * Purpose:     Create Scheme and associated class implimentations.
  * Author:      Nick Matthews
@@ -25,8 +25,8 @@
 
 */
 
-#ifndef SRC_GLC_HICCREATESCH_H
-#define SRC_GLC_HICCREATESCH_H
+#ifndef SRC_GLC_HICSCRIPT_H
+#define SRC_GLC_HICSCRIPT_H
 
 #include "glcScript.h"
 
@@ -37,6 +37,7 @@ namespace glich {
     Scheme* do_create_scheme( Script& script, const std::string& code );
     Lexicon* do_create_lexicon( Script& script, const std::string& code );
     Grammar* do_create_grammar( Script& script, const std::string& code, const Base* base );
+
 }
 
-#endif // SRC_GLC_HICCREATESCH_H
+#endif // SRC_GLC_HICSCRIPT_H

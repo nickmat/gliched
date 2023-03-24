@@ -19,7 +19,6 @@ set( GLC_SOURCES
     glcTokenStream.cpp
     glcValue.cpp
     hicBase.cpp
-    hicCreateSch.cpp
     hicDatePhrase.cpp
     hicElement.cpp
     hicGrammar.cpp
@@ -29,6 +28,7 @@ set( GLC_SOURCES
     hicMath.cpp
     hicRomanNum.cpp
     hicScheme.cpp
+    hicScript.cpp
 )
 
 set( GLC_HEADERS
@@ -46,7 +46,6 @@ set( GLC_HEADERS
     glcTokenStream.h
     glcValue.h
     hicBase.h
-    hicCreateSch.h
     hicDatePhrase.h
     hicElement.h
     hicGrammar.h
@@ -57,6 +56,7 @@ set( GLC_HEADERS
     hicMath.h
     hicRomanNum.h
     hicScheme.h
+    hicScript.h
 )
 
 add_library( glc ${GLC_SOURCES} ${GLC_HEADERS} )

@@ -31,10 +31,10 @@
 #include "glcFunction.h"
 #include "glcObject.h"
 #include "hicBase.h"
-#include "hicCreateSch.h"
 #include "hicElement.h"
 #include "hicHelper.h"
 #include "hicScheme.h"
+#include "hicScript.h"
 
 #include <cassert>
 #include <fstream>

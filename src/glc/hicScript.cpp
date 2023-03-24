@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/glc/hicCreateSch.cpp
+ * Name:        src/glc/hicScript.cpp
  * Project:     Glich: Extendable Script Language.
  * Purpose:     Create Scheme and associated class implimentations.
  * Author:      Nick Matthews
@@ -25,7 +25,7 @@
 
 */
 
-#include "hicCreateSch.h"
+#include "hicScript.h"
 
 #include "glcScript.h"
 #include "hicBase.h"

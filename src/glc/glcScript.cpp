@@ -745,6 +745,21 @@ bool Script::do_grammar()
     return m_glc->add_grammar( gmr, code );
 }
 
+// If parsing the format in the global space then gmr is a nullptr and
+// the Grammar to be used should be encoded into the Format code,
+// as in "gmr:fmt"
+// If parsing the format within a grammar then gmr is not a nullptr
+// and the Format code just contains just the Format code, as in "fmt".
+bool glich::Script::do_format( Grammar* gmr )
+{
+    string code = get_name_or_primary( GetToken::next );
+    if( code.empty() ) {
+        error( "Format code missing." );
+        return false;
+    }
+    return do_create_format( *this, code, gmr );
+}
+
 SValue Script::expr( GetToken get )
 {
     SValue left = compare( get );

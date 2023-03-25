@@ -49,13 +49,13 @@ namespace glich {
     typedef std::vector<SchemeData> SchemeList;
 
     class Grammar;
-    typedef std::map<std::string,Grammar*> GrammarMap;
+    using GrammarMap = std::map<std::string, Grammar*>;
     class Lexicon;
-    typedef std::map<std::string, Lexicon*> LexiconMap;
+    using LexiconMap = std::map<std::string, Lexicon*>;
     class Format;
-    typedef std::map<std::string,Format*> FormatMap;
+    using FormatMap = std::map<std::string, Format*>;
 
-    typedef std::vector<int> XRefVec;
+    using XRefVec = std::vector<int>;
 
     inline void stringvec_cat( StdStrVec& a, const StdStrVec& b ) {
         a.insert( a.end(), b.begin(), b.end() );
@@ -73,7 +73,8 @@ namespace glich {
         StdStrVec lexicon_names;
     };
 
-    enum Format_style { FMT_STYLE_Default, FMT_STYLE_Hide };
+//    enum Format_style { FMT_STYLE_Default, FMT_STYLE_Hide };
+    enum class FormatStyle { Default, Hide };
 
     struct PCode {
         std::string code;
@@ -93,7 +94,7 @@ namespace glich {
     enum FormatType { FT_null, FT_text, FT_unit, FT_iso };
 
     struct Format_info {
-        Format_info() : type(FT_null), priority(0), style(FMT_STYLE_Default) {}
+        Format_info() : type(FT_null), priority(0), style( FormatStyle::Default ) {}
 
         std::string  code;
         FormatType   type;
@@ -101,7 +102,7 @@ namespace glich {
         std::string  input_str;
         std::string  output_str;
         int          priority;
-        Format_style style;
+        FormatStyle  style;
     };
 
     struct FormatText_info {

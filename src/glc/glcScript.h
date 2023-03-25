@@ -70,6 +70,7 @@ namespace glich {
         bool do_scheme();
         bool do_lexicon();
         bool do_grammar();
+        bool do_format( Grammar* gmr = nullptr );
 
         SValue expr( GetToken get );
         SValue compare( GetToken get );

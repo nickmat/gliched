@@ -30,6 +30,7 @@
 #include "glcScript.h"
 #include "hicBase.h"
 #include "hicGrammar.h"
+#include "hicFormatUnit.h"
 #include "hicLexicon.h"
 #include "hicScheme.h"
 
@@ -244,8 +245,7 @@ Grammar* glich::do_create_grammar( Script& script, const std::string& code, cons
                 script.error( "lexicons not yet done." );
             }
             else if( name == "format" ) {
-                // TODO: do_format( gmr );
-                script.error( "format not yet done." );
+                script.do_format( gmr );
             }
             else if( name == "pref" ) {
                 // TODO: str = get_name_or_primary( true );
@@ -291,6 +291,192 @@ Grammar* glich::do_create_grammar( Script& script, const std::string& code, cons
         script.error( "Unable to construct grammar \"" + code + "\"." );
     }
     return gmr;
+}
+
+namespace {
+
+    FormatText* create_format_text( const string& code, Grammar* gmr )
+    {
+        return nullptr;
+    }
+
+    FormatUnit* create_format_unit( Glich* glc, const std::string& code, Grammar* gmr )
+    {
+        size_t pos = code.find( ':' );
+        if( pos == string::npos ) {
+            if( gmr == nullptr ) {
+                return nullptr;
+            }
+            return gmr->create_format_unit( code );
+        }
+        if( gmr != nullptr ) {
+            return nullptr;
+        }
+        string gcode = code.substr( 0, pos );
+        string fcode = code.substr( pos + 1 );
+        gmr = glc->get_grammar( gcode );
+        if( gmr == nullptr || gmr->get_format( fcode ) != nullptr ) {
+            return nullptr;
+        }
+        FormatUnit* fmt = new FormatUnit( fcode, gmr );
+        if( !gmr->add_format( fmt ) ) {
+            delete fmt;
+            return nullptr;
+        }
+        glc->add_format( fmt, code );
+        return fmt;
+    }
+}
+
+bool glich::do_create_format( Script& script, const string& code, Grammar* gmr )
+{
+    string format_in, format_out, instring, outstring, separators;
+    StdStrVec rankfields, rankoutfields, rules;
+    FormatStyle style = FormatStyle::Default;
+
+    if( script.current_token().type() == SToken::Type::LCbracket ) {
+        for( ;;) {
+            SToken token = script.next_token();
+            if( token.type() == SToken::Type::RCbracket ||
+                token.type() == SToken::Type::End ) {
+                break;
+            }
+            if( token.type() == SToken::Type::Semicolon ) {
+                continue;
+            }
+            if( token.type() == SToken::Type::Name ) {
+                string name = token.get_str();
+                if( name == "output" ) {
+                    format_out = script.expr( GetToken::next ).as_string();
+                    continue;
+                }
+                if( name == "inout" ) {
+                    format_out = script.expr( GetToken::next ).as_string();
+                    format_in = format_out;
+                    continue;
+                }
+                if( name == "input" ) {
+                    format_in = script.expr( GetToken::next ).as_string();
+                    continue;
+                }
+                if( name == "instring" ) {
+                    instring = script.expr( GetToken::next ).as_string();
+                    continue;
+                }
+                if( name == "outstring" ) {
+                    outstring = script.expr( GetToken::next ).as_string();
+                    continue;
+                }
+                if( name == "separators" ) {
+                    separators = script.expr( GetToken::next ).as_string();
+                    continue;
+                }
+                if( name == "rank" ) {
+                    rankfields = script.get_string_list( GetToken::next );
+                    continue;
+                }
+                if( name == "rankout" ) {
+                    rankoutfields = script.get_string_list( GetToken::next );
+                    continue;
+                }
+                if( name == "rules" ) {
+                    rules = script.get_string_list( GetToken::next );
+                    continue;
+                }
+                if( name == "style" ) {
+                    string str = script.get_name_or_primary( GetToken::next );
+                    if( str == "hide" ) {
+                        style = FormatStyle::Hide;
+                    }
+                    else if( str != "none" ) {
+                        script.error( "Style name expected." );
+                    }
+                    continue;
+                }
+                script.error( "Expected format sub-statement." );
+            }
+        }
+    }
+    else {
+        if( script.current_token().type() == SToken::Type::Comma ) {
+            script.next_token();
+        }
+        format_out = script.expr( GetToken::current ).as_string();
+        if( format_out.empty() ) {
+            script.error( "Format missing." );
+            return false;
+        }
+        format_in = format_out;
+        if( script.current_token().type() != SToken::Type::Semicolon ) {
+            script.error( "';' expected." );
+            return false;
+        }
+    }
+
+    Format* fmt = nullptr;
+#if 0
+    if( rules.empty() || rules[0] == "text" ) {
+        if( format_in.empty() && format_out.empty() ) {
+            script.error( "Format string not found." );
+            return false;
+        }
+        FormatText* fmtt = create_format_text( code, gmr );
+        if( fmtt == nullptr ) {
+            script.error( "Unable to create format." );
+            return false;
+        }
+        if( separators.size() ) {
+            fmtt->set_separators( separators );
+        }
+        if( rankfields.size() ) {
+            fmtt->set_rank_fieldnames( rankfields );
+        }
+        if( rankoutfields.size() ) {
+            fmtt->set_rankout_fieldnames( rankoutfields );
+        }
+        if( !format_out.empty() ) {
+            fmtt->set_control_out( format_out );
+        }
+        if( !format_in.empty() ) {
+            fmtt->set_control_in( format_in );
+        }
+        if( !instring.empty() ) {
+            fmtt->set_user_input_str( instring );
+        }
+        if( !instring.empty() ) {
+            fmtt->set_user_output_str( outstring );
+        }
+        fmt = fmtt;
+    }
+    else
+    if( rules[0] == "iso8601" ) {
+        fmt = m_cals->create_format_iso( code, gmr, rules );
+        if( fmt == nullptr ) {
+            error( "Unable to create ISO format." );
+            return false;
+        }
+    }
+    else
+#endif    
+    if( rules[0] == "units" ) {
+        fmt = create_format_unit( script.get_glich(), code, gmr );
+        if( fmt == nullptr ) {
+            script.error( "Unable to create Units format." );
+            return false;
+        }
+    }
+    else {
+        script.error( "Unknown rules statement." );
+        return false;
+    }
+    fmt->set_style( style );
+    if( gmr == nullptr ) {
+        if( !fmt->construct() ) {
+            delete fmt;
+            return false;
+        }
+    }
+    return true;
 }
 
 

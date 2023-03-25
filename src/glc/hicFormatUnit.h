@@ -1,10 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/glc/hicScript.h
+ * Name:        src/glc/hicFormatUnit.h
  * Project:     Glich: Extendable Script Language.
- * Purpose:     Create Scheme and associated class implimentations.
+ * Purpose:     FormatUnit class to read and write as units.
  * Author:      Nick Matthews
  * Website:     https://github.com/nickmat/glich
- * Created:     17th March 2023
+ * Created:     24th March 2023
  * Copyright:   Copyright (c) 2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -25,20 +25,22 @@
 
 */
 
-#ifndef SRC_GLC_HICSCRIPT_H
-#define SRC_GLC_HICSCRIPT_H
+#ifndef SRC_GLC_HICFORMATUNIT_H_GUARD
+#define SRC_GLC_HICFORMATUNIT_H_GUARD
 
-#include "glcScript.h"
+#include "hicFormat.h"
 
 namespace glich {
-    
-    class Base;
 
-    Scheme* do_create_scheme( Script& script, const std::string& code );
-    Lexicon* do_create_lexicon( Script& script, const std::string& code );
-    Grammar* do_create_grammar( Script& script, const std::string& code, const Base* base );
-    bool do_create_format( Script& script, const std::string& code, Grammar* gmr );
+    class FormatUnit : public Format
+    {
+    public:
+        FormatUnit( const std::string& code, Grammar* gmr );
+
+    private:
+
+    };
 
 }
 
-#endif // SRC_GLC_HICSCRIPT_H
+#endif // SRC_GLC_HICFORMATUNIT_H_GUARD

@@ -201,6 +201,13 @@ Grammar* Glich::get_grammar( const std::string& code )
     return nullptr;
 }
 
+bool glich::Glich::add_format( Format* fmt, const std::string& code )
+{
+    assert( m_marks.size() > 0 );
+    m_marks[m_marks.size() - 1]->add_format( fmt );
+    return true;
+}
+
 void Glich::add_or_replace_mark( const std::string& name )
 {
     clear_mark( name );
@@ -268,6 +275,12 @@ bool Glich::clear_mark( const std::string& name )
                 break;
             }
             m_grammars.erase( code );
+        }
+        for( ;;) {
+            code = m_marks[i]->remove_next_format();
+            if( code.empty() ) {
+                break;
+            }
         }
         delete m_marks[i];
         m_marks.pop_back();

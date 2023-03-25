@@ -1,10 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/glc/hicScript.h
+ * Name:        src/glc/hicFormat.cpp
  * Project:     Glich: Extendable Script Language.
- * Purpose:     Create Scheme and associated class implimentations.
+ * Purpose:     Format class to control the formatting and parsing of dates.
  * Author:      Nick Matthews
  * Website:     https://github.com/nickmat/glich
- * Created:     17th March 2023
+ * Created:     24th March 2023
  * Copyright:   Copyright (c) 2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -25,20 +25,27 @@
 
 */
 
-#ifndef SRC_GLC_HICSCRIPT_H
-#define SRC_GLC_HICSCRIPT_H
+#include "hicFormat.h"
 
-#include "glcScript.h"
+//#include "calbase.h"
+//#include "calgrammar.h"
+//#include "calparse.h"
+//#include "hicRecord.h"
+//#include "caltext.h"
+//#include "calvocab.h"
 
-namespace glich {
-    
-    class Base;
+#include <cassert>
 
-    Scheme* do_create_scheme( Script& script, const std::string& code );
-    Lexicon* do_create_lexicon( Script& script, const std::string& code );
-    Grammar* do_create_grammar( Script& script, const std::string& code, const Base* base );
-    bool do_create_format( Script& script, const std::string& code, Grammar* gmr );
+using namespace glich;
+using std::string;
 
+Format::Format( const std::string& code, Grammar* gmr )
+    : m_code( code ), m_owner( gmr ), m_ok( false ), m_style( FormatStyle::Default )
+{
 }
 
-#endif // SRC_GLC_HICSCRIPT_H
+Format::~Format()
+{
+}
+
+// End of src/cal/calformat.cpp file

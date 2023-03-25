@@ -75,6 +75,7 @@ namespace glich {
         Lexicon* get_lexicon( const std::string& code );
         bool add_grammar( Grammar* gmr, const std::string& code );
         Grammar* get_grammar( const std::string& code );
+        bool add_format( Format* fmt, const std::string& code );
 
         void add_or_replace_mark( const std::string& name );
         bool clear_mark( const std::string& name );

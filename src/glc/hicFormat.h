@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/glc/hicGrammar.h
+ * Name:        src/glc/hicFormat.h
  * Project:     Glich: Extendable Script Language.
- * Purpose:     Grammar class to control date formatting.
+ * Purpose:     Format class to control the formatting and parsing of dates.
  * Author:      Nick Matthews
  * Website:     https://github.com/nickmat/glich
  * Created:     24th March 2023
@@ -25,50 +25,41 @@
 
 */
 
-#ifndef GLC_HICGRAMMAR_H_GUARD
-#define GLC_HICGRAMMAR_H_GUARD
+#ifndef SRC_GLC_HICFORMAT_H_GUARD
+#define SRC_GLC_HICFORMAT_H_GUARD
 
-#include "hicHelper.h"
 #include <glc/hicDefs.h>
+#include "hicGrammar.h"
+#include "hicHelper.h"
+
 
 namespace glich {
 
-    class Glich;
-    class Base;
-    class Grammar;
-    class FormatUnit;
-
-    class Grammar
+    class Format
     {
     public:
-        Grammar( const std::string& code, Glich* glc );
-        ~Grammar();
+        Format( const std::string& code, Grammar* gmr );
+        virtual ~Format();
 
+        virtual bool construct() { m_ok = true; return m_ok; }
         bool is_ok() const { return m_ok; }
-        bool constuct( const Base* base );
 
-        void set_base_fieldnames( StdStrVec fieldnames ) { m_base_fieldnames = fieldnames; }
-        FormatUnit* create_format_unit( const std::string& code );
-        bool add_format( Format* fmt );
+        void set_user_input_str( const std::string str ) { m_input_str = str; }
+        void set_user_output_str( const std::string str ) { m_output_str = str; }
+        void set_style( FormatStyle style ) { m_style = style; }
 
         std::string get_code() const { return m_code; }
-        Format* get_format( const std::string& code ) const;
-
-        StdStrVec get_base_fieldnames() const { return m_base_fieldnames; }
-
-        void remove_format( const std::string& fcode ) { m_formats.erase( fcode ); }
-
-        static Grammar* create_default_grammar( const Base* base, Glich* glc );
+        Grammar* get_owner()  const { return m_owner; }
 
     private:
-        Glich*      m_glc;
         std::string m_code;
-        bool        m_ok;
-        Grammar*    m_inherit;
-        FormatMap   m_formats;
-        StdStrVec   m_base_fieldnames;
+        Grammar* m_owner;
+        bool m_ok;
+        FormatStyle m_style;
+        std::string m_input_str;
+        std::string m_output_str;
     };
 
 }
 
-#endif // GLC_HICGRAMMAR_H_GUARD
+#endif // SRC_GLC_HICFORMAT_H_GUARD

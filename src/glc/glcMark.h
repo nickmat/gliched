@@ -38,6 +38,7 @@ namespace glich {
     class File;
     class Lexicon;
     class Grammar;
+    class Format;
 
     class Mark
     {
@@ -53,6 +54,7 @@ namespace glich {
         void add_file( File* file ) { m_files.push_back( file ); }
         void add_lexicon( Lexicon* lex ) { m_lexicons.push_back( lex ); }
         void add_grammar( Grammar* gmr ) { m_grammars.push_back( gmr ); }
+        void add_format( Format* fmt ) { m_formats.push_back( fmt ); }
 
         std::string remove_next_function();
         std::string remove_next_command();
@@ -60,6 +62,7 @@ namespace glich {
         std::string remove_next_file();
         std::string remove_next_lexicon();
         std::string remove_next_grammar();
+        std::string remove_next_format();
 
         void set_context( Context ct ) { m_context = ct; }
 
@@ -73,6 +76,7 @@ namespace glich {
         std::vector<File*>     m_files;
         std::vector<Lexicon*>  m_lexicons;
         std::vector<Grammar*>  m_grammars;
+        std::vector<Format*>   m_formats;
         Context m_context;
     };
 

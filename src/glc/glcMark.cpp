@@ -30,6 +30,7 @@
 #include "glcFile.h"
 #include "glcFunction.h"
 #include "glcObject.h"
+#include "hicFormat.h"
 #include "hicGrammar.h"
 #include "hicLexicon.h"
 #include "hicScheme.h"
@@ -98,7 +99,7 @@ string Mark::remove_next_file()
     return code;
 }
 
-std::string glich::Mark::remove_next_lexicon()
+std::string Mark::remove_next_lexicon()
 {
     string code;
     if( m_lexicons.size() ) {
@@ -110,7 +111,7 @@ std::string glich::Mark::remove_next_lexicon()
     return code;
 }
 
-std::string glich::Mark::remove_next_grammar()
+std::string Mark::remove_next_grammar()
 {
     string code;
     if( m_grammars.size() ) {
@@ -118,6 +119,22 @@ std::string glich::Mark::remove_next_grammar()
         code = gmr->get_code();
         delete gmr;
         m_grammars.pop_back();
+    }
+    return code;
+}
+
+std::string Mark::remove_next_format()
+{
+    string code;
+    if( m_formats.size() ) {
+        Format* fmt = m_formats[m_formats.size() - 1];
+        code = fmt->get_code();
+        Grammar* gmr = fmt->get_owner();
+        if( gmr ) {
+            gmr->remove_format( code );
+        }
+        delete fmt;
+        m_formats.pop_back();
     }
     return code;
 }

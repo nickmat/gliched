@@ -43,12 +43,13 @@ namespace glich {
     public:
         enum class BaseName { null, jdn, julian };
 
-        Scheme( const std::string& code, const Base* base );
+        Scheme( const std::string& code, const Base& base );
         virtual ~Scheme();
 
         std::string get_name() const { return m_name; }
         Scheme_style get_style() const { return m_style; }
-        const Base& get_base() const { return *m_base; }
+        const Base& get_base() const { return m_base; }
+
         FieldVec get_object_fields( const SValueVec& values ) const;
 
         void set_name( const std::string& name ) { m_name = name; }
@@ -57,10 +58,12 @@ namespace glich {
         static Base* create_base( BaseName bs, const std::string& data );
 
     private:
-        std::string m_name;
-        Scheme_style m_style;
-        const Base* m_base;
-        StdStrVec m_fields;
+        std::string  m_name;
+        Scheme_style  m_style;
+        const Base&  m_base;
+        StdStrVec  m_fields;
+        std::string  m_input_fcode;
+        std::string  m_output_fcode;
     };
 
 }

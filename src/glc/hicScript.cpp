@@ -132,7 +132,7 @@ Scheme* glich::do_create_scheme( Script& script, const std::string& code )
         script.error( "Unable to attach grammar." );
         return nullptr;
     }
-    Scheme* sch = new Scheme( code, base );
+    Scheme* sch = new Scheme( code, *base );
     sch->set_name( name );
     sch->set_style( style );
     return sch;

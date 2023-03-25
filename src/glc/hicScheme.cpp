@@ -29,7 +29,6 @@
 
 #include "hicJdn.h"
 #include "hicJulian.h"
-#include "hicRecord.h"
 
 #include <cassert>
 #include <cstdlib>
@@ -37,25 +36,24 @@
 using namespace glich;
 using std::string;
 
-glich::Scheme::Scheme( const std::string& code, const Base* base )
+glich::Scheme::Scheme( const std::string& code, const Base& base )
     : m_style( SCH_STYLE_Default ), m_base( base ), Object( code )
 {
-    assert( m_base != nullptr );
-    set_value_names( base->get_fieldnames() );
+    set_value_names( base.get_fieldnames() );
 }
 
 Scheme::~Scheme()
 {
-    delete m_base;
+    delete &m_base;
 }
 
 FieldVec Scheme::get_object_fields( const SValueVec& values ) const
 {
-    FieldVec fields( m_base->record_size(), f_invalid );
+    FieldVec fields( m_base.record_size(), f_invalid );
     if( values.size() <= 1 ) {
         return fields;
     }
-    size_t size = std::min( m_base->record_size(), values.size() - 1 );
+    size_t size = std::min( m_base.record_size(), values.size() - 1 );
     bool success = false;
     for( size_t i = 0; i < size; i++ ) {
         Field fld = values[i + 1].get_field( success );

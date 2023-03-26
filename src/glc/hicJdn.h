@@ -43,6 +43,10 @@ namespace glich {
 
         Field get_jdn( const FieldVec& fields ) const override { return fields[0]; }
 
+        Field get_end_field_value( const FieldVec& fields, size_t index ) const override {
+            return index == 0 ? f_maximum : f_invalid;
+        }
+
         FieldVec get_fields( Field jdn ) const override { return { jdn }; }
 
     };

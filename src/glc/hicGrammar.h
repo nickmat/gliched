@@ -52,6 +52,8 @@ namespace glich {
         bool add_format( Format* fmt );
 
         std::string get_code() const { return m_code; }
+        std::string resolve_field_alias( const std::string& alias );
+        std::string resolve_unit_alias( const std::string& alias );
         Format* get_format( const std::string& code ) const;
 
         StdStrVec get_base_fieldnames() const { return m_base_fieldnames; }
@@ -67,6 +69,8 @@ namespace glich {
         Grammar*    m_inherit;
         FormatMap   m_formats;
         StdStrVec   m_base_fieldnames;
+        StdStrMap   m_field_alias;
+        StdStrMap   m_unit_alias;
     };
 
 }

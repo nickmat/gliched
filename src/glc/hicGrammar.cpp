@@ -91,6 +91,28 @@ bool Grammar::add_format( Format* fmt )
     return true;
 }
 
+std::string glich::Grammar::resolve_field_alias( const std::string& alias )
+{
+    if( m_field_alias.count( alias ) > 0 ) {
+        return m_field_alias.find( alias )->second;
+    }
+    if( m_inherit ) {
+        return m_inherit->resolve_field_alias( alias );
+    }
+    return alias;
+}
+
+std::string Grammar::resolve_unit_alias( const std::string& alias )
+{
+    if( m_unit_alias.count( alias ) > 0 ) {
+        return m_unit_alias.find( alias )->second;
+    }
+    if( m_inherit ) {
+        return m_inherit->resolve_unit_alias( alias );
+    }
+    return resolve_field_alias( alias );
+}
+
 Format* Grammar::get_format( const string& code ) const
 {
     auto it = m_formats.find( code );

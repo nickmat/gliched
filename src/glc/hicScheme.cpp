@@ -56,6 +56,14 @@ Format* Scheme::get_output_format( const string& fcode ) const
     return m_base.get_format( fcode );
 }
 
+Format* Scheme::get_input_format( const string& fcode ) const
+{
+    if( fcode.empty() ) {
+        return m_base.get_format( m_input_fcode );
+    }
+    return m_base.get_format( fcode );
+}
+
 FieldVec Scheme::get_object_fields( const SValueVec& values ) const
 {
     FieldVec fields( m_base.record_size(), f_invalid );
@@ -98,6 +106,15 @@ std::string Scheme::rlist_to_str( RList rlist, const std::string& fcode ) const
         return string();
     }
     return fmt->rlist_to_string( m_base, rlist );
+}
+
+RList Scheme::str_to_rlist( const std::string& input, const std::string& fcode ) const
+{
+    Format* fmt = get_input_format( fcode );
+    if( fmt == nullptr ) {
+        return RList();
+    }
+    return fmt->string_to_rlist( m_base, input );
 }
 
 /* static */

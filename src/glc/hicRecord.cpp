@@ -63,86 +63,56 @@ void Record::set_jdn( Field jdn )
     m_f = m_base.get_fields( jdn );
 }
 
-#if 0
-Record::Record( const Base* base, const Field* fields, size_t size )
-    : m_base(base), m_jdn(f_invalid), m_f(base->extended_size())
-{
-    set_fields( fields, size );
-}
-
-Record::Record( const Base* base, const string& str, const string& fcode, Boundary rb )
-    : m_base(base), m_jdn(f_invalid), m_f(base->extended_size())
-{
-    set_str( str, fcode, rb );
-}
-
-Record::Record( const Record& rec )
-    : m_base( rec.m_base ), m_jdn( rec.m_jdn ), m_f( rec.m_f )
-{
-}
-
-void Record::clear_fields()
-{
-    // Clears the registers
-    for( size_t i = 0; i < m_f.size(); i++ ) {
-        m_f[i] = f_invalid;
-    }
-    m_jdn = f_invalid;
-}
-
-void Record::set_fields( const Field* fields, size_t size )
-{
-    for( size_t i = 0 ; i < m_f.size() ; i++ ) {
-        if( i >= size ) {
-            m_f[i] = f_invalid;
-        } else {
-            m_f[i] = fields[i];
-        }
-    }
-    m_jdn = get_jdn();
-}
-
-void Record::set_str( const string& str, const string& fcode, Boundary rb )
-{
-    assert( !fcode.empty() );
-    clear_fields();
-    string in = full_trim( str );
-    if( in == "past" ) {
-        m_jdn = m_f[0] = f_minimum;
-        return;
-    }
-    if( in == "future" ) {
-        m_jdn = m_f[0] = f_maximum;
-        return;
-    }
-}
-
-bool Record::set_fields_as_next_first( const Field* mask )
-{
-    bool ret = m_base->set_fields_as_next_first( &m_f[0], mask );
-    if( ret ) {
-        m_jdn = get_jdn();
-    }
-    return ret;
-}
-
-bool Record::set_fields_as_next_last( const Field* mask )
-{
-    bool ret = m_base->set_fields_as_next_last( &m_f[0], mask );
-    if( ret ) {
-        m_jdn = get_jdn();
-    }
-    return ret;
-}
-
-Field Record::get_jdn() const
+Field glich::Record::calc_jdn()
 {
     if( m_f[0] == f_minimum || m_f[0] == f_maximum ) {
-        return m_f[0];
+        m_jdn = m_f[0];
     }
-    // Base should check or correct for valid content
-    return m_base->get_jdn( &m_f[0] );
+    else {
+        // Base should check or correct for valid content
+        m_jdn = m_base.get_jdn( m_f );
+    }
+    return m_jdn;
 }
-#endif
+
+// Complete all invalid required fields by setting them to the first valid value.
+// If the first field is invalid, set it to past.
+Field Record::complete_fields_as_beg()
+{
+    bool begining = true;
+    for( size_t i = 0; i < m_base.required_size(); i++ ) {
+        if( begining && m_f[i] != f_invalid ) {
+            continue;
+        }
+        m_f[i] = m_base.get_beg_field_value( m_f, i );
+        begining = false;
+    }
+    return calc_jdn();
+}
+
+
+// Complete all invalid required fields by setting them to the last valid value.
+// If the first field is invalid, set it to future.
+Field glich::Record::complete_fields_as_end()
+{
+    bool begining = true;
+    for( size_t i = 0; i < m_base.required_size(); i++ ) {
+        if( begining && m_f[i] != f_invalid ) {
+            continue;
+        }
+        m_f[i] = m_base.get_end_field_value( m_f, i );
+        begining = false;
+    }
+    return calc_jdn();
+}
+
+void Record::set_field( Field value, size_t index )
+{
+    assert( index < m_f.size() );
+    if( index < m_f.size() ) {
+        m_f[index] = value;
+    }
+}
+
 
 // End of src/glc/hicRecord.cpp file

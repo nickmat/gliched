@@ -47,8 +47,13 @@ namespace glich {
         size_t required_size() const override { return 3; }
     
         Field get_jdn( const FieldVec& fields ) const override;
+        Field get_end_field_value( const FieldVec& fields, size_t index ) const override;
 
         FieldVec get_fields( Field jdn ) const override;
+
+    protected:
+        virtual bool is_leap_year( Field year ) const;
+        Field last_day_in_month( Field year, Field month ) const;
 
     };
 

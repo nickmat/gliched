@@ -55,6 +55,7 @@ namespace glich {
         const Grammar& get_grammar() const { return m_owner; }
 
         virtual std::string get_text_output( const Record& rec ) const = 0;
+        virtual RList string_to_rlist( const Base& base, const std::string& input ) const = 0;
 
         std::string jdn_to_string( const Base& base, Field jdn ) const;
         std::string range_to_string( const Base& base, Range rng ) const;

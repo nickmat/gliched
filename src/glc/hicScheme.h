@@ -50,6 +50,7 @@ namespace glich {
         Scheme_style get_style() const { return m_style; }
         const Base& get_base() const { return m_base; }
         Format* get_output_format( const std::string& fcode ) const;
+        Format* get_input_format( const std::string& fcode ) const;
 
         FieldVec get_object_fields( const SValueVec& values ) const;
 
@@ -59,6 +60,7 @@ namespace glich {
         std::string jdn_to_str( Field jdn, const std::string& fcode ) const;
         std::string range_to_str( Range rng, const std::string& fcode ) const;
         std::string rlist_to_str( RList rlist, const std::string& fcode ) const;
+        RList str_to_rlist( const std::string& str, const std::string& fcode ) const;
 
         static Base* create_base( BaseName bs, const std::string& data );
 

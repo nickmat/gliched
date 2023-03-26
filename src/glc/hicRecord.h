@@ -44,12 +44,19 @@ namespace glich {
         Record( const Base& base, Field jdn );
 
         void set_jdn( Field jdn );
+        Field calc_jdn();
+
+        Field complete_fields_as_beg();
+        Field complete_fields_as_end();
+
+        void set_field( Field value, size_t index );
 
         void clear_fields() { std::fill( m_f.begin(), m_f.end(), f_invalid ); }
 
         const Base& get_base() const { return m_base; }
         const FieldVec& get_field_vec() const { return m_f; }
         Field get_field( size_t index ) const { return m_f[index]; }
+        Field get_jdn() const { return m_jdn; }
 
     private:
         const Base& m_base;

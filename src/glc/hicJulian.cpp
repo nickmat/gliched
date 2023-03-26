@@ -98,11 +98,52 @@ Field Julian::get_jdn( const FieldVec& fields ) const
     return julian_to_jdn( fields[0], fields[1], fields[2] );
 }
 
+Field Julian::get_end_field_value( const FieldVec& fields, size_t index ) const
+{
+    if( index > 0 && fields[0] == f_maximum ) {
+        return f_invalid;
+    }
+    switch( index )
+    {
+    case 0:
+        return f_maximum;
+    case 1: // Last month of year
+        return 12;
+    case 2: // Last day of month
+        return last_day_in_month( fields[0], fields[1] );
+    }
+    return f_invalid;
+}
+
+
 FieldVec Julian::get_fields( Field jdn ) const
 {
     FieldVec fields( record_size(), f_invalid );
     julian_from_jdn( &fields[0], &fields[1], &fields[2], jdn );
     return fields;
+}
+
+/*! Returns true if the year is a leap year in the Julian Calendar.
+ */
+bool Julian::is_leap_year( Field year ) const
+{
+    return mod_e( year, 4 ) == 0;
+}
+
+/*! Returns the last day of the month for the given month and year.
+ */
+Field Julian::last_day_in_month( Field year, Field month ) const
+{
+    switch( month )
+    {
+    case 1: case 3: case 5: case 7: case 8: case 10: case 12:
+        return 31;
+    case 4: case 6: case 9: case 11:
+        return 30;
+    case 2:
+        return is_leap_year( year ) ? 29 : 28;
+    }
+    return f_invalid;
 }
 
 

@@ -1,0 +1,21 @@
+// format001.glcs  Test unit format declaration
+
+grammar G { 
+    fields year month day;
+    format U { rules units; }
+}
+
+scheme J { base julian; grammar G; }
+
+writeln "";
+writeln text.J:U 2432814;
+writeln text.J:U (2432809..2432838);
+writeln text.J:U (2432809..2432838 | 2432596..2432624);
+
+/*[OUTPUT]
+
+1948year 9month 6day
+1948year 9month 1day..1948year 9month 30day
+1948year 2month 1day..1948year 2month 29day | 1948year 9month 1day..1948year 9month 30day
+
+[OUTPUT]*/

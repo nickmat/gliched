@@ -72,9 +72,13 @@ namespace glich {
         // Get list of fieldnames in default order.
         StdStrVec get_fieldnames() const { return m_fieldnames; }
         std::string get_fieldname( size_t index ) const { return m_fieldnames[index]; }
+        int get_fieldname_index( const std::string& fieldname ) const;
 
         // Converts the Field's into a jdn and returns it.
         virtual Field get_jdn( const FieldVec& fields ) const = 0;
+
+        virtual Field get_beg_field_value( const FieldVec& fields, size_t index ) const;
+        virtual Field get_end_field_value( const FieldVec& fields, size_t index ) const = 0;
 
         // Converts the given jdn into the Records' Fields.
         virtual FieldVec get_fields( Field jdn ) const = 0;

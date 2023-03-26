@@ -1242,7 +1242,9 @@ SValue Script::date_cast()
         return value;
     }
     if( value.type() == SValue::Type::String ) {
-        value.set_error( "Unable to convert string type yet." );
+        assert( sch != nullptr );
+        RList rlist = sch->str_to_rlist( value.get_str(), fcode );
+        value.set_rlist_demote( rlist );
         return value;
     }
     value.set_error( "Expected an object or string type." );

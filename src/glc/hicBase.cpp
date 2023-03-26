@@ -90,4 +90,30 @@ bool Base::attach_grammar( Grammar* gmr )
     return true;
 }
 
+int Base::get_fieldname_index( const std::string& fieldname ) const
+{
+    int index = 0;
+    for( auto& name : m_fieldnames ) {
+        if( name == fieldname ) {
+            return index;
+        }
+        index++;
+    }
+    return -1;
+}
+
+Field glich::Base::get_beg_field_value( const FieldVec& fields, size_t index ) const
+{
+    if( index > 0 && fields[0] == f_minimum ) {
+        return f_invalid;
+    }
+    if( index == 0 ) {
+        return f_minimum;
+    }
+    if( index >= required_size() ) {
+        return f_invalid;
+    }
+    return 1;
+}
+
 // End of src/glc/hicBase.cpp file

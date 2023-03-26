@@ -54,7 +54,7 @@ namespace glich {
 
     typedef std::vector<InputField> InputFieldVec;
 
-    enum Boundary { RB_none, RB_begin, RB_end };
+    enum class Boundary { None, Begin, End };
 
     struct LocaleData {
         LocaleData() : lat( 51.4772 ), lon( 0.0 ) {} // Default to Greenwich, England.

@@ -40,9 +40,11 @@ namespace glich {
         FormatUnit( const std::string& code, Grammar& gmr );
 
         std::string get_text_output( const Record& rec ) const override;
+        RList string_to_rlist( const Base& base, const std::string& input ) const override;
 
     private:
-
+        bool set_input( Record& record, const std::string& input, Boundary rb ) const;
+        void set_field_by_unit( Record& record, const std::string& value, const std::string& unit ) const;
     };
 
 }

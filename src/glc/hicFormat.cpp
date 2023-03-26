@@ -26,26 +26,52 @@
 */
 
 #include "hicFormat.h"
-
-//#include "calbase.h"
-//#include "calgrammar.h"
-//#include "calparse.h"
-//#include "hicRecord.h"
-//#include "caltext.h"
-//#include "calvocab.h"
+#include "hicRecord.h"
 
 #include <cassert>
 
 using namespace glich;
 using std::string;
 
-Format::Format( const std::string& code, Grammar* gmr )
+Format::Format( const std::string& code, Grammar& gmr )
     : m_code( code ), m_owner( gmr ), m_ok( false ), m_style( FormatStyle::Default )
 {
 }
 
 Format::~Format()
 {
+}
+
+string glich::Format::jdn_to_string( const Base& base, Field jdn ) const
+{
+    if( jdn == f_minimum ) {
+        return "past";
+    }
+    if( jdn == f_maximum ) {
+        return "future";
+    }
+    Record rec( base, jdn );
+    return get_text_output( rec );
+}
+
+string glich::Format::range_to_string( const Base& base, Range rng ) const
+{
+    string output = jdn_to_string( base, rng.m_beg );
+    output += "..";
+    output += jdn_to_string( base, rng.m_end );
+    return output;
+}
+
+string Format::rlist_to_string( const Base& base, RList rlist ) const
+{
+    string output;
+    for( Range& rng : rlist ) {
+        if( !output.empty() ) {
+            output += " | ";
+        }
+        output += range_to_string( base, rng );
+    }
+    return output;
 }
 
 // End of src/cal/calformat.cpp file

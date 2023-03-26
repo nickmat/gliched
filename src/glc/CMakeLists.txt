@@ -28,6 +28,7 @@ set( GLC_SOURCES
     hicJulian.cpp
     hicLexicon.cpp
     hicMath.cpp
+    hicRecord.cpp
     hicRomanNum.cpp
     hicScheme.cpp
     hicScript.cpp
@@ -58,6 +59,7 @@ set( GLC_HEADERS
     hicJulian.h
     hicLexicon.h
     hicMath.h
+    hicRecord.h
     hicRomanNum.h
     hicScheme.h
     hicScript.h

@@ -1157,8 +1157,45 @@ SValue Script::do_dot( const SValue& left, const SValue& right )
 
 SValue Script::text_cast()
 {
-    SValue value;
-    value.set_error( "text_cast not operational yet." );
+    SToken token = next_token();
+    Scheme* sch = nullptr;
+    string sig, scode, fcode;
+    if( token.type() == SToken::Type::Dot ) {
+        // Includes scheme:format signiture
+        sig = get_name_or_primary( GetToken::next );
+        split_code( &scode, &fcode, sig );
+        sch = dynamic_cast<Scheme*>(m_glc->get_object( scode ));
+    }
+    SValue value = primary( GetToken::current );
+    if( value.type() == SValue::Type::Object ) {
+        value.set_error( "Unable to convert record type yet." );
+        return value;
+    }
+    if( sch == nullptr ) {
+        sch = m_glc->get_oscheme();
+        if( sch == nullptr ) {
+            value.set_error( "No default scheme set." );
+            return value;
+        }
+    }
+    bool success = false;
+    Field jdn = value.get_field( success );
+    if( success ) {
+        value.set_str( sch->jdn_to_str( jdn, fcode ) );
+        return value;
+    }
+    Range rng = value.get_range( success );
+    if( success ) {
+        value.set_str( sch->range_to_str( rng, fcode ) );
+        return value;
+    }
+    RList rlist = value.get_rlist( success );
+    if( !success ) {
+        value.set_error( "Expected field, range, rlist or record type." );
+        return value;
+    }
+    value.set_error( "Not range or rlist yet." );
+    value.set_str( sch->rlist_to_str( rlist, fcode ) );
     return value;
 }
 

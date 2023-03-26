@@ -31,6 +31,7 @@
 #include "hicGrammar.h"
 #include "hicMath.h"
 
+#include <cassert>
 
 using namespace glich;
 using std::string;
@@ -58,6 +59,12 @@ void Base::set_data( const string& data )
         split_code( &code, &tail, tail );
         m_locale.lon = str_to_double( code );
     }
+}
+
+Format* Base::get_format( const string& fcode ) const
+{
+    assert( m_grammar );
+    return m_grammar->get_format( fcode );
 }
 
 bool Base::attach_grammar( Grammar* gmr )

@@ -1,10 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/glc/hicFormatUnit.h
+ * Name:        src/glc/hicRecord.h
  * Project:     Glich: Extendable Script Language.
- * Purpose:     FormatUnit class to read and write as units.
+ * Purpose:     Header for Record class to hold date values.
  * Author:      Nick Matthews
- * Website:     https://github.com/nickmat/glich
- * Created:     24th March 2023
+ * Website:     http://historycal.org
+ * Created:     17th March 2023
  * Copyright:   Copyright (c) 2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -25,26 +25,37 @@
 
 */
 
-#ifndef SRC_GLC_HICFORMATUNIT_H_GUARD
-#define SRC_GLC_HICFORMATUNIT_H_GUARD
+#ifndef SRC_GLC_HICRECORD_H_GUARD
+#define SRC_GLC_HICRECORD_H_GUARD
 
-#include "hicFormat.h"
+#include <glc/glcDefs.h>
+#include <glc/hicDefs.h>
+#include "hicHelper.h"
+
 
 namespace glich {
 
-    class Record;
+    class Base;
 
-    class FormatUnit : public Format
+    class Record
     {
     public:
-        FormatUnit( const std::string& code, Grammar& gmr );
+        Record( const Base& base );
+        Record( const Base& base, Field jdn );
 
-        std::string get_text_output( const Record& rec ) const override;
+        void set_jdn( Field jdn );
+
+        void clear_fields() { std::fill( m_f.begin(), m_f.end(), f_invalid ); }
+
+        const Base& get_base() const { return m_base; }
+        const FieldVec& get_field_vec() const { return m_f; }
+        Field get_field( size_t index ) const { return m_f[index]; }
 
     private:
-
+        const Base& m_base;
+        FieldVec    m_f;
+        Field       m_jdn;
     };
-
 }
 
-#endif // SRC_GLC_HICFORMATUNIT_H_GUARD
+#endif // SRC_GLC_HICRECORD_H_GUARD

@@ -65,7 +65,7 @@ FormatUnit* Grammar::create_format_unit( const string& code )
         // Already there
         return nullptr;
     }
-    FormatUnit* fmt = new FormatUnit( code, this );
+    FormatUnit* fmt = new FormatUnit( code, *this );
     m_formats[code] = fmt;
     return fmt;
 }

@@ -35,10 +35,12 @@
 
 namespace glich {
 
+    class Record;
+
     class Format
     {
     public:
-        Format( const std::string& code, Grammar* gmr );
+        Format( const std::string& code, Grammar& gmr );
         virtual ~Format();
 
         virtual bool construct() { m_ok = true; return m_ok; }
@@ -49,11 +51,18 @@ namespace glich {
         void set_style( FormatStyle style ) { m_style = style; }
 
         std::string get_code() const { return m_code; }
-        Grammar* get_owner()  const { return m_owner; }
+        Grammar* get_owner() const { return &m_owner; }
+        const Grammar& get_grammar() const { return m_owner; }
+
+        virtual std::string get_text_output( const Record& rec ) const = 0;
+
+        std::string jdn_to_string( const Base& base, Field jdn ) const;
+        std::string range_to_string( const Base& base, Range rng ) const;
+        std::string rlist_to_string( const Base& base, RList rlist ) const;
 
     private:
         std::string m_code;
-        Grammar* m_owner;
+        Grammar& m_owner;
         bool m_ok;
         FormatStyle m_style;
         std::string m_input_str;

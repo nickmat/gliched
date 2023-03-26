@@ -62,6 +62,7 @@ namespace glich {
         // Set initial data from string.
         virtual void set_data( const std::string& data );
 
+        Format* get_format( const std::string& fcode ) const;
         bool attach_grammar( Grammar* gmr );
 
         // Return the number of Required Fields.
@@ -70,6 +71,7 @@ namespace glich {
         size_t record_size() const { return m_fieldnames.size(); }
         // Get list of fieldnames in default order.
         StdStrVec get_fieldnames() const { return m_fieldnames; }
+        std::string get_fieldname( size_t index ) const { return m_fieldnames[index]; }
 
         // Converts the Field's into a jdn and returns it.
         virtual Field get_jdn( const FieldVec& fields ) const = 0;
@@ -78,7 +80,7 @@ namespace glich {
         virtual FieldVec get_fields( Field jdn ) const = 0;
 
     protected:
-        StdStrVec m_fieldnames;
+        StdStrVec m_fieldnames; // This is both required and optional.
         LocaleData m_locale;
         Grammar* m_grammar;
     };

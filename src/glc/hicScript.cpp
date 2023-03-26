@@ -318,7 +318,7 @@ namespace {
         if( gmr == nullptr || gmr->get_format( fcode ) != nullptr ) {
             return nullptr;
         }
-        FormatUnit* fmt = new FormatUnit( fcode, gmr );
+        FormatUnit* fmt = new FormatUnit( fcode, *gmr );
         if( !gmr->add_format( fmt ) ) {
             delete fmt;
             return nullptr;

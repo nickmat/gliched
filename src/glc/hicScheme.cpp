@@ -27,6 +27,7 @@
 
 #include "hicScheme.h"
 
+#include "hicFormat.h"
 #include "hicJdn.h"
 #include "hicJulian.h"
 
@@ -47,6 +48,14 @@ Scheme::~Scheme()
     delete &m_base;
 }
 
+Format* Scheme::get_output_format( const string& fcode ) const
+{
+    if( fcode.empty() ) {
+        return m_base.get_format( m_output_fcode );
+    }
+    return m_base.get_format( fcode );
+}
+
 FieldVec Scheme::get_object_fields( const SValueVec& values ) const
 {
     FieldVec fields( m_base.record_size(), f_invalid );
@@ -64,6 +73,34 @@ FieldVec Scheme::get_object_fields( const SValueVec& values ) const
     return fields;
 }
 
+std::string Scheme::jdn_to_str( Field jdn, const string& fcode ) const
+{
+    Format* fmt = get_output_format( fcode );
+    if( fmt == nullptr ) {
+        return string();
+    }
+    return fmt->jdn_to_string( m_base, jdn );
+}
+
+std::string Scheme::range_to_str( Range rng, const std::string& fcode ) const
+{
+    Format* fmt = get_output_format( fcode );
+    if( fmt == nullptr ) {
+        return string();
+    }
+    return fmt->range_to_string( m_base, rng );
+}
+
+std::string Scheme::rlist_to_str( RList rlist, const std::string& fcode ) const
+{
+    Format* fmt = get_output_format( fcode );
+    if( fmt == nullptr ) {
+        return string();
+    }
+    return fmt->rlist_to_string( m_base, rlist );
+}
+
+/* static */
 Base* Scheme::create_base( BaseName bs, const std::string& data )
 {
     switch( bs )

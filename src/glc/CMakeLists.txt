@@ -22,6 +22,7 @@ set( GLC_SOURCES
     hicDatePhrase.cpp
     hicElement.cpp
     hicFormat.cpp
+    hicFormatText.cpp
     hicFormatUnit.cpp
     hicGrammar.cpp
     hicHelper.cpp
@@ -52,6 +53,7 @@ set( GLC_HEADERS
     hicDatePhrase.h
     hicElement.h
     hicFormat.h
+    hicFormatText.h
     hicFormatUnit.h
     hicGrammar.h
     hicHelper.h

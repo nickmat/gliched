@@ -53,6 +53,7 @@ namespace glich {
         std::string get_code() const { return m_code; }
         Grammar* get_owner() const { return &m_owner; }
         const Grammar& get_grammar() const { return m_owner; }
+        const Glich& get_glich() const { return get_grammar().get_glich(); }
 
         virtual std::string get_text_output( const Record& rec ) const = 0;
         virtual RList string_to_rlist( const Base& base, const std::string& input ) const = 0;

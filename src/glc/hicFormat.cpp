@@ -42,7 +42,7 @@ Format::~Format()
 {
 }
 
-string glich::Format::jdn_to_string( const Base& base, Field jdn ) const
+string Format::jdn_to_string( const Base& base, Field jdn ) const
 {
     if( jdn == f_minimum ) {
         return "past";
@@ -54,7 +54,7 @@ string glich::Format::jdn_to_string( const Base& base, Field jdn ) const
     return get_text_output( rec );
 }
 
-string glich::Format::range_to_string( const Base& base, Range rng ) const
+string Format::range_to_string( const Base& base, Range rng ) const
 {
     string output = jdn_to_string( base, rng.m_beg );
     output += "..";

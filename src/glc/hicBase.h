@@ -73,6 +73,7 @@ namespace glich {
         StdStrVec get_fieldnames() const { return m_fieldnames; }
         std::string get_fieldname( size_t index ) const { return m_fieldnames[index]; }
         int get_fieldname_index( const std::string& fieldname ) const;
+        int get_alias_fieldname_index( const std::string& alias ) const;
 
         // Converts the Field's into a jdn and returns it.
         virtual Field get_jdn( const FieldVec& fields ) const = 0;

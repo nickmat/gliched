@@ -30,6 +30,7 @@
 #include "glcScript.h"
 #include "hicBase.h"
 #include "hicGrammar.h"
+#include "hicFormatText.h"
 #include "hicFormatUnit.h"
 #include "hicLexicon.h"
 #include "hicScheme.h"
@@ -295,9 +296,31 @@ Grammar* glich::do_create_grammar( Script& script, const std::string& code, cons
 
 namespace {
 
-    FormatText* create_format_text( const string& code, Grammar* gmr )
+    FormatText* create_format_text( Glich* glc, const string& code, Grammar* gmr )
     {
-        return nullptr;
+        size_t pos = code.find( ':' );
+        if( pos == string::npos ) {
+            if( gmr == nullptr ) {
+                return nullptr;
+            }
+            return gmr->create_format_text( code );
+        }
+        if( gmr != nullptr ) {
+            return nullptr;
+        }
+        string gcode = code.substr( 0, pos );
+        string fcode = code.substr( pos + 1 );
+        gmr = glc->get_grammar( gcode );
+        if( gmr == nullptr || gmr->get_format( fcode ) != nullptr ) {
+            return nullptr;
+        }
+        FormatText* fmt = new FormatText( fcode, *gmr );
+        if( !gmr->add_format( fmt ) ) {
+            delete fmt;
+            return nullptr;
+        }
+        glc->add_format( fmt, code );
+        return fmt;
     }
 
     FormatUnit* create_format_unit( Glich* glc, const std::string& code, Grammar* gmr )
@@ -414,13 +437,12 @@ bool glich::do_create_format( Script& script, const string& code, Grammar* gmr )
     }
 
     Format* fmt = nullptr;
-#if 0
     if( rules.empty() || rules[0] == "text" ) {
         if( format_in.empty() && format_out.empty() ) {
             script.error( "Format string not found." );
             return false;
         }
-        FormatText* fmtt = create_format_text( code, gmr );
+        FormatText* fmtt = create_format_text( script.get_glich(), code, gmr );
         if( fmtt == nullptr ) {
             script.error( "Unable to create format." );
             return false;
@@ -448,17 +470,16 @@ bool glich::do_create_format( Script& script, const string& code, Grammar* gmr )
         }
         fmt = fmtt;
     }
-    else
-    if( rules[0] == "iso8601" ) {
+#if 0
+    else if( rules[0] == "iso8601" ) {
         fmt = m_cals->create_format_iso( code, gmr, rules );
         if( fmt == nullptr ) {
             error( "Unable to create ISO format." );
             return false;
         }
     }
-    else
-#endif    
-    if( rules[0] == "units" ) {
+#endif
+    else if( rules[0] == "units" ) {
         fmt = create_format_unit( script.get_glich(), code, gmr );
         if( fmt == nullptr ) {
             script.error( "Unable to create Units format." );

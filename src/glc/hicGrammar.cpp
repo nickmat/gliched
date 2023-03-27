@@ -29,8 +29,7 @@
 
 #include <glc/glc.h>
 #include "hicBase.h"
-//#include "hicFormat.h"
-//#include "hicFormatText.h"
+#include "hicFormatText.h"
 #include "hicFormatUnit.h"
 #include "hicLexicon.h"
 
@@ -57,6 +56,17 @@ bool Grammar::constuct( const Base* base )
     // TODO:
     m_ok = true;
     return true;
+}
+
+FormatText* Grammar::create_format_text( const string& code )
+{
+    if( m_formats.count( code ) ) {
+        // Already there
+        return nullptr;
+    }
+    FormatText* fmt = new FormatText( code, *this );
+    m_formats[code] = fmt;
+    return fmt;
 }
 
 FormatUnit* Grammar::create_format_unit( const string& code )

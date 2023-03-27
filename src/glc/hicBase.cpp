@@ -102,7 +102,13 @@ int Base::get_fieldname_index( const std::string& fieldname ) const
     return -1;
 }
 
-Field glich::Base::get_beg_field_value( const FieldVec& fields, size_t index ) const
+int Base::get_alias_fieldname_index( const string& alias ) const
+{
+    string fieldname = m_grammar->resolve_field_alias( alias );
+    return  get_fieldname_index( fieldname );
+}
+
+Field Base::get_beg_field_value( const FieldVec& fields, size_t index ) const
 {
     if( index > 0 && fields[0] == f_minimum ) {
         return f_invalid;

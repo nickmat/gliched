@@ -36,6 +36,7 @@ namespace glich {
     class Glich;
     class Base;
     class Grammar;
+    class FormatText;
     class FormatUnit;
 
     class Grammar
@@ -48,6 +49,7 @@ namespace glich {
         bool constuct( const Base* base );
 
         void set_base_fieldnames( StdStrVec fieldnames ) { m_base_fieldnames = fieldnames; }
+        FormatText* create_format_text( const std::string& code );
         FormatUnit* create_format_unit( const std::string& code );
         bool add_format( Format* fmt );
 
@@ -57,7 +59,7 @@ namespace glich {
         Format* get_format( const std::string& code ) const;
 
         StdStrVec get_base_fieldnames() const { return m_base_fieldnames; }
-
+        Glich& get_glich() const { return *m_glc; }
         void remove_format( const std::string& fcode ) { m_formats.erase( fcode ); }
 
         static Grammar* create_default_grammar( const Base* base, Glich* glc );

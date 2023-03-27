@@ -1306,7 +1306,7 @@ SValue Script::element_cast()
     bool success = false;
     Field fld = value.get_field( success );
     if( success ) {
-        value.set_str( ele.get_formatted_element( m_glc, fld ) );
+        value.set_str( ele.get_formatted_element( *m_glc, fld ) );
     }
     else if( value.type() == SValue::Type::String ) {
         value.set_field( ele.get_converted_field( m_glc, value.get_str() ) );

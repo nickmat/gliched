@@ -49,7 +49,7 @@ namespace glich {
         std::string get_field_name() const { return m_field_name; }
         std::string get_dual_field_name() const { return m_dual_field_name; }
 
-        std::string get_formatted_element( Glich* glc, Field field ) const;
+        std::string get_formatted_element( const Glich& glc, Field field ) const;
         Field get_converted_field( Glich* glc, const std::string& str ) const;
 
         bool has_dual_field_name() const { return !m_dual_field_name.empty(); }

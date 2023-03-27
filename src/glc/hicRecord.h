@@ -30,6 +30,7 @@
 
 #include <glc/glcDefs.h>
 #include <glc/hicDefs.h>
+#include "hicBase.h"
 #include "hicHelper.h"
 
 
@@ -57,6 +58,8 @@ namespace glich {
         const FieldVec& get_field_vec() const { return m_f; }
         Field get_field( size_t index ) const { return m_f[index]; }
         Field get_jdn() const { return m_jdn; }
+
+        int get_field_index( const std::string& fn ) const { return m_base.get_alias_fieldname_index( fn ); }
 
     private:
         const Base& m_base;

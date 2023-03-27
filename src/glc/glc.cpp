@@ -172,7 +172,7 @@ bool Glich::add_lexicon( Lexicon* lex, const std::string& code )
     return true;
 }
 
-Lexicon* Glich::get_lexicon( const std::string& code )
+Lexicon* Glich::get_lexicon( const string& code ) const
 {
     if( m_lexicons.count( code ) > 0 ) {
         return m_lexicons.find( code )->second;
@@ -180,7 +180,7 @@ Lexicon* Glich::get_lexicon( const std::string& code )
     return nullptr;
 }
 
-bool Glich::add_grammar( Grammar* gmr, const std::string& code )
+bool Glich::add_grammar( Grammar* gmr, const string& code )
 {
     // Only add lexicons and that are not already there.
     if( gmr == nullptr || m_grammars.count( code ) ) {
@@ -193,7 +193,7 @@ bool Glich::add_grammar( Grammar* gmr, const std::string& code )
     return true;
 }
 
-Grammar* Glich::get_grammar( const std::string& code )
+Grammar* Glich::get_grammar( const string& code ) const
 {
     if( m_grammars.count( code ) > 0 ) {
         return m_grammars.find( code )->second;
@@ -201,14 +201,14 @@ Grammar* Glich::get_grammar( const std::string& code )
     return nullptr;
 }
 
-bool glich::Glich::add_format( Format* fmt, const std::string& code )
+bool Glich::add_format( Format* fmt, const string& code )
 {
     assert( m_marks.size() > 0 );
     m_marks[m_marks.size() - 1]->add_format( fmt );
     return true;
 }
 
-void Glich::add_or_replace_mark( const std::string& name )
+void Glich::add_or_replace_mark( const string& name )
 {
     clear_mark( name );
     Mark* prev = nullptr;

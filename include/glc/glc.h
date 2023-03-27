@@ -72,9 +72,9 @@ namespace glich {
         Scheme* get_ischeme() const { return nullptr; }
         Scheme* get_oscheme() const { return nullptr; }
         bool add_lexicon( Lexicon* lex, const std::string& code );
-        Lexicon* get_lexicon( const std::string& code );
+        Lexicon* get_lexicon( const std::string& code ) const;
         bool add_grammar( Grammar* gmr, const std::string& code );
-        Grammar* get_grammar( const std::string& code );
+        Grammar* get_grammar( const std::string& code ) const;
         bool add_format( Format* fmt, const std::string& code );
 
         void add_or_replace_mark( const std::string& name );

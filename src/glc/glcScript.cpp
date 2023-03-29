@@ -1229,20 +1229,15 @@ SValue Script::date_cast()
         value.set_field( fld );
         return value;
     }
-    if( sch == nullptr ) {
-        sch = m_glc->get_ischeme();
-        if( sch == nullptr ) {
-            value.set_error( "No default scheme set." );
-            return value;
-        }
-        scode = sch->get_code();
-    }
-    if( scode.empty() ) {
-        value.set_error( "No scheme set." );
-        return value;
-    }
     if( value.type() == SValue::Type::String ) {
-        assert( sch != nullptr );
+        if( sch == nullptr ) {
+            sch = m_glc->get_ischeme();
+            if( sch == nullptr ) {
+                value.set_error( "No default scheme set." );
+                return value;
+            }
+            scode = sch->get_code();
+        }
         RList rlist = sch->str_to_rlist( value.get_str(), fcode );
         value.set_rlist_demote( rlist );
         return value;

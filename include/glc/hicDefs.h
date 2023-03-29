@@ -55,6 +55,8 @@ namespace glich {
     class Format;
     using FormatMap = std::map<std::string, Format*>;
 
+    using XIndexVec = std::vector<size_t>;
+
     using XRefVec = std::vector<int>;
 
     inline void stringvec_cat( StdStrVec& a, const StdStrVec& b ) {

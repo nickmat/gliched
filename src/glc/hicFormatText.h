@@ -37,23 +37,55 @@ namespace glich {
     public:
         FormatText( const std::string& code, Grammar& gmr );
 
+        bool construct() override;
+        void setup_control_in();
+
         void set_separators( const std::string& sep ) { m_separators = sep; }
         void set_rank_fieldnames( StdStrVec fieldnames ) { m_rank_fieldnames = fieldnames; }
         void set_rankout_fieldnames( StdStrVec fieldnames ) { m_rankout_fieldnames = fieldnames; }
         void set_control_out( const std::string& format ) { m_control_out = format; }
         void set_control_in( const std::string& format ) { m_control_in = format; }
 
-        virtual std::string get_text_output( const Record& rec ) const override;
-        virtual RList string_to_rlist( const Base& base, const std::string& input ) const override;
+        std::string get_text_output( const Record& rec ) const override;
+        RList string_to_rlist( const Base& base, const std::string& input ) const override;
+
+        bool set_input( Record& record, const std::string& input, Boundary rb ) const override;
 
     private:
+        enum class CP_Group { Hyphen, Digit, Quest, Dual, Sep, Other };
+
+        CP_Group get_cp_group(
+            std::string::const_iterator it,
+            std::string::const_iterator end ) const;
         Field get_field( const Record& record, const std::string& fname ) const;
+        int parse_date( InputFieldVec& ifs, const std::string& str ) const;
+        bool resolve_input( const Base& base, FieldVec& fields, InputFieldVec& input ) const;
+
+        RList multirange_str_to_rlist( const Base& base, const std::string& input ) const;
+        RList bare_str_to_rlist( const Base& base, const std::string& input ) const;
 
         std::string m_control_in;
         std::string m_control_out;
         std::string m_separators;
+
+        StdStrVec   m_default_fieldnames;
         StdStrVec   m_rank_fieldnames;
+        XIndexVec   m_rank_to_def_index;
+
+        StdStrVec   m_format_order;
+        XIndexVec   m_fmt_to_rank_index;
+
+        // =============[unchecked]================
         StdStrVec   m_rankout_fieldnames;
+
+ 
+        StdStrVec   m_rankin_order;
+
+        StdStrVec   m_default_names;
+        FieldVec    m_default_values;
+
+        std::string m_dual2_fieldname;
+
     };
 
 }

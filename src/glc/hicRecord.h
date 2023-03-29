@@ -37,25 +37,33 @@
 namespace glich {
 
     class Base;
+    class Format;
 
     class Record
     {
     public:
         Record( const Base& base );
         Record( const Base& base, Field jdn );
+        Record( const Base& base, const std::string& str, const Format& fmt, Boundary rb );
 
         void set_jdn( Field jdn );
         Field calc_jdn();
+        void set_str( const std::string& str, const Format& fmt, Boundary rb );
 
-        Field complete_fields_as_beg();
+        Field complete_fields_as_beg(); // Returns jdn for record
         Field complete_fields_as_end();
 
         void set_field( Field value, size_t index );
 
         void clear_fields() { std::fill( m_f.begin(), m_f.end(), f_invalid ); }
 
+        RList get_rlist_from_mask() const;
+        bool set_range_as_begin( Range& range ) const;
+        bool set_range_as_next( Range& range ) const;
+
         const Base& get_base() const { return m_base; }
         const FieldVec& get_field_vec() const { return m_f; }
+        FieldVec& get_field_vec() { return m_f; }
         Field get_field( size_t index ) const { return m_f[index]; }
         Field get_jdn() const { return m_jdn; }
 

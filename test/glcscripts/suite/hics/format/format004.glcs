@@ -1,0 +1,21 @@
+// format004.glcs  Test unit format declaration, text input.
+
+grammar G { 
+    fields year month day;
+    format DEF "{year}| {month}| {day}";
+}
+
+scheme J { base julian; grammar G; }
+
+writeln "";
+writeln date.J:DEF "1948 9 6";
+writeln date.J:DEF "1948 9 1..1948 9 6";
+writeln date.J:DEF "1948 2 22..1948 2 29 | 1948 9 1..1948 9 6";
+
+/*[OUTPUT]
+
+2432814
+2432809..2432814
+2432617..2432624 | 2432809..2432814
+
+[OUTPUT]*/

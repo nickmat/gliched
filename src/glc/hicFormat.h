@@ -49,6 +49,7 @@ namespace glich {
         void set_user_input_str( const std::string str ) { m_input_str = str; }
         void set_user_output_str( const std::string str ) { m_output_str = str; }
         void set_style( FormatStyle style ) { m_style = style; }
+        void set_ok( bool ok ) { m_ok = ok; }
 
         std::string get_code() const { return m_code; }
         Grammar* get_owner() const { return &m_owner; }
@@ -57,6 +58,7 @@ namespace glich {
 
         virtual std::string get_text_output( const Record& rec ) const = 0;
         virtual RList string_to_rlist( const Base& base, const std::string& input ) const = 0;
+        virtual bool set_input( Record& record, const std::string& input, Boundary rb ) const = 0;
 
         std::string jdn_to_string( const Base& base, Field jdn ) const;
         std::string range_to_string( const Base& base, Range rng ) const;

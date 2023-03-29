@@ -351,6 +351,7 @@ namespace {
     }
 }
 
+// If gmr == nullptr then this is a standalone format.
 bool glich::do_create_format( Script& script, const string& code, Grammar* gmr )
 {
     string format_in, format_out, instring, outstring, separators;
@@ -491,12 +492,6 @@ bool glich::do_create_format( Script& script, const string& code, Grammar* gmr )
         return false;
     }
     fmt->set_style( style );
-    if( gmr == nullptr ) {
-        if( !fmt->construct() ) {
-            delete fmt;
-            return false;
-        }
-    }
     return true;
 }
 

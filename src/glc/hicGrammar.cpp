@@ -54,6 +54,12 @@ bool Grammar::constuct( const Base* base )
         return false; // Only run construct once.
     }
     // TODO:
+
+    // Construct all contained format definitions.
+    for( auto pair : m_formats ) {
+        pair.second->construct();
+    }
+
     m_ok = true;
     return true;
 }

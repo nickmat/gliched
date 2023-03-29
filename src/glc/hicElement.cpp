@@ -29,6 +29,7 @@
 
 #include <glc/glc.h>
 #include "glcHelper.h"
+#include "hicGrammar.h"
 #include "hicLexicon.h"
 #include "hicRomanNum.h"
 
@@ -165,6 +166,25 @@ void ElementControlIn::clear()
     m_dual_record_field_name.clear();
     m_default_value = f_invalid;
 }
+
+bool ElementControlIn::expand_specifier( Grammar* gmr )
+{
+//    m_lex = gmr->find_vocab( m_vcode );
+    if( !m_dual_field_name.empty() ) {
+        m_type = IFT_dual2;
+    }
+//    m_calc_field = gmr->get_calc_field( m_field_name );
+    m_record_field_name = gmr->resolve_field_alias( m_field_name );
+    if( m_lex ) {
+        m_type = IFT_vocab;
+        m_default_value = m_lex->find( m_default_text );
+    }
+    else if( !m_dual_field_name.empty() ) {
+        m_dual_record_field_name = gmr->resolve_field_alias( m_dual_field_name );
+    }
+    return true;
+}
+
 
 std::string ElementControlIn::get_input_text() const
 {

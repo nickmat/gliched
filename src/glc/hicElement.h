@@ -74,7 +74,7 @@ namespace glich {
             m_calc_field( nullptr ), m_default_value( f_invalid ) {}
 
         void clear() override;
-        // TODO: bool expand_specifier( Grammar* gmr );
+        bool expand_specifier( Grammar* gmr );
 
         std::string get_input_text() const;
         std::string get_dual_record_field_name() const { return m_dual_record_field_name; }

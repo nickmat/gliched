@@ -312,7 +312,7 @@ int FormatText::parse_date( InputFieldVec& ifs, const string& str ) const
                     }
                 }
                 if( token_grp == CP_Group::Other ) {
-                    Field f = f_invalid; // get_owner()->find_token( &(ifs[i].lexicon), token );
+                    Field f = get_grammar().find_token( &(ifs[i].lexicon), token );
                     if( f == f_invalid ) {
                         return -1; // Unrecognised token
                     }

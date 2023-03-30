@@ -49,6 +49,7 @@ namespace glich {
         bool constuct( const Base* base );
 
         void set_base_fieldnames( StdStrVec fieldnames ) { m_base_fieldnames = fieldnames; }
+        void add_lexicon( Lexicon* lex ) { m_lexicons.push_back( lex ); }
         FormatText* create_format_text( const std::string& code );
         FormatUnit* create_format_unit( const std::string& code );
         bool add_format( Format* fmt );
@@ -57,6 +58,8 @@ namespace glich {
         std::string resolve_field_alias( const std::string& alias );
         std::string resolve_unit_alias( const std::string& alias );
         Format* get_format( const std::string& code ) const;
+
+        Field find_token( Lexicon** lex, const std::string& word ) const;
 
         StdStrVec get_base_fieldnames() const { return m_base_fieldnames; }
         Glich& get_glich() const { return *m_glc; }
@@ -69,6 +72,7 @@ namespace glich {
         std::string m_code;
         bool        m_ok;
         Grammar*    m_inherit;
+        LexiconVec  m_lexicons;
         FormatMap   m_formats;
         StdStrVec   m_base_fieldnames;
         StdStrMap   m_field_alias;

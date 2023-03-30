@@ -35,6 +35,8 @@
 #include "hicLexicon.h"
 #include "hicScheme.h"
 
+#include <cassert>
+
 using namespace glich;
 using std::string;
 
@@ -174,6 +176,17 @@ namespace {
         return true;
     }
 
+    void do_grammar_lexicon( Script& script, Grammar* gmr )
+    {
+        StdStrVec lexicons = script.get_string_list( GetToken::next );
+        for( size_t i = 0; i < lexicons.size(); i++ ) {
+            Lexicon* lex = script.get_glich()->get_lexicon( lexicons[i] );
+            assert( lex != nullptr );
+            gmr->add_lexicon( lex );
+        }
+    }
+
+
 } // namespace
 
 Lexicon* glich::do_create_lexicon( Script& script, const std::string& code )
@@ -241,9 +254,8 @@ Grammar* glich::do_create_grammar( Script& script, const std::string& code, cons
         }
         else if( token.type() == SToken::Type::Name ) {
             string name = token.get_str();
-            if( name == "lexicons" ) {
-                // TODO: do_grammar_vocabs( gmr );
-                script.error( "lexicons not yet done." );
+            if( name == "lexicon" ) {
+                do_grammar_lexicon( script, gmr );
             }
             else if( name == "format" ) {
                 script.do_format( gmr );

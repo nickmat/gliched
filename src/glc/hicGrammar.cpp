@@ -141,6 +141,30 @@ Format* Grammar::get_format( const string& code ) const
     return it->second;
 }
 
+Field Grammar::find_token( Lexicon** lex, const std::string& word ) const
+{
+    Field field = f_invalid;
+    for( size_t i = 0; i < m_lexicons.size(); i++ ) {
+        field = m_lexicons[i]->find( word );
+        if( field != f_invalid ) {
+            if( lex ) {
+                *lex = m_lexicons[i];
+            }
+            return field;
+        }
+    }
+    if( m_inherit ) {
+        field = m_inherit->find_token( lex, word );
+        if( field != f_invalid ) {
+            return field;
+        }
+    }
+    if( lex ) {
+        *lex = nullptr;
+    }
+    return f_invalid;
+}
+
 Grammar* Grammar::create_default_grammar( const Base* base, Glich* glc )
 {
     Grammar* gmr = new Grammar( "", glc );

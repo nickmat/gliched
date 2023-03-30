@@ -35,6 +35,7 @@ namespace glich {
 
     class Scheme;
     using SchemeMap = std::map<std::string, Scheme*>;
+    using SchemeVec = std::vector<Scheme*>;
 
     struct SchemeData
     {
@@ -50,10 +51,13 @@ namespace glich {
 
     class Grammar;
     using GrammarMap = std::map<std::string, Grammar*>;
+    using GrammarVec = std::vector<Grammar*>;
     class Lexicon;
     using LexiconMap = std::map<std::string, Lexicon*>;
+    using LexiconVec = std::vector<Lexicon*>;
     class Format;
     using FormatMap = std::map<std::string, Format*>;
+    using FormatVec = std::vector<Format*>;
 
     using XIndexVec = std::vector<size_t>;
 
@@ -75,7 +79,6 @@ namespace glich {
         StdStrVec lexicon_names;
     };
 
-//    enum Format_style { FMT_STYLE_Default, FMT_STYLE_Hide };
     enum class FormatStyle { Default, Hide };
 
     struct PCode {

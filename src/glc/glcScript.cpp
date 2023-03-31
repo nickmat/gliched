@@ -1278,7 +1278,16 @@ SValue Script::record_cast()
         return value;
     }
     if( value.type() == SValue::Type::String ) {
-        value.set_error( "Unable to convert string type yet." );
+
+        RList rlist = sch->str_to_rlist( value.get_str(), fcode );
+        value.set_rlist_demote( rlist );
+        if( value.type() != SValue::Type::field ) {
+            value.set_error( "String must reduce to Field type." );
+            return value;
+        }
+        jdn = value.get_field();
+        FieldVec fields = sch->get_base().get_fields( jdn );
+        value.set_object( scode, fields );
         return value;
     }
     value.set_error( "Expected a field or string type." );

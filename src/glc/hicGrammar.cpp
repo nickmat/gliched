@@ -64,6 +64,12 @@ bool Grammar::constuct( const Base* base )
     return true;
 }
 
+void Grammar::set_preferred( const string& fcode )
+{
+    m_pref_output_fcode = fcode;
+    m_pref_input_fcode = fcode;
+}
+
 FormatText* Grammar::create_format_text( const string& code )
 {
     if( m_formats.count( code ) ) {

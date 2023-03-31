@@ -260,10 +260,9 @@ Grammar* glich::do_create_grammar( Script& script, const std::string& code, cons
             else if( name == "format" ) {
                 script.do_format( gmr );
             }
-            else if( name == "pref" ) {
-                // TODO: str = get_name_or_primary( true );
-                //       gmr->set_pref( str );
-                script.error( "pref not yet done." );
+            else if( name == "preferred" ) {
+                str = script.get_name_or_primary( GetToken::next );
+                gmr->set_preferred( str );
             }
             else if( name == "calculate" ) {
                 // TODO: do_grammar_calculate( gmr );

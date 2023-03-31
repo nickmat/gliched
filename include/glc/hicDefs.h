@@ -125,7 +125,6 @@ namespace glich {
         StdStrVec abbrevs;
     };
 
-
     enum Unit {
         unit_null,
         unit_year,
@@ -134,6 +133,8 @@ namespace glich {
         unit_day,
         unit_max
     };
+
+    using StrUnitMap = std::map<std::string, Unit>;
 
     // Normalisation flag. Determines how invalid dates are corrected.
     enum Norm {

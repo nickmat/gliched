@@ -1168,7 +1168,23 @@ SValue Script::text_cast()
     }
     SValue value = primary( GetToken::current );
     if( value.type() == SValue::Type::Object ) {
-        value.set_error( "Unable to convert record type yet." );
+
+
+        Object* obj = value.get_object_ptr();
+        if( obj == nullptr ) {
+            value.set_error( "Object type not recognised." );
+            return value;
+        }
+        // We ignore any suffix scheme setting
+        sch = dynamic_cast<Scheme*>(obj);
+        if( obj == nullptr ) {
+            value.set_error( "Object is not a scheme." );
+            return value;
+        }
+        SValueVec vals = value.get_object();
+        FieldVec fields = sch->get_object_fields( vals );
+        Field jdn = sch->get_base().get_jdn( fields );
+        value.set_str( sch->jdn_to_str( jdn, fcode ) );
         return value;
     }
     if( sch == nullptr ) {

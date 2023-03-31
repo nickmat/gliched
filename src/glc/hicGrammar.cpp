@@ -113,6 +113,45 @@ bool Grammar::add_format( Format* fmt )
     return true;
 }
 
+void Grammar::add_alias( const string& alias, const StdStrVec& pairs )
+{
+    assert( pairs.size() % 2 == 0 ); // pairs must be even.
+    if( alias == "field" ) {
+        for( size_t i = 0; i < pairs.size(); i += 2 ) {
+            m_field_alias[pairs[i]] = pairs[i + 1];
+        }
+    }
+    else if( alias == "pseudo" ) {
+        for( size_t i = 0; i < pairs.size(); i += 2 ) {
+            m_num_pseudo_alias[pairs[i + 1]] = pairs[i];
+        }
+    }
+    else if( alias == "unit" ) {
+        for( size_t i = 0; i < pairs.size(); i += 2 ) {
+            m_unit_alias[pairs[i]] = pairs[i + 1];
+            string name = pairs[i + 1];
+            Unit unit = unit_null;
+            if( name == "year" ) {
+                unit = unit_year;
+            }
+            else if( name == "month" ) {
+                unit = unit_month;
+            }
+            else if( name == "week" ) {
+                unit = unit_week;
+            }
+            else if( name == "day" ) {
+                unit = unit_day;
+            }
+            else {
+                continue;
+            }
+            string key = make_key( pairs[i] );
+            m_unit_type_alias[key] = unit;
+        }
+    }
+}
+
 std::string glich::Grammar::resolve_field_alias( const std::string& alias )
 {
     if( m_field_alias.count( alias ) > 0 ) {

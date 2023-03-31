@@ -54,6 +54,7 @@ namespace glich {
         FormatText* create_format_text( const std::string& code );
         FormatUnit* create_format_unit( const std::string& code );
         bool add_format( Format* fmt );
+        void add_alias( const std::string& alias, const StdStrVec& pairs );
 
         std::string get_code() const { return m_code; }
         std::string resolve_field_alias( const std::string& alias );
@@ -79,7 +80,9 @@ namespace glich {
         std::string m_pref_output_fcode;
         StdStrVec   m_base_fieldnames;
         StdStrMap   m_field_alias;
+        StdStrMap   m_num_pseudo_alias;
         StdStrMap   m_unit_alias;
+        StrUnitMap  m_unit_type_alias;
     };
 
 }

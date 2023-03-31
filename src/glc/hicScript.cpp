@@ -186,6 +186,46 @@ namespace {
         }
     }
 
+    bool do_grammar_alias( Script& script, Grammar* gmr )
+    {
+        string alias = script.get_name_or_primary( GetToken::next );
+        if( script.current_token().type() != SToken::Type::LCbracket ) {
+            script.error( "'{' expected." );
+            return false;
+        }
+        StdStrVec pairs;
+        for( ;;) {
+            // Look ahead for '}'
+            script.next_token();
+            if( script.current_token().type() == SToken::Type::RCbracket ||
+                script.current_token().type() == SToken::Type::End )
+            {
+                break; // All done.
+            }
+            string str1 = script.get_name_or_primary( GetToken::current );
+            if( str1.empty() ) {
+                script.error( "Alias string or code expected." );
+                return false;
+            }
+            if( script.current_token().type() != SToken::Type::Comma ) {
+                script.error( "',' expected." );
+                return false;
+            }
+            string str2 = script.get_name_or_primary( GetToken::next );
+            if( str2.empty() ) {
+                script.error( "Original string or code expected." );
+                return false;
+            }
+            if( script.current_token().type() != SToken::Type::Semicolon ) {
+                script.error( "';' expected." );
+                return false;
+            }
+            pairs.push_back( str1 );
+            pairs.push_back( str2 );
+        }
+        gmr->add_alias( alias, pairs );
+        return true;
+    }
 
 } // namespace
 
@@ -269,8 +309,7 @@ Grammar* glich::do_create_grammar( Script& script, const std::string& code, cons
                 script.error( "calculate not yet done." );
             }
             else if( name == "alias" ) {
-                // TODO: do_grammar_alias( gmr );
-                script.error( "alias not yet done." );
+                do_grammar_alias( script, gmr );
             }
             else if( name == "inherit" ) {
                 // TODO: str = get_name_or_primary( true );

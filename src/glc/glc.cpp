@@ -33,6 +33,7 @@
 #include "glcObject.h"
 #include "glcScript.h"
 #include "glcValue.h"
+#include "hicLibScripts.h"
 #include "hicScheme.h"
 
 #include <cassert>
@@ -54,7 +55,8 @@ string InOut::get_input( const string& prompt ) {
     return result;
 }
 
-Glich::Glich( InOut* inout ) : m_store( new ScriptStore ), m_inout( inout )
+Glich::Glich( InitLibrary lib, InOut* inout )
+    : m_store( new ScriptStore ), m_inout( inout )
 {
     m_marks.push_back( new Mark( "", nullptr ) );
     if( !m_inout ) {
@@ -62,6 +64,22 @@ Glich::Glich( InOut* inout ) : m_store( new ScriptStore ), m_inout( inout )
     }
     STokenStream::init( this );
     SValue::init( this );
+
+    switch( lib )
+    {
+    case InitLibrary::None:
+        break;
+    case InitLibrary::Hics:
+        for( size_t i = 0; i < hics_default_scripts_size; i++ ) {
+            string error = run_script( hics_default_scripts[i].script );
+            if( !error.empty() ) {
+                m_init_error += "Module: \"" +
+                    string( hics_default_scripts[i].module ) + "\"\n" + error;
+                break;
+            }
+        }
+        break;
+    }
 }
 
 Glich::~Glich()

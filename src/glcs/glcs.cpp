@@ -344,7 +344,7 @@ int main( int argc, char* argv[] )
     SetConsoleOutputCP( CP_UTF8 );
     setvbuf( stdout, nullptr, _IOFBF, 1000 );
 #endif
-    hg::Glich glc;
+    hg::Glich glc( hg::InitLibrary::Hics );
     vector<string> filenames;
     bool run_default = true;
 

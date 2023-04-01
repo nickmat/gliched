@@ -51,12 +51,16 @@ namespace glich {
         virtual std::string get_input( const std::string& prompt );
     };
 
+    enum class InitLibrary { None, Hics };
+
     class Glich {
     public:
-        Glich( InOut* inout = nullptr );
+        Glich( InitLibrary lib = InitLibrary::None, InOut* inout = nullptr );
         ~Glich();
 
         std::string run_script( const std::string& cmnd );
+
+        std::string get_init_error() const { return m_init_error; }
 
         bool add_function( Function* fun );
         Function* get_function( const std::string& code ) const;
@@ -96,6 +100,7 @@ namespace glich {
         GrammarMap m_grammars;
         MarkVec m_marks;
         ScriptStore* m_store;
+        std::string m_init_error;
         InOut* m_inout;
     };
 

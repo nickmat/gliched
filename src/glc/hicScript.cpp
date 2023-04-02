@@ -321,9 +321,8 @@ Grammar* glich::do_create_grammar( Script& script, const std::string& code, cons
                 gmr->set_base_fieldnames( basefields );
             }
             else if( name == "optional" ) {
-                // TODO: StringVec optfields = get_string_list( true );
-                //       gmr->set_opt_fieldnames( optfields );
-                script.error( "optional not yet done." );
+                StdStrVec optfields = script.get_string_list( GetToken::next );
+                gmr->set_opt_fieldnames( optfields );
             }
             else if( name == "rank" ) {
                 // TODO: StringVec rankfields = get_string_list( true );

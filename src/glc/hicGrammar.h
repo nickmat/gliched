@@ -49,6 +49,7 @@ namespace glich {
         bool constuct( const Base* base );
 
         void set_base_fieldnames( StdStrVec fieldnames ) { m_base_fieldnames = fieldnames; }
+        void set_opt_fieldnames( StdStrVec fieldnames ) { m_opt_fieldnames = fieldnames; }
         void set_preferred( const std::string& fcode );
         void add_lexicon( Lexicon* lex ) { m_lexicons.push_back( lex ); }
         FormatText* create_format_text( const std::string& code );
@@ -79,6 +80,7 @@ namespace glich {
         std::string m_pref_input_fcode;
         std::string m_pref_output_fcode;
         StdStrVec   m_base_fieldnames;
+        StdStrVec   m_opt_fieldnames;
         StdStrMap   m_field_alias;
         StdStrMap   m_num_pseudo_alias;
         StdStrMap   m_unit_alias;

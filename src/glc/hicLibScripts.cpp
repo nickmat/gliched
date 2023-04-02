@@ -46,6 +46,37 @@ glich::ScriptModule glich::hics_default_scripts[] = {
  "base jdn;\n"
  "grammar d;\n"
  "}\n" },
+    { "week",  /* week.glcs */
+ "lexicon w {\n"
+ "name \"Weekday names\";\n"
+ "fieldname wday;\n"
+ "lang en;\n"
+ "pseudo Weekday, WDay;\n"
+ "tokens {\n"
+ "1, \"Monday\", \"Mon\";\n"
+ "2, \"Tuesday\", \"Tue\";\n"
+ "3, \"Wednesday\", \"Wed\";\n"
+ "4, \"Thursday\", \"Thur\";\n"
+ "5, \"Friday\", \"Fri\";\n"
+ "6, \"Saturday\", \"Sat\";\n"
+ "7, \"Sunday\", \"Sun\";\n"
+ "}\n"
+ "}\n"
+ "lexicon ws {\n"
+ "name \"Weekday names\";\n"
+ "fieldname wsday;\n"
+ "lang en;\n"
+ "pseudo Weekday, WDay;\n"
+ "tokens {\n"
+ "1, \"Sunday\", \"Sun\";\n"
+ "2, \"Monday\", \"Mon\";\n"
+ "3, \"Tuesday\", \"Tue\";\n"
+ "4, \"Wednesday\", \"Wed\";\n"
+ "5, \"Thursday\", \"Thur\";\n"
+ "6, \"Friday\", \"Fri\";\n"
+ "7, \"Saturday\", \"Sat\";\n"
+ "}\n"
+ "}\n" },
 };
 
 size_t glich::hics_default_scripts_size =

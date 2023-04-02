@@ -1,10 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        lib/hics/hicScripts.f2c
+ * Name:        lib/hics/jdn.glcs
  * Project:     Glich: Extendable Script Language.
- * Purpose:     file2cpp template file for hics library scripts.
+ * Purpose:     Start of hics library with predefined mark.
  * Author:      Nick Matthews
  * Website:     https://github.com/nickmat/glich
- * Created:     1st April 2023
+ * Created:     2nd April 2023
  * Copyright:   Copyright (c) 2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -22,20 +22,39 @@
  *  along with Glich.  If not, see <http://www.gnu.org/licenses/>.
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
- This template is used to create the src/glc/hicLibScripts.cpp file.
-
 */
 
-#include "hicLibScripts.h"
 
-glich::ScriptModule glich::hics_default_scripts[] = {
-    { "hicLib", @(cp.cpp)"hicLib.glcs" },
-    { "jdn", @(cp.cpp)"jdn.glcs" },
-    { "week", @(cp.cpp)"week.glcs" },
-};
+lexicon w {
+    name "Weekday names";
+    fieldname wday;
+    lang en;
+    pseudo    Weekday,  WDay;
+    tokens {
+        1, "Monday",    "Mon";
+        2, "Tuesday",   "Tue";
+        3, "Wednesday", "Wed";
+        4, "Thursday",  "Thur";
+        5, "Friday",    "Fri";
+        6, "Saturday",  "Sat";
+        7, "Sunday",    "Sun";
+    }
+}
 
-size_t glich::hics_default_scripts_size =
-    sizeof(glich::hics_default_scripts) / sizeof(glich::ScriptModule);
+lexicon ws {
+    name "Weekday names";
+    fieldname wsday;
+    lang en;
+    pseudo    Weekday,  WDay;
+    tokens {
+        1, "Sunday",    "Sun";
+        2, "Monday",    "Mon";
+        3, "Tuesday",   "Tue";
+        4, "Wednesday", "Wed";
+        5, "Thursday",  "Thur";
+        6, "Friday",    "Fri";
+        7, "Saturday",  "Sat";
+    }
+}
 
-// End of lib/hics/hicScripts.f2c file
+// End of scripts/base.hcs file

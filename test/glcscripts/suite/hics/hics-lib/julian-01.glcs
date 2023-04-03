@@ -72,7 +72,6 @@ let r_d = date r;
 let r_t = text.:dmy r;
 
 writeln "";
-writeln "";
 writeln "text.J cast:   " + d[.type] + ", " + d_t + ", " + d_t[.type];
 writeln "record.J cast: " + d[.type] + ", " + d_r + ", " + d_r[.type];
 writeln "date.J cast:   " + t[.type] + ", " + t_d + ", " + t_d[.type];
@@ -82,11 +81,11 @@ writeln "text cast:     " + r[.type] + ", " + r_t + ", " + r_t[.type];
 
 /*[OUTPUT]
 
-text.JDN:d cast: number, 2432617, string
-record cast:     number, {JDN 2432617}, object
-date.JDN:d cast: string, 2432617, field
-record.:d cast:  string, {JDN 2432617}, object
-date.JDN cast:   object, 2432617, field
-text.JDN:d cast: object, 2432617, string
+text.J cast:   number, 22 Feb 1948, string
+record.J cast: number, {J 1948, 2, 22}, object
+date.J cast:   string, 2432617, field
+record.J cast: string, {J 1948, 2, 22}, object
+date cast:     object, 2432617, field
+text cast:     object, 22 Feb 1948, string
 
 [OUTPUT]*/

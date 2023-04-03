@@ -1,0 +1,92 @@
+// julian-01.glcs  -  Uppercase version of hics standard library
+
+lexicon W {
+    name "Weekday names";
+    fieldname wday;
+    lang en;
+    pseudo    Weekday,  WDay;
+    tokens {
+        1, "Monday",    "Mon";
+        2, "Tuesday",   "Tue";
+        3, "Wednesday", "Wed";
+        4, "Thursday",  "Thur";
+        5, "Friday",    "Fri";
+        6, "Saturday",  "Sat";
+        7, "Sunday",    "Sun";
+    }
+}
+
+lexicon M {
+    name "Month names";
+    fieldname month;
+    lang en;
+    pseudo     Month,     Mon;
+    tokens {
+        1,  "January",   "Jan";
+        2,  "February",  "Feb";
+        3,  "March",     "Mar";
+        4,  "April",     "Apr";
+        5,  "May";
+        6,  "June",      "Jun";
+        7,  "July",      "Jul";
+        8,  "August",    "Aug";
+        9,  "September", "Sep";
+        10, "October",   "Oct";
+        11, "November",  "Nov";
+        12, "December",  "Dec";
+    }
+}
+
+grammar J {
+    fields year month day;
+    optional wday;
+    lexicon M W;
+    alias pseudo { w wday; dd day; mm month; yyyy year; }
+    alias unit { d day; m month; y year; }
+    format dmy "{day} |{month:M:a} |{year}";
+    format wdmy "{wday:W:a} |{day} |{month:M:a} |{year}";
+    format out { output "{day::os} |{month:M} |{year}"; }
+    format full { output "{wday:W} |{day::os} |{month:M} |{year}"; }
+    format "dmy+" "{day} |{month:M} |{year}";
+    format "wdmy+" "{wday:W} |{day} |{month:M} |{year}";
+    format mdy "{month:M:a} |{day}, |{year}";
+    format ymd "{year}|:{month:M:a}|:{day}";
+    preferred dmy;
+}
+
+scheme J {
+    name "Julian";
+    base julian;
+    grammar J;
+}
+
+let d = 2432617;
+let t = "22feb1948";
+let r = {J 1948, 2, 22};
+
+let d_t = text.J:dmy d;
+let d_r = record.J d;
+let t_d = date.J:dmy t;
+let t_r = record.J:dmy t;
+let r_d = date r;
+let r_t = text.:dmy r;
+
+writeln "";
+writeln "";
+writeln "text.J cast:   " + d[.type] + ", " + d_t + ", " + d_t[.type];
+writeln "record.J cast: " + d[.type] + ", " + d_r + ", " + d_r[.type];
+writeln "date.J cast:   " + t[.type] + ", " + t_d + ", " + t_d[.type];
+writeln "record.J cast: " + t[.type] + ", " + t_r + ", " + t_r[.type];
+writeln "date cast:     " + r[.type] + ", " + r_d + ", " + r_d[.type];
+writeln "text cast:     " + r[.type] + ", " + r_t + ", " + r_t[.type];
+
+/*[OUTPUT]
+
+text.JDN:d cast: number, 2432617, string
+record cast:     number, {JDN 2432617}, object
+date.JDN:d cast: string, 2432617, field
+record.:d cast:  string, {JDN 2432617}, object
+date.JDN cast:   object, 2432617, field
+text.JDN:d cast: object, 2432617, string
+
+[OUTPUT]*/

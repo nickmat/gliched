@@ -202,26 +202,17 @@ namespace {
             {
                 break; // All done.
             }
-            string str1 = script.get_name_or_primary( GetToken::current );
-            if( str1.empty() ) {
-                script.error( "Alias string or code expected." );
-                return false;
-            }
-            if( script.current_token().type() != SToken::Type::Comma ) {
-                script.error( "',' expected." );
-                return false;
-            }
-            string str2 = script.get_name_or_primary( GetToken::next );
-            if( str2.empty() ) {
-                script.error( "Original string or code expected." );
+            StdStrVec pair = script.get_string_list( GetToken::current );
+            if( pair.size() != 2 ) {
+                script.error( "Name or String pair expected." );
                 return false;
             }
             if( script.current_token().type() != SToken::Type::Semicolon ) {
                 script.error( "';' expected." );
                 return false;
             }
-            pairs.push_back( str1 );
-            pairs.push_back( str2 );
+            pairs.push_back( pair[0] );
+            pairs.push_back( pair[1] );
         }
         gmr->add_alias( alias, pairs );
         return true;

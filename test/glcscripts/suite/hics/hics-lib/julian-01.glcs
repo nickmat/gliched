@@ -40,7 +40,7 @@ lexicon M {
 grammar J {
     fields year month day;
     optional wday;
-    lexicon M W;
+    lexicons M W;
     alias pseudo { w wday; dd day; mm month; yyyy year; }
     alias unit { d day; m month; y year; }
     format dmy "{day} |{month:M:a} |{year}";

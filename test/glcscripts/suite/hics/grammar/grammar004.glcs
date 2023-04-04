@@ -23,7 +23,7 @@ lexicon M {
 
 grammar G { 
     fields year month day;
-    lexicon M;
+    lexicons M;
     format DMY "{day} |{month:M:a} |{year}";
 }
 

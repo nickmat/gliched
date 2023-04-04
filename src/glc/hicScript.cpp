@@ -176,7 +176,7 @@ namespace {
         return true;
     }
 
-    void do_grammar_lexicon( Script& script, Grammar* gmr )
+    void do_grammar_lexicons( Script& script, Grammar* gmr )
     {
         StdStrVec lexicons = script.get_string_list( GetToken::next );
         for( size_t i = 0; i < lexicons.size(); i++ ) {
@@ -285,8 +285,8 @@ Grammar* glich::do_create_grammar( Script& script, const std::string& code, cons
         }
         else if( token.type() == SToken::Type::Name ) {
             string name = token.get_str();
-            if( name == "lexicon" ) {
-                do_grammar_lexicon( script, gmr );
+            if( name == "lexicons" ) {
+                do_grammar_lexicons( script, gmr );
             }
             else if( name == "format" ) {
                 script.do_format( gmr );

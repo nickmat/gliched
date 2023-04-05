@@ -51,7 +51,7 @@ Scheme::~Scheme()
 Format* Scheme::get_output_format( const string& fcode ) const
 {
     if( fcode.empty() ) {
-        return m_base.get_format( m_output_fcode );
+        return m_base.get_format( m_base.get_output_fcode() );
     }
     return m_base.get_format( fcode );
 }
@@ -59,7 +59,7 @@ Format* Scheme::get_output_format( const string& fcode ) const
 Format* Scheme::get_input_format( const string& fcode ) const
 {
     if( fcode.empty() ) {
-        return m_base.get_format( m_input_fcode );
+        return m_base.get_format( m_base.get_input_fcode() );
     }
     return m_base.get_format( fcode );
 }

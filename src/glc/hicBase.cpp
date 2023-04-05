@@ -61,12 +61,6 @@ void Base::set_data( const string& data )
     }
 }
 
-Format* Base::get_format( const string& fcode ) const
-{
-    assert( m_grammar );
-    return m_grammar->get_format( fcode );
-}
-
 bool Base::attach_grammar( Grammar* gmr )
 {
     if( gmr == nullptr || m_grammar != nullptr ) {
@@ -106,6 +100,24 @@ int Base::get_alias_fieldname_index( const string& alias ) const
 {
     string fieldname = m_grammar->resolve_field_alias( alias );
     return  get_fieldname_index( fieldname );
+}
+
+Format* Base::get_format( const string& fcode ) const
+{
+    assert( m_grammar );
+    return m_grammar->get_format( fcode );
+}
+
+std::string glich::Base::get_input_fcode() const
+{
+    assert( m_grammar );
+    return m_grammar->get_pref_input_fcode();
+}
+
+std::string glich::Base::get_output_fcode() const
+{
+    assert( m_grammar );
+    return m_grammar->get_pref_output_fcode();
 }
 
 Field Base::get_beg_field_value( const FieldVec& fields, size_t index ) const

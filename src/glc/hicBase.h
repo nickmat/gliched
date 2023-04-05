@@ -62,7 +62,6 @@ namespace glich {
         // Set initial data from string.
         virtual void set_data( const std::string& data );
 
-        Format* get_format( const std::string& fcode ) const;
         bool attach_grammar( Grammar* gmr );
 
         // Return the number of Required Fields.
@@ -74,6 +73,10 @@ namespace glich {
         std::string get_fieldname( size_t index ) const { return m_fieldnames[index]; }
         int get_fieldname_index( const std::string& fieldname ) const;
         int get_alias_fieldname_index( const std::string& alias ) const;
+
+        Format* get_format( const std::string& fcode ) const;
+        std::string get_input_fcode() const;
+        std::string get_output_fcode() const;
 
         // Converts the Field's into a jdn and returns it.
         virtual Field get_jdn( const FieldVec& fields ) const = 0;

@@ -335,13 +335,47 @@ void Glich::set_context( Context ct )
     }
 }
 
+void Glich::set_ischeme( Scheme* sch )
+{
+    int i = int( m_marks.size() ) - 1;
+    if( i >= 0 ) {
+        m_marks[i]->set_ischeme( sch );
+    }
+}
+
+void Glich::set_oscheme( Scheme* sch )
+{
+    int i = int( m_marks.size() ) - 1;
+    if( i >= 0 ) {
+        m_marks[i]->set_oscheme( sch );
+    }
+}
+
 Context Glich::get_context() const
 {
     int i = int( m_marks.size() ) - 1;
     if( i >= 0 ) {
-       return m_marks[i]->get_context();
+        return m_marks[i]->get_context();
     }
     return Context::glich;
+}
+
+Scheme* Glich::get_ischeme() const
+{
+    int i = int( m_marks.size() ) - 1;
+    if( i >= 0 ) {
+        return m_marks[i]->get_ischeme();
+    }
+    return nullptr;
+}
+
+Scheme* Glich::get_oscheme() const
+{
+    int i = int( m_marks.size() ) - 1;
+    if( i >= 0 ) {
+        return m_marks[i]->get_oscheme();
+    }
+    return nullptr;
 }
 
 // End of src/hg/historygen.cpp

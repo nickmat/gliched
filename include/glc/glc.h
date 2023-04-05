@@ -71,10 +71,6 @@ namespace glich {
         Object* get_object( const std::string& code ) const;
         File* create_file( const std::string& code );
         File* get_file( const std::string& code ) const;
-        void set_ischeme( Scheme* sch ) {} // Get and set default input and output
-        void set_oscheme( Scheme* sch ) {} // schemes not yet active.
-        Scheme* get_ischeme() const { return nullptr; }
-        Scheme* get_oscheme() const { return nullptr; }
         bool add_lexicon( Lexicon* lex, const std::string& code );
         Lexicon* get_lexicon( const std::string& code ) const;
         bool add_grammar( Grammar* gmr, const std::string& code );
@@ -89,7 +85,11 @@ namespace glich {
         std::string read_input( const std::string& prompt ) const;
 
         void set_context( Context ct );
+        void set_ischeme( Scheme* sch );
+        void set_oscheme( Scheme* sch );
         Context get_context() const;
+        Scheme* get_ischeme() const;
+        Scheme* get_oscheme() const;
 
     private:
         FunctionMap m_functions;

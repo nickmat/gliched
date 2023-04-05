@@ -335,11 +335,39 @@ bool Script::do_set()
         else {
             error( "Unknown context value \"" + value + "\"." );
         }
+        return true;
     }
-    else {
-        error( "Set property \"" + prop + "\" not recognised." );
+    string scode, fcode;
+    split_code( &scode, &fcode, value );
+    Scheme* sch = dynamic_cast<Scheme*>(m_glc->get_object( scode ));
+    if( sch != nullptr ) {
+        if( prop == "input" ) {
+            m_glc->set_ischeme( sch );
+            if( !fcode.empty() ) {
+                sch->set_input_format( fcode );
+            }
+            return true;
+        }
+        if( prop == "output" ) {
+            m_glc->set_oscheme( sch );
+            if( !fcode.empty() ) {
+                sch->set_output_format( fcode );
+            }
+            return true;
+        }
+        if( prop == "inout" ) {
+            m_glc->set_ischeme( sch );
+            m_glc->set_oscheme( sch );
+            if( !fcode.empty() ) {
+                sch->set_input_format( fcode );
+                sch->set_output_format( fcode );
+            }
+            return true;
+        }
+
     }
-    return true;
+    error( "Set property \"" + prop + "\" not recognised." );
+    return false;
 }
 
 bool Script::do_let()

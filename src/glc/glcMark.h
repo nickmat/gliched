@@ -39,6 +39,7 @@ namespace glich {
     class Lexicon;
     class Grammar;
     class Format;
+    class Scheme;
 
     class Mark
     {
@@ -65,8 +66,12 @@ namespace glich {
         std::string remove_next_format();
 
         void set_context( Context ct ) { m_context = ct; }
+        void set_ischeme( Scheme* sch ) { m_ischeme = sch; }
+        void set_oscheme( Scheme* sch ) { m_oscheme = sch; }
 
         Context get_context() const { return m_context; }
+        Scheme* get_ischeme() const { return m_ischeme; }
+        Scheme* get_oscheme() const { return m_oscheme; }
 
     private:
         std::string            m_name;
@@ -78,6 +83,8 @@ namespace glich {
         std::vector<Grammar*>  m_grammars;
         std::vector<Format*>   m_formats;
         Context m_context;
+        Scheme* m_ischeme;
+        Scheme* m_oscheme;
     };
 
 }

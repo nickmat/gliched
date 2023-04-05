@@ -1,0 +1,73 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Name:        lib/hics/julian.glcs
+ * Project:     Glich: Extendable Script Language.
+ * Purpose:     Julian schemes for hics library.
+ * Author:      Nick Matthews
+ * Website:     https://github.com/nickmat/glich
+ * Created:     2nd April 2023
+ * Copyright:   Copyright (c) 2023, Nick Matthews.
+ * Licence:     GNU GPLv3
+ *
+ *  Glich is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Glich is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Glich.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+*/
+
+// Also uses lexicon w from week.glcs script.
+
+lexicon m {
+    name "Month names";
+    fieldname month;
+    lang en;
+    pseudo     Month,     Mon;
+    tokens {
+        1,  "January",   "Jan";
+        2,  "February",  "Feb";
+        3,  "March",     "Mar";
+        4,  "April",     "Apr";
+        5,  "May";
+        6,  "June",      "Jun";
+        7,  "July",      "Jul";
+        8,  "August",    "Aug";
+        9,  "September", "Sep";
+        10, "October",   "Oct";
+        11, "November",  "Nov";
+        12, "December",  "Dec";
+    }
+}
+
+grammar j {
+    fields year month day;
+    optional wday;
+    lexicons m, w;
+    alias pseudo { w wday; dd day; mm month; yyyy year; }
+    alias unit { d day; m month; y year; }
+    format dmy "{day} |{month:m:a} |{year}";
+    format wdmy "{wday:w:a} |{day} |{month:m:a} |{year}";
+    format out { output "{day::os} |{month:m} |{year}"; }
+    format full { output "{wday:w} |{day::os} |{month:m} |{year}"; }
+    format "dmy+" "{day} |{month:m} |{year}";
+    format "wdmy+" "{wday:w} |{day} |{month:m} |{year}";
+    format mdy "{month:m:a} |{day}, |{year}";
+    format ymd "{year}|:{month:m:a}|:{day}";
+    preferred dmy;
+}
+
+scheme j {
+    name "Julian";
+    base julian;
+    grammar j;
+}
+
+// End of lib/hics/julian.glcs file

@@ -33,6 +33,7 @@ glich::ScriptModule glich::hics_default_scripts[] = {
     { "hicLib", @(cp.cpp)"hicLib.glcs" },
     { "jdn", @(cp.cpp)"jdn.glcs" },
     { "week", @(cp.cpp)"week.glcs" },
+    { "julian", @(cp.cpp)"julian.glcs" },
 };
 
 size_t glich::hics_default_scripts_size =

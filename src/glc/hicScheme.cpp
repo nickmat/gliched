@@ -28,6 +28,7 @@
 #include "hicScheme.h"
 
 #include "hicFormat.h"
+#include "hicGregorian.h"
 #include "hicJdn.h"
 #include "hicJulian.h"
 
@@ -126,6 +127,8 @@ Base* Scheme::create_base( BaseName bs, const std::string& data )
         return new Jdn( data );
     case BaseName::julian:
         return new Julian( data );
+    case BaseName::gregorian:
+        return new Gregorian( data );
     }
     return nullptr;
 }

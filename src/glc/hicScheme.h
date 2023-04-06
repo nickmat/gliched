@@ -41,7 +41,7 @@ namespace glich {
     class Scheme : public Object
     {
     public:
-        enum class BaseName { null, jdn, julian };
+        enum class BaseName { null, jdn, julian, gregorian };
 
         Scheme( const std::string& code, const Base& base );
         virtual ~Scheme();

@@ -25,6 +25,7 @@ set( GLC_SOURCES
     hicFormatText.cpp
     hicFormatUnit.cpp
     hicGrammar.cpp
+    hicGregorian.cpp
     hicHelper.cpp
     hicJulian.cpp
     hicLexicon.cpp
@@ -57,6 +58,7 @@ set( GLC_HEADERS
     hicFormatText.h
     hicFormatUnit.h
     hicGrammar.h
+    hicGregorian.h
     hicHelper.h
     hicJdn.h
     hicJulian.h

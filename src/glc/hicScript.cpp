@@ -55,6 +55,9 @@ namespace {
             else if( name == "julian" ) {
                 bs = Scheme::BaseName::julian;
             }
+            else if( name == "gregorian" ) {
+                bs = Scheme::BaseName::gregorian;
+            }
             else {
                 script.error( "Base scheme not recognised." );
                 return nullptr;

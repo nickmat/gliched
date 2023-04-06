@@ -38,7 +38,7 @@ glich::ScriptModule glich::hics_default_scripts[] = {
  "grammar d {\n"
  "fields day;\n"
  "alias pseudo { ddddd, day; }\n"
- "format d, \"(day)\";\n"
+ "format d, \"{day}\";\n"
  "preferred d;\n"
  "}\n"
  "scheme jdn {\n"

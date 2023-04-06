@@ -32,6 +32,7 @@
 #include "glcObject.h"
 #include "hicBase.h"
 #include "hicElement.h"
+#include "hicGregorian.h"
 #include "hicHelper.h"
 #include "hicScheme.h"
 #include "hicScript.h"
@@ -1583,6 +1584,9 @@ SValue Script::get_value_var( const std::string& name )
     }
     if( name == "future" ) {
         return SValue( f_maximum, SValue::Type::field );
+    }
+    if( name == "today" ) {
+        return SValue( Gregorian::today() );
     }
     if( name == "inf" ) {
         return SValue( std::numeric_limits<double>::infinity() );

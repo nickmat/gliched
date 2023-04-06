@@ -1,10 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        lib/hics/hicScripts.f2c
+ * Name:        lib/hics/gregorian.glcs
  * Project:     Glich: Extendable Script Language.
- * Purpose:     file2cpp template file for hics library scripts.
+ * Purpose:     Gregorian scheme for hics library.
  * Author:      Nick Matthews
  * Website:     https://github.com/nickmat/glich
- * Created:     1st April 2023
+ * Created:     6th April 2023
  * Copyright:   Copyright (c) 2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -22,22 +22,14 @@
  *  along with Glich.  If not, see <http://www.gnu.org/licenses/>.
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
- This template is used to create the src/glc/hicLibScripts.cpp file.
-
 */
 
-#include "hicLibScripts.h"
+scheme g {
+    name "Gregorian";
+    base gregorian;
+    grammar j;
+}
 
-glich::ScriptModule glich::hics_default_scripts[] = {
-    { "hicLib", @(cp.cpp)"hicLib.glcs" },
-    { "jdn", @(cp.cpp)"jdn.glcs" },
-    { "week", @(cp.cpp)"week.glcs" },
-    { "julian", @(cp.cpp)"julian.glcs" },
-    { "gregorian", @(cp.cpp)"gregorian.glcs" },
-};
+set inout g; // Set Gregorian as the default input and output scheme.
 
-size_t glich::hics_default_scripts_size =
-    sizeof(glich::hics_default_scripts) / sizeof(glich::ScriptModule);
-
-// End of lib/hics/hicScripts.f2c file
+// End of scripts/jdn.hcs file

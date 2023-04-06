@@ -119,6 +119,13 @@ glich::ScriptModule glich::hics_default_scripts[] = {
  "base julian;\n"
  "grammar j;\n"
  "}\n" },
+    { "gregorian",  /* gregorian.glcs */
+ "scheme g {\n"
+ "name \"Gregorian\";\n"
+ "base gregorian;\n"
+ "grammar j;\n"
+ "}\n"
+ "set inout g;\n" },
 };
 
 size_t glich::hics_default_scripts_size =

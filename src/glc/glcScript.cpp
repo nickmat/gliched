@@ -1032,18 +1032,18 @@ SValue Script::primary( GetToken get )
         value = function_call();
         break;
     case SToken::Type::Minus:
-        value = primary( GetToken::next );
+        value = subscript( GetToken::next );
         value.negate();
         break;
     case SToken::Type::Plus:
-        value = primary( GetToken::next );
+        value = subscript( GetToken::next );
         break;
     case SToken::Type::Not:
-        value = primary( GetToken::next );
+        value = subscript( GetToken::next );
         value.logical_not();
         break;
     case SToken::Type::COMPLEMENT:
-        value = primary( GetToken::next );
+        value = subscript( GetToken::next );
         value.compliment();
         break;
     default:

@@ -1,0 +1,27 @@
+// command005.hcs - Test command statement.
+
+object complex {
+    values real imaginary;
+}
+
+command write_complex( c ) {
+    if c[.object] = "complex"
+        if c[imaginary] < 0
+            write c[real] + " - " + -c[imaginary] + "i";
+        elseif c[imaginary] = 0
+            write c[real];
+        else
+            write c[real] + " + " + c[imaginary] + "i";
+        endif
+    endif
+}
+
+call write_complex( {complex 10, 5} );
+write ", ";
+call write_complex( {complex 20, -25} );
+write ", ";
+call write_complex( {complex 30, 0} );
+
+/*[OUTPUT]
+10 + 5i, 20 - 25i, 30
+[OUTPUT]*/

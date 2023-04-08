@@ -1,0 +1,40 @@
+{
+  "project": "Glich",
+  "home-url": "https://github.com/nickmat/glich/website/index.htm",
+  "color-top": "#e6c9ed",
+  "color-border": "#cd93da",
+  "site-css": "sys/glich.css",
+  "github-url": "https://github.com/nickmat/glich",
+  "site": { "folder": "web-new", "name": "index", "subtitle": "Home Page", "label": "Home", "content": [
+    { "folder": "new", "name": "news", "label": "News" },
+    { "folder": "man", "name": "index", "label": "Manual", "title": "Manual", "subtitle": "Introduction" },
+    { "folder": "dev", "name": "index", "label": "Development", "title": "Development", "subtitle": "Introduction", "content": [
+      { "folder": "man", "name": "index", "label": "v0.1.0 Manual", "title": "v0.1.0 Manual", "subtitle": "Introduction", "content": [
+        { "folder": "script", "name": "index", "label": "Script", "subtitle": "Script Language", "content": [
+          { "name": "expr", "label": "Expressions", "subtitle": "Script Expressions" },
+          { "name": "write", "label": "write & file" },
+          { "name": "let", "label": "let Statement" },
+          { "name": "end", "label": "end Statement" },
+          { "name": "if", "label": "if Statement" },
+          { "name": "do", "label": "do ... loop" },
+          { "name": "function", "label": "function" },
+          { "name": "command", "label": "command & call" },
+          { "name": "object", "label": "object Statement" },
+          { "name": "mark", "label": "mark & clear" },
+          { "name": "set", "label": "set Statement" },
+          { "name": "ebnf", "label": "EBNF Definition" }
+        ]},
+        { "name": "gloss", "label": "Glossary" }
+      ]},
+      { "name": "routemap", "label": "Route Map", "title": "Development" },
+      { "folder": "lib", "name": "index", "label": "Glich Library", "title": "Glich Library", "subtitle": "Introduction" },
+      { "folder": "scripts", "name": "index", "label": "Scripts", "title": "Scripts", "subtitle": "Introduction" },
+      { "folder": "tests", "name": "index", "label": "Tests", "title": "Test Programs", "subtitle": "Introduction", "content": [
+        { "name": "script", "label": "Test Script" },
+        { "label": "Unit Tests" },
+        { "label": "Soak Tests" }
+      ]}
+    ]},
+    { "name": "support", "label": "Support" }
+  ]}
+}

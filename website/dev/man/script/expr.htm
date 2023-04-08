@@ -1,0 +1,683 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<head>
+ <title>Glich - Expressions</title>
+ <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+ <link rel='icon' type='image/png' href='../../../sys/logo32x32.png' />
+ <link rel='stylesheet' type='text/css' href='../../../sys/livery.css' />
+ <link rel='stylesheet' type='text/css' href='../../../sys/glich.css' />
+</head>
+<body>
+
+ <div class='heading'>
+  <div class='logo'>
+   <a  href='https://github.com/nickmat/glich/website/index.htm'>
+    <img class='logo' src='../../../sys/logo266x100.png' alt='Logo' />
+   </a>
+  </div>
+  Glich - v0.1.0 Manual<br />Script Expressions
+  <div class='clear'></div>
+ </div>
+
+ <div class="crumbs">
+  <a href='../../../index.htm' class='m-item'>Home</a>
+  <a href='../../../dev/index.htm' class='m-item'>Development</a>
+  <a href='../../../dev/man/index.htm' class='m-item'>v0.1.0 Manual</a>
+  <a href='../../../dev/man/script/index.htm' class='m-item'>Script</a>
+  <a href='expr.htm' class='m-item thispage'>Expressions</a>
+  <a href='../../../dev/man/script/write.htm' class='m-item nav'>►</a>
+  <a href='../../../dev/man/script/index.htm' class='m-item nav'>◄</a>
+ </div>
+
+<div id='content' class='nomenu'>
+
+<h2>Value Types</h2>
+<p>
+ Expressions use the following value types.
+</p>
+
+<h3>Float</h3>
+<p>
+ A floating point number.
+</p>
+<p>
+ A float may hold the following special values.
+</p>
+<table class='basic'>
+<tr><th>Keyword</th><th>Meaning</th></tr>
+<tr><td><b>inf</b></td><td>Infinity. Can be preceded by a plus <b>'+'</b> or minus <b>'-'</b> sign.</td></tr>
+<tr><td><b>nan</b></td><td>Not a number.</td></tr>
+</table>
+<p>
+ Any operation with <b>nan</b> results in <b>nan</b>,
+ with the exception of equal <b>=</b> and not equal <b>&lt;&gt;</b>.
+</p>
+<p>
+ <span class='example'>float_type</span> is also part of the
+ <span class='example'>numeric_type</span> and
+ <span class='example'>any_numeric_type</span> groups.
+</p>
+
+<h3>Number</h3>
+<p>
+ A number is a 64 bit signed integer value.
+</p>
+<p>
+ <span class='example'>number_type</span> is also part of the
+ <span class='example'>integer_type</span>,
+ <span class='example'>numeric_type</span> and
+ <span class='example'>any_numeric_type</span> groups.
+</p>
+
+<h3>Field</h3>
+<p>
+ A field is a 32 bit signed integer value with some fixed values.
+ It is used to form integer ranges and sets.
+ It can be used with the set operands:
+ complement <b>'!'</b>, union <b>'|'</b>, intersection <b>'&amp;'</b>,
+ symmetric difference <b>'^'</b> and relative compliment <b>'\'</b>.
+</p>
+<p>
+ A field may hold the following special values.
+</p>
+<table class='basic'>
+<tr><th>Keyword</th><th>Meaning</th></tr>
+<tr><td><b>infinite</b></td><td>Can be preceded by a plus <b>'+'</b> or minus <b>'-'</b> sign.</td></tr>
+<tr><td><b>?</b></td><td>An unknown or indeterminate value.</td></tr>
+</table>
+<p>
+ <span class='example'>field_type</span> is also part of the
+ <span class='example'>set_type</span>,
+ <span class='example'>integer_type</span>,
+ <span class='example'>numeric_type</span> and
+ <span class='example'>any_numeric_type</span> groups.
+</p>
+
+<h3>Range</h3>
+<p>
+ A range is expressed as two field values which denote the first and last values of an inclusive, continuous list.
+ Both values may be the same, which implies a list of one value.
+ A range is written using the <b>'..'</b> operator.
+ Note, (a..b) is identical to (b..a).
+ When a range is output as a string it is always written with the lower value first.
+</p>
+<p>
+ The <b>infinity</b> value is permitted in a range but not the <b>'?'</b> value.
+</p>
+<p>
+ A field may be promoted to a range with the upper and lower values equal. 
+</p>
+<p>
+ A range may only be demoted to a field if both values are equal. 
+</p>
+<p>
+ <span class='example'>range_type</span> is also part of the
+ <span class='example'>set_type</span>,
+ <span class='example'>combined_type</span> and
+ <span class='example'>any_numeric_type</span> groups.
+</p>
+
+<h3>Rlist</h3>
+<p>
+ An rlist is a list of ranges. The list may contain zero or more ranges.
+ If the rlist has more than one range,
+ it is written using the union <b>'|'</b> operator between ranges.
+ When an rlist is output, it is always written as a <b>well ordered list</b>.
+</p>
+<p>
+  A well ordered list can be described as when,
+  ranges are always shown with the lowest value first,
+  multiple ranges do not overlap or abut one another and are in ascending order.
+</p>
+<p>
+ The rlist may hold the special value keyword <b>'empty'</b>,
+ meaning it is the empty or null set.
+</p>
+<p>
+ A range may be promoted to an rlist with a single range. 
+</p>
+<p>
+ An rlist may only be demoted to a range if, after conversion to a well ordered list,
+ it contains a single range.
+</p>
+<p>
+ <span class='example'>rlist_type</span> is also part of the
+ <span class='example'>set_type</span>,
+ <span class='example'>combined_type</span> and
+ <span class='example'>any_numeric_type</span> groups.
+</p>
+
+<h3>String</h3>
+<p>
+ A string is sequence of unicode (UTF-8) characters.
+ It is written by enclosing the text in double quotes <b>'"'</b>.
+ If a double quote is required in the text, use two double quotes together.
+ For example, the value "Say ""Hello""" would print as Say "Hello".
+</p>
+
+<h3>Boolean</h3>
+<p>
+ A boolean value holds one of the two keywords <b>'true'</b> or <b>'false'</b>.
+</p>
+
+<h3>Object</h3>
+<p>
+ An object value holds a collection of other values.
+ It has to be defined and given a code first.
+ After its definition it can written by enclosing the values in curly brackets,
+ starting with the objects code name.
+</p>
+
+<h3>Null</h3>
+<p>
+ A null value holds the keyword <b>'null'</b>.
+</p>
+<p>
+ Only the equal <b>'='</b> and not equal <b>'&lt;&gt;'</b> operators may be used with null values.
+ The equals operator returns 'true' if both values are null
+ and 'false' otherwise.
+ Any other operation with null is undefined and results in an error value.
+</p>
+
+<h3>Error</h3>
+<p>
+ An error value is created whenever an operation is carried which has undefined results.
+ When written out, the value should print text that describes where and why
+ the error was created.
+</p>
+
+<h2>Names</h2>
+<p>
+ Any text in the script which is not an operator, literal or keyword is termed a 'name'.
+ How a name is treated depends upon the context.
+</p>
+<p>
+ Names are constructed from alphanumeric, '_' underline and ':' colon characters.
+ They can not start with a numeric character.
+</p>
+<p>
+ In some cases the script may accept either a name,
+ a literal string or a string expression in '( )' parentheses.
+ It is often called a <b>code</b> or a <b>signature</b> when used like this.
+</p>
+
+<h3>Variables</h3>
+<p>
+ Variables are created using the 'let' statement.
+ They link a name to a value.
+ Once created, the 'let' statement name is optional
+ as any known variable name (other than a statement name) is treated as a let statement.
+</p>
+<p>
+ The life of a variable is controlled by the 'mark' and 'clear' statements.
+ It should be noted that unless directed otherwise, the variable names and values
+ are remembered after a script has finished running.
+ So subsequent scripts can use values calculated by previous ones.
+</p>
+
+<h2>Automatic Type Conversions</h2>
+<p>
+ When an operation expects two numeric types then, if both types are the same,
+ this will be the type of the output.
+ If the types differ, one of the types will attempt to be converted as follows.
+</p>
+<p>
+ If either type is a float, the other type will be converted to a float.
+</p>
+<p>
+ If the types are a <b>number</b> and a <b>field</b>, in either order,
+ the number is converted to a field if possible.
+ If the conversion would causes an overflow, it is converted to the unknown <b>?</b> value.
+</p>
+<p>
+ Set types are automatically promoted or demoted as required to suit the operation.
+ If a demotion is not possible the script stops with an error.
+ Promotions are always possible.
+</p>
+
+<h2>Summary of Types</h2>
+
+<table class='basic'>
+<tr><td><b>float</b></td><td class="code">float_type</td><td rowspan="2"></td><td></td><td rowspan="3">numeric_type</td><td rowspan="5">any_numeric_type</td></tr>
+<tr><td><b>number</b></td><td class="code">number_type</td><td rowspan="2" class="code">integer_type</td></tr>
+<tr><td><b>field</b></td><td class="code">field_type</td><td rowspan="3">set_type</td></tr>
+<tr><td><b>range</b></td><td class="code">range_type</td><td rowspan="2">combined_type</td><td rowspan="2"></td></tr>
+<tr><td><b>rlist</b></td><td class="code">rlist_type</td></tr>
+<tr><td><b>bool</b></td><td class="code">bool_type</td><td colspan="4"></td></tr>
+<tr><td><b>string</b></td><td class="code">string_type</td><td colspan="4"></td></tr>
+<tr><td><b>object</b></td><td class="code">object_type</td><td colspan="4">named_object_type</td></tr>
+<tr><td><b>error</b></td><td class="code">error_type</td><td colspan="4"></td></tr>
+<tr><td><b>null</b></td><td class="code">null_type</td><td colspan="4"></td></tr>
+</table>
+
+<h2>Operators</h2>
+
+<h3>Arithmetic Operations</h3>
+<table class='basic'>
+<tr><th>Operator</th><th>Name</th><th>Use Type</th><th>Result Type</th></tr>
+<tr><td class='code'>+</td><td>Unary plus</td><td class='example'><b>+</b> any_numeric_type</td><td class='example'>any_numeric_type</td></tr>
+<tr><td class='code'>-</td><td>Unary minus</td><td class='example'><b>-</b> any_numeric_type</td><td class='example'>any_numeric_type</td></tr>
+<tr><td class='code'>+</td><td>Plus</td><td class='example'>any_numeric_type <b>+</b> numeric_type<br>numeric_type <b>+</b> any_numeric_type</td><td class='example'>any_numeric_type</td></tr>
+<tr><td class='code'>-</td><td>Minus</td><td class='example'>any_numeric_type <b>-</b> numeric_type<br>numeric_type <b>-</b> any_numeric_type</td><td class='example'>any_numeric_type</td></tr>
+<tr><td class='code'>*</td><td>Multiply</td><td class='example'>numeric_type <b>*</b> numeric_type</td><td class='example'>numeric_type</td></tr>
+<tr><td class='code'>/</td><td>Divide</td><td class='example'>numeric_type <b>/</b> numeric_type</td><td class='example'>float_type</td></tr>
+<tr><td class='code'>div</td><td>Integer divide</td><td class='example'>integer_type <b>div</b> integer_type</td><td class='example'>integer_type</td></tr>
+<tr><td class='code'>mod</td><td>Integer modulo</td><td class='example'>integer_type <b>mod</b> integer_type</td><td class='example'>integer_type</td></tr>
+</table>
+<p>
+ For numeric_types,
+ the arithmetic operators '+' (addition), '-' (subtraction, negation)
+ and '*' (multiplication) retain their normal mathematical meanings.
+ There are two forms division, normal division '/'
+ which always gives a floating point result.
+ Division 'div' and 'mod' provides integer division and modulus (remainder).
+ Note that the modulo operator always returns a positive value
+ and that if q = a div b and r = a mod b then a = b * q + r.
+</p>
+
+<h4>Unary Plus and Minus</h4>
+<p>
+ Unitary plus is included for completeness.
+ It currently does nothing.
+ It is often used with inf and infinity to clarify compared to -inf and -infinity
+</p>
+<p>
+ Unary minus has normal meaning of negation.
+</p>
+<p>
+ Negation of a range negates both limits, so -(a..b) = (-b..-a).
+</p>
+<p>
+ Negation of an rlist negates all the ranges, but retains the well orderliness,<br />
+ so -(a..b | c..d) = (-d..-c | -b..-a).
+</p>
+
+<h4>Addition and Subtraction</h4>
+<p>
+ Normal addition is applied when both sides of an expression are numeric values.
+ A numeric value can be added or subtracted from range or rlist.
+ But ranges and rlists cannot be added or subtracted from each other
+ and will result in an error.
+</p>
+<p>
+ Subtraction is carried out by adding the negated right hand side.
+ So a - b = a + -b and a - (c..d) = a + (-d..-c).
+</p>
+<table class='basic'>
+<tr><th>Expression</th><th>Example</th><th>Result</th></tr>
+<tr><td class='code'>field_type + field_type</td><td class='example'>5 + 10<br />-infinity + 123<br />-infinity + infinity</td><td class='example'>15<br />-infinity<br />Error</td></tr>
+<tr>
+ <td class='code'>range_type + field_type<br />field_type + range_type</td>
+ <td class='example'>(8..16) + 20<br />250 + (500..+infinity)<br />-infinity + (500..+infinity)</td>
+ <td class='example'>28..36<br />750..+infinity<br />Error</td>
+ </tr>
+<tr><td class='code'>range_type + range_type</td><td class='example'>(8..16) + (10..20)</td><td class='example'>Error</td></tr>
+<tr>
+ <td class='code'>rlist_type + field_type<br />field_type + rlist_type</td>
+ <td class='example'>(8..16 | 20..50) + 20<br />250 + (-infinity..90 | 500..+infinity)</td>
+ <td class='example'>28..36 | 40..70<br />-infinity..340 | 750..+infinity</td>
+</tr>
+</table>
+
+<h4>String Concatenation</h4>
+<p>
+ The '+' operator is also used to combine string values.
+ If both sides of the operator are string values,
+ the right hand side will be appended to the left hand.
+ If just one side is a string value then the other is stringified first (see <a href='write.htm'>write Statement</a>).
+</p>
+
+<h4>Multiplication, Division and Modulo</h4>
+<p>
+ Glich has two distinct division operators, floating point division <b>'/'</b>
+ and integer division <b>'div'</b>.
+ The <b>'mod'</b> operator is only used for integer modulo.
+</p>
+<p>
+ Currently, these operators can only be used with numerical types.
+ The integer division and modulus operators are based on Euclidean integer division.
+</p>
+<p>
+ Multiplication of any number with the ? value is an error.<br />
+ Multiplication of any number with +infinity (except ? and -infinity) results in +infinity.<br />
+ Multiplication of any number with -infinity (except ? and +infinity) results in -infinity.<br />
+ Multiplication of -infinity and +infinity values is an error.
+</p>
+<p>
+ For the normal division operator, the following conditions apply.<br />
+ The divisor must be a non-zero integer value.
+ Using the values 0, ?, -infinity or +infinity results in an error.<br />
+ If the dividend is -infinity and the divisor valid, the result is also -infinity.<br />
+ If the dividend is +infinity and the divisor valid, the result is also +infinity.<br />
+ Division of the ? value results in an error.
+</p>
+<p>
+ For the modulo operator, the following conditions apply.<br />
+ Using ? on the left hand side of the operation results in an error.<br />
+ Using -infinity or +infinity on the left hand side of the operation always equals 0.<br />
+ Use of 0, ?, -infinity or +infinity on right side the operation results in an error.
+</p>
+<div class='note'><div class='inner'>
+    <p>Note, these rules have been set to ensure the following is always true:<br />
+    If <b>q = a div b</b> and <b>r = a mod b</b> then <b>a = b * q + r</b>
+    and <b>r</b> is always positive.
+</div></div>
+<table class='basic'>
+<tr><th>Expression</th><th>Example</th><th>Result</th></tr>
+<tr>
+ <td class='code'>field_type * field_type</td>
+ <td class='example'>5 * 10<br />-infinity * 123<br />-infinity * +infinity</td>
+ <td class='example'>50<br />-infinity<br />Error</td>
+</tr>
+<tr>
+ <td class='code'>field_type <b>div</b> field_type</td>
+ <td class='example'>10 <b>div</b> 5<br />-infinity <b>div</b> 123<br />123 <b>div</b> +infinity</td>
+ <td class='example'>2<br />-infinity<br />Error</td>
+</tr>
+<tr>
+ <td class='code'>field_type <b>mod</b> field_type</td>
+ <td class='example'>21 <b>mod</b> 5<br />-100 <b>mod</b> -6<br />-infinity <b>mod</b> 2</td>
+ <td class='example'>1<br />2<br />0</td>
+</tr>
+</table>
+
+<h3>Range Operator</h3>
+<p>
+ The binary range operator creates a range value which is just large enough to include
+ both its operands.<br />
+ The order of the operands is not significant.<br />
+ The operands can be either field or range types. Numbers will be converted to a field in if possible.<br />
+ The values -infinity and +infinity may be used.<br />
+ Use of the ? value is an error.
+</p>
+<table class='basic'>
+<tr><th>Example</th><th>Result</th></tr>
+ <tr><td class='example'>5..10</td><td class='example'>5..10</td></tr>
+ <tr><td class='example'>123..-infinity</td><td class='example'>-infinity..123</td></tr>
+ <tr><td class='example'>?..40</td><td class='example'>Error</td></tr>
+ <tr><td class='example'>(5..10)..6</td><td class='example'>5..10</td></tr>
+ <tr><td class='example'>(5..10)..(15..8)</td><td class='example'>5..15</td></tr>
+ <tr><td class='example'>48..25..5..10</td><td class='example'>5..48</td></tr>
+</table>
+
+<h3 id='set'>Set Operators</h3>
+<p>
+ The Complement <b>'!'</b> is a unary prefix operator which operates on a rlist.
+ The Union <b>'|'</b>, Intersection <b>'&amp;'</b>,
+ Symmetric difference <b>'^'</b> and Relative complement <b>'\'</b>
+ operators are binary.
+ These operate on an rlist on left hand side and a range on right hand side.
+ Numbers will be converted to a field if possible
+ and then range and field types are promoted to an rlist or range.
+</p>
+<p>
+ Details of the set operators are found <a href='../calculate.htm'>here</a>.
+</p>
+
+<h3>Comparison Operators</h3>
+<p>
+ The comparison operators must have operands of the same type,
+ after allowing for type promotion.
+ The output is always a boolean type.
+</p>
+<p>
+ Any types, other than error types, can be compared for equality or non-equality.
+</p>
+<p>
+ Comparison operators that compare magnitude can only be used with numeric or string types.
+ Use with any other type results in an error.
+</p>
+
+<h3 id='boolean'>Boolean Operators</h3>
+<p>
+ The unary prefix operator <b>'not'</b> and the binary operators <b>'and'</b> and <b>'or'</b>
+ can be used with boolean types only.
+ Use with any other type will produce an error.
+</p>
+
+<h3>Subscript operators</h3>
+<p>
+ The subscript operators allow access to to the various parts of the more complex value types.
+</p>
+<h4>Index operator</h4>
+<p>
+ Used in the form <b>Value[ Index ]</b>,
+ the square brackets are used to enclose an index into left hand value.
+</p>
+<p>
+ If the value is a rlist type and the index a number type,
+ then the result is the range pointed to by the (zero based) index.
+</p>
+<p>
+ If the value is an object type and the index a number type,
+ then the result is the member value.
+ If the index is a name or string value
+ then this is matched with an objects member variable name
+ and the result is the corresponding value.
+</p>
+<table class='basic'> <!-- See test file subscript006.hcs -->
+<tr><th>Example</th><th>Result</th></tr>
+ <tr><td class='example'>(8..16|20..50|75..99)[1]</td><td class='example'>20..50</td></tr>
+ <tr><td class='example'>{complex 10, 25}[1]</td><td class='example'>25</td></tr>
+ <tr><td class='example'>{complex 10, 25}[real]</td><td class='example'>10</td></tr>
+</table>
+
+<h4>Property operator</h4>
+<p>
+ A subscript starting with a dot '.' and followed by a name will return a property of the value,
+ as listed below.
+</p>
+<table class='basic'>
+<tr><th>Property</th><th>Use</th><th>Result</th><th>Comment</th></tr>
+<tr><td class='code'>low</td><td class='example'>(7..16)[.low]</td><td class='example'>7</td><td>Return the lower bound of a range or rlist.</td></tr>
+<tr><td class='code'>high</td><td class='example'>(7..16)[.high]</td><td class='example'>16</td><td>Return the upper bound of a range or rlist.</td></tr>
+<tr><td class='code'>span</td><td class='example'>(7..16)[.span]</td><td class='example'>10</td><td rowspan='2'>Return the inclusive count between upper and lower bounds of a range or rlist.</td></tr>
+<tr><td class='code'>span</td><td class='example'>(21|79..88|100..120|200..210)[.span]</td><td class='example'>190</td></tr>
+<tr><td class='code'>size</td><td class='example'>(21|79..88|100..120|200..210)[.size]</td><td class='example'>4</td><td rowspan='2'>Return the number of elements in a rlist or record.</td></tr>
+<tr><td class='code'>size</td><td class='example'>{g 1948,9,19}[.size]</td><td class='example'>3</td></tr>
+<tr><td class='code'>size</td><td class='example'>"Hello"[.size]</td><td class='example'>5</td><td>Return the number of characters in a string. May not match the number of unicode code points.</td></tr>
+<tr><td class='code'>envelope</td><td class='example'>(21|79..88|100..120|200..210)[.envelope]</td><td class='example'>21..210</td><td>Return the enclosing range af an rlist.</td></tr>
+<tr><td class='code'>object</td><td class='example'>{g 1948,9,19}[.object]</td><td class='example'>"g"</td><td>Return the object code name as a string.</td></tr>
+<tr><td class='code'>type</td><td class='example'>2432814[.type]</td><td class='example'>"field"</td><td>Return the type of value as a string.</td></tr>
+</table>
+<p>
+ The [.type] property returns one of the following strings:
+ "field", "range", "rlist", "string", "record", "bool", "null".
+ Since if the value is an error, the error will be propagated and so will not be detected.
+</p>
+
+<h3>Functions</h3>
+<p>
+ A function first has to be defined using the function statement.
+ It can then be called in an expression using the at '@' operator.
+</p>
+<table class='basic'>
+<tr><th>Example</th><th>Result</th></tr><!-- See function008.hcs test file -->
+ <tr><td class='example'>function power(number, power) {
+    result = 1;
+    do while power > 0
+        result *= number;
+        power -= 1;
+    loop
+}</td><td class='example'></td></tr>
+ <tr><td class='example'>4 * @power(2,4) + 10</td><td class='example'>74</td></tr>
+</table>
+
+<h4>Built-in Functions</h4>
+<p>
+ There some built-in functions that are always available.
+</p>
+
+<h4>@if( comp, t, f ) Built-in Function</h4>
+<p>
+ The @if function behaves similar to the C language ? : tertiary operator.
+ If the comp argument is true the result is the t argument,
+ otherwise the result is the f argument.
+ The function is equivalent to the following statement.
+</p>
+<table class='code'>
+<tr><td
+>function if( comp, t, f ) { if comp result = t; else result = f; endif }
+</td></tr>
+</table>
+
+<h4>@read( prompt = "" ) Built-in Function</h4>
+<p>
+ The current version is limited to writing and reading from the standard in/out streams.
+</p>
+<p>
+ If given, the prompt is written to standard out.
+ Then the standard is stream is read up to the next new line.
+</p>
+<p>
+ The result of the function is always a string value.
+ Use the convert cast to read a field value.
+</p>
+
+<h3>Commands</h3>
+<p>
+ Like a function, a command first has to be defined using the command statement.
+ It can then be called directly using the call statement.
+ Unlike a function, it has not return type
+</p>
+<table class='basic'>
+<tr><th>Example</th><th>Result</th></tr><!-- See function008.hcs test file -->
+ <tr><td class='example'>command write_complex( c ) {
+    if c[.object] = "complex"
+        if c[imaginary] < 0
+            write c[real] + " - " + -c[imaginary] + "i";
+        elseif c[imaginary] = 0
+            write c[real];
+        else
+            write c[real] + " + " + c[imaginary] + "i";
+        endif
+    endif
+}</td><td class='example'></td></tr>
+ <tr><td class='example'>call write_complex({complex 20, -25});</td><td class='example'>20 - 25i</td></tr>
+</table>
+<p>
+ There are no built-in commands at this time.
+</p>
+
+<h3>Type Conversions</h3>
+<p>
+ Cast operators are used by the <b>Hics</b> language extension
+ to change the way date ranges are held.
+ These are documented in the Hics specification section.
+</p>
+
+<h4>Cast error</h4>
+<p>
+ The error cast operator converts a string into an error.
+ This can be used to signal an unusable value in a calculation or function.
+</p>
+<p>
+ The prefix "Error (" + line + "): " is added to message,
+ where line is the line number of the the error cast operator.
+</p>
+<table class='basic'>
+<tr><th>Example</th><th>Result</th></tr>
+ <tr><td class='example'>error "Age is negative."</td><td class='example'>"Error (10): Age is negative."</td></tr>
+ <tr><td class='example'>error ("Age of " + age + " is too high.")</td><td class='example'>"Error (10): Age of 150 is too high."</td></tr>
+</table>
+
+<h2>Operator Precedence</h2>
+<p>
+ Expressions are evaluated according to the operators detailed in the table.
+ Operators with higher precedence are listed first.
+ When precedence is equal, operations are carried out from left to right.
+</p>
+<table class='basic'>
+<tr><th colspan='4'>Operator List</th></tr>
+<tr><th>Operator</th><th>Name</th><th>Use</th><th>Result</th></tr>
+<tr><td class='code'>()</td><td>Parenthesized expression</td><td class='example'><b>(</b> expr <b>)</b></td><td class='example'>value</td></tr>
+<tr><td class='code' colspan='4'></td></tr>
+<tr><td class='code'>{}</td><td>Object</td><td class='example'><b>{sig</b> value, ...<b>}</b></td><td class='example'>object_value</td></tr>
+<tr><td class='code' colspan='4'>Hics cast operators (date, record, text and element) added here.</td></tr>
+<tr><td class='code'>error</td><td>Error cast</td><td class='example'><b>error</b> string_value</td><td class='example'>error_value</td></tr>
+<tr><td class='code'>@</td><td>Function</td><td class='example'><b>@name</b><br /><b>@name(</b>expr, ...<b>)</b></td><td class='example'>value</td></tr>
+<tr><td class='code' colspan='4'></td></tr>
+<tr><td class='code'>[]</td><td>Subscript</td><td class='example'>date_value<b>[</b>string_value<b>]</b></td><td class='example'>field_value</td></tr>
+<tr><td class='code'>[.<i>name</i>]</td><td>Property</td><td class='example'>value<b>[.</b>name<b>]</b></td><td class='example'>value</td></tr>
+<tr><td class='code'>.<i>name</i></td><td>Member</td><td class='example'>object_value<b>.</b>name</td><td class='example'>value</td></tr>
+<tr><td class='code' colspan='4'></td></tr>
+<tr><td class='code'>!</td><td>Complement</td><td class='example'><b>!</b>rlist_value</td><td class='example'>rlist_value</td></tr>
+<tr><td class='code'>not</td><td>Logical not</td><td class='example'><b>not </b>bool_value</td><td class='example'>bool_value</td></tr>
+<tr><td class='code'>+</td><td>Unary plus</td><td class='example'><b>+</b>number_value</td><td class='example'>number_value</td></tr>
+<tr><td class='code'>-</td><td>Unary minus</td><td class='example'><b>-</b>number_value</td><td class='example'>number_value</td></tr>
+<tr><td class='code' colspan='4'></td></tr>
+<tr><td class='code'>*</td><td>Multiply</td><td class='example'>numeric_value <b>*</b> numeric_value</td><td class='example'>numeric_value</td></tr>
+<tr><td class='code'>/</td><td>Divide</td><td class='example'>numeric_value <b>/</b> numeric_value</td><td class='example'>float_value</td></tr>
+<tr><td class='code'>div</td><td>Integer divide</td><td class='example'>integer_value <b>div</b> integer_value</td><td class='example'>integer_value</td></tr>
+<tr><td class='code'>mod</td><td>Integer modulo</td><td class='example'>integer_value <b>mod</b> integer_value</td><td class='example'>integer_value</td></tr>
+<tr><td class='code' colspan='4'></td></tr>
+<tr><td class='code'>+</td><td>Plus</td>
+ <td class='example'>number_value <b>+</b> number_value<br />string_value <b>+</b> value<br />value <b>+</b> string_value</td>
+ <td class='example'>number_value<br />string_value<br />string_value</td>
+</tr>
+<tr><td class='code'>-</td><td>Minus</td><td class='example'>number_value <b>-</b> number_value</td><td class='example'>number_value</td></tr>
+<tr><td class='code' colspan='4'></td></tr>
+<tr><td class='code'>..</td><td>Range</td>
+ <td class='example'>field_value <b>..</b> field_value<br />range_value <b>..</b> range_value</td>
+ <td class='example'>range_value<br />range_value</td>
+</tr>
+<tr><td class='code' colspan='4'></td></tr>
+<tr><td class='code'>|</td><td>Union</td><td class='example'>rlist_value <b>|</b> range_value</td><td class='example'>rlist_value</td></tr>
+<tr><td class='code'>&amp;</td><td>Intersection</td><td class='example'>rlist_value <b>&amp;</b> range_value</td><td class='example'>rlist_value</td></tr>
+<tr><td class='code'>^</td><td>Symmetric difference</td><td class='example'>rlist_value <b>^</b> range_value</td><td class='example'>rlist_value</td></tr>
+<tr><td class='code'>\</td><td>Relative complement</td><td class='example'>rlist_value <b>\</b> range_value</td><td class='example'>rlist_value</td></tr>
+<tr><td class='code' colspan='4'></td></tr>
+<tr><td class='code'>&lt;</td><td>Less than</td><td class='example'>value <b>&lt;</b> value</td><td class='example'>bool_value</td></tr>
+<tr><td class='code'>&lt;=</td><td>Less than or equal</td><td class='example'>value <b>&lt;=</b> value</td><td class='example'>bool_value</td></tr>
+<tr><td class='code'>&gt;</td><td>Greater than</td><td class='example'>value <b>&gt;</b> value</td><td class='example'>bool_value</td></tr>
+<tr><td class='code'>&gt;=</td><td>Greater than or equal</td><td class='example'>value <b>&gt;=</b> value</td><td class='example'>bool_value</td></tr>
+<tr><td class='code'>=</td><td>Equal</td><td class='example'>value <b>=</b> value</td><td class='example'>bool_value</td></tr>
+<tr><td class='code'>&lt;&gt;</td><td>Not equal</td><td class='example'>value <b>&lt;&gt;</b> value</td><td class='example'>bool_value</td></tr>
+<tr><td class='code' colspan='4'></td></tr>
+<tr><td class='code'>and</td><td>Logical and</td><td class='example'>bool_value <b>and</b> bool_value</td><td class='example'>bool_value</td></tr>
+<tr><td class='code'>or</td><td>Logical inclusive or</td><td class='example'>bool_value <b>or</b> bool_value</td><td class='example'>bool_value</td></tr>
+</table>
+
+<h2>Keywords</h2>
+<p>
+ The following is a complete list of keywords, including the Hics extensions.
+ These words cannot be used as variable names
+ and, if used as signature codes, they must be enclosed in double quotes.
+</p>
+<p>
+ <b>and, date, do, endif, element, else, elseif, error, false, future, if, inf, infinite, loop, mod,
+ nan, not, null, or, past, record, text, today, true, until, while</b>
+</p>
+<p>
+ The other statement words
+ <b>call, clear, command, end, file, format, function, grammar, let, lexicon, mark, object, scheme, set, write, writeln</b>
+ are not strictly keyword, but are best avoided.
+ If they are used as variable names then all assignments must start with 'let'.
+</p>
+
+</div><!--id=content-->
+
+ <div class="crumbs">
+  <a href='../../../index.htm' class='m-item'>Home</a>
+  <a href='../../../dev/index.htm' class='m-item'>Development</a>
+  <a href='../../../dev/man/index.htm' class='m-item'>v0.1.0 Manual</a>
+  <a href='../../../dev/man/script/index.htm' class='m-item'>Script</a>
+  <a href='expr.htm' class='m-item thispage'>Expressions</a>
+  <a href='../../../dev/man/script/write.htm' class='m-item nav'>►</a>
+  <a href='../../../dev/man/script/index.htm' class='m-item nav'>◄</a>
+ </div>
+
+ <div class='tail'></div>
+
+ <div id='valid'>
+  <p>
+   <a href='https://nickmat.github.io/WebPageLayout/website/index.htm'><img src='../../../sys/wpl_16.png' alt='Managed by WebPageLayout' height='16' width='16' /></a>
+   <a href='https://www.gueury.com/mozilla/'><img src='../../../sys/tidy_16.gif' alt='Validated by HTML Validator (based on Tidy)' height='16' width='39' /></a>
+  </p>
+ </div>
+
+ <div id='create-date'><p>21<sup>st</sup> October 2015</p></div>
+
+
+</body>
+</html>

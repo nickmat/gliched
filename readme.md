@@ -10,3 +10,7 @@ Create the following projects
  - **glcs.exe** A interactive terminal for **glich** script language.
  - **glctest.exe** Runs **glich** scripts.
  - **glcscripts** A suite of test scripts.
+
+The documentation for the projects is being created on a
+[website](https://nickmat.github.io/glich/website/index.htm)
+as part of this repository.

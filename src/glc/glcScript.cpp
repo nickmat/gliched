@@ -1097,18 +1097,14 @@ SValue glich::Script::get_object( GetToken get )
     vlist.push_back( vo );
 
     SToken token = current_token();
-    bool comma_next = true;
-    if( token.type() == SToken::Type::Comma ) {
-        token = next_token();
-        comma_next = false;
-    }
+    bool comma_next = false;
     bool done = false;
     for( ;;) {
         switch( token.type() )
         {
         case SToken::Type::End:
         case SToken::Type::RCbracket:
-            if( !comma_next ) {
+            if( vlist.size() > 1 && !comma_next ) {
                 vlist.push_back( SValue() );
             }
             done = true;

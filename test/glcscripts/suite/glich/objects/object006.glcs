@@ -5,7 +5,7 @@ object greet {
     function hi( name ) { result = greeting + " " + name; }
 }
 
-let g = {greet, "Hello"};
+let g = {greet "Hello"};
 
 writeln g.hi("John");
 writeln g.hi( 1 );

@@ -8,5 +8,5 @@ write a;
 
 
 /*[OUTPUT]
-{array null, 5, null, null}
+{array null, null, 5, null, null}
 [OUTPUT]*/

@@ -31,7 +31,48 @@
 
 <div id='content' class='nomenu'>
 
-<h2>Page Under Construction</h2>
+
+
+<h2>Statement if</h2>
+<p>
+ An <b>if</b> statement allows one or more statements to be run,
+ depending on a given condition.
+</p>
+<p>
+ The statement may include zero or more '<b>elseif</b> condition' sub-statements
+ and an optional '<b>else</b>' sub-statement.
+ The statement must end with the <b>endif</b> keyword.
+</p>
+
+<table class='basic'>
+ <tr><th>if Statement Format</th></tr>
+ <tr>
+  <td class='code'><b>if</b> <i>bool_expr</i>
+    <i>statements ...</i>
+<b>elseif</b> <i>bool_expr</i>
+    <i>statements ...</i>
+<b>elseif</b> <i>bool_expr</i>
+    <i>statements ...</i>
+<b>else</b>
+    <i>statements ...</i>
+<b>endif</b></td>
+ </tr>
+</table>
+
+<table class='basic'>
+ <tr><th>Example</th></tr>
+ <tr>
+  <td class='example'><b>if</b> value = 10
+    writeln "Value is a round 10";
+<b>elseif</b> value &lt; 5
+    writeln "Value as less than 5";
+<b>elseif</b> value = 100
+    writeln "Value is exactly 100";
+<b>else</b>
+    writeln "Value is boring";
+<b>endif</b></td>
+ </tr>
+</table>
 
 </div><!--id=content-->
 

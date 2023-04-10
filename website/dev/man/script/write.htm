@@ -31,7 +31,105 @@
 
 <div id='content' class='nomenu'>
 
-<h2>Page Under Construction</h2>
+<h2>write And writeln Statements</h2>
+<p>
+ The write and writeln statements are intended to provide written output.
+ The two statements are the same
+ except writeln will add a new line at the end of the output.
+</p>
+<p>
+ The expression following is first evaluated and then "stringified",
+ or converted into text.
+ If the write statement has a filecode property attached,
+ output will be sent to the appropriate file.
+ Otherwise output is sent to the standard output device.
+</p>
+<table class='basic'>
+ <tr><th colspan='3'>write Statement</th></tr>
+ <tr><th>Format</th><th>Example</th><th>Output</th></tr>
+ <tr>
+  <td class='code'><b>write</b> <i>str_expr</i><b>;</b></td>
+  <td class='example'>write "Triangular number T4 = " + (1+2+3+4);</td>
+  <td>Triangular number T4 = 10</td>
+ </tr>
+ <tr>
+  <td class='code'><b>write</b> <i>rlist_expr</i><b>;</b></td>
+  <td class='example'>write 10..20 & !15;</td>
+  <td>10..14 | 16..20</td>
+ </tr>
+ <tr>
+  <td class='code'><b>write</b> <i>object_expr</i><b>;</b></td>
+  <td class='example'>let a = {array: ,5/2,,}; write a;</td>
+  <td>{array: null, 2.5, null, null}</td>
+ </tr>
+ <tr>
+  <td class='code'><b>write</b><i>.filecode expr</i><b>;</b></td>
+  <td class='example'>writeln.text "Next line in the text file";</td>
+  <td></td>
+ </tr>
+</table>
+<p></p>
+<p>
+ It should be noted the the plus operator '+' is used for both
+ numerical addition and string concatenation.
+ The rule is, if both sides of the operator are numbers,
+ the values are added together.
+ But if one side is a string,
+ the other side is converted to a string and the two concatenated.
+ Since operators of equal precedence are evaluated from left to right,
+ one string to the left of a succession of numbers being added
+ will affect them all.
+ When in doubt, put all calculations in parentheses.
+</p>
+<table class='code'>
+ <tr><th>Example</th><th>Result</th></tr>
+ <tr><td>write 5 + 10 + 15;</td><td class='note'>30</td></tr>
+ <tr><td>write "" + 5 + 10 + 15;</td><td class='note'>51015</td></tr>
+ <tr><td>write "" + 5 + (10 + 15);</td><td class='note'>525</td></tr>
+</table>
+
+<h3>Output</h3>
+<p>
+ Exactly how the out put is displayed will depend upon the program running the script.
+ The glcs interactive terminal program simply outputs the text to the following line.
+</p>
+
+ <h2>file Statement</h2>
+ <p>
+  The file statement opens and prepares a text file,
+  ready to receive output from a write or writeln statement.
+ </p>
+ <p>
+  Input from a file is achieved with the built-in @read function.
+ </p>
+<table class='basic'>
+ <tr><th colspan='2'>file Statement</th></tr>
+ <tr><th>Format</th><th>Example</th></tr>
+ <tr>
+  <td class='code'><b>file</b> <i>filecode filename switch</i><b>;</b></td>
+  <td class='example'>file note "note.txt" append;</td>
+ </tr>
+</table>
+<p>
+ The filename is expected in the form of a string expression.
+</p>
+<p>
+ The switch is optional, if given it can be one of the following names:
+</p>
+<table class='basic'>
+ <tr><th>Switch</th><th>Note</th></tr>
+ <tr>
+  <td class='code'><b>write</b></td>
+  <td>Open for writing, truncating any existing text.</td>
+ </tr>
+ <tr>
+  <td class='code'><b>append</b></td>
+  <td>Open for writing, adding new text to the end.</td>
+ </tr>
+</table>
+<p>
+ If no switch is given then 'write' is assumed.
+</p>
 
 </div><!--id=content-->
 

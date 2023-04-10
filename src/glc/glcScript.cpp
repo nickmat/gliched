@@ -699,15 +699,15 @@ bool Script::do_file()
     }
     File::FileType type = File::FT_null;
     if( current_token().type() != SToken::Type::Semicolon ) {
-        string type = get_name_or_primary( GetToken::next );
-        if( type.empty() ) {
+        string type_str = get_name_or_primary( GetToken::next );
+        if( type_str.empty() ) {
             error( "';' or switch expected." );
             return false;
         }
-        if( type == "write" ) {
+        if( type_str == "write" ) {
             type = File::FT_write;
         }
-        else if( type == "append" ) {
+        else if( type_str == "append" ) {
             type = File::FT_append;
         }
     }

@@ -214,5 +214,25 @@ bool Record::set_range_as_next( Range& range ) const
     return false;
 }
 
+BoolVec Record::mark_balanced_fields( Record& rec, const XIndexVec& rank_to_def, size_t size )
+{
+    assert( size > 0 && rank_to_def.size() >= size );
+    BoolVec mask( m_f.size(), true );
+    // Both must have the same Base and not be identical.
+    if( &m_base != &rec.m_base || m_jdn == rec.get_jdn() ) {
+        return mask;
+    }
+    size_t rank_index = size - 1;
+    while( rank_index > 0 ) {
+        size_t def_index = rank_to_def[rank_index];
+        if( m_f[def_index] == m_base.get_beg_field_value( m_f, def_index ) &&
+            rec.m_f[def_index] == m_base.get_end_field_value( rec.m_f, def_index ) )
+        {
+            mask[def_index] = false;
+        }
+        --rank_index;
+    }
+    return mask;
+}
 
 // End of src/glc/hicRecord.cpp file

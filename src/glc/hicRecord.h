@@ -61,6 +61,8 @@ namespace glich {
         bool set_range_as_begin( Range& range ) const;
         bool set_range_as_next( Range& range ) const;
 
+        BoolVec mark_balanced_fields( Record& rec, const XIndexVec& rank_to_def, size_t size );
+
         const Base& get_base() const { return m_base; }
         const FieldVec& get_field_vec() const { return m_f; }
         FieldVec& get_field_vec() { return m_f; }

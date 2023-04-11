@@ -60,11 +60,11 @@ namespace glich {
         virtual RList string_to_rlist( const Base& base, const std::string& input ) const = 0;
         virtual bool set_input( Record& record, const std::string& input, Boundary rb ) const = 0;
 
-        std::string jdn_to_string( const Base& base, Field jdn ) const;
-        std::string range_to_string( const Base& base, Range rng ) const;
-        std::string rlist_to_string( const Base& base, RList rlist ) const;
+        virtual std::string jdn_to_string( const Base& base, Field jdn ) const;
+        virtual std::string range_to_string( const Base& base, Range rng ) const;
+        virtual std::string rlist_to_string( const Base& base, RList rlist ) const;
 
-    private:
+    protected:
         std::string m_code;
         Grammar& m_owner;
         bool m_ok;

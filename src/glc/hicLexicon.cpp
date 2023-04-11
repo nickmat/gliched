@@ -65,7 +65,7 @@ void Lexicon::add_token( Field value, const string& name, const string& abbrev )
 
 string Lexicon::get_pseudo_name( Pseudo style ) const
 {
-    return style == pseudo_full ? m_pseudo_name : m_pseudo_a_name;
+    return style == Lexicon::Pseudo::full ? m_pseudo_name : m_pseudo_a_name;
 }
 
 void Lexicon::get_info( Vocab_info* info ) const
@@ -104,7 +104,7 @@ string Lexicon::lookup( Field field, Pseudo style ) const
     string result;
     if( m_fields.count( field ) > 0 ) {
         Token token = m_fields.find( field )->second;
-        if( style == pseudo_abbrev ) {
+        if( style == Lexicon::Pseudo::abbrev ) {
             result = token.get_abbrev();
         }
         if( result.empty() ) {

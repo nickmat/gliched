@@ -53,7 +53,7 @@ namespace glich {
     class Lexicon
     {
     public:
-        enum Pseudo { pseudo_full, pseudo_abbrev, pseudo_ordsuffix };
+        enum class Pseudo { full, abbrev, ordsuffix };
 
         Lexicon( const std::string& code );
 

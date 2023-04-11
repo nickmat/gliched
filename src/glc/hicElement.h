@@ -104,7 +104,7 @@ namespace glich {
         ElementControlOut() : Element() {}
 
         void clear() override;
-        // TODO: bool expand_specifier( Grammar* gmr );
+        bool expand_specifier( Grammar* gmr );
 
         std::string get_field_output_name() const { return m_field_output_name; }
 

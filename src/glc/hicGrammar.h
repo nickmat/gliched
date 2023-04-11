@@ -60,11 +60,14 @@ namespace glich {
         std::string get_code() const { return m_code; }
         std::string resolve_field_alias( const std::string& alias );
         std::string resolve_unit_alias( const std::string& alias );
+        std::string get_num_pseudo_alias( const std::string& fname ) const;
+
         Format* get_format( const std::string& code ) const;
         std::string get_pref_input_fcode() const { return m_pref_input_fcode; }
         std::string get_pref_output_fcode() const { return m_pref_output_fcode; }
 
         Field find_token( Lexicon** lex, const std::string& word ) const;
+        Lexicon* find_lexicon( const std::string& code ) const;
 
         StdStrVec get_base_fieldnames() const { return m_base_fieldnames; }
         Glich& get_glich() const { return *m_glc; }

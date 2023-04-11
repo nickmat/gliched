@@ -41,7 +41,7 @@ using std::string;
 
 
 FormatText::FormatText( const string& code, Grammar& gmr )
-: Format( code, gmr )//, m_separators(":,"), m_sig_rank_size(0), m_shorthand(true)
+: Format( code, gmr ), m_separators(":,"), m_shorthand(true), m_sig_rank_size(0)
 {
 }
 
@@ -54,7 +54,7 @@ bool FormatText::construct()
         setup_control_in();
     }
     if( !m_control_out.empty() ) {
-//        setup_control_out();
+        setup_control_out();
     }
     set_ok( true );
     return true;
@@ -68,6 +68,7 @@ void FormatText::setup_control_in()
 
     if( m_rank_fieldnames.empty() ) {
         m_rank_fieldnames = m_default_fieldnames;
+        m_sig_rank_size = get_grammar().get_base_fieldnames().size();
     }
     assert( m_default_fieldnames.size() == m_rank_fieldnames.size() );
     m_rank_to_def_index.resize( m_rank_fieldnames.size() );
@@ -144,7 +145,61 @@ void FormatText::setup_control_in()
     }
 }
 
-string FormatText::get_text_output( const Record& record ) const
+void FormatText::setup_control_out()
+{
+    assert( get_owner() );
+
+    if( m_rankout_fieldnames.empty() ) {
+        m_rankout_fieldnames = m_rank_fieldnames;
+    }
+//    m_sig_rank_size = get_sig_rank_size();
+
+    ElementControlOut ele;
+    string fieldout, output;
+    bool do_output = true;
+
+    for( auto it = m_control_out.begin(); it != m_control_out.end(); it++ ) {
+        if( do_output ) {
+            if( *it == '|' ) {
+                output += fieldout;
+                fieldout.clear();
+            }
+            else if( *it == '{' ) {
+                do_output = false;
+            }
+            else {
+                fieldout += *it;
+            }
+            continue;
+        }
+        if( *it == '}' ) {
+            ele.expand_specifier( get_owner() );
+            fieldout += ele.get_field_output_name();
+            if( m_shorthand ) {
+                string field_name = get_owner()->resolve_field_alias( ele.get_field_name() );
+//                if( is_non_sig_record_name( rfn ) ) {
+                if( !is_significant_rank_name( field_name ) ) {
+                    m_shorthand = false;
+                }
+            }
+            ele.clear();
+            do_output = true;
+        }
+        else if( !do_output ) {
+            ele.add_char( *it );
+        }
+    }
+    output += fieldout;
+    if( m_output_str.empty() ) {
+        set_user_output_str( output );
+    }
+}
+
+
+
+
+
+string FormatText::get_revealed_output( const Record& record, const BoolVec* reveal ) const
 {
     Element ele;
     string output, fieldout, value;
@@ -172,9 +227,9 @@ string FormatText::get_text_output( const Record& record ) const
             break;
         case doelement:
             if( *it == '}' ) {
-                Field f = get_field( record, ele.get_field_name() );
+                Field f = get_field( record, ele.get_field_name(), reveal );
                 if( ele.has_dual_field_name() ) {
-                    Field d = get_field( record, ele.get_dual_field_name() );
+                    Field d = get_field( record, ele.get_dual_field_name(), reveal );
                     value = dual_fields_to_str( f, d );
                 }
                 else {
@@ -218,7 +273,7 @@ bool glich::FormatText::set_input( Record& record, const std::string& input, Bou
         return ret;
     }
     Record rec( record );
-    Field fld;
+    Field fld = f_invalid;
     if( rb == Boundary::Begin ) {
         fld = record.complete_fields_as_beg();
     }
@@ -226,6 +281,40 @@ bool glich::FormatText::set_input( Record& record, const std::string& input, Bou
         fld = record.complete_fields_as_end();
     }
     return (fld != f_invalid);
+}
+
+string FormatText::range_to_string( const Base& base, Range range ) const
+{
+    if( range.m_beg == range.m_end ) {
+        return jdn_to_string( base, range.m_beg );
+    }
+    string str1, str2;
+    Record rec1( base, range.m_beg );
+    Record rec2( base, range.m_end );
+
+    if( m_shorthand ) {
+        BoolVec reveal = rec1.mark_balanced_fields( rec2, m_rank_to_def_index, m_sig_rank_size );
+        str1 = get_revealed_output( rec1, &reveal );
+        str2 = get_revealed_output( rec2, &reveal );
+    }
+    else {
+        str1 = get_text_output( rec1 );
+        str2 = get_text_output( rec2 );
+    }
+    if( str1 == str2 ) {
+        return str1;
+    }
+    return str1 + ".." + str2;
+}
+
+bool FormatText::is_significant_rank_name( const string& fieldname ) const
+{
+    for( size_t i = 0; i < m_sig_rank_size; i++ ) {
+        if( fieldname == m_rank_fieldnames[i] ) {
+            return true;
+        }
+    }
+    return false;
 }
 
 FormatText::CP_Group FormatText::get_cp_group(
@@ -264,10 +353,13 @@ FormatText::CP_Group FormatText::get_cp_group(
 }
 
 
-Field FormatText::get_field( const Record& record, const string& fname ) const
+Field FormatText::get_field( const Record& record, const string& fname, const BoolVec* reveal ) const
 {
     int index = record.get_field_index( fname );
     if( index < 0 ) {
+        return f_invalid;
+    }
+    if( reveal && !(*reveal)[index] ) {
         return f_invalid;
     }
     return record.get_field( index );

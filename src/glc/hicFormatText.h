@@ -39,6 +39,7 @@ namespace glich {
 
         bool construct() override;
         void setup_control_in();
+        void setup_control_out();
 
         void set_separators( const std::string& sep ) { m_separators = sep; }
         void set_rank_fieldnames( StdStrVec fieldnames ) { m_rank_fieldnames = fieldnames; }
@@ -46,18 +47,23 @@ namespace glich {
         void set_control_out( const std::string& format ) { m_control_out = format; }
         void set_control_in( const std::string& format ) { m_control_in = format; }
 
-        std::string get_text_output( const Record& rec ) const override;
+        std::string get_text_output( const Record& rec ) const override { return get_revealed_output( rec, nullptr ); }
+        std::string get_revealed_output( const Record& rec, const BoolVec* reveal ) const;
         RList string_to_rlist( const Base& base, const std::string& input ) const override;
 
         bool set_input( Record& record, const std::string& input, Boundary rb ) const override;
 
+        std::string range_to_string( const Base& base, Range range ) const override;
+
+
     private:
         enum class CP_Group { Hyphen, Digit, Quest, Dual, Sep, Other };
 
+        bool is_significant_rank_name( const std::string& fieldname ) const;
         CP_Group get_cp_group(
             std::string::const_iterator it,
             std::string::const_iterator end ) const;
-        Field get_field( const Record& record, const std::string& fname ) const;
+        Field get_field( const Record& record, const std::string& fname, const BoolVec* reveal ) const;
         int parse_date( InputFieldVec& ifs, const std::string& str ) const;
         bool resolve_input( const Base& base, FieldVec& fields, InputFieldVec& input ) const;
 
@@ -67,9 +73,11 @@ namespace glich {
         std::string m_control_in;
         std::string m_control_out;
         std::string m_separators;
+        bool m_shorthand; // Shorthand range allowed
 
         StdStrVec   m_default_fieldnames;
         StdStrVec   m_rank_fieldnames;
+        size_t      m_sig_rank_size; // Significant rank size
         XIndexVec   m_rank_to_def_index;
 
         StdStrVec   m_format_order;

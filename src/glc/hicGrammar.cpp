@@ -174,6 +174,23 @@ std::string Grammar::resolve_unit_alias( const std::string& alias )
     return resolve_field_alias( alias );
 }
 
+string Grammar::get_num_pseudo_alias( const string& fname ) const
+{
+    if( m_num_pseudo_alias.count( fname ) > 0 ) {
+        return m_num_pseudo_alias.find( fname )->second;
+    }
+    if( m_field_alias.count( fname ) > 0 ) {
+        string fname_alias = m_field_alias.find( fname )->second;
+        if( m_num_pseudo_alias.count( fname_alias ) > 0 ) {
+            return m_num_pseudo_alias.find( fname_alias )->second;
+        }
+    }
+    if( m_inherit ) {
+        return m_inherit->get_num_pseudo_alias( fname );
+    }
+    return fname;
+}
+
 Format* Grammar::get_format( const string& code ) const
 {
     auto it = m_formats.find( code );
@@ -208,6 +225,22 @@ Field Grammar::find_token( Lexicon** lex, const std::string& word ) const
         *lex = nullptr;
     }
     return f_invalid;
+}
+
+Lexicon* Grammar::find_lexicon( const string& code ) const
+{
+    if( code.empty() ) {
+        return nullptr;
+    }
+    for( auto lexicon : m_lexicons ) {
+        if( lexicon->get_code() == code ) {
+            return lexicon;
+        }
+    }
+    if( m_inherit ) {
+        return m_inherit->find_lexicon( code );
+    }
+    return nullptr;
 }
 
 Grammar* Grammar::create_default_grammar( const Base* base, Glich* glc )

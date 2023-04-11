@@ -125,8 +125,8 @@ string Element::get_formatted_element( const Glich& glc, Field field ) const
     } else {
         Lexicon* lex = glc.get_lexicon( m_lcode );
         if ( lex ) {
-            Lexicon::Pseudo abbrev = ( m_spec == "a" ) ?
-                Lexicon::pseudo_abbrev : Lexicon::pseudo_full;
+            Lexicon::Pseudo abbrev = (m_spec == "a") ?
+                Lexicon::Pseudo::abbrev : Lexicon::Pseudo::full;
             result = lex->lookup( field, abbrev );
         }
     }
@@ -198,6 +198,53 @@ void ElementControlOut::clear()
 {
     Element::clear();
     m_field_output_name.clear();
+}
+
+bool ElementControlOut::expand_specifier( Grammar* gmr )
+{
+    Lexicon* lex = gmr->find_lexicon( m_lcode );
+    // m_field_output_name = gmr->get_element_pseudo_name( m_field_name );
+    if( lex ) {
+        if( m_field_output_name.empty() ) {
+            if( m_spec == "a" ) {
+                m_field_output_name = lex->get_pseudo_name( Lexicon::Pseudo::abbrev );
+            }
+            else {
+                m_field_output_name = lex->get_pseudo_name( Lexicon::Pseudo::full );
+            }
+        }
+    }
+    else if( m_lcode.empty() && !m_spec.empty() ) {
+        StrStyle ss = StrStyle::undefined;
+        if( m_qualifier == "u" ) {
+            ss = StrStyle::uppercase;
+        }
+        else if( m_qualifier == "l" ) {
+            ss = StrStyle::lowercase;
+        }
+        if( m_spec == "oa" ) {
+            m_field_output_name = get_ordinal_suffix_style( ss );
+        }
+        else if( m_spec == "os" ) {
+            m_field_output_name = gmr->get_num_pseudo_alias( m_field_name ) +
+                get_ordinal_suffix_style( ss );
+        }
+        else if( m_spec == "rn" ) {
+            m_field_output_name = gmr->get_num_pseudo_alias( m_field_name ) +
+                get_roman_numerals_style( ss );
+        }
+        else if( m_spec == "lp" ) {
+            m_field_output_name = get_left_pad_style( m_field_output_name, m_qualifier );
+        }
+    }
+    else if( !m_dual_field_name.empty() ) {
+        m_field_output_name = gmr->get_num_pseudo_alias( m_field_name ) +
+            "/" + gmr->get_num_pseudo_alias( m_dual_field_name );
+    }
+    else if( m_field_output_name.empty() ) {
+        m_field_output_name = gmr->get_num_pseudo_alias( m_field_name );
+    }
+    return true;
 }
 
 

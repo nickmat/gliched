@@ -58,8 +58,6 @@ namespace glich {
         void clear_fields() { std::fill( m_f.begin(), m_f.end(), f_invalid ); }
 
         RList get_rlist_from_mask() const;
-        bool set_range_as_begin( Range& range ) const;
-        bool set_range_as_next( Range& range ) const;
 
         BoolVec mark_balanced_fields( Record& rec, const XIndexVec& rank_to_def, size_t size );
 

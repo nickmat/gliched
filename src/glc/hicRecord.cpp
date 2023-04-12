@@ -164,56 +164,6 @@ RList Record::get_rlist_from_mask() const
     return rlist;
 }
 
-// Sets range and returns true if the masks can create a valid range.
-// Sets up range but returns false if the masks can create a valid range only
-// by ignoring optional fields.
-// Sets range to invalid and returns false if the masks cannot create a valid
-// range.
-bool Record::set_range_as_begin( Range& range ) const
-{
-    Record rec1( m_base );
-    Record rec2( m_base );
-    bool ret1 = rec1.complete_fields_as_beg();
-    bool ret2 = rec2.complete_fields_as_end();
-    if( !ret1 || !ret2 ) {
-        range.m_beg = f_invalid;
-        return false;
-    }
-    range.m_beg = rec1.get_jdn();
-    range.m_end = rec2.get_jdn();
-    if( range.m_beg == f_invalid || range.m_end == f_invalid ) {
-        range.m_beg = f_invalid;
-        return false;
-    }
-    // Adjust for extended fields restricting the range.
-    ret1 = rec1.complete_fields_as_beg();
-    ret2 = rec2.complete_fields_as_end();
-    if( ret1 && ret2 ) {
-        Range r;
-        r.m_beg = rec1.get_jdn();
-        r.m_end = rec2.get_jdn();
-        if( r.m_beg != range.m_beg || r.m_end != range.m_end ) {
-            if( r.m_beg > r.m_end ) {
-                return false;
-            }
-            range = r;
-            return true;
-        }
-    }
-    return ret1 && ret2;
-}
-
-// Using the initial value of range, attempts to adjust the value of range
-// to the next value.
-// If it fails, it sets the range invalid and returns false.
-// If it succeeds, it will attempt to correct for optional fields - if this
-// fails, the uncorrected range is set and the the function returns false.
-bool Record::set_range_as_next( Range& range ) const
-{
-    range.m_beg = f_invalid;
-    return false;
-}
-
 BoolVec Record::mark_balanced_fields( Record& rec, const XIndexVec& rank_to_def, size_t size )
 {
     assert( size > 0 && rank_to_def.size() >= size );

@@ -70,14 +70,7 @@ Glich::Glich( InitLibrary lib, InOut* inout )
     case InitLibrary::None:
         break;
     case InitLibrary::Hics:
-        for( size_t i = 0; i < hics_default_scripts_size; i++ ) {
-            string error = run_script( hics_default_scripts[i].script );
-            if( !error.empty() ) {
-                m_init_error += "Module: \"" +
-                    string( hics_default_scripts[i].module ) + "\"\n" + error;
-                break;
-            }
-        }
+        load_hics_library();
         break;
     }
 }
@@ -90,6 +83,18 @@ Glich::~Glich()
     while( pop_store() );
     delete m_store;
     delete m_inout;
+}
+
+void Glich::load_hics_library()
+{
+    for( size_t i = 0; i < hics_default_scripts_size; i++ ) {
+        string error = run_script( hics_default_scripts[i].script );
+        if( !error.empty() ) {
+            m_init_error += "Module: \"" +
+                string( hics_default_scripts[i].module ) + "\"\n" + error;
+            break;
+        }
+    }
 }
 
 string Glich::run_script( const string& script )

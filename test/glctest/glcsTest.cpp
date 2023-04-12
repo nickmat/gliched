@@ -31,6 +31,7 @@
 
 #include <cstdlib>
 #include <ctime>
+#include <filesystem>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -49,8 +50,10 @@ const char* g_title = PROGNAME " - Version " VERSION "\n";
 const char* g_title = PROGNAME " - Version " VERSION " Debug\n";
 #endif
 
+namespace fs = std::filesystem;
 using namespace glich;
-using namespace std;
+using std::string;
+using std::vector;
 
 struct TestResults {
     TestResults() 
@@ -96,7 +99,7 @@ string run_test( TestResults* totals, Glich& glc, const string& filename )
     if ( pos1 != string::npos ) {
         totals->skips++;
         if ( totals->show_skips ) {
-            cout << "S";
+            std::cout << "S";
             return filename + " skipped.";
         }
         return "";
@@ -123,23 +126,41 @@ string run_test( TestResults* totals, Glich& glc, const string& filename )
     string result;
     if( !error.empty() ) {
         result = filename + "\n" + error;
-        cout << "F";
+        std::cout << "F";
     } else {
-        cout << ".";
+        std::cout << ".";
     }
     return result;
 }
 
+bool ends_with( string const& str, string const& ending ) {
+    if( str.length() >= ending.length() ) {
+        return 0 == str.compare( str.length() - ending.length(), ending.length(), ending );
+    }
+    return false;
+}
+
 string run_full_test( TestResults* totals, Glich& glc, const string& path )
 {
-    vector<string> filenames;
+
     string result;
-    get_filenames( filenames, path );
-    for( size_t i = 0 ; i < filenames.size() ; i++ ) {
-        string error = run_test( totals, glc, filenames[i] );
-        if( !error.empty() ) {
-            totals->fails++;
-            result += "\n\n" + error;
+    for( auto const& dir_entry : fs::directory_iterator { path } ) {
+        if( !dir_entry.is_directory() ) {
+            continue;
+        }
+        glc.run_script( "mark __:clean:__; clear;" ); // Start directory clean;
+        string dir = dir_entry.path().string();
+        if( ends_with( dir, "hics-lib" ) ) {
+            glc.load_hics_library();
+        }
+        vector<string> filenames;
+        get_filenames( filenames, dir );
+        for( size_t i = 0; i < filenames.size(); i++ ) {
+            string error = run_test( totals, glc, filenames[i] );
+            if( !error.empty() ) {
+                totals->fails++;
+                result += "\n\n" + error;
+            }
         }
     }
     return result;
@@ -175,7 +196,7 @@ string run_test_script( TestResults* totals, Glich& glc, const string& filename 
 
 int main( int argc, char* argv[] )
 {
-    cout << g_title << "\n";
+    std::cout << g_title << "\n";
 
     clock_t t = clock();
     Glich glc;
@@ -197,14 +218,14 @@ int main( int argc, char* argv[] )
         }
         result += "Unknown command line switch " + arg + "\n\n";
     }
-    cout << result;
+    std::cout << result;
 
     double dt = ((double) clock() - t) / CLOCKS_PER_SEC;
 
-    cout << "\n\nRun (" + to_string( totals.tests ) + ") "
-        "  fail (" + to_string( totals.fails ) + ")"
-        "  skip (" + to_string( totals.skips ) + ")"
-        "  Timed: " + to_string( dt ) + "s\n\n";
+    std::cout << "\n\nRun (" + std::to_string( totals.tests ) + ") "
+        "  fail (" + std::to_string( totals.fails ) + ")"
+        "  skip (" + std::to_string( totals.skips ) + ")"
+        "  Timed: " + std::to_string( dt ) + "s\n\n";
 
     return 0;
 }

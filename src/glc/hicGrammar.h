@@ -61,6 +61,7 @@ namespace glich {
         std::string resolve_field_alias( const std::string& alias );
         std::string resolve_unit_alias( const std::string& alias );
         std::string get_num_pseudo_alias( const std::string& fname ) const;
+        std::string get_unit_alias( const std::string& fieldname ) const;
 
         Format* get_format( const std::string& code ) const;
         std::string get_pref_input_fcode() const { return m_pref_input_fcode; }
@@ -76,6 +77,9 @@ namespace glich {
         static Grammar* create_default_grammar( const Base* base, Glich* glc );
 
     private:
+        void create_def_format();
+        void create_u_format();
+
         Glich*      m_glc;
         std::string m_code;
         bool        m_ok;

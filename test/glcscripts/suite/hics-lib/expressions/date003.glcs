@@ -1,0 +1,7 @@
+// date003.glcs Test file to test date cast expressions
+
+write text.g:u 2460048;
+
+/*[OUTPUT]
+2023y 4m 13d
+[OUTPUT]*/

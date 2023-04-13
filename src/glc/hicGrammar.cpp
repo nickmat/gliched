@@ -55,6 +55,8 @@ bool Grammar::constuct( const Base* base )
     }
     // TODO:
 
+    create_def_format();
+    create_u_format();
     // Construct all contained format definitions.
     for( auto pair : m_formats ) {
         pair.second->construct();
@@ -191,6 +193,19 @@ string Grammar::get_num_pseudo_alias( const string& fname ) const
     return fname;
 }
 
+string Grammar::get_unit_alias( const string& fieldname ) const
+{
+    for( StdStrMap::const_iterator it = m_unit_alias.begin(); it != m_unit_alias.end(); it++ ) {
+        if( it->second == fieldname ) {
+            return it->first;
+        }
+    }
+    if( m_inherit ) {
+        return m_inherit->get_unit_alias( fieldname );
+    }
+    return fieldname;
+}
+
 Format* Grammar::get_format( const string& code ) const
 {
     auto it = m_formats.find( code );
@@ -251,5 +266,31 @@ Grammar* Grammar::create_default_grammar( const Base* base, Glich* glc )
     return gmr;
 }
 
+void Grammar::create_def_format()
+{
+    FormatText* fmt = create_format_text( "def" );
+    if( fmt == nullptr ) {
+        return;
+    }
+    string control;
+    for( string fieldname : m_base_fieldnames ) {
+        if( !control.empty() ) {
+            control += "| ";
+        }
+        control += "{" + fieldname + "}";
+    }
+    fmt->set_control_in( control );
+    fmt->set_control_out( control );
+    fmt->set_style( FormatStyle::Hide );
+}
+
+void Grammar::create_u_format()
+{
+    FormatUnit* fmt = create_format_unit( "u" );
+    if( fmt == nullptr ) {
+        return;
+    }
+    fmt->set_style( FormatStyle::Hide );
+}
 
 // End of src/cal/calgrammar.cpp file

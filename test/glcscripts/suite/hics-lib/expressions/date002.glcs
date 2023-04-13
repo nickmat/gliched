@@ -1,0 +1,9 @@
+// date002.hcs Test file to test date cast expressions
+
+write date.g:u "1948year 19day 9month";
+
+write ", " + date.g:u "2023y 4d 13m";
+
+/*[OUTPUT]
+2432814, 2460314
+[OUTPUT]*/

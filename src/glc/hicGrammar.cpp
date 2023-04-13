@@ -53,15 +53,18 @@ bool Grammar::constuct( const Base* base )
     if( m_ok ) {
         return false; // Only run construct once.
     }
-    // TODO:
-
     create_def_format();
     create_u_format();
     // Construct all contained format definitions.
     for( auto pair : m_formats ) {
         pair.second->construct();
     }
-
+    if( m_pref_input_fcode.empty() ) {
+        m_pref_input_fcode = "def";
+    }
+    if( m_pref_output_fcode.empty() ) {
+        m_pref_output_fcode = "def";
+    }
     m_ok = true;
     return true;
 }
@@ -262,7 +265,7 @@ Grammar* Grammar::create_default_grammar( const Base* base, Glich* glc )
 {
     Grammar* gmr = new Grammar( "", glc );
     gmr->set_base_fieldnames( base->get_fieldnames() );
-    // TODO: Add default formats.
+    gmr->constuct( base );
     return gmr;
 }
 

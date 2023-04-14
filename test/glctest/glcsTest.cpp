@@ -204,8 +204,12 @@ int main( int argc, char* argv[] )
     TestResults totals;
     for ( int i = 1; i < argc; i++ ) {
         string arg = argv[i];
-        if ( arg == "-s" ) {
+        if( arg == "-s" ) {
             totals.show_skips = true;
+            continue;
+        }
+        if( arg == "-hics-lib" ) {
+            glc.load_hics_library();
             continue;
         }
         CheckFile cf = check_file( arg );

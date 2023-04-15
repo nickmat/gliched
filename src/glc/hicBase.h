@@ -33,25 +33,6 @@
 
 namespace glich {
 
-    class FormatText;
-
-    typedef std::map<int,XRefVec> XRefSet;
-    typedef std::map<std::string,XRefSet> XRefMap;
-
-    enum {
-        YMD_year, YMD_month, YMD_day
-    };
-    enum OptFieldID {
-        OFID_NULL,
-        OFID_wday,      // 7 Day week Mon=1 (1 to 7)
-        OFID_wsday,     // 7 Day week Sun=1 (1 to 7)
-        OFID_jwn,       // Julian Week Number, week count from jdn 0.
-        OFID_dayinyear, // Day in year (1 to about 366, dep. on scheme)
-        OFID_unshift,   // Value before being shifted, (year or day)
-        OFID_repeated,  // Where dates can occasionally be repeated ie Easter. (0 or 1).
-        //
-        OFID_MAX
-    };
 
     class Base
     {

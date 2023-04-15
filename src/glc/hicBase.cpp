@@ -80,7 +80,9 @@ bool Base::attach_grammar( Grammar* gmr )
     }
     // All checks ok
     m_grammar = gmr;
-    // TODO: Add opt fields
+    for( auto& opt : gmr->get_opt_fieldnames() ) {
+        m_fieldnames.push_back( opt );
+    }
     return true;
 }
 

@@ -1314,8 +1314,7 @@ SValue Script::record_cast()
     bool success = false;
     Field jdn = value.get_field( success );
     if( success ) {
-        FieldVec fields = sch->get_base().get_fields( jdn );
-        value.set_object( scode, fields );
+        value.set_object( sch->complete_object( jdn ) );
         return value;
     }
     if( value.type() == SValue::Type::String ) {
@@ -1327,8 +1326,7 @@ SValue Script::record_cast()
             return value;
         }
         jdn = value.get_field();
-        FieldVec fields = sch->get_base().get_fields( jdn );
-        value.set_object( scode, fields );
+        value.set_object( sch->complete_object( jdn ) );
         return value;
     }
     value.set_error( "Expected a field or string type." );

@@ -82,9 +82,9 @@ writeln "text cast:     " + r[.type] + ", " + r_t + ", " + r_t[.type];
 /*[OUTPUT]
 
 text.J cast:   number, 22 Feb 1948, string
-record.J cast: number, {J 1948, 2, 22}, object
+record.J cast: number, {J 1948, 2, 22, 6}, object
 date.J cast:   string, 2432617, field
-record.J cast: string, {J 1948, 2, 22}, object
+record.J cast: string, {J 1948, 2, 22, 6}, object
 date cast:     object, 2432617, field
 text cast:     object, 22 Feb 1948, string
 

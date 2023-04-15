@@ -1,4 +1,4 @@
-// julian-01.glcs  -  Uppercase version of hics standard library
+// gregorian-01.glcs  -  Uppercase version of hics standard library
 
 lexicon W {
     name "Weekday names";
@@ -82,9 +82,9 @@ writeln "text cast:     " + r[.type] + ", " + r_t + ", " + r_t[.type];
 /*[OUTPUT]
 
 text.G cast:   number, 6 Mar 1948, string
-record.G cast: number, {G 1948, 3, 6}, object
+record.G cast: number, {G 1948, 3, 6, 6}, object
 date.G cast:   string, 2432617, field
-record.G cast: string, {G 1948, 3, 6}, object
+record.G cast: string, {G 1948, 3, 6, 6}, object
 date cast:     object, 2432617, field
 text cast:     object, 6 Mar 1948, string
 

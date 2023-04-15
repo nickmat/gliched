@@ -31,6 +31,7 @@
 #include "hicGregorian.h"
 #include "hicJdn.h"
 #include "hicJulian.h"
+#include "hicOptional.h"
 
 #include <cassert>
 #include <cstdlib>
@@ -47,6 +48,24 @@ glich::Scheme::Scheme( const std::string& code, const Base& base )
 Scheme::~Scheme()
 {
     delete &m_base;
+}
+
+SValueVec Scheme::complete_object( Field jdn ) const
+{
+    const Base& base = get_base();
+    FieldVec fields = base.get_fields( jdn );
+    SValueVec vals( fields.size() + 1 );
+    vals[0].set_str( get_code() );
+    for( size_t i = 0; i < base.required_size(); i++ ) {
+        if( fields[i] != f_invalid ) {
+            vals[i + 1].set_field( fields[i] );
+        }
+    }
+    for( size_t i = base.required_size(); i < base.record_size(); i++ ) {
+        string name = base.get_fieldname( i );
+        vals[i + 1] = GetOptional( name, jdn );
+    }
+    return vals;
 }
 
 Format* Scheme::get_output_format( const string& fcode ) const

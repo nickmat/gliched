@@ -71,6 +71,7 @@ namespace glich {
         Lexicon* find_lexicon( const std::string& code ) const;
 
         StdStrVec get_base_fieldnames() const { return m_base_fieldnames; }
+        StdStrVec get_opt_fieldnames() const { return m_opt_fieldnames; }
         Glich& get_glich() const { return *m_glc; }
         void remove_format( const std::string& fcode ) { m_formats.erase( fcode ); }
 

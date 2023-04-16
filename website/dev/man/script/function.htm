@@ -31,7 +31,82 @@
 
 <div id='content' class='nomenu'>
 
-<h2>Page Under Construction</h2>
+
+<h2>Statement function</h2>
+<p>
+ A function statement defines a function that can be used in an expression
+ with the function operator '@'.
+ Optionally, arguments can be passed to the function
+ which can then be used as local variables.
+ When calling the function, these augments may be given values or omitted.
+ An argument can be given a default value when the function is defined.
+</p>
+<p>
+ When the function is run, the arguments are treated as local variables.
+ An addition local variable named 'result' is created,
+ and this is the value given to the function when it used in an expression.
+ Additional variables that are created within the function will be local
+ and their values lost when the function completes.
+ Variables created outside of the function cannot be seen whilst inside.
+</p>
+<p>
+ The statement 'end;' can be used at any time to exit the function immediately.
+ This will just exit the function, not the script.
+</p>
+
+<table class='basic'>
+<tr><th>function Statement Format</th></tr>
+<tr> <!-- See test file - test\tscripts\suite\functions\function015.hcs -->
+<td class='code'><b>function</b> <i>name</i><b>(</b><i>arg</i>[<b>=</b><i>value</i>]<b>,</b> <i>arg</i>[<b>=</b><i>value</i>]<b>) {</b>
+    ... <b>result</b> = <i>expr</i><b>; ...</b>
+<b>}</b>
+
+write <b>@</b><i>name</i><b>(</b><i>value1</i><b>,</b> <i>value2</i><b>);</b>
+write <b>@</b><i>name</i><b>(</b><i>value1</i><b>);</b>
+write <b>@</b><i>name</i><b>;</b></td>
+</tr>
+<tr> <!-- See test file - test\tscripts\suite\functions\function013.hcs -->
+<td class='code'><b>function</b> <i>name</i> <b>{</b>
+    ... <b>result</b> = <i>expr</i><b>;</b> ...
+<b>}</b>
+
+write <b>@</b><i>name</i><b>;</b></td>
+</tr>
+</table>
+
+<table class='basic'>
+<tr><th colspan='2'>function Statement</th></tr>
+<tr><th>Example</th><th>Output</th></tr>
+<tr> <!-- See test file - test\glcscripts\suite\glich\statements\functions\function015.glcs -->
+<td class='example'><b>function</b> range_plus<b>(</b>start<b>,</b> duration = 7<b>){</b>
+    if duration < 1
+        <b>result</b> = error "Duration must be above zero.";
+        end;
+    endif
+    <b>result</b> = start .. start + duration - 1;
+<b>}</b>
+
+let r = <b>@</b>range_plus<b>(</b>100<b>)</b>;
+
+writeln r + ", Duration: " + r[.span];
+writeln <b>@</b>range_plus<b>(</b> 100, 0 <b>)</b>;</td>
+<td>100..106, Duration: 7<br />
+Error (3): Duration must be above zero.</td>
+</tr>
+<tr> <!-- See test file - test\glcscripts\suite\hics-lib\functions\function013.hcs -->
+  <td class='example'>// Requires the hics extensions.
+<b>function</b> this_week <b>{</b>
+    let start = today - ( record today[wday] ) + 1;
+    result = start .. ( start + 6 );
+<b>}</b>
+
+write text <b>@</b>this_week;</td>
+  <td>10 Apr 2023..16 Apr 2023</td>
+ </tr>
+ <tr>
+  <td colspan='2'>Written when today = "g:dmy# 14 Apr 2023"</td>
+ </tr>
+</table>
 
 </div><!--id=content-->
 

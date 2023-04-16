@@ -33,7 +33,7 @@ using namespace glich;
 using std::string;
 
 
-SValue glich::GetOptional( const std::string& name, Field jdn )
+SValue glich::GetOptional( const string& name, Field jdn )
 {
     if( jdn <= f_minimum || jdn >= f_maximum ) {
         return SValue(); // Return null if not a valid jdn value.
@@ -45,6 +45,15 @@ SValue glich::GetOptional( const std::string& name, Field jdn )
         return SValue( day_of_week( jdn + 1 ) + 1, SValue::Type::field );
     }
     return SValue();
+}
+
+Field glich::GetOptionalField( const string& name, Field jdn )
+{
+    SValue value = GetOptional( name, jdn );
+    if( value.type() == SValue::Type::field ) {
+        return value.get_field();
+    }
+    return f_invalid;
 }
 
 // End of src/glc/hicOptional.cpp file

@@ -32,6 +32,7 @@
 #include "glcValue.h"
 #include "hicHelper.h"
 
+
 namespace glich {
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
@@ -44,6 +45,7 @@ namespace glich {
 */
 
     SValue GetOptional( const std::string& name, Field jdn );
+    Field GetOptionalField( const std::string& name, Field jdn );
 
 }
 

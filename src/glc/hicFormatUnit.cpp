@@ -48,7 +48,7 @@ std::string FormatUnit::get_text_output( const Record& record ) const
     const Base& base = record.get_base();
 
     for( size_t i = 0; i < base.record_size(); i++ ) {
-        Field fld = record.get_field( i );
+        Field fld = record.get_field_at( i );
         if( fld != f_invalid ) {
             string fname = base.get_fieldname( i );
             string uname = get_grammar().get_unit_alias( fname );

@@ -30,6 +30,7 @@
 #include "glcHelper.h"
 #include "hicBase.h"
 #include "hicFormat.h"
+#include "hicOptional.h"
 
 #include <algorithm>
 #include <cassert>
@@ -183,6 +184,15 @@ BoolVec Record::mark_balanced_fields( Record& rec, const XIndexVec& rank_to_def,
         --rank_index;
     }
     return mask;
+}
+
+Field glich::Record::get_field( size_t index ) const
+{
+    assert( index < m_f.size() );
+    if( index < m_base.required_size() ) {
+        return m_f[index];
+    }
+    return GetOptionalField( m_base.get_fieldname( index ), m_jdn );
 }
 
 // End of src/glc/hicRecord.cpp file

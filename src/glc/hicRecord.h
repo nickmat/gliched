@@ -64,7 +64,8 @@ namespace glich {
         const Base& get_base() const { return m_base; }
         const FieldVec& get_field_vec() const { return m_f; }
         FieldVec& get_field_vec() { return m_f; }
-        Field get_field( size_t index ) const { return m_f[index]; }
+        Field get_field_at( size_t index ) const { return m_f[index]; }
+        Field get_field( size_t index ) const;
         Field get_jdn() const { return m_jdn; }
 
         int get_field_index( const std::string& fn ) const { return m_base.get_alias_fieldname_index( fn ); }

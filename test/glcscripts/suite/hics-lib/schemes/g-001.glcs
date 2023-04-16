@@ -1,0 +1,7 @@
+// g-001.glc // Test formats
+
+write text.g:wdmy 2460049;
+
+/*[OUTPUT]
+Fri 14 Apr 2023
+[OUTPUT]*/

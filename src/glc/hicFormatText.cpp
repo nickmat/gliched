@@ -177,7 +177,6 @@ void FormatText::setup_control_out()
             fieldout += ele.get_field_output_name();
             if( m_shorthand ) {
                 string field_name = get_owner()->resolve_field_alias( ele.get_field_name() );
-//                if( is_non_sig_record_name( rfn ) ) {
                 if( !is_significant_rank_name( field_name ) ) {
                     m_shorthand = false;
                 }
@@ -352,7 +351,6 @@ FormatText::CP_Group FormatText::get_cp_group(
     return CP_Group::Other;
 }
 
-
 Field FormatText::get_field( const Record& record, const string& fname, const BoolVec* reveal ) const
 {
     int index = record.get_field_index( fname );
@@ -364,7 +362,6 @@ Field FormatText::get_field( const Record& record, const string& fname, const Bo
     }
     return record.get_field( index );
 }
-
 
 int FormatText::parse_date( InputFieldVec& ifs, const string& str ) const
 {

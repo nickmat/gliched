@@ -1,0 +1,18 @@
+// function001.glcs Test local variables within a function
+
+function test_var {
+    let x = 10;
+    result = x * 5;
+}
+
+writeln "";
+writeln @test_var;
+
+x += 20;
+
+/*[OUTPUT]
+
+50
+Error (11): Unrecognised statement.
+
+[OUTPUT]*/

@@ -1,0 +1,17 @@
+// function013.hcs - Test manual example functions.
+
+mark test;
+
+function this_week {
+    let _today = 2460049;
+    let start = _today - ( record _today[wday] ) + 1;
+    result = start .. ( start + 6 );
+}
+
+write text @this_week;
+
+//mark test;
+
+/*[OUTPUT]
+10 Apr 2023..16 Apr 2023
+[OUTPUT]*/

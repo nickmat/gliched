@@ -1,0 +1,12 @@
+// text001.hcs Test file to test text cast expressions
+
+writeln "";
+writeln text (2460036..2460065);
+writeln text.g:wdmy (2460036..2460065);
+
+/*[OUTPUT]
+
+Apr 2023
+Sat 1 Apr 2023..Sun 30 Apr 2023
+
+[OUTPUT]*/

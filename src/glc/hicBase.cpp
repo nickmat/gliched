@@ -83,6 +83,10 @@ bool Base::attach_grammar( Grammar* gmr )
     for( auto& opt : gmr->get_opt_fieldnames() ) {
         m_fieldnames.push_back( opt );
     }
+    for( auto& calc : gmr->get_calc_fieldnames() ) {
+        m_fieldnames.push_back( calc );
+    }
+
     return true;
 }
 

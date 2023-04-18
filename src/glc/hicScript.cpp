@@ -221,6 +221,38 @@ namespace {
         return true;
     }
 
+    bool do_grammar_calculate( Script& script, Grammar* gmr )
+    {
+        SToken token = script.next_token();
+        if( token.type() != SToken::Type::LCbracket ) {
+            script.error( "'{' expected." );
+            return false;
+        }
+        string input, output;
+        for( ;; ) {
+            token = script.next_token();
+            if( token.type() == SToken::Type::RCbracket ||
+                token.type() == SToken::Type::End )
+            {
+                break; // All done.
+            }
+            if( token.type() == SToken::Type::Name ) {
+                string sub = token.get_str();
+                if( sub == "output" ) {
+                    output = script.read_until( ";" );
+                }
+                else if( sub == "input" ) {
+                    input = script.read_until( ";" );
+                }
+                else {
+                    script.error( "Grammar calculate sub-statement expected." );
+                }
+            }
+        }
+        gmr->set_calculate( input, output );
+        return true;
+    }
+
 } // namespace
 
 Lexicon* glich::do_create_lexicon( Script& script, const std::string& code )
@@ -299,8 +331,7 @@ Grammar* glich::do_create_grammar( Script& script, const std::string& code, cons
                 gmr->set_preferred( str );
             }
             else if( name == "calculate" ) {
-                // TODO: do_grammar_calculate( gmr );
-                script.error( "calculate not yet done." );
+                do_grammar_calculate( script, gmr );
             }
             else if( name == "alias" ) {
                 do_grammar_alias( script, gmr );
@@ -318,10 +349,13 @@ Grammar* glich::do_create_grammar( Script& script, const std::string& code, cons
                 StdStrVec optfields = script.get_string_list( GetToken::next );
                 gmr->set_opt_fieldnames( optfields );
             }
+            else if( name == "calculated" ) {
+                StdStrVec calcfields = script.get_string_list( GetToken::next );
+                gmr->set_calc_fieldnames( calcfields );
+            }
             else if( name == "rank" ) {
-                // TODO: StringVec rankfields = get_string_list( true );
-                //       gmr->set_rank_fieldnames( rankfields );
-                script.error( "rank not yet done." );
+                StdStrVec rankfields = script.get_string_list( GetToken::next );
+                gmr->set_rank_fieldnames( rankfields );
             }
         }
         else {

@@ -44,6 +44,7 @@ namespace glich {
         void set_value_names( const StdStrVec& vnames );
 
         std::string get_code() const { return m_ocode; }
+        size_t get_min_size() const { return m_vnames.size() + 1; }
         size_t get_vindex( const std::string& str ) const;
         const NameIndexMap& get_vnames_map() const { return m_vnames; }
 

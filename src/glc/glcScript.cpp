@@ -1091,6 +1091,12 @@ StdStrVec glich::Script::get_string_list( GetToken get )
 SValue glich::Script::get_object( GetToken get )
 {
     string ocode = get_name_or_primary( get );
+    Object* obj = m_glc->get_object( ocode );
+    SValue value;
+    if( obj == nullptr ) {
+        value.set_error( "Object name not recognised." );
+        return value;
+    }
 
     SValueVec vlist;
     SValue vo( ocode );
@@ -1127,6 +1133,10 @@ SValue glich::Script::get_object( GetToken get )
         }
         if( done ) break;
         token = next_token();
+    }
+    size_t size = obj->get_min_size();
+    while( vlist.size() < size ) {
+        vlist.push_back( SValue() );
     }
     return SValue( vlist );
 }

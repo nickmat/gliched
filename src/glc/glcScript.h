@@ -29,8 +29,8 @@
 #define SRC_GLC_GLCSCRIPT_H_GUARD
 
 #include <glc/glc.h>
+#include "glcStore.h"
 #include "glcTokenStream.h"
-#include "glcScriptStore.h"
 
 namespace glich {
 

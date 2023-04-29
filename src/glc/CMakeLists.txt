@@ -49,7 +49,7 @@ set( GLC_HEADERS
     glcMath.h
     glcObject.h
     glcScript.h
-    glcScriptStore.h
+    glcStore.h
     glcTokenStream.h
     glcValue.h
     hicBase.h

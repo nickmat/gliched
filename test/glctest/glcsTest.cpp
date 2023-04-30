@@ -57,11 +57,12 @@ using std::vector;
 
 struct TestResults {
     TestResults() 
-        : tests( 0 ), fails( 0 ), skips( 0 ), show_skips( false ) {}
+        : tests( 0 ), fails( 0 ), skips( 0 ), show_skips( false ), show_files( false ) {}
     int tests;
     int fails;
     int skips;
     bool show_skips;
+    bool show_files;
 };
 
 string left_trim( const string& str )
@@ -94,6 +95,9 @@ string read_file( const string& name )
 
 string run_test( TestResults* totals, Glich& glc, const string& filename )
 {
+    if( totals->show_files ) {
+        std::cout << "\n" << filename << "  ";
+    }
     string script = read_file( filename );
     size_t pos1 = script.find( "\n/*[SKIP]*/" );
     if ( pos1 != string::npos ) {
@@ -206,6 +210,10 @@ int main( int argc, char* argv[] )
         string arg = argv[i];
         if( arg == "-s" ) {
             totals.show_skips = true;
+            continue;
+        }
+        if( arg == "-f" ) {
+            totals.show_files = true;
             continue;
         }
         if( arg == "-hics-lib" ) {

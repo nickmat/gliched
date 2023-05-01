@@ -102,8 +102,8 @@ string run_test( TestResults* totals, Glich& glc, const string& filename )
     size_t pos1 = script.find( "\n/*[SKIP]*/" );
     if ( pos1 != string::npos ) {
         totals->skips++;
+        std::cout << "S";
         if ( totals->show_skips ) {
-            std::cout << "S";
             return filename + " skipped.";
         }
         return "";

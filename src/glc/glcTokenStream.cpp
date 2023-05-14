@@ -349,6 +349,12 @@ bool STokenStream::error( const std::string& mess )
     return (++m_errors > MAX_ALLOWED_ERRORS);
 }
 
+bool STokenStream::error_value( const std::string& mess )
+{
+    *m_err << mess << "\n";
+    return (++m_errors > MAX_ALLOWED_ERRORS);
+}
+
 std::istream* STokenStream::reset_in( std::istream* in )
 {
     std::istream* prev = m_in;

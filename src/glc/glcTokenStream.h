@@ -100,6 +100,7 @@ namespace glich {
         std::string read_until( const std::string& name, const std::string& esc );
 
         bool error( const std::string& mess );
+        bool error_value( const std::string& mess );
         int errors() const { return m_errors; }
 
         int get_line() const { return m_line; }

@@ -75,6 +75,16 @@ bool Script::run()
     return ret;
 }
 
+bool Script::error_value( const SValue& value )
+{
+    bool ok;
+    string mess = value.get_str( ok );
+    if( !ok ) {
+        return false;
+    }
+    return m_ts.error_value( mess );
+}
+
 ScriptStore* Script::store() const
 {
     return m_glc->get_store();
@@ -148,16 +158,21 @@ bool Script::do_clear()
 
 bool Script::do_if()
 {
-    bool done = false, result = false, ok = false;;
+    bool done = false, result = false;
     int nested = 0;
     const char* enderr = "if ended unexpectedly.";
     for( ;;) {
         if( !result && !done ) {
-            result = expr( GetToken::next ).get_bool( ok );
-            if( !ok ) {
+            SValue value = expr( GetToken::next );
+            if( value.type() == SValue::Type::Error ) {
+                error_value( value );
+                return false;
+            }
+            if( value.type() != SValue::Type::Bool ) {
                 error( "Boolean expression expected." );
                 return false;
             }
+            result = value.get_bool();
         }
         SToken token = current_token();
         if( result ) {

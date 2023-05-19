@@ -55,7 +55,6 @@ namespace glich {
 
         bool statement();
         bool do_mark();
-        bool do_clear();
         bool do_if();
         bool do_do();
         bool do_set();

@@ -10,8 +10,6 @@ let d = !(-infinity..+infinity);
 
 write a +", "+ b +", "+ c +", "+ d;
 
-clear;
-
 /*[OUTPUT]
 11..16 | 20..25, -infinity..11 | 25..+infinity, -infinity..+infinity, empty
 [OUTPUT]*/

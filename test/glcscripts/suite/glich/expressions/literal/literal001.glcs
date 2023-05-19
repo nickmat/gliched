@@ -9,8 +9,6 @@ let c = +infinity;
 
 write a +", "+ b +", "+ c;
 
-clear;
-
 /*[OUTPUT]
 ?, -infinity, +infinity
 [OUTPUT]*/

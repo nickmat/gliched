@@ -14,8 +14,6 @@ let e = -0f;
 
 write a +", "+ b +", "+ c +", "+ d +", "+ e;
 
-clear;
-
 /*[OUTPUT]
 ?, -infinity, -2147483644, ?, 0
 [OUTPUT]*/

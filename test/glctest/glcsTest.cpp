@@ -108,7 +108,7 @@ string run_test( TestResults* totals, Glich& glc, const string& filename )
         }
         return "";
     }
-    glc.run_script( "mark __:test:__; clear;" ); // All test should start clean;
+    glc.run_script( "mark __:test:__;" ); // All test should start clean;
     string output = glc.run_script( script );
     totals->tests++;
     string expected;

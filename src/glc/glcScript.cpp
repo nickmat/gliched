@@ -93,7 +93,6 @@ bool Script::statement()
         string name = token.get_str();
         if( name == "end" ) return false;
         if( name == "mark" ) return do_mark();
-        if( name == "clear" ) return do_clear();
         if( name == "if" ) return do_if();
         if( name == "do" ) return do_do();
         if( name == "set" ) return do_set();
@@ -133,12 +132,6 @@ bool Script::do_mark()
         return false;
     }
     m_glc->add_or_replace_mark( mark );
-    return true;
-}
-
-bool Script::do_clear()
-{
-    // command to be removed
     return true;
 }
 

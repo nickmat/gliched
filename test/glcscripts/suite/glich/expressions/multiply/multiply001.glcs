@@ -17,8 +17,6 @@ let k = infinity * infinity;
 write a + ", " + b + ", " + c + ", " + d + ", " + e
  + ", " + f + ", " + g + ", " + h + ", " + i + ", " + j + ", " + k;
 
-clear;
-
 /*[OUTPUT]
 45, -45, -45, 45, 0, -infinity, +infinity, -infinity, +infinity, -infinity, +infinity
 [OUTPUT]*/

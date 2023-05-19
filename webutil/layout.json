@@ -20,7 +20,7 @@
           { "name": "function", "label": "function" },
           { "name": "command", "label": "command & call" },
           { "name": "object", "label": "object Statement" },
-          { "name": "mark", "label": "mark & clear" },
+          { "name": "mark", "label": "mark Statement" },
           { "name": "set", "label": "set Statement" },
           { "name": "ebnf", "label": "EBNF Definition" }
         ]},

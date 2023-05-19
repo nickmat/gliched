@@ -33,6 +33,7 @@
 
 namespace glich {
 
+    class SValue;
     class Command;
     using CommandMap = std::map<std::string, Command*>;
     class Object;
@@ -41,7 +42,7 @@ namespace glich {
     using FileMap = std::map<std::string, File*>;
     class Mark;
     using MarkVec = std::vector<Mark*>;
-    class ScriptStore;
+    class Store;
 
     class InOut {
     public:
@@ -64,6 +65,12 @@ namespace glich {
 
         std::string get_init_error() const { return m_init_error; }
 
+        bool create_local( const std::string& name );
+        bool update_local( const std::string& name, SValue& value );
+        SValue get_local( const std::string& name ) const;
+        SValue* get_local_ptr( const std::string& name );
+        bool is_local( const std::string& name ) const;
+
         bool add_function( Function* fun );
         Function* get_function( const std::string& code ) const;
         Command* create_command( const std::string& code );
@@ -81,9 +88,9 @@ namespace glich {
 
         void add_or_replace_mark( const std::string& name );
         bool clear_mark( const std::string& name );
-        ScriptStore* get_store() const { return m_store; }
         void push_store();
         bool pop_store();
+        bool is_level_zero() const;
         std::string read_input( const std::string& prompt ) const;
 
         void set_context( Context ct );
@@ -101,7 +108,7 @@ namespace glich {
         LexiconMap m_lexicons;
         GrammarMap m_grammars;
         MarkVec m_marks;
-        ScriptStore* m_store;
+        Store* m_store;
         std::string m_init_error;
         InOut* m_inout;
     };

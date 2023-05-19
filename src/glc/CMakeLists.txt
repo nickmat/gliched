@@ -16,6 +16,7 @@ set( GLC_SOURCES
     glcMath.cpp
     glcObject.cpp
     glcScript.cpp
+    glcStore.cpp
     glcTokenStream.cpp
     glcValue.cpp
     hicBase.cpp

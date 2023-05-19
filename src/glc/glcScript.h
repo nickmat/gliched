@@ -52,9 +52,8 @@ namespace glich {
 
         bool error( const std::string& mess ) { return m_ts.error( mess ); }
         bool error_value( const SValue& value );
-        ScriptStore* store() const;
-        bool statement();
 
+        bool statement();
         bool do_mark();
         bool do_clear();
         bool do_if();

@@ -24,49 +24,39 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 */
-
-#ifndef SRC_GLC_GLCSCRIPTSTORE_H_GUARD
-#define SRC_GLC_GLCSCRIPTSTORE_H_GUARD
+#ifndef SRC_GLC_GLCSTORE_H_GUARD
+#define SRC_GLC_GLCSTORE_H_GUARD
 
 #include "glcValue.h"
 
 namespace glich {
 
-    typedef std::map<std::string, SValue> SValueMap;
+    using SValueMap = std::map<std::string, SValue>;
+    using SValueMapIt_ = SValueMap::iterator;
 
-    class ScriptStore {
+    class Store {
     public:
-        ScriptStore()
-            : m_prev( nullptr ) {}
-        ScriptStore( ScriptStore* ss )
-            : m_prev( ss ) {}
+        Store() : m_prev( nullptr ) {}
+        Store( Store* ss ) : m_prev( ss ) {}
 
-        ScriptStore* get_prev() const { return m_prev; }
+        Store* get_prev() const { return m_prev; }
 
-        bool exists( const std::string& name ) const { return m_table.count( name ) == 1; }
-        void set( const std::string& name, const SValue& value ) { m_table[name] = value; }
-        bool get( SValue* value, const std::string& name ) const {
-            if( exists( name ) ) {
-                *value = m_table.at( name );
-                return true;
-            }
-            return false;
-        }
-        SValue* get_vp( const std::string& name ) {
-            if( exists( name ) ) {
-                return &m_table.at( name );
-            }
-            return nullptr;
-        }
-        void clear() {
-            m_table.clear();
-        }
+        bool exists( const std::string& name ) const { return m_variables.count( name ) == 1; }
+        bool create_local( const std::string& name );
+        SValue get_local( const std::string& name );
+        SValue* get_local_ptr( const std::string& name );
+        bool update_local( const std::string& name, SValue& value );
+        bool add_local( const std::string& name, SValue& value );
+
+        void remove( const std::string& name ) { m_variables.erase( name ); }
+        void clear() { m_variables.clear(); }
+        bool is_level_zero() const { return m_prev == nullptr; }
 
     private:
-        SValueMap m_table;
-        ScriptStore* m_prev;
+        SValueMap m_variables;
+        Store* m_prev;
     };
 
 }
 
-#endif // SRC_GLC_GLCSCRIPTSTORE_H_GUARD
+#endif // SRC_GLC_GLCSTORE_H_GUARD

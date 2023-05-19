@@ -56,8 +56,9 @@ string InOut::get_input( const string& prompt ) {
 }
 
 Glich::Glich( InitLibrary lib, InOut* inout )
-    : m_store( new ScriptStore ), m_inout( inout )
+    : m_store( new Store ), m_inout( inout )
 {
+    Mark::set_zero_store( m_store );
     m_marks.push_back( new Mark( "", nullptr ) );
     if( !m_inout ) {
         m_inout = new InOut;
@@ -106,6 +107,35 @@ string Glich::run_script( const string& script )
     return oss.str();
 }
 
+bool Glich::create_local( const string& name )
+{
+    if( is_level_zero() ) {
+        assert( m_marks.size() > 0 );
+        return m_marks[m_marks.size() - 1]->create_local( name, m_store );
+    }
+    return m_store->create_local( name );
+}
+
+bool Glich::update_local( const string& name, SValue& value )
+{
+    return m_store->update_local( name, value );
+}
+
+SValue Glich::get_local( const string& name ) const
+{
+    return m_store->get_local( name );
+}
+
+SValue* Glich::get_local_ptr( const string& name )
+{
+    return m_store->get_local_ptr( name );
+}
+
+bool Glich::is_local( const string& name ) const
+{
+    return m_store->exists( name );
+}
+
 bool Glich::add_function( Function* fun )
 {
     assert( m_marks.size() > 0 );
@@ -114,7 +144,7 @@ bool Glich::add_function( Function* fun )
     return true;
 }
 
-Function* Glich::get_function( const std::string& code ) const
+Function* Glich::get_function( const string& code ) const
 {
     if( m_functions.count( code ) > 0 ) {
         return m_functions.find( code )->second;
@@ -122,7 +152,7 @@ Function* Glich::get_function( const std::string& code ) const
     return nullptr;
 }
 
-Command* Glich::create_command( const std::string& code )
+Command* Glich::create_command( const string& code )
 {
     Command* com = new Command( code );
     assert( m_marks.size() > 0 );
@@ -131,7 +161,7 @@ Command* Glich::create_command( const std::string& code )
     return com;
 }
 
-Command* Glich::get_command( const std::string& code ) const
+Command* Glich::get_command( const string& code ) const
 {
     if( m_commands.count( code ) > 0 ) {
         return m_commands.find( code )->second;
@@ -139,14 +169,14 @@ Command* Glich::get_command( const std::string& code ) const
     return nullptr;
 }
 
-Object* glich::Glich::create_object( const std::string& code )
+Object* Glich::create_object( const string& code )
 {
     Object* obj = new Object( code );
     add_object( obj, code );
     return obj;
 }
 
-bool glich::Glich::add_object( Object* obj, const std::string& code )
+bool Glich::add_object( Object* obj, const string& code )
 {
     if( obj == nullptr || m_lexicons.count( code ) ) {
         delete obj;
@@ -157,7 +187,7 @@ bool glich::Glich::add_object( Object* obj, const std::string& code )
     return true;
 }
 
-Object* Glich::get_object( const std::string& code ) const
+Object* Glich::get_object( const string& code ) const
 {
     if( m_objects.count( code ) > 0 ) {
         return m_objects.find( code )->second;
@@ -165,7 +195,7 @@ Object* Glich::get_object( const std::string& code ) const
     return nullptr;
 }
 
-File* Glich::create_file( const std::string& code )
+File* Glich::create_file( const string& code )
 {
     File* file = new File( code );
     assert( m_marks.size() > 0 );
@@ -174,7 +204,7 @@ File* Glich::create_file( const std::string& code )
     return file;
 }
 
-File* Glich::get_file( const std::string& code ) const
+File* Glich::get_file( const string& code ) const
 {
     if( m_files.count( code ) > 0 ) {
         return m_files.find( code )->second;
@@ -182,7 +212,7 @@ File* Glich::get_file( const std::string& code ) const
     return nullptr;
 }
 
-bool Glich::add_lexicon( Lexicon* lex, const std::string& code )
+bool Glich::add_lexicon( Lexicon* lex, const string& code )
 {
     // Only add lexicons and that are not already there.
     if( lex == nullptr || m_lexicons.count( code ) ) {
@@ -243,7 +273,7 @@ void Glich::add_or_replace_mark( const string& name )
     m_marks.push_back( mark );
 }
 
-bool Glich::clear_mark( const std::string& name )
+bool Glich::clear_mark( const string& name )
 {
     assert( !m_marks.empty() );
     assert( !name.empty() );
@@ -256,6 +286,7 @@ bool Glich::clear_mark( const std::string& name )
         return false; // Can't find mark name.
     }
     for( size_t i = end; i >= pos; --i ) {
+        m_marks[i]->remove_variables();
         string code;
         for( ;;) {
             code = m_marks[i]->remove_next_function();
@@ -313,12 +344,12 @@ bool Glich::clear_mark( const std::string& name )
 
 void Glich::push_store()
 {
-    m_store = new ScriptStore( m_store );
+    m_store = new Store( m_store );
 }
 
 bool Glich::pop_store()
 {
-    ScriptStore* store = m_store->get_prev();
+    Store* store = m_store->get_prev();
     if( store ) {
         delete m_store;
         m_store = store;
@@ -327,7 +358,12 @@ bool Glich::pop_store()
     return false;
 }
 
-std::string Glich::read_input( const std::string& prompt ) const
+bool Glich::is_level_zero() const
+{
+    return m_store->is_level_zero();
+}
+
+string Glich::read_input( const string& prompt ) const
 {
     return m_inout->get_input( prompt );
 }

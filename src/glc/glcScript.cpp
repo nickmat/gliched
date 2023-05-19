@@ -85,11 +85,6 @@ bool Script::error_value( const SValue& value )
     return m_ts.error_value( mess );
 }
 
-ScriptStore* Script::store() const
-{
-    return m_glc->get_store();
-}
-
 bool Script::statement()
 {
     SToken token = current_token();
@@ -113,7 +108,7 @@ bool Script::statement()
         if( name == "scheme" ) return do_scheme();
         if( name == "lexicon" ) return do_lexicon();
         if( name == "grammar" ) return do_grammar();
-        if( store()->exists( name ) ) return do_assign( name );
+        if( m_glc->is_local( name ) ) return do_assign( name );
     }
     else if( token.type() == SToken::Type::Semicolon ) {
         return true; // Empty statement
@@ -133,26 +128,17 @@ bool Script::do_mark()
         error( "Mark name string expected." );
         return false;
     }
+    if( !m_glc->is_level_zero() ) {
+        error( "Mark is only available in level zero." );
+        return false;
+    }
     m_glc->add_or_replace_mark( mark );
     return true;
 }
 
 bool Script::do_clear()
 {
-    string mark;
-    SToken token = next_token();
-    if( token.type() != SToken::Type::Semicolon ) {
-        mark = get_name_or_primary( GetToken::current );
-        token = current_token();
-    }
-    if( token.type() != SToken::Type::Semicolon ) {
-        error( "';' expected." );
-        return false;
-    }
-    if( !mark.empty() ) {
-        m_glc->clear_mark( mark );
-    }
-    store()->clear();
+    // command to be removed
     return true;
 }
 
@@ -393,37 +379,32 @@ bool Script::do_let()
         error( "Variable name expected." );
         return false;
     }
-    ScriptStore* vars = store();
-    assert( vars != nullptr );
     string name = token.get_str();
-    if( !vars->exists( name ) ) {
-        store()->set( name, SValue() ); // Put a null SValue into store
-    }
+    m_glc->create_local( name ); // Creates variable if it doesn't exist.
     return do_assign( name );
 }
 
 bool Script::do_assign( const std::string& name )
 {
     SToken token = next_token();
-    SValue* vp = store()->get_vp( name );
+    SValue* vp = m_glc->get_local_ptr( name );
     assert( vp != nullptr );
-    SValue value;
 
     while( token.type() == SToken::Type::LSbracket ) {
-        if( !vp || vp->type() != SValue::Type::Object ) {
+        if( vp->type() != SValue::Type::Object ) {
             error( "Object type expected." );
             return false;
         }
-        value = expr( GetToken::next );
+        SValue ivalue = expr( GetToken::next );
         bool success = false;
-        size_t index = value.get_int_as_size_t( success );
+        size_t index = ivalue.get_int_as_size_t( success );
         if( !success ) {
             error( "Positive number expected." );
             return false;
         }
         vp = vp->get_object_element( index );
         if( vp == nullptr ) {
-            error( "Unable to access object." );
+            error( "Object index error." );
             return false;
         }
         if( current_token().type() != SToken::Type::RSbracket ) {
@@ -433,10 +414,12 @@ bool Script::do_assign( const std::string& name )
         token = next_token();
     }
 
+    SValue value;
     if( token.type() == SToken::Type::Equal ) {
         value = expr( GetToken::next );
     }
-    else if( store()->get( &value, name ) ) {
+    else if( m_glc->is_local( name ) ) {
+        value = m_glc->get_local( name );
         switch( token.type() )
         {
         case SToken::Type::PlusEq:
@@ -461,9 +444,6 @@ bool Script::do_assign( const std::string& name )
         return false;
     }
     *vp = value;
-    if( value.type() == SValue::Type::Error ) {
-        m_ts.skip_to( SToken::Type::Semicolon );
-    }
     if( current_token().type() != SToken::Type::Semicolon ) {
         error( "';' expected." );
         return false;
@@ -1456,26 +1436,26 @@ SValue Script::run_function( Function* fun, const Object* obj, const SValue* lef
     m_ts.reset_in( &iss );
     m_glc->push_store();
 
-    store()->set( "result", SValue() );
+    m_glc->create_local( "result" );
     if( obj != nullptr && left != nullptr && left->type() == SValue::Type::Object ) {
         SValueVec left_values = left->get_object();
         const NameIndexMap& vnames = obj->get_vnames_map();
         for( const auto& vname : vnames ) {
             size_t index = vname.second;
+            m_glc->create_local( vname.first );
             if( index < left_values.size() ) {
-                store()->set( vname.first, left_values[vname.second] );
-            }
-            else {
-                store()->set( vname.first, SValue() );
+                m_glc->update_local( vname.first, left_values[vname.second] );
             }
         }
     }
     for( size_t i = 0; i < fun->get_arg_size(); i++ ) {
+        string arg_name = fun->get_arg_name( i );
+        m_glc->create_local( arg_name );
         if( i < args.size() ) {
-            store()->set( fun->get_arg_name( i ), args[i] );
+            m_glc->update_local( arg_name, args[i] );
         }
         else {
-            store()->set( fun->get_arg_name( i ), fun->get_default_value( i ) );
+            m_glc->update_local( arg_name, fun->get_default_value( i ) );
         }
     }
 
@@ -1486,7 +1466,7 @@ SValue Script::run_function( Function* fun, const Object* obj, const SValue* lef
         }
     }
 
-    store()->get( &value, "result" );
+    value = m_glc->get_local( "result" );
     m_glc->pop_store();
     m_ts = prev_ts;
 
@@ -1509,7 +1489,7 @@ SValue glich::Script::command_call()
     }
     Command* com = m_glc->get_command( name );
     if( com == nullptr ) {
-        value.set_error( "Command " + name + " not found." );
+        value.set_error( "Command \"" + name + "\" not found." );
         return value;
     }
 
@@ -1520,11 +1500,13 @@ SValue glich::Script::command_call()
     m_glc->push_store();
 
     for( size_t i = 0; i < com->get_arg_size(); i++ ) {
+        string arg_name = com->get_arg_name( i );
+        m_glc->create_local( arg_name );
         if( i < args.size() ) {
-            store()->set( com->get_arg_name( i ), args[i] );
+            m_glc->update_local( arg_name, args[i] );
         }
         else {
-            store()->set( com->get_arg_name( i ), com->get_default_value( i ) );
+            m_glc->update_local( arg_name, com->get_default_value( i ) );
         }
     }
 
@@ -1619,10 +1601,10 @@ SValue Script::get_value_var( const std::string& name )
     if( name == "empty" ) {
         return SValue( RList() );
     }
-    SValue value;
-    if( store()->get( &value, name ) ) {
-        return value;
+    if( m_glc->is_local( name ) ) {
+        return m_glc->get_local( name );
     }
+    SValue value;
     value.set_error( "Variable \"" + name + "\" not found." );
     return value;
 }

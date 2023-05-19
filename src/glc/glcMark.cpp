@@ -35,6 +35,8 @@
 #include "hicLexicon.h"
 #include "hicScheme.h"
 
+#include <cassert>
+
 using namespace glich;
 using std::string;
 using std::vector;
@@ -54,6 +56,24 @@ Mark::~Mark()
 {
 }
 
+bool Mark::create_local( const string& name, Store* store )
+{
+    if( store->exists( name ) ) {
+        return false;
+    }
+    store->add_local( name, SValue() );
+    m_locals.push_back( name );
+    return true;
+}
+
+void Mark::remove_variables()
+{
+    assert( s_zero_store != nullptr );
+    for( auto& var : m_locals ) {
+        s_zero_store->remove( var );
+    }
+}
+
 string Mark::remove_next_function()
 {
     string code;
@@ -66,7 +86,7 @@ string Mark::remove_next_function()
     return code;
 }
 
-std::string Mark::remove_next_command()
+string Mark::remove_next_command()
 {
     string code;
     if( !m_commands.empty() ) {
@@ -78,7 +98,7 @@ std::string Mark::remove_next_command()
     return code;
 }
 
-std::string Mark::remove_next_object()
+string Mark::remove_next_object()
 {
     string code;
     if( !m_objects.empty() ) {
@@ -102,7 +122,7 @@ string Mark::remove_next_file()
     return code;
 }
 
-std::string Mark::remove_next_lexicon()
+string Mark::remove_next_lexicon()
 {
     string code;
     if( m_lexicons.size() ) {
@@ -114,7 +134,7 @@ std::string Mark::remove_next_lexicon()
     return code;
 }
 
-std::string Mark::remove_next_grammar()
+string Mark::remove_next_grammar()
 {
     string code;
     if( m_grammars.size() ) {
@@ -126,7 +146,7 @@ std::string Mark::remove_next_grammar()
     return code;
 }
 
-std::string Mark::remove_next_format()
+string Mark::remove_next_format()
 {
     string code;
     if( m_formats.size() ) {

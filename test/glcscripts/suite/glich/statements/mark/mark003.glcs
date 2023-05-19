@@ -13,13 +13,15 @@ writeln b + ", " + c + ", " + a[.type] + ", " + d[.type];
 
 mark "test";
 let e = 3;
-writeln b + ", " + c + ", " + a[.type] + ", " + d[.type] + ", " + e[.type];
+writeln b + ", " + c + ", " + a[.type] + ", " + e[.type];
+writeln d;
 
 
 /*[OUTPUT]
 
 +infinity, -infinity..+infinity, number
 future, past..future, number, field
-+infinity, -infinity..+infinity, number, field, number
++infinity, -infinity..+infinity, number, number
+Error (17): Variable "d" not found.
 
 [OUTPUT]*/

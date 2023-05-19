@@ -29,6 +29,8 @@
 #define SRC_GLC_GLCMARK_H_GUARD
 
 #include "glc/glcDefs.h"
+#include "glcStore.h"
+
 
 namespace glich {
 
@@ -47,7 +49,11 @@ namespace glich {
         Mark( const std::string& name, Mark* prev );
         ~Mark();
 
+        static void set_zero_store( Store* store ) { s_zero_store = store; }
+
         std::string get_name() const { return m_name; }
+
+        bool create_local( const std::string& name, Store* store );
 
         void add_function( Function* function ) { m_functions.push_back( function ); }
         void add_command( Command* command ) { m_commands.push_back( command ); }
@@ -57,6 +63,7 @@ namespace glich {
         void add_grammar( Grammar* gmr ) { m_grammars.push_back( gmr ); }
         void add_format( Format* fmt ) { m_formats.push_back( fmt ); }
 
+        void remove_variables();
         std::string remove_next_function();
         std::string remove_next_command();
         std::string remove_next_object();
@@ -74,7 +81,10 @@ namespace glich {
         Scheme* get_oscheme() const { return m_oscheme; }
 
     private:
+        static inline Store*   s_zero_store = nullptr;
+
         std::string            m_name;
+        StdStrVec              m_locals;
         std::vector<Function*> m_functions;
         std::vector<Command*>  m_commands;
         std::vector<Object*>   m_objects;

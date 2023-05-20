@@ -29,6 +29,7 @@
 
 #include "glcFile.h"
 #include "glcFunction.h"
+#include "glcHelper.h"
 #include "glcObject.h"
 #include "hicBase.h"
 #include "hicElement.h"
@@ -388,12 +389,19 @@ bool Script::do_assign( const std::string& name )
             error( "Object type expected." );
             return false;
         }
-        SValue ivalue = expr( GetToken::next );
-        bool success = false;
-        size_t index = ivalue.get_int_as_size_t( success );
-        if( !success ) {
-            error( "Positive number expected." );
-            return false;
+        size_t index = 0;
+        string istr = get_name_or_primary( GetToken::next );
+        if( is_str_size_t( istr ) ) {
+            index = str_to_num( istr );
+        }
+        else {
+            Object* obj = vp->get_object_ptr();
+            index = obj->get_vindex( istr );
+            if( index == 0 ) {
+                error( "Subscript not found." );
+                return false;
+            }
+            --index;
         }
         vp = vp->get_object_element( index );
         if( vp == nullptr ) {

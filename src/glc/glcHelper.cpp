@@ -45,6 +45,11 @@ Num glich::str_to_num( const string& str )
     return strtoll( str.c_str(), nullptr, 10 );
 }
 
+bool glich::is_str_size_t( const std::string& str )
+{
+    return (str.size() > 0 && isdigit( str[0] ));
+}
+
 double glich::str_to_float( const string& str )
 {
     if( str.empty() ) {

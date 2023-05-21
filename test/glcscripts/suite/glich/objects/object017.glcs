@@ -1,0 +1,20 @@
+// object017.glcs  Test function over.
+
+object obj {
+    values one two three;
+    function test(a, b) {
+        two = a;
+        one *= b;
+        result = one + two;
+    }
+}
+
+let x = {obj 10};
+let y = x.test( 99, 5 );
+
+write x + ", " + y;
+
+
+/*[OUTPUT]
+{obj 10, null, null}, 149
+[OUTPUT]*/

@@ -100,6 +100,7 @@ namespace glich {
         SValue at_read();
 
         SValue get_value_var( const std::string& name );
+        SValue get_cur_object();
 
         static STokenStream* s_current_ts;
 
@@ -107,6 +108,7 @@ namespace glich {
         STokenStream m_ts;
         std::ostream* m_out;
         std::ostream* m_err;
+        const Object* m_cur_obj;
     };
 
 } // namespace HistoryGen

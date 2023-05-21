@@ -51,7 +51,7 @@ using std::vector;
 STokenStream* Script::s_current_ts = nullptr;
 
 Script::Script( Glich* glc, std::istream& in, std::ostream& out )
-    : m_glc( glc ), m_ts( in, out ), m_out( &out ), m_err( &out )
+    : m_glc( glc ), m_ts( in, out ), m_out( &out ), m_err( &out ), m_cur_obj( nullptr )
 {
     assert( glc != nullptr );
 }
@@ -1436,9 +1436,15 @@ SValue Script::run_function( Function* fun, const Object* obj, const SValue* lef
     std::istringstream iss( fun->get_script() );
     m_ts.reset_in( &iss );
     m_glc->push_store();
+    const Object* prev_obj = m_cur_obj;
 
     m_glc->create_local( "result" );
-    if( obj != nullptr && left != nullptr && left->type() == SValue::Type::Object ) {
+    if( obj != nullptr ) {
+        assert( left != nullptr );
+        assert( left->type() == SValue::Type::Object );
+
+
+        m_cur_obj = obj;
         SValueVec left_values = left->get_object();
         const NameIndexMap& vnames = obj->get_vnames_map();
         for( const auto& vname : vnames ) {
@@ -1470,6 +1476,7 @@ SValue Script::run_function( Function* fun, const Object* obj, const SValue* lef
     value = m_glc->get_local( "result" );
     m_glc->pop_store();
     m_ts = prev_ts;
+    m_cur_obj = prev_obj;
 
     return value;
 }
@@ -1602,11 +1609,31 @@ SValue Script::get_value_var( const std::string& name )
     if( name == "empty" ) {
         return SValue( RList() );
     }
+    if( name == "this" ) {
+        return get_cur_object();
+    }
     if( m_glc->is_local( name ) ) {
         return m_glc->get_local( name );
     }
     SValue value;
     value.set_error( "Variable \"" + name + "\" not found." );
+    return value;
+}
+
+SValue Script::get_cur_object()
+{
+    SValue value;
+    if( m_cur_obj == nullptr ) {
+        value.set_error( "Object not currently running." );
+        return value;
+    }
+    const NameIndexMap& vnames_map = m_cur_obj->get_vnames_map();
+    SValueVec values( vnames_map.size() + 1 );
+    values[0].set_str( m_cur_obj->get_code() );
+    for( const auto& v : vnames_map ) {
+        values[v.second] = m_glc->get_local( v.first );
+    }
+    value.set_object( values );
     return value;
 }
 

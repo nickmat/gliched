@@ -1416,7 +1416,7 @@ SValue Script::function_call()
 {
     SToken token = next_token();
     if( token.type() != SToken::Type::Name ) {
-        return SValue( "Function name expected.", SValue::Type::Error );
+        return create_error( "Function name expected." );
     }
     string name = token.get_str();
     if( name == "if" ) {
@@ -1427,8 +1427,7 @@ SValue Script::function_call()
     }
     Function* fun = m_glc->get_function( name );
     if( fun == nullptr ) {
-        string mess = "Function \"" + name + "\" not found.";
-        return SValue( mess.c_str(), SValue::Type::Error);
+        return create_error( "Function \"" + name + "\" not found." );
     }
     return run_function( fun );
 }

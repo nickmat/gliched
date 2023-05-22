@@ -1176,19 +1176,19 @@ SValue Script::do_dot( const SValue& left, const SValue& right )
 {
     string ocode = left.get_object_code();
     if( ocode.empty() ) {
-        return SValue( "Object expected.", SValue::Type::Error );
+        return create_error( "Object expected." );
     }
     Object* obj = m_glc->get_object( ocode );
     if( obj == nullptr ) {
-        return SValue( "Object not found.", SValue::Type::Error );
+        return create_error( "Object not found." );
     }
     string fcode = right.as_string();
     if( fcode.empty() ) {
-        return SValue( "Object function expected.", SValue::Type::Error );
+        return create_error( "Object function expected." );
     }
     Function* fun = obj->get_function( fcode );
     if( fun == nullptr ) {
-        return SValue( "Function not found.", SValue::Type::Error );
+        return create_error( "Function not found." );
     }
     return run_function( fun, obj, &left );
 }

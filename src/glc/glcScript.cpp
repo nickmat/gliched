@@ -452,6 +452,9 @@ bool Script::do_assign( const std::string& name )
         return false;
     }
     *vp = value;
+    if( value.type() == SValue::Type::Error ) {
+        m_ts.skip_to( SToken::Type::Semicolon );
+    }
     if( current_token().type() != SToken::Type::Semicolon ) {
         error( "';' expected." );
         return false;

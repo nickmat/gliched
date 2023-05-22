@@ -52,6 +52,7 @@ namespace glich {
 
         bool error( const std::string& mess ) { return m_ts.error( mess ); }
         bool error_value( const SValue& value );
+        static SValue create_error( const std::string& mess );
 
         bool statement();
         bool do_mark();

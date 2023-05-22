@@ -86,6 +86,13 @@ bool Script::error_value( const SValue& value )
     return m_ts.error_value( mess );
 }
 
+SValue Script::create_error( const string& mess )
+{
+    SValue value;
+    value.set_error( mess );
+    return value;
+}
+
 bool Script::statement()
 {
     SToken token = current_token();

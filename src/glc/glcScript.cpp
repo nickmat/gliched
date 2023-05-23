@@ -1191,6 +1191,9 @@ SValue Script::do_dot( const SValue& left, const SValue& right )
     }
     Function* fun = obj->get_function( fcode );
     if( fun == nullptr ) {
+        if( fcode == "mask" ) {
+            return dot_mask( obj, &left );
+        }
         return create_error( "Function not found." );
     }
     return run_function( fun, obj, &left );
@@ -1488,6 +1491,38 @@ SValue Script::run_function( Function* fun, const Object* obj, const SValue* lef
     m_cur_obj = prev_obj;
 
     return value;
+}
+
+SValue Script::dot_mask( const Object* obj, const SValue* left )
+{
+    assert( obj != nullptr );
+    SValue value;
+    SValueVec args = get_args( value, GetToken::current );
+    if( value.is_error() ) {
+        return value;
+    }
+    string name = left->get_object_code();
+    if( name.empty() ) {
+        return create_error( "Object type reqired for mask function." );
+    }
+    if( args.size() != 1 || args[0].get_object_code() != name ) {
+        return create_error( "Function argument must match object type." );
+    }
+    SValueVec& vleft = left->get_object();
+    SValueVec& vright = args[0].get_object();
+    size_t size = std::max( vleft.size(), vright.size() );
+    SValueVec result = { name };
+    for( size_t i = 1; i < size; i++ ) {
+        SValue value;
+        if( i < vleft.size() ) {
+            value = vleft[i];
+        }
+        if( i < vright.size() && value.type() == SValue::Type::Null ) {
+            value = vright[i];
+        }
+        result.push_back( value );
+    }
+    return SValue( result );
 }
 
 SValue glich::Script::command_call()

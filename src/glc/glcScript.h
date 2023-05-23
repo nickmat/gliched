@@ -96,6 +96,7 @@ namespace glich {
         SValueVec get_args( SValue& value, GetToken get );
         SValue function_call();
         SValue run_function( Function* fun, const Object* obj = nullptr, const SValue* left = nullptr );
+        SValue dot_mask( const Object* obj, const SValue* left );
         SValue command_call();
         SValue at_if();
         SValue at_read();

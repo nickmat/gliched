@@ -381,6 +381,10 @@ bool Script::do_let()
         return false;
     }
     string name = token.get_str();
+    if( m_glc->is_constant( name ) ) {
+        error( "\"" + name + "\" is a constant." );
+        return false;
+    }
     m_glc->create_local( name ); // Creates variable if it doesn't exist.
     return do_assign( name );
 }
@@ -1656,8 +1660,8 @@ SValue Script::get_value_var( const std::string& name )
     if( name == "this" ) {
         return get_cur_object();
     }
-    if( m_glc->is_local( name ) ) {
-        return m_glc->get_local( name );
+    if( m_glc->is_named( name ) ) {
+        return m_glc->get_named( name );
     }
     SValue value;
     value.set_error( "Variable \"" + name + "\" not found." );

@@ -33,7 +33,7 @@
 using namespace glich;
 
 // Use our own value of pi for consistancy
-double const glich::cal_pi = 3.141592653589793;
+double const glich::cal_pi = 3.14159265358979323846;
 
 // Integer function to return floor( a / b )
 Num glich::div_f( Num a, Num b )

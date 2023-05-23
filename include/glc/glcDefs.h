@@ -102,6 +102,9 @@ namespace glich {
     using FunctionMap = std::map<std::string, Function*>;
     using NameIndexMap = std::map<std::string, size_t>;
 
+    class SValue;
+    using SValueMap = std::map<std::string, SValue>;
+
     enum class Context { glich, hics };
 
     enum class GetToken { current, next }; // Was a bool, next=true : current=false

@@ -31,9 +31,6 @@
 
 namespace glich {
 
-    using SValueMap = std::map<std::string, SValue>;
-    using SValueMapIt_ = SValueMap::iterator;
-
     class Store {
     public:
         Store() : m_prev( nullptr ) {}

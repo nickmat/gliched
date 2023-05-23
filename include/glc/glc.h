@@ -65,11 +65,14 @@ namespace glich {
 
         std::string get_init_error() const { return m_init_error; }
 
+        bool is_named( const std::string& name ) const;
+        SValue get_named( const std::string& name ) const;
         bool create_local( const std::string& name );
         bool update_local( const std::string& name, SValue& value );
         SValue get_local( const std::string& name ) const;
         SValue* get_local_ptr( const std::string& name );
         bool is_local( const std::string& name ) const;
+        bool is_constant( const std::string& name ) const;
 
         bool add_function( Function* fun );
         Function* get_function( const std::string& code ) const;
@@ -109,6 +112,7 @@ namespace glich {
         GrammarMap m_grammars;
         MarkVec m_marks;
         Store* m_store;
+        SValueMap m_constants;
         std::string m_init_error;
         InOut* m_inout;
     };

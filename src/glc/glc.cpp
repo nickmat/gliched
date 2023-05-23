@@ -30,6 +30,7 @@
 #include "glcFile.h"
 #include "glcFunction.h"
 #include "glcMark.h"
+#include "glcMath.h"
 #include "glcObject.h"
 #include "glcScript.h"
 #include "glcValue.h"
@@ -40,6 +41,7 @@
 #include <fstream>
 #include <iostream>
 #include <sstream>
+
 
 using namespace glich;
 using std::string;
@@ -65,6 +67,8 @@ Glich::Glich( InitLibrary lib, InOut* inout )
     }
     STokenStream::init( this );
     SValue::init( this );
+
+    m_constants = { { "nl", "\n" }, { "pi", cal_pi } };
 
     switch( lib )
     {
@@ -107,6 +111,22 @@ string Glich::run_script( const string& script )
     return oss.str();
 }
 
+bool Glich::is_named( const string& name ) const
+{
+    if( m_constants.count( name ) == 1 ) {
+        return true;
+    }
+    return m_store->exists( name );
+}
+
+SValue Glich::get_named( const string& name ) const
+{
+    if( m_constants.count( name ) == 1 ) {
+        return m_constants.find( name )->second;
+    }
+    return m_store->get_local( name );
+}
+
 bool Glich::create_local( const string& name )
 {
     if( is_level_zero() ) {
@@ -134,6 +154,11 @@ SValue* Glich::get_local_ptr( const string& name )
 bool Glich::is_local( const string& name ) const
 {
     return m_store->exists( name );
+}
+
+bool Glich::is_constant( const string& name ) const
+{
+    return m_constants.count( name ) == 1;
 }
 
 bool Glich::add_function( Function* fun )

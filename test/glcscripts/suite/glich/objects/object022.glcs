@@ -1,0 +1,9 @@
+// object001.glcs  Test using builtin objects.
+
+let x = {: 1,2,3};
+
+write x;
+
+/*[OUTPUT]
+{: 1, 2, 3}
+[OUTPUT]*/

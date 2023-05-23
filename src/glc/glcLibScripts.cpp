@@ -1,10 +1,12 @@
+/* ../../src/glc/glcLibScripts.cpp - File created by file2cpp 1.0.0 */
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/glc/hicLibScripts.h
+ * Name:        lib/glich/glcScripts.f2c
  * Project:     Glich: Extendable Script Language.
- * Purpose:     Header for completed file2cpp template file.
+ * Purpose:     file2cpp template file for glich library scripts.
  * Author:      Nick Matthews
  * Website:     https://github.com/nickmat/glich
- * Created:     1st April 2023
+ * Created:     23rd May 2023
  * Copyright:   Copyright (c) 2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -23,20 +25,18 @@
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
-*/
+ This template is used to create the src/glc/glcLibScripts.cpp file.
 
-#ifndef SRC_GLC_HICLIBSCRIPTS_H_GUARD
-#define SRC_GLC_HICLIBSCRIPTS_H_GUARD
+*/
 
 #include "glcLibScripts.h"
 
-#include <cstddef>
+glich::ScriptModule glich::glc_builtin_scripts[] = {
+    { "glcBuiltin",  /* glcBuiltin.glcs */
+ "object : {}\n" },
+};
 
-namespace glich {
+size_t glich::glc_builtin_scripts_size =
+    sizeof(glich::glc_builtin_scripts) / sizeof(glich::ScriptModule);
 
-    extern ScriptModule hics_default_scripts[];
-    extern std::size_t hics_default_scripts_size;
-
-}
-
-#endif // SRC_GLC_HICLIBSCRIPTS_H_GUARD
+// End of lib/glich/glcScripts.f2c file

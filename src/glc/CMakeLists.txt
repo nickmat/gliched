@@ -12,6 +12,7 @@ set( GLC_SOURCES
     glc.cpp
     glcFile.cpp
     glcHelper.cpp
+    glcLibScripts.cpp
     glcMark.cpp
     glcMath.cpp
     glcObject.cpp
@@ -46,6 +47,7 @@ set( GLC_HEADERS
     glcFile.h
     glcFunction.h
     glcHelper.h
+    glcLibScripts.h
     glcMark.h
     glcMath.h
     glcObject.h

@@ -59,6 +59,7 @@ namespace glich {
         Glich( InitLibrary lib = InitLibrary::None, InOut* inout = nullptr );
         ~Glich();
 
+        void load_builtin_library();
         void load_hics_library();
 
         std::string run_script( const std::string& cmnd );

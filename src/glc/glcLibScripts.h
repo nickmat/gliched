@@ -1,10 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/glc/hicLibScripts.h
+ * Name:        src/glc/glcLibScripts.h
  * Project:     Glich: Extendable Script Language.
  * Purpose:     Header for completed file2cpp template file.
  * Author:      Nick Matthews
  * Website:     https://github.com/nickmat/glich
- * Created:     1st April 2023
+ * Created:     23rd May 2023
  * Copyright:   Copyright (c) 2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -25,18 +25,21 @@
 
 */
 
-#ifndef SRC_GLC_HICLIBSCRIPTS_H_GUARD
-#define SRC_GLC_HICLIBSCRIPTS_H_GUARD
-
-#include "glcLibScripts.h"
+#ifndef SRC_GLC_GLCLIBSCRIPTS_H_GUARD
+#define SRC_GLC_GLCLIBSCRIPTS_H_GUARD
 
 #include <cstddef>
 
 namespace glich {
 
-    extern ScriptModule hics_default_scripts[];
-    extern std::size_t hics_default_scripts_size;
+    struct ScriptModule {
+        const char* module;
+        const char* script;
+    };
+
+    extern ScriptModule glc_builtin_scripts[];
+    extern std::size_t glc_builtin_scripts_size;
 
 }
 
-#endif // SRC_GLC_HICLIBSCRIPTS_H_GUARD
+#endif // SRC_GLC_GLCLIBSCRIPTS_H_GUARD

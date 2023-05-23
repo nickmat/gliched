@@ -29,6 +29,7 @@
 
 #include "glcFile.h"
 #include "glcFunction.h"
+#include "glcLibScripts.h"
 #include "glcMark.h"
 #include "glcMath.h"
 #include "glcObject.h"
@@ -82,6 +83,7 @@ Glich::Glich( InitLibrary lib, InOut* inout )
         { "pi", cal_pi }
     };
 
+    load_builtin_library();
     switch( lib )
     {
     case InitLibrary::None:
@@ -100,6 +102,18 @@ Glich::~Glich()
     while( pop_store() );
     delete m_store;
     delete m_inout;
+}
+
+void Glich::load_builtin_library()
+{
+    for( size_t i = 0; i < glc_builtin_scripts_size; i++ ) {
+        string error = run_script( glc_builtin_scripts[i].script );
+        if( !error.empty() ) {
+            m_init_error += "Module: \"" +
+                string( glc_builtin_scripts[i].module ) + "\"\n" + error;
+            break;
+        }
+    }
 }
 
 void Glich::load_hics_library()

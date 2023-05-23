@@ -1627,35 +1627,8 @@ SValue Script::at_read()
 
 SValue Script::get_value_var( const std::string& name )
 {
-    if( name == "true" ) {
-        return SValue( true );
-    }
-    if( name == "false" ) {
-        return SValue( false );
-    }
-    if( name == "infinity" ) {
-        return SValue( f_maximum, SValue::Type::field );
-    }
-    if( name == "past" ) {
-        return SValue( f_minimum, SValue::Type::field );
-    }
-    if( name == "future" ) {
-        return SValue( f_maximum, SValue::Type::field );
-    }
     if( name == "today" ) {
         return SValue( Gregorian::today() );
-    }
-    if( name == "inf" ) {
-        return SValue( std::numeric_limits<double>::infinity() );
-    }
-    if( name == "nan" ) {
-        return SValue( std::numeric_limits<double>::quiet_NaN() );
-    }
-    if( name == "null" ) {
-        return SValue();
-    }
-    if( name == "empty" ) {
-        return SValue( RList() );
     }
     if( name == "this" ) {
         return get_cur_object();

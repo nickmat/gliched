@@ -1509,8 +1509,8 @@ SValue Script::dot_mask( const Object* obj, const SValue* left )
     if( name.empty() ) {
         return create_error( "Object type reqired for mask function." );
     }
-    if( args.size() != 1 || args[0].get_object_code() != name ) {
-        return create_error( "Function argument must match object type." );
+    if( args.size() != 1 || args[0].type() != SValue::Type::Object ) {
+        return create_error( "Function argument must be object type." );
     }
     SValueVec& vleft = left->get_object();
     SValueVec& vright = args[0].get_object();

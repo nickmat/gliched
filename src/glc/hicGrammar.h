@@ -69,6 +69,8 @@ namespace glich {
         std::string get_num_pseudo_alias( const std::string& fname ) const;
         std::string get_unit_alias( const std::string& fieldname ) const;
 
+        std::string get_calc_output() const { return m_calculate_output; }
+        std::string get_calc_input() const { return m_calculate_input; }
         Format* get_format( const std::string& code ) const;
         std::string get_pref_input_fcode() const { return m_pref_input_fcode; }
         std::string get_pref_output_fcode() const { return m_pref_output_fcode; }

@@ -108,6 +108,18 @@ int Base::get_alias_fieldname_index( const string& alias ) const
     return  get_fieldname_index( fieldname );
 }
 
+string Base::get_calc_output() const
+{
+    assert( m_grammar );
+    return m_grammar->get_calc_output();
+}
+
+string Base::get_calc_input() const
+{
+    assert( m_grammar );
+    return m_grammar->get_calc_input();
+}
+
 Format* Base::get_format( const string& fcode ) const
 {
     assert( m_grammar );

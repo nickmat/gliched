@@ -27,6 +27,8 @@
 
 #include "hicScheme.h"
 
+#include "glcFunction.h"
+#include "glcScript.h"
 #include "hicFormat.h"
 #include "hicGregorian.h"
 #include "hicJdn.h"
@@ -43,6 +45,18 @@ glich::Scheme::Scheme( const std::string& code, const Base& base )
     : m_style( SCH_STYLE_Default ), m_base( base ), Object( code )
 {
     set_value_names( base.get_fieldnames() );
+    string calc_output = base.get_calc_output();
+    if( !calc_output.empty() ) {
+        Function* out_fun = new Function( "output" );
+        out_fun->set_script( "result=this.mask(" + calc_output + ");" );
+        add_function( out_fun );
+    }
+    string calc_input = base.get_calc_input();
+    if( !calc_input.empty() ) {
+        Function* in_fun = new Function( "input" );
+        in_fun->set_script( "result=this.mask(" + calc_input + ");" );
+        add_function( in_fun );
+    }
 }
 
 Scheme::~Scheme()

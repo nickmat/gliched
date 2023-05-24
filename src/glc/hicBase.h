@@ -55,6 +55,8 @@ namespace glich {
         int get_fieldname_index( const std::string& fieldname ) const;
         int get_alias_fieldname_index( const std::string& alias ) const;
 
+        std::string get_calc_output() const;
+        std::string get_calc_input() const;
         Format* get_format( const std::string& fcode ) const;
         std::string get_input_fcode() const;
         std::string get_output_fcode() const;

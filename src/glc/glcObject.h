@@ -49,7 +49,7 @@ namespace glich {
         const NameIndexMap& get_vnames_map() const { return m_vnames; }
 
         bool add_function( Function* fun );
-        Function* get_function( const std::string& fcode );
+        Function* get_function( const std::string& fcode ) const;
 
     private:
         FunctionMap m_functions;

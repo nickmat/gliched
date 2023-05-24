@@ -67,12 +67,12 @@ bool Object::add_function( Function* fun )
     return true;
 }
 
-Function* Object::get_function( const std::string& fcode )
+Function* Object::get_function( const std::string& fcode ) const
 {
     if( m_functions.count( fcode ) == 0 ) {
         return nullptr;
     }
-    return m_functions[fcode];
+    return m_functions.find( fcode )->second;
 }
 
 // End of src/glc/glcValue.cpp

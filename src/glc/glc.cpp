@@ -137,6 +137,23 @@ string Glich::run_script( const string& script )
     return oss.str();
 }
 
+SValue Glich::evaluate( const string& expression, Store* store )
+{
+    if( store ) {
+        store->set_prev( m_store );
+        m_store = store;
+    }
+    else {
+        push_store();
+    }
+    std::istringstream iss( expression );
+    std::ostringstream oss;
+    Script scr( this, iss, oss );
+    SValue value = scr.evaluate();
+    pop_store();
+    return value;
+}
+
 bool Glich::is_named( const string& name ) const
 {
     if( m_constants.count( name ) == 1 ) {

@@ -41,6 +41,7 @@ namespace glich {
         Script( Glich* db, std::istream& in, std::ostream& out );
 
         bool run();
+        SValue evaluate() { return expr( GetToken::next ); }
 
         static STokenStream* get_current_ts() { return s_current_ts; }
 

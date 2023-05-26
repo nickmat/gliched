@@ -63,6 +63,7 @@ namespace glich {
         void load_hics_library();
 
         std::string run_script( const std::string& cmnd );
+        SValue evaluate( const std::string& expression, Store* store );
 
         std::string get_init_error() const { return m_init_error; }
 

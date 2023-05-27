@@ -59,6 +59,7 @@ namespace glich {
         SValue( SValueVec obj ) : m_type( Type::Object ), m_data( obj ) {}
 
         static void init( Glich* glc ) { s_glc = glc; }
+        static Glich* get_glc() { return s_glc; }
 
         void set_str( const std::string& str ) { m_type = Type::String; m_data = str; }
         void set_bool( bool b ) { m_type = Type::Bool; m_data = b; }

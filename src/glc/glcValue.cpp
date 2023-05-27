@@ -1379,6 +1379,30 @@ void SValue::property_op( const SValue& value )
     set_error( "Property not recognised." );
 }
 
+void SValue::mask_op( const SValue& value )
+{
+    if( propagate_error( value ) ) {
+        return;
+    }
+    if( type() != Type::Object || value.type() != Type::Object ) {
+        set_error( "Operator 'mask' requires object types." );
+        return;
+    }
+    SValueVec* vleft = get_object_values();
+    const SValueVec* vright = value.get_object_values();
+    assert( vleft != nullptr && vright != nullptr );
+    const SValue* right_array = vright->data();
+    for( size_t i = 1; i < vright->size(); i++ ) {
+        if( i >= vleft->size() ) {
+            vleft->push_back( vright->at( i ) );
+            continue;
+        }
+        if( (*vleft)[i].type() == Type::Null ) {
+            (*vleft)[i] = right_array[i];
+        }
+    }
+}
+
 void SValue::negate()
 {
     switch( m_type )

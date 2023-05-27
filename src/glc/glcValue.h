@@ -130,6 +130,7 @@ namespace glich {
 
         void range_op( const SValue& value );
         void property_op( const SValue& value );
+        void mask_op( const SValue& value );
 
         void negate(); // Unitary minus
         void logical_not();

@@ -29,7 +29,9 @@
 
 #include "glcFunction.h"
 #include "glcScript.h"
+#include "glcStore.h"
 #include "hicFormat.h"
+#include "hicGrammar.h"
 #include "hicGregorian.h"
 #include "hicJdn.h"
 #include "hicJulian.h"
@@ -64,7 +66,7 @@ Scheme::~Scheme()
     delete &m_base;
 }
 
-SValueVec Scheme::complete_object( Field jdn ) const
+SValue Scheme::complete_object( Field jdn ) const
 {
     const Base& base = get_base();
     FieldVec fields = base.get_fields( jdn );
@@ -79,7 +81,20 @@ SValueVec Scheme::complete_object( Field jdn ) const
         string name = base.get_fieldname( i );
         vals[i + 1] = GetOptional( name, jdn );
     }
-    return vals;
+    SValue value( vals );
+    string calc_output = base.get_grammar()->get_calc_output();
+    if( !calc_output.empty() ) {
+        Store* store = new Store;
+        const NameIndexMap& namemap = get_vnames_map();
+        for( const auto npair : namemap ) {
+            store->create_local( npair.first );
+            store->update_local( npair.first, vals[npair.second] );
+        }
+        Glich* glc = SValue::get_glc();
+        SValue calc = glc->evaluate( calc_output, store );
+        value.mask_op( calc );
+    }
+    return value;
 }
 
 Format* Scheme::get_output_format( const string& fcode ) const

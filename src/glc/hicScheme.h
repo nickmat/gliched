@@ -49,7 +49,7 @@ namespace glich {
         void set_output_format( const std::string& fcode ) { m_output_fcode = fcode; }
         void set_input_format( const std::string& fcode ) { m_input_fcode = fcode; }
 
-        SValueVec complete_object( Field jdn ) const;
+        SValue complete_object( Field jdn ) const;
 
         std::string get_name() const { return m_name; }
         Scheme_style get_style() const { return m_style; }

@@ -167,6 +167,22 @@ SValue* SValue::get_object_element( size_t index, size_t expand )
     return nullptr;
 }
 
+SValueVec* glich::SValue::get_object_values()
+{
+    if( std::holds_alternative<SValueVec>( m_data ) ) {
+        return &std::get<SValueVec>( m_data );
+    }
+    return nullptr;
+}
+
+const SValueVec* glich::SValue::get_object_values() const
+{
+    if( std::holds_alternative<SValueVec>( m_data ) ) {
+        return &std::get<SValueVec>( m_data );
+    }
+    return nullptr;
+}
+
 Object* SValue::get_object_ptr()
 {
     string ocode = get_object_code();

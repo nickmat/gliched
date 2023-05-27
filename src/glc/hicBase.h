@@ -49,6 +49,7 @@ namespace glich {
         virtual size_t required_size() const = 0;
         // Return the number of of all Fields including optional and calculated.
         size_t record_size() const { return m_fieldnames.size(); }
+        Grammar* get_grammar() const { return m_grammar; }
         // Get list of fieldnames in default order.
         StdStrVec get_fieldnames() const { return m_fieldnames; }
         std::string get_fieldname( size_t index ) const { return m_fieldnames[index]; }

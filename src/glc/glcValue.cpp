@@ -31,6 +31,7 @@
 
 #include "glcHelper.h"
 #include "glcMath.h"
+#include "glcObject.h"
 #include "glcScript.h"
 
 #include <cassert>

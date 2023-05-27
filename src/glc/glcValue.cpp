@@ -192,6 +192,32 @@ Object* SValue::get_object_ptr()
     return s_glc->get_object( ocode );
 }
 
+void glich::SValue::object_fill_store( Store* store )
+{
+    if( std::holds_alternative<SValueVec>( m_data ) ) {
+        SValueVec& vv = std::get<SValueVec>( m_data );
+        if( vv.size() == 0 ) {
+            return;
+        }
+        string ocode = vv[0].get_str();
+        Object* obj = s_glc->get_object( ocode );
+        if( obj == nullptr ) {
+            return;
+        }
+        const NameIndexMap& vnames = obj->get_vnames_map();
+        for( const auto& name : vnames ) {
+            bool success = store->create_local( name.first );
+            if( !success ) {
+                continue;
+            }
+            size_t index = name.second;
+            if( index < vv.size() ) {
+                store->update_local( name.first, vv[index] );
+            }
+        }
+    }
+}
+
 string SValue::get_str() const
 {
     if( std::holds_alternative<string>( m_data ) ) {

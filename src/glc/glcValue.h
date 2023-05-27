@@ -35,6 +35,7 @@
 namespace glich {
 
     class Glich;
+    class Store;
     class SValue;
     class Object;
     using SValueVec = std::vector<SValue>;
@@ -77,6 +78,7 @@ namespace glich {
         SValueVec* get_object_values();
         const SValueVec* get_object_values() const;
         Object* get_object_ptr();
+        void object_fill_store( Store* store );
 
         std::string as_string() const;
         std::string object_to_string( const SValueVec& values ) const;

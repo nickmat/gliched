@@ -48,6 +48,7 @@ namespace glich {
         void remove( const std::string& name ) { m_variables.erase( name ); }
         void clear() { m_variables.clear(); }
         bool is_level_zero() const { return m_prev == nullptr; }
+        void set_prev( Store* prev ) { m_prev = prev; }
 
     private:
         SValueMap m_variables;

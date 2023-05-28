@@ -108,6 +108,19 @@ namespace glich {
     enum class Context { glich, hics };
 
     enum class GetToken { current, next }; // Was a bool, next=true : current=false
+
+    // Append std::vector
+    // Appends the 2nd argument to the 1st.
+    // Returns a reference to the 1st argument.
+    // Note, this could be used to implement the operator += for vectors.
+    template <class T>
+    std::vector<T>& vec_append( std::vector<T>& v1, const std::vector<T>& v2 )
+    {
+        v1.insert( v1.end(), v2.begin(), v2.end() );
+        return v1;
+    }
+
+
 }
 
 #endif // INCLUDE_GLC_GLCDEFS_H

@@ -62,13 +62,31 @@ bool FormatText::construct()
 
 void FormatText::setup_control_in()
 {
-    if( m_default_fieldnames.empty() ) {
-        m_default_fieldnames = get_grammar().get_base_fieldnames();
-    }
-
+    const Grammar& gmr = get_grammar();
+    assert( m_default_fieldnames.empty() );
+    m_default_fieldnames = gmr.get_base_fieldnames();
+    vec_append( m_default_fieldnames, gmr.get_opt_fieldnames() );
+    vec_append( m_default_fieldnames, gmr.get_calc_fieldnames() );
+    assert( m_rank_fieldnames.empty() );
+    m_rank_fieldnames = gmr.get_rank_fieldnames();
     if( m_rank_fieldnames.empty() ) {
         m_rank_fieldnames = m_default_fieldnames;
-        m_sig_rank_size = get_grammar().get_base_fieldnames().size();
+    }
+    for( size_t i = 0; i < m_default_fieldnames.size(); i++ ) {
+        if( m_default_fieldnames.size() == m_rank_fieldnames.size() ) {
+            break;
+        }
+        string fname = m_default_fieldnames[i];
+        bool found = false;
+        for( size_t i = 0; i < m_rank_fieldnames.size(); i++ ) {
+            if( fname == m_rank_fieldnames[i] ) {
+                found = true;
+                break;
+            }
+        }
+        if( !found ) {
+            m_rank_fieldnames.push_back( fname );
+        }
     }
     assert( m_default_fieldnames.size() == m_rank_fieldnames.size() );
     m_rank_to_def_index.resize( m_rank_fieldnames.size() );
@@ -489,8 +507,9 @@ bool FormatText::resolve_input( const Base& base, FieldVec& fields, InputFieldVe
     size_t start = 0;
     for( size_t i = 0; i < element_size; i++ ) {
         for( size_t j = start; j < m_fmt_to_rank_index.size(); j++ ) {
-            if( m_fmt_to_rank_index[j] < element_size ) {
-                fields[m_rank_to_def_index[m_fmt_to_rank_index[j]]] = element_list[i];
+            size_t default_index = m_fmt_to_rank_index[j];
+            if( default_index < element_size ) {
+                fields[m_rank_to_def_index[default_index]] = element_list[i];
                 start = j;
                 start++;
                 break;

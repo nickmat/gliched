@@ -51,27 +51,18 @@ bool FormatText::construct()
     if( is_ok() ) {
         return true; // Only run once.
     }
-    if( !m_control_in.empty() ) {
-        setup_control_in();
-    }
-    if( !m_control_out.empty() ) {
-        setup_control_out();
-    }
-    set_ok( true );
-    return true;
-}
-
-void FormatText::setup_control_in()
-{
     const Grammar& gmr = get_grammar();
     assert( m_default_fieldnames.empty() );
     m_default_fieldnames = gmr.get_base_fieldnames();
+    size_t base_size = m_default_fieldnames.size();
     vec_append( m_default_fieldnames, gmr.get_opt_fieldnames() );
     vec_append( m_default_fieldnames, gmr.get_calc_fieldnames() );
     assert( m_rank_fieldnames.empty() );
     m_rank_fieldnames = gmr.get_rank_fieldnames();
+    m_sig_rank_size = m_rank_fieldnames.size();
     if( m_rank_fieldnames.empty() ) {
         m_rank_fieldnames = m_default_fieldnames;
+        m_sig_rank_size = base_size;
     }
     for( size_t i = 0; i < m_default_fieldnames.size(); i++ ) {
         if( m_default_fieldnames.size() == m_rank_fieldnames.size() ) {
@@ -99,6 +90,18 @@ void FormatText::setup_control_in()
             }
         }
     }
+    if( !m_control_in.empty() ) {
+        setup_control_in();
+    }
+    if( !m_control_out.empty() ) {
+        setup_control_out();
+    }
+    set_ok( true );
+    return true;
+}
+
+void FormatText::setup_control_in()
+{
     ElementControlIn ele;
     bool do_output = true;
     string input;
@@ -163,7 +166,7 @@ void FormatText::setup_control_in()
         }
     }
 
-    if( !gmr.get_calc_input().empty() ) {
+    if( !get_grammar().get_calc_input().empty() ) {
         m_has_calulate_input = true;
     }
 }

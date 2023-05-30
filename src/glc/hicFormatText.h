@@ -82,7 +82,7 @@ namespace glich {
 
         StdStrVec   m_format_order;
         XIndexVec   m_fmt_to_rank_index;
-
+        bool        m_has_calulate_input;
         // =============[unchecked]================
         StdStrVec   m_rankout_fieldnames;
 

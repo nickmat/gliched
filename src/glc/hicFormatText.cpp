@@ -41,7 +41,8 @@ using std::string;
 
 
 FormatText::FormatText( const string& code, Grammar& gmr )
-: Format( code, gmr ), m_separators(":,"), m_shorthand(true), m_sig_rank_size(0)
+    : Format( code, gmr ), m_separators(":,"), m_shorthand(true), m_sig_rank_size(0),
+    m_has_calulate_input(false)
 {
 }
 
@@ -160,6 +161,10 @@ void FormatText::setup_control_in()
                 }
             }
         }
+    }
+
+    if( !gmr.get_calc_input().empty() ) {
+        m_has_calulate_input = true;
     }
 }
 
@@ -286,6 +291,9 @@ bool glich::FormatText::set_input( Record& record, const std::string& input, Bou
     InputFieldVec ifs( base.record_size() );
     parse_date( ifs, input );
     bool ret = resolve_input( base, record.get_field_vec(), ifs );
+    if( m_has_calulate_input ) {
+        record.calculate_input( get_grammar().get_calc_input() );
+    }
     if( !ret || rb == Boundary::None ) {
         return ret;
     }

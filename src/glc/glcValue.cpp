@@ -458,7 +458,7 @@ Field SValue::get_int_as_field( bool& success ) const
         return get_field();
     }
     success = false;
-    return Field();
+    return f_invalid;
 }
 
 size_t SValue::get_int_as_size_t( bool& success ) const

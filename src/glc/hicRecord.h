@@ -53,6 +53,8 @@ namespace glich {
         Field complete_fields_as_beg(); // Returns jdn for record
         Field complete_fields_as_end();
 
+        void calculate_input( const std::string& script_expr );
+
         void set_field( Field value, size_t index );
 
         void clear_fields() { std::fill( m_f.begin(), m_f.end(), f_invalid ); }

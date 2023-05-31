@@ -42,7 +42,7 @@ FormatUnit::FormatUnit( const std::string& code, Grammar& gmr )
     set_user_output_str( "Value Unit ..." );
 }
 
-std::string FormatUnit::get_text_output( const Record& record ) const
+std::string FormatUnit::get_text_output( Record& record ) const
 {
     string output;
     const Base& base = record.get_base();

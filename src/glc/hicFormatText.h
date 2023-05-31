@@ -47,7 +47,7 @@ namespace glich {
         void set_control_out( const std::string& format ) { m_control_out = format; }
         void set_control_in( const std::string& format ) { m_control_in = format; }
 
-        std::string get_text_output( const Record& rec ) const override { return get_revealed_output( rec, nullptr ); }
+        std::string get_text_output( Record& record ) const override;
         std::string get_revealed_output( const Record& rec, const BoolVec* reveal ) const;
         RList string_to_rlist( const Base& base, const std::string& input ) const override;
 
@@ -82,6 +82,7 @@ namespace glich {
 
         StdStrVec   m_format_order;
         XIndexVec   m_fmt_to_rank_index;
+        bool        m_has_calulate_output;
         bool        m_has_calulate_input;
         // =============[unchecked]================
         StdStrVec   m_rankout_fieldnames;

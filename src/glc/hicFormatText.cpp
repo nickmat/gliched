@@ -42,7 +42,7 @@ using std::string;
 
 FormatText::FormatText( const string& code, Grammar& gmr )
     : Format( code, gmr ), m_separators(":,"), m_shorthand(true), m_sig_rank_size(0),
-    m_has_calulate_input(false)
+    m_has_calulate_output(false), m_has_calulate_input(false)
 {
 }
 
@@ -166,6 +166,9 @@ void FormatText::setup_control_in()
         }
     }
 
+    if( !get_grammar().get_calc_output().empty() ) {
+        m_has_calulate_output = true;
+    }
     if( !get_grammar().get_calc_input().empty() ) {
         m_has_calulate_input = true;
     }
@@ -220,9 +223,13 @@ void FormatText::setup_control_out()
     }
 }
 
-
-
-
+std::string glich::FormatText::get_text_output( Record& record ) const
+{
+    if( m_has_calulate_output ) {
+        record.calculate_input( get_grammar().get_calc_output() );
+    }
+    return get_revealed_output( record, nullptr );
+}
 
 string FormatText::get_revealed_output( const Record& record, const BoolVec* reveal ) const
 {

@@ -143,7 +143,7 @@ Field glich::Record::complete_fields_as_end()
     return calc_jdn();
 }
 
-void Record::calculate_input( const string& script_expr )
+void Record::calculate_expression( const string& script_expr )
 {
     Store* store = new Store;
     StdStrVec names = m_base.get_fieldnames();

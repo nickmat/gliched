@@ -226,7 +226,7 @@ void FormatText::setup_control_out()
 std::string glich::FormatText::get_text_output( Record& record ) const
 {
     if( m_has_calulate_output ) {
-        record.calculate_input( get_grammar().get_calc_output() );
+        record.calculate_expression( get_grammar().get_calc_output() );
     }
     return get_revealed_output( record, nullptr );
 }
@@ -302,7 +302,7 @@ bool glich::FormatText::set_input( Record& record, const std::string& input, Bou
     parse_date( ifs, input );
     bool ret = resolve_input( base, record.get_field_vec(), ifs );
     if( m_has_calulate_input ) {
-        record.calculate_input( get_grammar().get_calc_input() );
+        record.calculate_expression( get_grammar().get_calc_input() );
     }
     if( !ret || rb == Boundary::None ) {
         return ret;

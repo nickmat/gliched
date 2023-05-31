@@ -214,13 +214,14 @@ BoolVec Record::mark_balanced_fields( Record& rec, const XIndexVec& rank_to_def,
     return mask;
 }
 
-Field glich::Record::get_field( size_t index ) const
+Field Record::get_field( size_t index ) const
 {
     assert( index < m_f.size() );
-    if( index < m_base.required_size() ) {
-        return m_f[index];
+    Field field = m_f[index];
+    if( field == f_invalid ) {
+        field = GetOptionalField( m_base.get_fieldname( index ), m_jdn );
     }
-    return GetOptionalField( m_base.get_fieldname( index ), m_jdn );
+    return field;
 }
 
 // End of src/glc/hicRecord.cpp file

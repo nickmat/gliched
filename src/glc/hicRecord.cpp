@@ -183,6 +183,21 @@ RList Record::get_rlist_from_mask() const
     return rlist;
 }
 
+SValue Record::get_object( const string& ocode ) const
+{
+    SValueVec values( m_f.size() + 1);
+    values[0] = { ocode };
+    for( size_t i = 1; i < values.size(); i++ ) {
+        if( m_f[i-1] == f_invalid ) {
+            // TODO: Check if an optional field first.
+            values[i] = GetOptional( m_base.get_fieldnames()[i-1], m_jdn );
+            continue;
+        }
+        values[i].set_field(m_f[i-1]);
+    }
+    return { values };
+}
+
 BoolVec Record::mark_balanced_fields( Record& rec, const XIndexVec& rank_to_def, size_t size )
 {
     assert( size > 0 && rank_to_def.size() >= size );

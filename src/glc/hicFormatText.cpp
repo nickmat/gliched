@@ -295,16 +295,17 @@ RList FormatText::string_to_rlist( const Base& base, const string& input ) const
     return bare_str_to_rlist( base, input );
 }
 
-bool glich::FormatText::set_input( Record& record, const std::string& input, Boundary rb ) const
+bool FormatText::set_input( Record& record, const string& input, Boundary rb ) const
 {
     const Base& base = record.get_base();
     InputFieldVec ifs( base.record_size() );
     parse_date( ifs, input );
     bool ret = resolve_input( base, record.get_field_vec(), ifs );
-    if( m_has_calulate_input ) {
+    if( ret && m_has_calulate_input ) {
         record.calculate_expression( get_grammar().get_calc_input() );
     }
     if( !ret || rb == Boundary::None ) {
+        record.calc_jdn();
         return ret;
     }
     Record rec( record );

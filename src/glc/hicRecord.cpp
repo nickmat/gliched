@@ -97,17 +97,7 @@ void Record::set_str( const string& str, const Format& fmt, Boundary rb )
         m_jdn = m_f[0] = f_maximum;
         return;
     }
-#if 0
-    if( in == "today" ) {
-        set_jdn( Gregorian::today() );
-        return;
-    }
-#endif
-
-    if( fmt.set_input( *this, in, rb ) ) {
-        m_jdn = get_jdn();
-    }
-    else {
+    if( !fmt.set_input( *this, in, rb ) ) {
         clear_fields();
     }
 }

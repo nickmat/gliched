@@ -95,6 +95,8 @@ namespace glich {
         Field get_num_as_field() const;
         double get_field_as_float() const;
 
+        Field get_as_field() const;
+
         std::string get_str( bool& success ) const;
         Num get_number( bool& success ) const;
         bool get_bool( bool& success ) const;

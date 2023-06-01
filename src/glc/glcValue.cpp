@@ -282,7 +282,7 @@ double SValue::get_float() const
     return 0.0;
 }
 
-SValueVec glich::SValue::get_object() const
+SValueVec SValue::get_object() const
 {
     if( std::holds_alternative<SValueVec>( m_data ) ) {
         return std::get<SValueVec>( m_data );
@@ -291,7 +291,7 @@ SValueVec glich::SValue::get_object() const
     return SValueVec();
 }
 
-Field glich::SValue::get_num_as_field() const
+Field SValue::get_num_as_field() const
 {
     if( std::holds_alternative<Num>( m_data ) && m_type == Type::Number ) {
         Num num = std::get<Num>( m_data );
@@ -304,7 +304,7 @@ Field glich::SValue::get_num_as_field() const
     return Field();
 }
 
-double glich::SValue::get_field_as_float() const
+double SValue::get_field_as_float() const
 {
     if( std::holds_alternative<Num>( m_data ) && m_type == Type::field ) {
         Field fld = std::get<Num>( m_data );
@@ -320,7 +320,19 @@ double glich::SValue::get_field_as_float() const
     return std::numeric_limits<double>::quiet_NaN();
 }
 
-std::string glich::SValue::get_str( bool& success ) const
+Field SValue::get_as_field() const
+{
+    if( std::holds_alternative<Num>( m_data ) && m_type == Type::Number ) {
+        Num num = std::get<Num>( m_data );
+        if( num >= f_maximum || num <= f_minimum ) {
+            return f_invalid;
+        }
+        return num;
+    }
+    return f_invalid;
+}
+
+string SValue::get_str( bool& success ) const
 {
     if( std::holds_alternative<string>( m_data ) ) {
         success = true;

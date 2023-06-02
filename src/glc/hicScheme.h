@@ -50,6 +50,7 @@ namespace glich {
         void set_input_format( const std::string& fcode ) { m_input_fcode = fcode; }
 
         SValue complete_object( Field jdn ) const;
+        SValue complete_object( const std::string& input, const std::string& fcode ) const;
 
         std::string get_name() const { return m_name; }
         Scheme_style get_style() const { return m_style; }

@@ -97,6 +97,15 @@ SValue Scheme::complete_object( Field jdn ) const
     return value;
 }
 
+SValue Scheme::complete_object( const string& input, const string& fcode ) const
+{
+    Format* fmt = get_input_format( fcode );
+    if( fmt == nullptr ) {
+        return SValue();
+    }
+    return fmt->string_to_object( get_code(), m_base, input );
+}
+
 Format* Scheme::get_output_format( const string& fcode ) const
 {
     if( fcode.empty() ) {

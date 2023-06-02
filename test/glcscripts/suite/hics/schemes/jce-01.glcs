@@ -1,0 +1,99 @@
+// julian-01.glcs  -  Uppercase version of hics standard library
+
+lexicon W {
+    name "Weekday names";
+    fieldname wday;
+    lang en;
+    pseudo    Weekday,  WDay;
+    tokens {
+        1, "Monday",    "Mon";
+        2, "Tuesday",   "Tue";
+        3, "Wednesday", "Wed";
+        4, "Thursday",  "Thur";
+        5, "Friday",    "Fri";
+        6, "Saturday",  "Sat";
+        7, "Sunday",    "Sun";
+    }
+}
+
+lexicon M {
+    name "Month names";
+    fieldname month;
+    lang en;
+    pseudo     Month,     Mon;
+    tokens {
+        1,  "January",   "Jan";
+        2,  "February",  "Feb";
+        3,  "March",     "Mar";
+        4,  "April",     "Apr";
+        5,  "May";
+        6,  "June",      "Jun";
+        7,  "July",      "Jul";
+        8,  "August",    "Aug";
+        9,  "September", "Sep";
+        10, "October",   "Oct";
+        11, "November",  "Nov";
+        12, "December",  "Dec";
+    }
+}
+
+lexicon CE {
+    name "Historic Era";
+    fieldname ce;
+    lang en;
+    pseudo    CommonEra,         CE;
+    tokens {
+        0, "Before Common Era", "BCE";
+        1, "Common Era",        "CE";
+    }
+}
+
+grammar JCE {
+    fields year month day;
+    optional wday;
+    calculated ce ceyear;
+    calculate {
+        output {: ,,,@if(year<1, 0, 1), @if(year<1, -year+1, year) };
+        input {: @if(ce=1, ceyear, -ceyear+1) };
+    }
+    rank ce, ceyear, month, day;
+    lexicons M, W, CE;
+    alias pseudo { w wday; dd day; mm month; yyyy ceyear; ce ce; }
+    alias unit { d day; m month; y year; }
+    format  dmye, "{day} |{month:M:a} |{ceyear} |{ce:CE:a}";
+    format  wdmye, "{wday:W:a} |{day} |{month:M:a} |{ceyear} |{ce:CE:a}";
+    preferred dmye;
+}
+
+scheme JCE {
+    name "Julian Common Era";
+    base julian;
+    grammar JCE;
+}
+
+writeln "";
+writeln record.JCE 1721423 + ", " + record.JCE 1721424;
+writeln record.JCE:dmye "31 dec 1 bce" + ", " + record.JCE:dmye "1 jan 1 ce";
+writeln text.JCE:dmye 1721423 + ", " + text.JCE:dmye 1721424;
+writeln text.JCE:dmye {JCE 0,12,31} + ", " +
+    text.JCE:dmye {JCE 1,1,1};
+writeln text.JCE:dmye ({JCE ,12,31,0,1}.input) + ", " +
+    text.JCE:dmye ({JCE ,1,1,1,1}.input);
+writeln date.JCE:dmye "31 dec 1 bce" + ", " + date.JCE:dmye "1 jan 1 ce";
+writeln date.JCE {JCE 0,12,31} + ", " +
+    date.JCE {JCE 1,1,1};
+writeln date.JCE ({JCE ,12,31,0,1}.input) + ", " +
+    date.JCE ({JCE ,1,1,1,1}.input);
+
+/*[OUTPUT]
+
+{JCE 0, 12, 31, 0, 1, 5}, {JCE 1, 1, 1, 1, 1, 6}
+{JCE 0, 12, 31, 0, 1, 5}, {JCE 1, 1, 1, 1, 1, 6}
+31 Dec 1 BCE, 1 Jan 1 CE
+31 Dec 1 BCE, 1 Jan 1 CE
+31 Dec 1 BCE, 1 Jan 1 CE
+1721423, 1721424
+1721423, 1721424
+1721423, 1721424
+
+[OUTPUT]*/

@@ -26,6 +26,8 @@
 */
 
 #include "hicFormat.h"
+
+#include "glcValue.h"
 #include "hicRecord.h"
 
 #include <cassert>
@@ -40,6 +42,12 @@ Format::Format( const std::string& code, Grammar& gmr )
 
 Format::~Format()
 {
+}
+
+SValue Format::string_to_object( const string& ocode, const Base& base, const string& input ) const
+{
+    Record mask( base, input, *this, Boundary::None );
+    return mask.get_object( ocode );
 }
 
 string Format::jdn_to_string( const Base& base, Field jdn ) const

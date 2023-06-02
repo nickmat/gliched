@@ -79,14 +79,10 @@ bool Base::attach_grammar( Grammar* gmr )
         }
     }
     // All checks ok
-    m_grammar = gmr;
-    for( auto& opt : gmr->get_opt_fieldnames() ) {
-        m_fieldnames.push_back( opt );
-    }
-    for( auto& calc : gmr->get_calc_fieldnames() ) {
-        m_fieldnames.push_back( calc );
-    }
 
+    m_grammar = gmr;
+    vec_append( m_fieldnames, gmr->get_calc_fieldnames() );
+    vec_append( m_fieldnames, gmr->get_opt_fieldnames() );
     return true;
 }
 

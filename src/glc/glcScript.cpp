@@ -1337,20 +1337,10 @@ SValue Script::record_cast()
     bool success = false;
     Field jdn = value.get_field( success );
     if( success ) {
-        value = sch->complete_object( jdn );
-        return value;
+        return sch->complete_object( jdn );
     }
     if( value.type() == SValue::Type::String ) {
-
-        RList rlist = sch->str_to_rlist( value.get_str(), fcode );
-        value.set_rlist_demote( rlist );
-        if( value.type() != SValue::Type::field ) {
-            value.set_error( "String must reduce to Field type." );
-            return value;
-        }
-        jdn = value.get_field();
-        value = sch->complete_object( jdn );
-        return value;
+        return sch->complete_object( value.get_str(), fcode );
     }
     value.set_error( "Expected a field or string type." );
     return value;

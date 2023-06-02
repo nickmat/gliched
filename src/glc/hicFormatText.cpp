@@ -55,8 +55,8 @@ bool FormatText::construct()
     assert( m_default_fieldnames.empty() );
     m_default_fieldnames = gmr.get_base_fieldnames();
     size_t base_size = m_default_fieldnames.size();
-    vec_append( m_default_fieldnames, gmr.get_opt_fieldnames() );
     vec_append( m_default_fieldnames, gmr.get_calc_fieldnames() );
+    vec_append( m_default_fieldnames, gmr.get_opt_fieldnames() );
     assert( m_rank_fieldnames.empty() );
     m_rank_fieldnames = gmr.get_rank_fieldnames();
     m_sig_rank_size = m_rank_fieldnames.size();

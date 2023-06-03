@@ -166,9 +166,6 @@ void FormatText::setup_control_in()
         }
     }
 
-    if( !get_grammar().get_calc_output().empty() ) {
-        m_has_calulate_output = true;
-    }
     if( !get_grammar().get_calc_input().empty() ) {
         m_has_calulate_input = true;
     }
@@ -220,6 +217,10 @@ void FormatText::setup_control_out()
     output += fieldout;
     if( m_output_str.empty() ) {
         set_user_output_str( output );
+    }
+
+    if( !get_grammar().get_calc_output().empty() ) {
+        m_has_calulate_output = true;
     }
 }
 

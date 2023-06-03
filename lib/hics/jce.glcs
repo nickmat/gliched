@@ -1,0 +1,76 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Name:        lib/hics/jce.glcs
+ * Project:     Glich: Extendable Script Language.
+ * Purpose:     Julian jce CE/BCE scheme for hics library.
+ * Author:      Nick Matthews
+ * Website:     https://github.com/nickmat/glich
+ * Created:     2nd June 2023
+ * Copyright:   Copyright (c) 2023, Nick Matthews.
+ * Licence:     GNU GPLv3
+ *
+ *  The Cal library is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  The Cal library is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with the Cal library.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+*/
+
+lexicon ce {
+    name "Historic Era";
+    fieldname ce;
+    lang en;
+    pseudo    CommonEra,         CE;
+    tokens {
+        0, "Before Common Era", "BCE";
+        1, "Common Era",        "CE";
+    }
+}
+
+grammar jce {
+    fields year month day;
+    calculated ce ceyear;
+    optional wday;
+    rank ce ceyear month day;
+    calculate {
+        output {: ,,,@if(year<1, 0, 1), @if(year<1, -year+1, year) };
+        input {: @if(ce=1, ceyear, -ceyear+1) };
+    }
+    alias pseudo {
+        w wday; dd day; mm month; yyyy ceyear; ce ce;
+    }
+    alias unit {
+        d day; m month; y year;
+    }
+    lexicons m w ce;
+    format  dmye,  "{day} |{month:m:a} |{ceyear} |{ce:ce:a}";
+    format  wdmye "{wday:w:a} |{day} |{month:m:a} |{ceyear} |{ce:ce:a}";
+    format  mdye  "{month:m:a} |{day} |{ceyear} |{ce:ce:a}";
+    format  wmdye "{wday:w:a} |{month:m:a} |{day} |{ceyear} |{ce:ce:a}";
+
+    format  "dmye+"  "{day} |{month:m:a} |{ceyear} |{ce:ce}";
+    format  "wdmye+" "{wday:w} |{day} |{month:m} |{ceyear} |{ce:ce}";
+    format  out {
+        output "{day::os} |{month:m} |{ceyear} |{ce:ce}";
+    }
+    format  full {
+        output "{wday:w} |{day::os} |{month:m} |{ceyear} |{ce:ce}";
+    }
+    pref dmye;
+}
+
+scheme jce {
+    name "Julian Common Era";
+    base julian;
+    grammar jce;
+}
+
+// End of lib/hics/jce.glcs file

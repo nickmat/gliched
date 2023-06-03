@@ -62,6 +62,9 @@ grammar JCE {
     alias unit { d day; m month; y year; }
     format  dmye, "{day} |{month:M:a} |{ceyear} |{ce:CE:a}";
     format  wdmye, "{wday:W:a} |{day} |{month:M:a} |{ceyear} |{ce:CE:a}";
+    format  out {
+        output "{day::os} |{month:M} |{ceyear} |{ce:CE}";
+    }
     preferred dmye;
 }
 
@@ -84,6 +87,7 @@ writeln date.JCE {JCE 0,12,31} + ", " +
     date.JCE {JCE 1,1,1};
 writeln date.JCE ({JCE ,12,31,0,1}.input) + ", " +
     date.JCE ({JCE ,1,1,1,1}.input);
+writeln text.JCE:out 2432814;
 
 /*[OUTPUT]
 
@@ -95,5 +99,6 @@ writeln date.JCE ({JCE ,12,31,0,1}.input) + ", " +
 1721423, 1721424
 1721423, 1721424
 1721423, 1721424
+6th September 1948 Common Era
 
 [OUTPUT]*/

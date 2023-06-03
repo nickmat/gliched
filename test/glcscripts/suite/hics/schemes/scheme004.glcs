@@ -1,0 +1,11 @@
+// scheme003.glcs // Test basic scheme definition
+
+scheme T { base gregorian; }
+
+scheme T { base julian; }
+
+
+/*[OUTPUT]
+Error (5): Scheme "T" already exists.
+
+[OUTPUT]*/

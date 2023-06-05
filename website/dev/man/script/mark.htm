@@ -31,7 +31,39 @@
 
 <div id='content' class='nomenu'>
 
-<h2>Page Under Construction</h2>
+<h2>mark Statement</h2>
+<p>
+ Unless directed otherwise, the program will remember all variables and defined entities,
+ even after the script has finished running.
+ The statement <b>mark</b> is used to control this behaviour.
+</p>
+<p>
+ Entities definitions (function, command and object) are added to the library
+ as they are encountered in the script.
+ This can be particularly problematic when testing a new script.
+ We may want to make small change and re-run the script.
+ Without using 'mark', it would try to add another copy of the entity which would result in an error.
+</p>
+
+<table class='basic'>
+ <tr><th>Format</th><th>Example</th></tr>
+ <tr>
+  <td class='code'><b>mark</b> <i>tag</i><b>;</b></td>
+  <td class='example'><b>mark</b> start_test;</td>
+ </tr>
+</table>
+
+<h3>mark Statement</h3>
+<p>
+ When processing the <b>mark</b> statement, if the tag is already in use
+ then all entity definitions added after that tag are removed.
+ The mark tag itself is not remove but any mark tags added afterwards are removed.
+</p>
+<p>
+ Values that are changed with the <b>set</b> statement 
+ and that have been set after the <b>mark</b> statement
+ are reset to their previous values.
+</p>
 
 </div><!--id=content-->
 

@@ -90,6 +90,8 @@ namespace glich {
         bool add_grammar( Grammar* gmr, const std::string& code );
         Grammar* get_grammar( const std::string& code ) const;
         bool add_format( Format* fmt, const std::string& code );
+        bool add_scheme( Scheme* sch, const std::string& scode );
+        Scheme* get_scheme( const std::string& scode ) const;
 
         void add_or_replace_mark( const std::string& name );
         bool clear_mark( const std::string& name );

@@ -78,21 +78,21 @@ writeln "";
 writeln record.JCE 1721423 + ", " + record.JCE 1721424;
 writeln record.JCE:dmye "31 dec 1 bce" + ", " + record.JCE:dmye "1 jan 1 ce";
 writeln text.JCE:dmye 1721423 + ", " + text.JCE:dmye 1721424;
-writeln text.JCE:dmye {JCE 0,12,31} + ", " +
-    text.JCE:dmye {JCE 1,1,1};
-writeln text.JCE:dmye ({JCE ,12,31,0,1}.input) + ", " +
-    text.JCE:dmye ({JCE ,1,1,1,1}.input);
+writeln text.JCE:dmye {s:JCE 0,12,31} + ", " +
+    text.JCE:dmye {s:JCE 1,1,1};
+writeln text.JCE:dmye ({s:JCE ,12,31,0,1}.input) + ", " +
+    text.JCE:dmye ({s:JCE ,1,1,1,1}.input);
 writeln date.JCE:dmye "31 dec 1 bce" + ", " + date.JCE:dmye "1 jan 1 ce";
-writeln date.JCE {JCE 0,12,31} + ", " +
-    date.JCE {JCE 1,1,1};
-writeln date.JCE ({JCE ,12,31,0,1}.input) + ", " +
-    date.JCE ({JCE ,1,1,1,1}.input);
+writeln date.JCE {s:JCE 0,12,31} + ", " +
+    date.JCE {s:JCE 1,1,1};
+writeln date.JCE ({s:JCE ,12,31,0,1}.input) + ", " +
+    date.JCE ({s:JCE ,1,1,1,1}.input);
 writeln text.JCE:out 2432814;
 
 /*[OUTPUT]
 
-{JCE 0, 12, 31, 0, 1, 5}, {JCE 1, 1, 1, 1, 1, 6}
-{JCE 0, 12, 31, 0, 1, 5}, {JCE 1, 1, 1, 1, 1, 6}
+{s:JCE 0, 12, 31, 0, 1, 5}, {s:JCE 1, 1, 1, 1, 1, 6}
+{s:JCE 0, 12, 31, 0, 1, 5}, {s:JCE 1, 1, 1, 1, 1, 6}
 31 Dec 1 BCE, 1 Jan 1 CE
 31 Dec 1 BCE, 1 Jan 1 CE
 31 Dec 1 BCE, 1 Jan 1 CE

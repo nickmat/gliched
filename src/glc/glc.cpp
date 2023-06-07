@@ -329,6 +329,16 @@ bool Glich::add_format( Format* fmt, const string& code )
     return true;
 }
 
+bool Glich::add_scheme( Scheme* sch, const string& scode )
+{
+    return add_object( sch, "s:" + scode );
+}
+
+Scheme* Glich::get_scheme( const string& scode ) const
+{
+    return dynamic_cast<Scheme*>(get_object( "s:" + scode ));
+}
+
 void Glich::add_or_replace_mark( const string& name )
 {
     clear_mark( name );

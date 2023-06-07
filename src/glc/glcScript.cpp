@@ -342,7 +342,7 @@ bool Script::do_set()
     }
     string scode, fcode;
     split_code( &scode, &fcode, value );
-    Scheme* sch = dynamic_cast<Scheme*>(m_glc->get_object( scode ));
+    Scheme* sch = m_glc->get_scheme( scode );
     if( sch != nullptr ) {
         if( prop == "input" ) {
             m_glc->set_ischeme( sch );
@@ -746,12 +746,12 @@ bool Script::do_scheme()
         error( "Scheme code missing." );
         return false;
     }
-    if( m_glc->get_object( code ) != nullptr ) {
+    if( m_glc->get_scheme( code ) != nullptr ) {
         error( "Scheme \"" + code + "\" already exists." );
         return false;
     }
     Scheme* sch = do_create_scheme( *this, code );
-    return m_glc->add_object( sch, code );
+    return m_glc->add_scheme( sch, code );
 }
 
 bool Script::do_lexicon()
@@ -1212,7 +1212,7 @@ SValue Script::text_cast()
         // Includes scheme:format signiture
         sig = get_name_or_primary( GetToken::next );
         split_code( &scode, &fcode, sig );
-        sch = dynamic_cast<Scheme*>(m_glc->get_object( scode ));
+        sch = m_glc->get_scheme( scode );
     }
     SValue value = primary( GetToken::current );
     if( value.type() == SValue::Type::Object ) {
@@ -1272,7 +1272,7 @@ SValue Script::date_cast()
         // Includes scheme:format signiture
         sig = get_name_or_primary( GetToken::next );
         split_code( &scode, &fcode, sig );
-        sch = dynamic_cast<Scheme*>(m_glc->get_object( scode ));
+        sch = m_glc->get_scheme( scode );
     }
     SValue value = primary( GetToken::current );
     if( value.type() == SValue::Type::Object ) {
@@ -1319,7 +1319,7 @@ SValue Script::record_cast()
         // Includes scheme:format signiture
         sig = get_name_or_primary( GetToken::next );
         split_code( &scode, &fcode, sig );
-        sch = dynamic_cast<Scheme*>(m_glc->get_object( scode ));
+        sch = m_glc->get_scheme( scode );
     }
     SValue value = primary( GetToken::current );
     if( sch == nullptr ) {

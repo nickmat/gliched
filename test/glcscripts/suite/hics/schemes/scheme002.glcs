@@ -2,8 +2,8 @@
 
 scheme J { base julian; }
 
-write record.J 2432814 + ", " + date {J 2023, 3, 10};
+write record.J 2432814 + ", " + date {s:J 2023, 3, 10};
 
 /*[OUTPUT]
-{J 1948, 9, 6}, 2460027
+{s:J 1948, 9, 6}, 2460027
 [OUTPUT]*/

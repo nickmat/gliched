@@ -2,7 +2,7 @@
 
 scheme J { base julian; }
 
-let d = {J 1948, 9, 19};
+let d = {s:J 1948, 9, 19};
 
 write d[year] + ", " + d[2];
 

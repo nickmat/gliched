@@ -15,7 +15,7 @@ scheme JDN {
 
 let d = 2432617;
 let t = "2432617";
-let r = {JDN 2432617};
+let r = {s:JDN 2432617};
 
 let d_t = text.JDN:d d;
 let d_r = record.JDN d;
@@ -36,9 +36,9 @@ writeln "text.:d cast:      " + r[.type] + ", " + r_t + ", " + r_t[.type];
 /*[OUTPUT]
 
 text.JDN:d cast:   number, 2432617, string
-record.JDN:d cast: number, {JDN 2432617}, object
+record.JDN:d cast: number, {s:JDN 2432617}, object
 date.JDN:d cast:   string, 2432617, field
-record.JDN:d cast: string, {JDN 2432617}, object
+record.JDN:d cast: string, {s:JDN 2432617}, object
 date cast:         object, 2432617, field
 text.:d cast:      object, 2432617, string
 

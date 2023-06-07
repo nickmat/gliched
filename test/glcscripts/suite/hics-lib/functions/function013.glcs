@@ -10,7 +10,7 @@ function this_week {
 
 write text @this_week;
 
-//mark test;
+mark test;
 
 /*[OUTPUT]
 10 Apr 2023..16 Apr 2023

@@ -5,7 +5,7 @@ grammar G {
 }
 
 scheme J { base julian; grammar G; }
-let d = {J 1948, 9, 19};
+let d = {s:J 1948, 9, 19};
 
 write d[year] + ", " + d[2];
 

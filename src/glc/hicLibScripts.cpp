@@ -33,7 +33,8 @@
 
 glich::ScriptModule glich::hics_default_scripts[] = {
     { "hicLib",  /* hicLib.glcs */
- "mark \"__:hicslib:__\";\n" },
+ "mark \"__:hicslib:__\";\n"
+ "set context hics;\n" },
     { "jdn",  /* jdn.glcs */
  "grammar d {\n"
  "fields day;\n"

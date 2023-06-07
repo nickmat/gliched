@@ -27,5 +27,6 @@
 // Add mark so default library can be removed from memory.
 mark "__:hicslib:__";
 
+set context hics;
 
 // End of lib/hics/hicLib.glcs file

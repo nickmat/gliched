@@ -32,6 +32,36 @@
 <div id='content' class='nomenu'>
 
 <h2>Page Under Construction</h2>
+<h2>Statement set</h2>
+<p>
+ The <b>set</b> statement is used to set various system wide settings
+ and defaults.
+</p>
+
+<h3>Setting "context" property</h3>
+<p>
+ The <b>context</b> property changes some defaults values
+ to suit different contexts.
+ There are currently two possible values: <b>glich</b>, the default
+ and <b>hics</b> for use with the hics extensions.
+</p>
+
+<table class='basic'>
+ <tr><th>Format</th></tr>
+ <tr><td class='code'><b>set</b> context glich;</td></tr>
+ <tr><td class='code'><b>set</b> context hics;</td></tr>
+</table>
+
+<p>
+ The settings make the following changes to the input and output.
+</p>
+
+<table class='basic'>
+ <tr><th></th><th>glich</th><th>hics</th></tr>
+ <tr><td>Integer input default:</td><td>number</td><td>field</td></tr>
+ <tr><td>Field maximum output:</td><td>"+infinity"</td><td>"future"</td></tr>
+ <tr><td>Field minimum output:</td><td>"-infinity"</td><td>"past"</td></tr>
+</table>
 
 </div><!--id=content-->
 

@@ -1,0 +1,93 @@
+// ja-01.glcs  - Test version of Julian Annunciation using calculated fields.
+
+lexicon W {
+    name "Weekday names";
+    fieldname wday;
+    lang en;
+    pseudo    Weekday,  WDay;
+    tokens {
+        1, "Monday",    "Mon";
+        2, "Tuesday",   "Tue";
+        3, "Wednesday", "Wed";
+        4, "Thursday",  "Thur";
+        5, "Friday",    "Fri";
+        6, "Saturday",  "Sat";
+        7, "Sunday",    "Sun";
+    }
+}
+
+lexicon M {
+    name "Month names";
+    fieldname month;
+    lang en;
+    pseudo     Month,     Mon;
+    tokens {
+        1,  "January",   "Jan";
+        2,  "February",  "Feb";
+        3,  "March",     "Mar";
+        4,  "April",     "Apr";
+        5,  "May";
+        6,  "June",      "Jun";
+        7,  "July",      "Jul";
+        8,  "August",    "Aug";
+        9,  "September", "Sep";
+        10, "October",   "Oct";
+        11, "November",  "Nov";
+        12, "December",  "Dec";
+    }
+}
+
+grammar JA {
+    fields year month day;
+    optional wday;
+    calculated hyear;
+    calculate {
+        output {: ,,,@if( month<3 or (month=3 and day<25), year-1, year) };
+        input {: @if( month<3 or (month=3 and day<25), hyear+1, hyear) };
+    }
+    rank hyear, month, day;
+    lexicons M, W;
+    alias pseudo { w wday; dd day; mm month; yyyy hyear; }
+    alias unit { d day; m month; y year; }
+    format  dmh, "{day} |{month:M:a} |{hyear}";
+    format  wdmh, "{wday:W:a} |{day} |{month:M:a} |{hyear}";
+    format  out {
+        output "{day::os} |{month:M} |{hyear}";
+    }
+    preferred dmh;
+}
+
+scheme JA {
+    name "Julian Annunciation";
+    base julian;
+    grammar JA;
+}
+
+writeln "";
+writeln record.JA 2360328 + ", " + record.JA 2360329;
+writeln record.JA:dmh "24 mar 1749" + ", " + record.JA:dmh "25 Mar 1750";
+writeln text.JA:dmh 2360328 + ", " + text.JA:dmh 2360329;
+writeln text.JA:dmh {s:JA 1750,3,24} + ", " +
+    text.JA:dmh {s:JA 1750,3,25};
+writeln text.JA:dmh ({s:JA ,3,24,1749}.input) + ", " +
+    text.JA:dmh ({s:JA ,3,24,1750}.input);
+writeln date.JA:dmh "24 mar 1749" + ", " + date.JA:dmh "25 Mar 1750";
+writeln date.JA:dmh {s:JA 1750,3,24} + ", " +
+    date.JA:dmh {s:JA 1750,3,25};
+writeln date.JA:dmh ({s:JA ,3,24,1749}.input) + ", " +
+    date.JA:dmh ({s:JA ,3,24,1750}.input);
+writeln text.JA:out 2432814;
+
+/*[OUTPUT]
+
+{s:JA 1750, 3, 24, 1749, 6}, {s:JA 1750, 3, 25, 1750, 7}
+{s:JA 1750, 3, 24, 1749, 6}, {s:JA 1750, 3, 25, 1750, 7}
+24 Mar 1749, 25 Mar 1750
+24 Mar 1749, 25 Mar 1750
+24 Mar 1749, 24 Mar 1750
+2360328, 2360329
+2360328, 2360329
+2360328, 2360693
+6th September 1948
+
+[OUTPUT]*/

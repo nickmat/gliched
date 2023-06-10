@@ -74,7 +74,6 @@ namespace glich {
         std::string  m_name;
         Scheme_style  m_style;
         const Base&  m_base;
-        StdStrVec  m_fields;
         std::string  m_input_fcode;
         std::string  m_output_fcode;
     };

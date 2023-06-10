@@ -71,6 +71,7 @@ namespace glich {
         Field m_end;
 
         Range() : m_beg( f_invalid ), m_end( f_invalid ) {}
+        Range( Field fld ) : m_beg( fld ), m_end( fld ) {}
         Range( Field beg, Field end ) : m_beg( beg ), m_end( end ) {}
     };
 

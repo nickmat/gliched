@@ -1225,7 +1225,7 @@ SValue Script::text_cast()
         }
         // We ignore any suffix scheme setting
         sch = dynamic_cast<Scheme*>(obj);
-        if( obj == nullptr ) {
+        if( sch == nullptr ) {
             value.set_error( "Object is not a scheme." );
             return value;
         }

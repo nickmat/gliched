@@ -36,6 +36,7 @@
 #include "hicJdn.h"
 #include "hicJulian.h"
 #include "hicOptional.h"
+#include "hicRecord.h"
 
 #include <cassert>
 #include <cstdlib>
@@ -69,32 +70,12 @@ Scheme::~Scheme()
 SValue Scheme::complete_object( Field jdn ) const
 {
     const Base& base = get_base();
-    FieldVec fields = base.get_fields( jdn );
-    SValueVec vals( fields.size() + 1 );
-    vals[0].set_str( get_code() );
-    for( size_t i = 0; i < base.required_size(); i++ ) {
-        if( fields[i] != f_invalid ) {
-            vals[i + 1].set_field( fields[i] );
-        }
-    }
-    for( size_t i = base.required_size(); i < base.record_size(); i++ ) {
-        string name = base.get_fieldname( i );
-        vals[i + 1] = GetOptional( name, jdn );
-    }
-    SValue value( vals );
+    Record record( base, jdn );
     string calc_output = base.get_grammar()->get_calc_output();
     if( !calc_output.empty() ) {
-        Store* store = new Store;
-        const NameIndexMap& namemap = get_vnames_map();
-        for( const auto npair : namemap ) {
-            store->create_local( npair.first );
-            store->update_local( npair.first, vals[npair.second] );
-        }
-        Glich* glc = SValue::get_glc();
-        SValue calc = glc->evaluate( calc_output, store );
-        value.mask_op( calc );
+        record.calculate_expression( calc_output );
     }
-    return value;
+    return record.get_object( get_code() );
 }
 
 SValue Scheme::complete_object( const string& input, const string& fcode ) const

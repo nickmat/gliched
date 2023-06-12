@@ -156,6 +156,17 @@ RList Scheme::str_to_rlist( const std::string& input, const std::string& fcode )
     return fmt->string_to_rlist( m_base, input );
 }
 
+string Scheme::object_to_str( const SValue& ovalue, const string& fcode ) const
+{
+    const Base& base = get_base();
+    Record record( base, ovalue );
+    Format* fmt = get_input_format( fcode );
+    if( fmt == nullptr ) {
+        return string();
+    }
+    return fmt->get_text_output( record );
+}
+
 /* static */
 Base* Scheme::create_base( BaseName bs, const std::string& data )
 {

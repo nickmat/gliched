@@ -1229,10 +1229,8 @@ SValue Script::text_cast()
             value.set_error( "Object is not a scheme." );
             return value;
         }
-        SValueVec vals = value.get_object();
-        FieldVec fields = sch->get_object_fields( vals );
-        Field jdn = sch->get_base().get_jdn( fields );
-        value.set_str( sch->jdn_to_str( jdn, fcode ) );
+        string str = sch->object_to_str( value, fcode );
+        value.set_str( str );
         return value;
     }
     if( sch == nullptr ) {

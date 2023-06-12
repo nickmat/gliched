@@ -322,6 +322,9 @@ double SValue::get_field_as_float() const
 
 Field SValue::get_as_field() const
 {
+    if( std::holds_alternative<Num>( m_data ) && m_type == Type::field ) {
+        return std::get<Num>( m_data );
+    }
     if( std::holds_alternative<Num>( m_data ) && m_type == Type::Number ) {
         Num num = std::get<Num>( m_data );
         if( num >= f_maximum || num <= f_minimum ) {

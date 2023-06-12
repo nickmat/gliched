@@ -83,6 +83,8 @@ bool Base::attach_grammar( Grammar* gmr )
     m_grammar = gmr;
     vec_append( m_fieldnames, gmr->get_calc_fieldnames() );
     vec_append( m_fieldnames, gmr->get_opt_fieldnames() );
+    m_calculate_input = gmr->get_calc_input();
+    m_calculate_output = gmr->get_calc_output();
     return true;
 }
 
@@ -102,18 +104,6 @@ int Base::get_alias_fieldname_index( const string& alias ) const
 {
     string fieldname = m_grammar->resolve_field_alias( alias );
     return  get_fieldname_index( fieldname );
-}
-
-string Base::get_calc_output() const
-{
-    assert( m_grammar );
-    return m_grammar->get_calc_output();
-}
-
-string Base::get_calc_input() const
-{
-    assert( m_grammar );
-    return m_grammar->get_calc_input();
 }
 
 Format* Base::get_format( const string& fcode ) const

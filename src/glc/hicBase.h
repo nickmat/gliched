@@ -56,8 +56,10 @@ namespace glich {
         int get_fieldname_index( const std::string& fieldname ) const;
         int get_alias_fieldname_index( const std::string& alias ) const;
 
-        std::string get_calc_output() const;
-        std::string get_calc_input() const;
+        std::string get_calc_input() const { return m_calculate_input; }
+        std::string get_calc_output() const { return m_calculate_output; }
+        bool has_calc_input() const { return !m_calculate_input.empty(); }
+        bool has_calc_output() const { return !m_calculate_output.empty(); }
         Format* get_format( const std::string& fcode ) const;
         std::string get_input_fcode() const;
         std::string get_output_fcode() const;
@@ -72,9 +74,12 @@ namespace glich {
         virtual FieldVec get_fields( Field jdn ) const = 0;
 
     protected:
-        StdStrVec m_fieldnames; // This is both required and optional.
+        StdStrVec m_fieldnames; // This is both required, calculated and optional.
         LocaleData m_locale;
         Grammar* m_grammar;
+
+        std::string m_calculate_input;
+        std::string m_calculate_output;
     };
 
 }

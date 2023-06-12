@@ -41,8 +41,7 @@ using std::string;
 
 
 FormatText::FormatText( const string& code, Grammar& gmr )
-    : Format( code, gmr ), m_separators(":,"), m_shorthand(true), m_sig_rank_size(0),
-    m_has_calulate_output(false), m_has_calulate_input(false)
+    : Format( code, gmr ), m_separators(":,"), m_shorthand(true), m_sig_rank_size(0)
 {
 }
 
@@ -165,10 +164,6 @@ void FormatText::setup_control_in()
             }
         }
     }
-
-    if( !get_grammar().get_calc_input().empty() ) {
-        m_has_calulate_input = true;
-    }
 }
 
 void FormatText::setup_control_out()
@@ -218,16 +213,13 @@ void FormatText::setup_control_out()
     if( m_output_str.empty() ) {
         set_user_output_str( output );
     }
-
-    if( !get_grammar().get_calc_output().empty() ) {
-        m_has_calulate_output = true;
-    }
 }
 
 std::string glich::FormatText::get_text_output( Record& record ) const
 {
-    if( m_has_calulate_output ) {
-        record.calculate_expression( get_grammar().get_calc_output() );
+    const Base& base = record.get_base();
+    if( base.has_calc_output() ) {
+        record.calculate_expression( base.get_calc_output() );
     }
     return get_revealed_output( record, nullptr );
 }
@@ -302,8 +294,8 @@ bool FormatText::set_input( Record& record, const string& input, Boundary rb ) c
     InputFieldVec ifs( base.record_size() );
     parse_date( ifs, input );
     bool ret = resolve_input( base, record.get_field_vec(), ifs );
-    if( ret && m_has_calulate_input ) {
-        record.calculate_expression( get_grammar().get_calc_input() );
+    if( ret && base.has_calc_input() ) {
+        record.calculate_expression( base.get_calc_input() );
     }
     if( !ret || rb == Boundary::None ) {
         record.calc_jdn();

@@ -71,7 +71,7 @@ SValue Scheme::complete_object( Field jdn ) const
 {
     const Base& base = get_base();
     Record record( base, jdn );
-    string calc_output = base.get_grammar()->get_calc_output();
+    string calc_output = base.get_calc_output();
     if( !calc_output.empty() ) {
         record.calculate_expression( calc_output );
     }

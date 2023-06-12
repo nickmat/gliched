@@ -61,6 +61,11 @@ Record::Record( const Base& base, const string& str, const Format& fmt, Boundary
 {
     set_str( str, fmt, rb );
 }
+Record::Record( const Base& base, const SValue& ovalue )
+    : m_base( base ), m_jdn( f_invalid ), m_f( base.record_size() )
+{
+    set_object( ovalue );
+}
 
 void Record::set_jdn( Field jdn )
 {
@@ -73,7 +78,7 @@ void Record::set_jdn( Field jdn )
     m_f = m_base.get_fields( jdn );
 }
 
-Field glich::Record::calc_jdn()
+Field Record::calc_jdn()
 {
     if( m_f[0] == f_minimum || m_f[0] == f_maximum ) {
         m_jdn = m_f[0];
@@ -102,6 +107,20 @@ void Record::set_str( const string& str, const Format& fmt, Boundary rb )
     }
 }
 
+void Record::set_object( const SValue& ovalue )
+{
+    clear_fields();
+    const SValueVec* values = ovalue.get_object_values();
+    if( values->size() <= 1 ) {
+        return;
+    }
+    size_t size = std::min( m_base.record_size(), values->size() - 1 );
+    for( size_t i = 0; i < size; i++ ) {
+        Field fld = values->at( i + 1 ).get_as_field();
+        m_f[i] = fld;
+    }
+}
+
 // Complete all invalid required fields by setting them to the first valid value.
 // If the first field is invalid, set it to past.
 Field Record::complete_fields_as_beg()
@@ -120,7 +139,7 @@ Field Record::complete_fields_as_beg()
 
 // Complete all invalid required fields by setting them to the last valid value.
 // If the first field is invalid, set it to future.
-Field glich::Record::complete_fields_as_end()
+Field Record::complete_fields_as_end()
 {
     bool begining = true;
     for( size_t i = 0; i < m_base.required_size(); i++ ) {

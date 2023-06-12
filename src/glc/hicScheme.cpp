@@ -167,6 +167,15 @@ string Scheme::object_to_str( const SValue& ovalue, const string& fcode ) const
     return fmt->get_text_output( record );
 }
 
+// This currently expects the default fields to be complete on entry.
+SValue Scheme::object_to_demoted_rlist( const SValue& ovalue ) const
+{
+    const Base& base = get_base();
+    Record record( base, ovalue );
+    record.calc_jdn();
+    return SValue( record.get_jdn(), SValue::Type::field );
+}
+
 /* static */
 Base* Scheme::create_base( BaseName bs, const std::string& data )
 {

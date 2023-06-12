@@ -1216,8 +1216,6 @@ SValue Script::text_cast()
     }
     SValue value = primary( GetToken::current );
     if( value.type() == SValue::Type::Object ) {
-
-
         Object* obj = value.get_object_ptr();
         if( obj == nullptr ) {
             value.set_error( "Object type not recognised." );
@@ -1281,15 +1279,11 @@ SValue Script::date_cast()
         }
         // We ignore any suffix scheme setting
         sch = dynamic_cast<Scheme*>(obj);
-        if( obj == nullptr ) {
+        if( sch == nullptr ) {
             value.set_error( "Object is not a scheme." );
             return value;
         }
-        SValueVec vals = value.get_object();
-        FieldVec fields = sch->get_object_fields( vals );
-        Field fld = sch->get_base().get_jdn( fields );
-        value.set_field( fld );
-        return value;
+        return sch->object_to_demoted_rlist( value );
     }
     if( value.type() == SValue::Type::String ) {
         if( sch == nullptr ) {

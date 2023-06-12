@@ -69,6 +69,7 @@ namespace glich {
         RList str_to_rlist( const std::string& str, const std::string& fcode ) const;
 
         std::string object_to_str( const SValue& ovalue, const std::string& fcode ) const;
+        SValue object_to_demoted_rlist( const SValue& ovalue ) const;
 
         static Base* create_base( BaseName bs, const std::string& data );
 

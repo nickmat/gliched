@@ -40,21 +40,21 @@ lexicon M {
 grammar JA {
     fields year month day;
     optional wday;
-    calculated hyear;
+    calculated cyear;
     calculate {
         output {: ,,,@if( month<3 or (month=3 and day<25), year-1, year) };
-        input {: @if( month<3 or (month=3 and day<25), hyear+1, hyear) };
+        input {: @if( month<3 or (month=3 and day<25), cyear+1, cyear) };
     }
-    rank hyear, month, day;
+    rank cyear, month, day;
     lexicons M, W;
-    alias pseudo { w wday; dd day; mm month; yyyy hyear; }
+    alias pseudo { w wday; dd day; mm month; yyyy cyear; }
     alias unit { d day; m month; y year; }
-    format  dmh, "{day} |{month:M:a} |{hyear}";
-    format  wdmh, "{wday:W:a} |{day} |{month:M:a} |{hyear}";
+    format  dmc, "{day} |{month:M:a} |{cyear}";
+    format  wdmc, "{wday:W:a} |{day} |{month:M:a} |{cyear}";
     format  out {
-        output "{day::os} |{month:M} |{hyear}";
+        output "{day::os} |{month:M} |{cyear}";
     }
-    preferred dmh;
+    preferred dmc;
 }
 
 scheme JA {
@@ -65,17 +65,17 @@ scheme JA {
 
 writeln "";
 writeln record.JA 2360328 + ", " + record.JA 2360329;
-writeln record.JA:dmh "24 mar 1749" + ", " + record.JA:dmh "25 Mar 1750";
-writeln text.JA:dmh 2360328 + ", " + text.JA:dmh 2360329;
-writeln text.JA:dmh {s:JA 1750,3,24} + ", " +
-    text.JA:dmh {s:JA 1750,3,25};
-writeln text.JA:dmh ({s:JA ,3,24,1749}.input) + ", " +
-    text.JA:dmh ({s:JA ,3,24,1750}.input);
-writeln date.JA:dmh "24 mar 1749" + ", " + date.JA:dmh "25 Mar 1750";
-writeln date.JA:dmh {s:JA 1750,3,24} + ", " +
-    date.JA:dmh {s:JA 1750,3,25};
-writeln date.JA:dmh ({s:JA ,3,24,1749}.input) + ", " +
-    date.JA:dmh ({s:JA ,3,24,1750}.input);
+writeln record.JA:dmc "24 mar 1749" + ", " + record.JA:dmc "25 Mar 1750";
+writeln text.JA:dmc 2360328 + ", " + text.JA:dmc 2360329;
+writeln text.JA:dmc {s:JA 1750,3,24} + ", " +
+    text.JA:dmc {s:JA 1750,3,25};
+writeln text.JA:dmc ({s:JA ,3,24,1749}.input) + ", " +
+    text.JA:dmc ({s:JA ,3,24,1750}.input);
+writeln date.JA:dmc "24 mar 1749" + ", " + date.JA:dmc "25 Mar 1750";
+writeln date.JA:dmc {s:JA 1750,3,24} + ", " +
+    date.JA:dmc {s:JA 1750,3,25};
+writeln date.JA:dmc ({s:JA ,3,24,1749}.input) + ", " +
+    date.JA:dmc ({s:JA ,3,24,1750}.input);
 writeln text.JA:out 2432814;
 
 /*[OUTPUT]

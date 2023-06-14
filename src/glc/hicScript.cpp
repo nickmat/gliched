@@ -84,6 +84,7 @@ Scheme* glich::do_create_scheme( Script& script, const std::string& code )
     }
     Base* base = nullptr;
     string name, gmr_code;
+    Field epoch = f_invalid;
     Grammar* gmr = nullptr;
     Scheme_style style = SCH_STYLE_Default;
     for( ;;) {
@@ -101,6 +102,9 @@ Scheme* glich::do_create_scheme( Script& script, const std::string& code )
             }
             else if( token.get_str() == "base" ) {
                 base = do_base( script, GetToken::next );
+            }
+            else if( token.get_str() == "epoch" ) {
+                epoch = script.expr( GetToken::next ).get_as_field();
             }
             else if( token.get_str() == "grammar" ) {
                 token = script.next_token();
@@ -137,6 +141,9 @@ Scheme* glich::do_create_scheme( Script& script, const std::string& code )
         delete base;
         script.error( "Unable to attach grammar." );
         return nullptr;
+    }
+    if( epoch != f_invalid && !base->set_epoch( epoch ) ) {
+        script.error( "Unable to set epoch." );
     }
     Scheme* sch = new Scheme( "s:" + code, *base);
     sch->set_name( name );

@@ -44,6 +44,8 @@ namespace glich {
         }
         ~Julian() {}
 
+        bool set_epoch( Field epoch ) override;
+
         size_t required_size() const override { return 3; }
     
         Field get_jdn( const FieldVec& fields ) const override;

@@ -119,6 +119,7 @@ void Record::set_object( const SValue& ovalue )
         Field fld = values->at( i + 1 ).get_as_field();
         m_f[i] = fld;
     }
+    calc_jdn();
 }
 
 // Complete all invalid required fields by setting them to the first valid value.

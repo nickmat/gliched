@@ -34,6 +34,7 @@ glich::ScriptModule glich::hics_default_scripts[] = {
     { "jdn", @(cp.cpp)"jdn.glcs" },
     { "week", @(cp.cpp)"week.glcs" },
     { "julian", @(cp.cpp)"julian.glcs" },
+    { "julian_shift", @(cp.cpp)"julian_shift.glcs" },
     { "gregorian", @(cp.cpp)"gregorian.glcs" },
     { "jce", @(cp.cpp)"jce.glcs" },
 };

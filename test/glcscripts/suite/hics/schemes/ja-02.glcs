@@ -1,4 +1,4 @@
-// ja-01.glcs  - Test version of Julian Annunciation using calculated fields.
+// ja-02.glcs  - Test version of Julian Annunciation using scheme epoch sub-statement.
 
 lexicon W {
     name "Weekday names";
@@ -41,10 +41,6 @@ grammar JA {
     fields year month day;
     optional wday;
     calculated cyear;
-    calculate {
-        output {: ,,,@if( month<3 or (month=3 and day<25), year-1, year) };
-        input {: @if( month<3 or (month=3 and day<25), cyear+1, cyear) };
-    }
     rank cyear, month, day;
     lexicons M, W;
     alias pseudo { w wday; dd day; mm month; yyyy cyear; }
@@ -60,6 +56,7 @@ grammar JA {
 scheme JA {
     name "Julian Annunciation";
     base julian;
+    epoch 1721507;   // j:dmy# 25 Mar 1
     grammar JA;
 }
 

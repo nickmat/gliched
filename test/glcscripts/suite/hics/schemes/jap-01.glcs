@@ -1,4 +1,4 @@
-// ja-01.glcs  - Test version of Julian Annunciation using calculated fields.
+// jap-01.glcs  - Test version of Julian Annunciation Pisa using calculated fields.
 
 lexicon W {
     name "Weekday names";
@@ -37,13 +37,13 @@ lexicon M {
     }
 }
 
-grammar JA {
+grammar JAP {
     fields year month day;
     optional wday;
     calculated cyear;
     calculate {
-        output {: ,,,@if( month<3 or (month=3 and day<25), year-1, year) };
-        input {: @if( month<3 or (month=3 and day<25), cyear+1, cyear) };
+        output {: ,,,@if( month<3 or (month=3 and day<25), year, year+1) };
+        input {: @if( month<3 or (month=3 and day<25), cyear, cyear-1) };
     }
     rank cyear, month, day;
     lexicons M, W;
@@ -57,37 +57,37 @@ grammar JA {
     preferred dmc;
 }
 
-scheme JA {
+scheme JAP {
     name "Julian Annunciation";
     base julian;
-    grammar JA;
+    grammar JAP;
 }
 
 writeln "";
-writeln record.JA 2360328 + ", " + record.JA 2360329;
-writeln record.JA:dmc "24 mar 1749" + ", " + record.JA:dmc "25 Mar 1750";
-writeln text.JA:wdmc 2360328 + ", " + text.JA:wdmc 2360329;
-writeln text.JA:wdmc {s:JA 1750,3,24} + ", " +
-    text.JA:wdmc {s:JA 1750,3,25};
-writeln text.JA:wdmc ({s:JA ,3,24,1749}.input) + ", " +
-    text.JA:wdmc ({s:JA ,3,25,1750}.input);
-writeln date.JA:dmc "24 mar 1749" + ", " + date.JA:dmc "25 Mar 1750";
-writeln date.JA:dmc {s:JA 1750,3,24} + ", " +
-    date.JA:dmc {s:JA 1750,3,25};
-writeln date.JA:dmc ({s:JA ,3,24,1749}.input) + ", " +
-    date.JA:dmc ({s:JA ,3,25,1750}.input);
-writeln text.JA:out 2432814;
+writeln record.JAP 2360328 + ", " + record.JAP 2360329;
+writeln record.JAP:dmc "24 mar 1750" + ", " + record.JAP:dmc "25 Mar 1751";
+writeln text.JAP:wdmc 2360328 + ", " + text.JAP:wdmc 2360329;
+writeln text.JAP:wdmc {s:JAP 1750,3,24} + ", " +
+    text.JAP:wdmc {s:JAP 1750,3,25};
+writeln text.JAP:wdmc ({s:JAP ,3,24,1750}.input) + ", " +
+    text.JAP:wdmc ({s:JAP ,3,25,1751}.input);
+writeln date.JAP:dmc "24 mar 1750" + ", " + date.JAP:dmc "25 Mar 1751";
+writeln date.JAP:dmc {s:JAP 1750,3,24} + ", " +
+    date.JAP:dmc {s:JAP 1750,3,25};
+writeln date.JAP:dmc ({s:JAP ,3,24,1750}.input) + ", " +
+    date.JAP:dmc ({s:JAP ,3,25,1751}.input);
+writeln text.JAP:out 2432814;
 
 /*[OUTPUT]
 
-{s:JA 1750, 3, 24, 1749, 6}, {s:JA 1750, 3, 25, 1750, 7}
-{s:JA 1750, 3, 24, 1749, 6}, {s:JA 1750, 3, 25, 1750, 7}
-Sat 24 Mar 1749, Sun 25 Mar 1750
-Sat 24 Mar 1749, Sun 25 Mar 1750
-Sat 24 Mar 1749, Sun 25 Mar 1750
+{s:JAP 1750, 3, 24, 1750, 6}, {s:JAP 1750, 3, 25, 1751, 7}
+{s:JAP 1750, 3, 24, 1750, 6}, {s:JAP 1750, 3, 25, 1751, 7}
+Sat 24 Mar 1750, Sun 25 Mar 1751
+Sat 24 Mar 1750, Sun 25 Mar 1751
+Sat 24 Mar 1750, Sun 25 Mar 1751
 2360328, 2360329
 2360328, 2360329
 2360328, 2360329
-6th September 1948
+6th September 1949
 
 [OUTPUT]*/

@@ -1,0 +1,76 @@
+// ja-03.glcs  - Test version of Julian Annunciation with dual dates.
+
+lexicon W {
+    name "Weekday names";
+    fieldname wday;
+    lang en;
+    pseudo    Weekday,  WDay;
+    tokens {
+        1, "Monday",    "Mon";
+        2, "Tuesday",   "Tue";
+        3, "Wednesday", "Wed";
+        4, "Thursday",  "Thur";
+        5, "Friday",    "Fri";
+        6, "Saturday",  "Sat";
+        7, "Sunday",    "Sun";
+    }
+}
+
+lexicon M {
+    name "Month names";
+    fieldname month;
+    lang en;
+    pseudo     Month,     Mon;
+    tokens {
+        1,  "January",   "Jan";
+        2,  "February",  "Feb";
+        3,  "March",     "Mar";
+        4,  "April",     "Apr";
+        5,  "May";
+        6,  "June",      "Jun";
+        7,  "July",      "Jul";
+        8,  "August",    "Aug";
+        9,  "September", "Sep";
+        10, "October",   "Oct";
+        11, "November",  "Nov";
+        12, "December",  "Dec";
+    }
+}
+
+grammar JA {
+    fields year month day;
+    optional wday;
+    calculated cyear;
+    rank cyear, month, day;
+    lexicons M, W;
+    alias pseudo { w wday; dd day; mm month; yyyy cyear; }
+    alias unit { d day; m month; y year; }
+    format  dmc, "{day} |{month:M:a} |{cyear/year}";
+    format  wdmc, "{wday:W:a} |{day} |{month:M:a} |{cyear/year}";
+    format  out {
+        output "{day::os} |{month:M} |{cyear/year}";
+    }
+    preferred dmc;
+}
+
+scheme JA {
+    name "Julian Annunciation";
+    base julian;
+    epoch 1721507;   // j:dmy# 25 Mar 1
+    grammar JA;
+}
+
+writeln "";
+writeln record.JA:dmc "24 mar 1749/50" + ", " + record.JA:dmc "25 Mar 1750";
+writeln text.JA:wdmc 2360328 + ", " + text.JA:wdmc 2360329;
+writeln date.JA:dmc "24 mar 1749/50" + ", " + date.JA:dmc "25 Mar 1750";
+writeln text.JA:out 2430792;
+
+/*[OUTPUT]
+
+{s:JA 1750, 3, 24, 1749, 6}, {s:JA 1750, 3, 25, 1750, 7}
+Sat 24 Mar 1749/50, Sun 25 Mar 1750
+2360328, 2360329
+23rd February 1942/3
+
+[OUTPUT]*/

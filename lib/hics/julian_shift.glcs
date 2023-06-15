@@ -1,0 +1,77 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Name:        lib/hics/julian_shifted.glcs
+ * Project:     Glich: Extendable Script Language.
+ * Purpose:     Julian shifted epoch schemes for hics library.
+ * Author:      Nick Matthews
+ * Website:     https://github.com/nickmat/glich
+ * Created:     15th June 2023
+ * Copyright:   Copyright (c) 2023, Nick Matthews.
+ * Licence:     GNU GPLv3
+ *
+ *  Glich is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Glich is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Glich.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+*/
+
+// Uses lexicon statements from julian.glcs
+
+grammar j_sh {
+    fields year month day;
+    calculated cyear;
+    optional wday;
+    rank cyear month day;
+    lexicons m w;
+    alias pseudo { w wday; dd day; mm month; yyyy cyear; }
+    alias unit { d day; m month; y year; }
+    format  dmc "{day} |{month:m:a} |{cyear}";
+    format  dmcy "{day} |{month:m:a} |{cyear/year}";
+    format  wdmcy "{wday:w:a} |{day} |{month:m:a} |{cyear/year}";
+    format  out {
+        output "{day::os} |{month:m} |{cyear/year}";
+    }
+    format  full {
+        output "{wday:w} |{day::os} |{month:m} |{cyear/year}";
+    }
+    preferred dmcy;
+}
+
+scheme ja {
+    name "Julian Annunciation";
+    base julian;
+    epoch 1721507;    // j:dmy# 25 Mar 1
+    grammar j_sh;
+}
+
+scheme jap {
+    name "Julian Annunciation Pisa";
+    base julian;
+    epoch 1721142;    // j:dmy# 25 Mar 0
+    grammar j_sh;
+}
+
+scheme jn {
+    name "Julian Nativity";
+    base julian;
+    epoch 1721417;    // j:dmy# 25 Dec 0
+    grammar j_sh;
+}
+
+scheme se {
+    name "Spanish Era";
+    base julian;
+    epoch 1707544;  // j:dmy# 1 Jan -37
+    grammar j_sh; // We may want to create our own grammar as we don't do dual dating.
+}
+
+// End of scripts/julian.hcs file

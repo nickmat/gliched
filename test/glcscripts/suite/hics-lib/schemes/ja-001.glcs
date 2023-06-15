@@ -1,0 +1,38 @@
+// ja-001.glc // Test formats
+
+writeln "";
+writeln record.ja 2360328 + ", " + record.ja 2360329;
+writeln record.ja:dmc "24 mar 1749" + ", " + record.ja:dmc "25 Mar 1750";
+writeln record.ja:dmcy "24 mar 1749" + ", " + record.ja:dmcy "25 Mar 1750";
+writeln text.ja:dmc 2360328 + ", " + text.ja:dmc 2360329;
+writeln text.ja:dmcy 2360328 + ", " + text.ja:dmcy 2360329;
+writeln text.ja:wdmcy 2360328 + ", " + text.ja:wdmcy 2360329;
+writeln text.ja:dmcy {s:ja 1750,3,24} + ", " +
+    text.ja:dmcy {s:ja 1750,3,25};
+writeln text.ja:dmcy ({s:ja ,3,24,1749}.input) + ", " +
+    text.ja:dmcy ({s:ja ,3,25,1750}.input);
+writeln date.ja:dmcy "24 mar 1749" + ", " + date.ja:dmcy "25 Mar 1750";
+writeln date.ja:dmcy {s:ja 1750,3,24} + ", " +
+    date.ja:dmcy {s:ja 1750,3,25};
+writeln date.ja:dmcy ({s:ja ,3,24,1749}.input) + ", " +
+    date.ja:dmcy ({s:ja ,3,25,1750}.input);
+writeln text.ja:out 2430792;
+writeln text.ja:full 2430792;
+
+/*[OUTPUT]
+
+{s:ja 1750, 3, 24, 1749, 6}, {s:ja 1750, 3, 25, 1750, 7}
+{s:ja 1750, 3, 24, 1749, 6}, {s:ja 1750, 3, 25, 1750, 7}
+{s:ja 1750, 3, 24, 1749, 6}, {s:ja 1750, 3, 25, 1750, 7}
+24 Mar 1749, 25 Mar 1750
+24 Mar 1749/50, 25 Mar 1750
+Sat 24 Mar 1749/50, Sun 25 Mar 1750
+24 Mar 1749/50, 25 Mar 1750
+24 Mar 1749/50, 25 Mar 1750
+2360328, 2360329
+2360328, 2360329
+2360328, 2360329
+23rd February 1942/3
+Monday 23rd February 1942/3
+
+[OUTPUT]*/

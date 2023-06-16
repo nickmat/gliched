@@ -48,6 +48,7 @@ namespace glich {
         bool is_ok() const { return m_ok; }
         bool constuct( const Base* base );
 
+        void set_inherit( const std::string& gcode );
         void set_base_fieldnames( StdStrVec fieldnames ) { m_base_fieldnames = fieldnames; }
         void set_opt_fieldnames( StdStrVec fieldnames ) { m_opt_fieldnames = fieldnames; }
         void set_calc_fieldnames( StdStrVec fieldnames ) { m_calc_fieldnames = fieldnames; }

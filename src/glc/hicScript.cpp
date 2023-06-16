@@ -344,9 +344,8 @@ Grammar* glich::do_create_grammar( Script& script, const std::string& code, cons
                 do_grammar_alias( script, gmr );
             }
             else if( name == "inherit" ) {
-                // TODO: str = get_name_or_primary( true );
-                //       gmr->set_inherit( str );
-                script.error( "inherit not yet done." );
+                str = script.get_name_or_primary( GetToken::next );
+                gmr->set_inherit( str );
             }
             else if( name == "fields" ) {
                 StdStrVec basefields = script.get_string_list( GetToken::next );

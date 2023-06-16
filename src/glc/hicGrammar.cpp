@@ -69,6 +69,13 @@ bool Grammar::constuct( const Base* base )
     return true;
 }
 
+void Grammar::set_inherit( const string& gcode )
+{
+    if( m_glc ) {
+        m_inherit = m_glc->get_grammar( gcode );
+    }
+}
+
 void Grammar::set_preferred( const string& fcode )
 {
     m_pref_output_fcode = fcode;

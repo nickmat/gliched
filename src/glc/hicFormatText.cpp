@@ -297,6 +297,7 @@ bool FormatText::set_input( Record& record, const string& input, Boundary rb ) c
     if( ret && base.has_calc_input() ) {
         record.calculate_expression( base.get_calc_input() );
     }
+    record.update_input();
     if( !ret || rb == Boundary::None ) {
         record.calc_jdn();
         return ret;

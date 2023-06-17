@@ -56,6 +56,7 @@ namespace glich {
         Field complete_fields_as_end();
 
         void calculate_expression( const std::string& script_expr );
+        void update_input();
 
         void set_field( Field value, size_t index );
 

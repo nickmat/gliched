@@ -179,6 +179,11 @@ void Record::calculate_expression( const string& script_expr )
     }
 }
 
+void Record::update_input()
+{
+    m_base.update_input( m_f );
+}
+
 void Record::set_field( Field value, size_t index )
 {
     assert( index < m_f.size() );

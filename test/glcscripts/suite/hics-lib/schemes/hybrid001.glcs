@@ -1,0 +1,57 @@
+// hybrid001.glc // Test hybrid scheme
+
+lexicon JG {
+    name "Scheme names";
+    fieldname scheme;
+    lang en;
+    pseudo    Scheme, Sch;
+    tokens {
+        0, "Julian",     "j";
+        1, "Gregorian",  "g";
+    }
+}
+
+grammar JG {
+    inherit j;
+    fields scheme year month day;
+    rank year month day;
+    lexicons JG;
+    alias pseudo {
+        s, scheme;
+    }
+    format  dmys    "{day} |{month:m:a} |{year} |{scheme:JG:a}";
+    format "dmys+", "{day} |{month:m} |{year} |{scheme:JG}";
+    preferred dmys;
+}
+
+scheme AY {
+    name "Astronomical Year";
+    hybrid {
+        fields scheme year, month, day;
+        scheme j;
+        change 2299161;  // g# 15 Oct 1582
+        scheme g;
+    }
+    grammar JG;
+}
+
+writeln "";
+
+writeln record.AY 2299160 + ", " + record.AY 2299161;
+writeln record.AY:dmys "4 Oct 1582 j" + ", " + record.AY:dmys "15 Oct 1582 g";
+writeln record.AY:dmys "4 Oct 1582" + ", " + record.AY:dmys "15 Oct 1582";
+writeln text.AY:dmys 2299160 + ", " + text.AY:dmys 2299161;
+writeln text.:dmys {s:AY 0,1582,10,4} + ", " + text.:dmys {s:AY 1,1582,10,15};
+writeln date.AY:dmys "4 Oct 1582" + ", " + date.AY:dmys "15 Oct 1582";
+writeln date {s:AY 0,1582,10,4} + ", " + date {s:AY 1,1582,10,15};
+
+/*[OUTPUT]
+
+{s:AY 0, 1582, 10, 4}, {s:AY 1, 1582, 10, 15}
+{s:AY 0, 1582, 10, 4}, {s:AY 1, 1582, 10, 15}
+{s:AY 0, 1582, 10, 4}, {s:AY 1, 1582, 10, 15}
+4 Oct 1582 j, 15 Oct 1582 g
+4 Oct 1582 j, 15 Oct 1582 g
+2299160, 2299161
+
+[OUTPUT]*/

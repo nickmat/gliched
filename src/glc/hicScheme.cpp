@@ -191,4 +191,14 @@ Base* Scheme::create_base( BaseName bs, const std::string& data )
     return nullptr;
 }
 
+Base* Scheme::create_base_hybrid( const StdStrVec& fieldnames, const std::vector<HybridData>& data )
+{
+    Base* base = new Hybrid( fieldnames, data );
+    if( base->is_ok() ) {
+        return base;
+    }
+    delete base;
+    return nullptr;
+}
+
 // End of src/cal/calscheme.cpp file

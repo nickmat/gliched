@@ -31,6 +31,7 @@
 #include <glc/glc.h>
 #include <glc/hicDefs.h>
 #include "glcObject.h"
+#include "hicHybrid.h"
 
 namespace glich {
 
@@ -72,6 +73,9 @@ namespace glich {
         SValue object_to_demoted_rlist( const SValue& ovalue ) const;
 
         static Base* create_base( BaseName bs, const std::string& data );
+        static Base* create_base_hybrid(
+            const StdStrVec& fieldnames,
+            const std::vector<HybridData>& data );
 
     private:
         std::string  m_name;

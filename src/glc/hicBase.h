@@ -45,6 +45,8 @@ namespace glich {
         virtual bool set_epoch( Field epoch ) { return false; }
 
         bool attach_grammar( Grammar* gmr );
+        // Return true if in a usable state.
+        virtual bool is_ok() const { return true; }
 
         // Return the number of Required Fields.
         virtual size_t required_size() const = 0;

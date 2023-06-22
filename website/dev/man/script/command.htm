@@ -44,14 +44,14 @@
 <table class='basic'>
 <tr><th>Statement command Format</th></tr>
  <tr> <!-- See test file - test\tscripts\suite\functions\function012.hcs -->
-<td class='code'><b>function</b> <i>name</i> <b>{</b>
+<td class='code'><b>command</b> <i>name</i> <b>{</b>
     <i>statements ...</i>
 <b>}</b>
 
 <b>call</b> <i>name</i><b>;</b></td>
  </tr>
  <tr> <!-- See test file - test\tscripts\suite\functions\function014.hcs -->
-<td class='code'><b>function</b> <i>name</i><b>(</b><i>arg</i><b>=</b><i>value</i><b>,</b> <i>arg</i><b>=</b><i>value</i><b>) {</b>
+<td class='code'><b>command</b> <i>name</i><b>(</b><i>arg</i><b>=</b><i>value</i><b>,</b> <i>arg</i><b>=</b><i>value</i><b>) {</b>
     <i>statements ...</i>
 <b>}</b>
 
@@ -63,23 +63,34 @@
 <tr><th colspan='2'>Statement command Format</th></tr>
 <tr><th>Example</th><th>Output</th></tr>
  <tr> <!-- See test file - test\tscripts\suite\functions\function012.hcs -->
-  <td class='example'><b>function</b> wr_today <b>{</b>
+  <td class='example'><b>command</b> wr_today <b>{</b>
     write string.g:dmy today;
 <b>}</b>
     ...
 <b>call</b> wr_today<b>;</b></td>
   <td>21 May 2017</td>
  </tr>
- <tr> <!-- See test file - test\tscripts\suite\functions\function014.hcs -->
-  <td class='example'><b>function</b> wr_range_plus<b>(</b>start<b>,</b> duration = 7<b>){</b>
-    write string.g:dmy( start .. start + duration );
-<b>}</b>
-    ...
-<b>call</b> wr_range_plus<b>(</b>date.g:dmy "19sep1948"<b>,</b> 14<b>);</b></td>
-  <td>19 Sep 1948 .. 3 Oct 1948</td>
- </tr>
  <tr>
   <td colspan='2'>Written when today = "g:dmy# 21 May 2017"</td>
+ </tr>
+
+ <tr> <!-- See test file - test\tscripts\suite\functions\function014.hcs -->
+  <td class='example'>object complex { values real imaginary; }
+    
+<b>command</b> write_complex<b>(</b> c <b>) {</b>
+    if v[.object] = complex
+        if c[imaginary] < 0
+            write c[real] + " - " + c[imaginary] + "i";
+        elseif c[imaginary] = 0
+            write c[real];
+        else
+            write c[real] + " + " + c[imaginary] + "i";
+        endif
+    endif
+<b>}</b>
+
+<b>call</b> write_complex( {complex 20, -25} );</b></td>
+  <td>20 - 25i</td>
  </tr>
 </table>
 

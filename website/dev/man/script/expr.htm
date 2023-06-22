@@ -36,6 +36,14 @@
  Expressions use the following value types.
 </p>
 
+<h3>String</h3>
+<p>
+ A string is sequence of unicode (UTF-8) characters.
+ It is written by enclosing the text in double quotes <b>'"'</b>.
+ If a double quote is required in the text, use two double quotes together.
+ For example, the value "Say ""Hello""" would print as Say "Hello".
+</p>
+
 <h3>Float</h3>
 <p>
  A floating point number.
@@ -147,14 +155,6 @@
  <span class='example'>any_numeric_type</span> groups.
 </p>
 
-<h3>String</h3>
-<p>
- A string is sequence of unicode (UTF-8) characters.
- It is written by enclosing the text in double quotes <b>'"'</b>.
- If a double quote is required in the text, use two double quotes together.
- For example, the value "Say ""Hello""" would print as Say "Hello".
-</p>
-
 <h3>Boolean</h3>
 <p>
  A boolean value holds one of the two keywords <b>'true'</b> or <b>'false'</b>.
@@ -167,6 +167,26 @@
  After its definition it can written by enclosing the values in curly brackets,
  starting with the objects code name.
 </p>
+<p>
+ The language contains one built-in object that does not need to be defined before use.
+</p>
+<h4>{: } Built-in Object</h4>
+<p>
+ The object ':' is an empty object and can be used for any purpose.
+ It is defined as follows. 
+</p>
+<table class='code'>
+<tr><td
+>object : {}
+</td></tr>
+</table>
+
+<h3>Error</h3>
+<p>
+ An error value is created whenever an operation is carried which has undefined results.
+ When written out, the value should print text that describes where and why
+ the error was created.
+</p>
 
 <h3>Null</h3>
 <p>
@@ -177,13 +197,6 @@
  The equals operator returns 'true' if both values are null
  and 'false' otherwise.
  Any other operation with null is undefined and results in an error value.
-</p>
-
-<h3>Error</h3>
-<p>
- An error value is created whenever an operation is carried which has undefined results.
- When written out, the value should print text that describes where and why
- the error was created.
 </p>
 
 <h2>Names</h2>
@@ -386,7 +399,7 @@
  The binary range operator creates a range value which is just large enough to include
  both its operands.<br />
  The order of the operands is not significant.<br />
- The operands can be either field or range types. Numbers will be converted to a field in if possible.<br />
+ The operands can be either field or range types. Numbers will be converted to a field if possible.<br />
  The values -infinity and +infinity may be used.<br />
  Use of the ? value is an error.
 </p>
@@ -474,22 +487,27 @@
 <tr><td class='code'>span</td><td class='example'>(7..16)[.span]</td><td class='example'>10</td><td rowspan='2'>Return the inclusive count between upper and lower bounds of a range or rlist.</td></tr>
 <tr><td class='code'>span</td><td class='example'>(21|79..88|100..120|200..210)[.span]</td><td class='example'>190</td></tr>
 <tr><td class='code'>size</td><td class='example'>(21|79..88|100..120|200..210)[.size]</td><td class='example'>4</td><td rowspan='2'>Return the number of elements in a rlist or record.</td></tr>
-<tr><td class='code'>size</td><td class='example'>{g 1948,9,19}[.size]</td><td class='example'>3</td></tr>
+<tr><td class='code'>size</td><td class='example'>{s:g 1948,9,19}[.size]</td><td class='example'>3</td></tr>
 <tr><td class='code'>size</td><td class='example'>"Hello"[.size]</td><td class='example'>5</td><td>Return the number of characters in a string. May not match the number of unicode code points.</td></tr>
 <tr><td class='code'>envelope</td><td class='example'>(21|79..88|100..120|200..210)[.envelope]</td><td class='example'>21..210</td><td>Return the enclosing range af an rlist.</td></tr>
-<tr><td class='code'>object</td><td class='example'>{g 1948,9,19}[.object]</td><td class='example'>"g"</td><td>Return the object code name as a string.</td></tr>
+<tr><td class='code'>object</td><td class='example'>{s:g 1948,9,19}[.object]</td><td class='example'>"s:g"</td><td>Return the object code name as a string.</td></tr>
 <tr><td class='code'>type</td><td class='example'>2432814[.type]</td><td class='example'>"field"</td><td>Return the type of value as a string.</td></tr>
 </table>
 <p>
  The [.type] property returns one of the following strings:
- "field", "range", "rlist", "string", "record", "bool", "null".
- Since if the value is an error, the error will be propagated and so will not be detected.
+ "string", "float", "number", "field", "range", "rlist", "bool", "object" and "null".
+ Note, if the value is an error then the error will be propagated and so will not be detected.
 </p>
 
 <h3>Functions</h3>
 <p>
  A function first has to be defined using the function statement.
  It can then be called in an expression using the at '@' operator.
+</p>
+<p>
+ Functions have an additional local variable: <b>result</b>.
+ When the function is used in an expression,
+ its value is the value of this result variable.
 </p>
 <table class='basic'>
 <tr><th>Example</th><th>Result</th></tr><!-- See function008.hcs test file -->
@@ -534,31 +552,6 @@
  Use the convert cast to read a field value.
 </p>
 
-<h3>Commands</h3>
-<p>
- Like a function, a command first has to be defined using the command statement.
- It can then be called directly using the call statement.
- Unlike a function, it has not return type
-</p>
-<table class='basic'>
-<tr><th>Example</th><th>Result</th></tr><!-- See function008.hcs test file -->
- <tr><td class='example'>command write_complex( c ) {
-    if c[.object] = "complex"
-        if c[imaginary] < 0
-            write c[real] + " - " + -c[imaginary] + "i";
-        elseif c[imaginary] = 0
-            write c[real];
-        else
-            write c[real] + " + " + c[imaginary] + "i";
-        endif
-    endif
-}</td><td class='example'></td></tr>
- <tr><td class='example'>call write_complex({complex 20, -25});</td><td class='example'>20 - 25i</td></tr>
-</table>
-<p>
- There are no built-in commands at this time.
-</p>
-
 <h3>Type Conversions</h3>
 <p>
  Cast operators are used by the <b>Hics</b> language extension
@@ -593,7 +586,7 @@
 <tr><td class='code'>()</td><td>Parenthesized expression</td><td class='example'><b>(</b> expr <b>)</b></td><td class='example'>value</td></tr>
 <tr><td class='code' colspan='4'></td></tr>
 <tr><td class='code'>{}</td><td>Object</td><td class='example'><b>{sig</b> value, ...<b>}</b></td><td class='example'>object_value</td></tr>
-<tr><td class='code' colspan='4'>Hics cast operators (date, record, text and element) added here.</td></tr>
+<tr><td class='code' colspan='4'>Hics cast operators (text, date, record and element) added here.</td></tr>
 <tr><td class='code'>error</td><td>Error cast</td><td class='example'><b>error</b> string_value</td><td class='example'>error_value</td></tr>
 <tr><td class='code'>@</td><td>Function</td><td class='example'><b>@name</b><br /><b>@name(</b>expr, ...<b>)</b></td><td class='example'>value</td></tr>
 <tr><td class='code' colspan='4'></td></tr>

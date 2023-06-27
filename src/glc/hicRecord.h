@@ -45,6 +45,7 @@ namespace glich {
         Record( const Base& base );
         Record( const Base& base, Field jdn );
         Record( const Base& base, const std::string& str, const Format& fmt, Boundary rb );
+        Record( const Base& base, const FieldVec& fields );
         Record( const Base& base, const SValue& ovalue );
 
         void set_jdn( Field jdn );
@@ -57,6 +58,7 @@ namespace glich {
 
         void calculate_expression( const std::string& script_expr );
         void update_input();
+        void update_output();
 
         void set_field( Field value, size_t index );
 

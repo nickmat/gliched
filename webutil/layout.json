@@ -33,6 +33,11 @@
           { "name": "set", "label": "set Extensions" },
           { "name": "ebnf", "label": "EBNF Definitions" }
         ]},
+        { "folder": "tut", "name": "index", "label": "Tutorial", "subtitle": "Script Language Tutorial", "content": [
+          { "name": "glich", "label": "Glich Basics" },
+          { "name": "hics_1", "label": "Hics Expressions" },
+          { "name": "hics_2", "label": "Hics Definitions" }          
+        ]},
         { "name": "gloss", "label": "Glossary" }
       ]},
       { "name": "routemap", "label": "Route Map", "title": "Development" },

@@ -32,6 +32,127 @@
 <div id='content' class='nomenu'>
 
 <h2>Page Under Construction</h2>
+<h2>Hics Extensions to Expressions</h2>
+<p>
+ The hics extension adds four type conversions (casts) to expressions:
+ text, date, record and element.
+</p>
+
+<h3>Type Conversions</h3>
+<p>
+ The hics extension can uniquely describe a single day in Earth's past or future
+ in three different ways.
+</p>
+<ul>
+ <li><b>Date</b> A Julian Day Number (jdn). Uses a <b>Field</b> value type.</li>
+ <li><b>Text</b>
+  A character string with a defined calendar scheme and format.
+  Uses a <b>String</b> value type.
+ </li>
+ <li><b>Record</b>
+  A scheme object with fields as defined by the scheme definition.
+  Uses an <b>Object</b> value type.
+ </li>
+</ul>
+<p>
+ The script language uses cast operators to convert between these forms.
+</p>
+<p>
+ Additionally, a text element and field in a record can be converted
+ using an <b>element</b> cast.
+</p>
+
+<h4>Cast date</h4>
+<p>
+ A date, in this context, means a rlist or an well ordered list of ranges.
+ The date cast converts to these types from a text string or a record (scheme object).
+ The date cast puts these two record types into a consistent rlist type.
+ The rlist will then be demoted to a range or field if appropriate.
+</p>
+<p>
+ If the original type is a string,
+ then the cast operation will need to know the scheme and format to be used.
+ To convert to a record then the record scheme is required.
+ If these are missing, the system output default settings are used.
+ Note the a string description of an rlist may include embedded range and union symbols,
+ but this is different from a Date Phrase.
+ For instance, only one scheme format can be used for the conversion.
+</p>
+<table class='basic'>
+<tr><th>Example</th><th>Result</th></tr>
+ <tr><td class='example'>date "19sep1948"</td><td class='example'>2432814</td></tr>
+ <tr><td class='example'>date "1940..1950|1945..1955"</td><td class='example'>2429630 .. 2435473</td></tr>
+ <tr><td class='example'>date.g:iso "[1940..1950,1945..1955]"</td><td class='example'>2429630 .. 2435473</td></tr>
+ <tr><td class='example'>date {s:g 1948, 9, 19}</td><td class='example'>2432814</td></tr>
+ <tr><td class='example'>date {s:g 1948}</td><td class='example'>2432552 .. 2432917</td></tr>
+ <tr><td colspan='2'>The above examples assume a system input setting of "g:dmy".</td></tr>
+</table>
+
+<h4>Cast text</h4>
+<p>
+ The text cast operator converts a field, range, rlist or record type into a string type.
+</p>
+<p>
+ Except for a record type, the scheme code signature must be provided.
+ If the format code is not included in the signature,
+ then the default for that scheme is used.
+</p>
+<table class='basic'>
+<tr><th>Example</th><th>Result</th></tr>
+ <tr><td class='example'>string."g:dmy+" 2432814</td><td class='example'>"19 September 1948"</td></tr>
+ <tr><td class='example'>string.g 2429630..2435473</td><td class='example'>"1940 .. 1955"</td></tr>
+ <tr><td class='example'>string.g:iso 2429630 .. 2429995 | 2433283 .. 2435473</td><td class='example'>"[1940,1950..1955]"</td></tr>
+ <tr><td class='example'>string {s:g 1948, 9, 19}</td><td class='example'>"19 Sep 1948"</td></tr>
+ <tr><td class='example'>string {s:j 1948}</td><td class='example'>"1948"</td></tr>
+ <tr><td colspan='2'>The above examples assume a system output setting of "g:dmy".</td></tr>
+</table>
+
+<h4>Cast record</h4>
+<p>
+ The record cast operator converts a field (as a julian day number) or string type into a record type.
+ At this time, using the record cast with a range or rlist type is an error.
+</p>
+<p>
+ If a scheme:format signature is not given,
+ then to cast a field the output default setting is used,
+ whereas if casting a string, the input default is used.
+</p>
+<p>
+ Note that a record created from a cast always has all the fields included, even the optional ones.
+ Only main fields are given values though.
+ Records created using the record operator '{}' only include the given fields,
+ even if this does not fully qualify a date.
+</p>
+<table class='basic'>
+<tr><th>Example</th><th>Result</th></tr>
+ <tr><td class='example'>record.g:dmy "19sep1948"</td><td class='example'>{s:g 1948, 9, 19, 7}</td></tr>
+ <tr><td class='example'>record "21??"</td><td class='example'>{s:g null, null, 21, null}</td></tr>
+ <tr><td class='example'>record.:u "1948year 9month 19day"</td><td class='example'>{s:g 1948, 9, 19, 7}</td></tr>
+ <tr><td class='example'>record.j 2432814</td><td class='example'>{s:j 1948, 9, 6, 7}</td></tr>
+ <tr><td class='example'>record 2429630..2435473</td><td class='example'>Error</td></tr>
+ <tr><td colspan='2'>The above examples assume a system input and output setting of "g:dmy".</td></tr>
+</table>
+
+<h4>Cast element</h4>
+<p>
+ The element cast converts between a string and a field.
+ If a lexicon code is given with the cast then that lexicon is used to provide the conversion.
+ Using the cast on any type other than a field or string results in an error.
+</p>
+<table class='basic'>
+<tr><th>Example</th><th>Result</th></tr>
+ <tr><td class='example'>element.w 7</td><td class='example'>"Sunday"</td></tr>
+ <tr><td class='example'>element.ws:a 7</td><td class='example'>"Sat"</td></tr>
+ <tr><td class='example'>element.w "wed"</td><td class='example'>3</td></tr>
+ <tr><td class='example'>element.:rn "xiv"</td><td class='example'>14</td></tr>
+ <tr><td class='example'>element.:rn 14</td><td class='example'>"XIV"</td></tr>
+ <tr><td class='example'>element.:rn:l 14</td><td class='example'>"xiv"</td></tr>
+ <tr><td class='example'>element.:os 2</td><td class='example'>"2nd"</td></tr>
+ <tr><td class='example'>element.:oa 2</td><td class='example'>"nd"</td></tr>
+ <tr><td class='example'>element.:oa:u 2</td><td class='example'>"ND"</td></tr>
+ <tr><td class='example'>element "10"</td><td class='example'>10</td></tr>
+ <tr><td class='example'>element 10</td><td class='example'>"10"</td></tr>
+</table>
 
 </div><!--id=content-->
 

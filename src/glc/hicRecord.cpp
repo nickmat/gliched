@@ -61,6 +61,17 @@ Record::Record( const Base& base, const string& str, const Format& fmt, Boundary
 {
     set_str( str, fmt, rb );
 }
+
+Record::Record( const Base& base, const FieldVec& fields )
+    : m_base( base ), m_jdn( f_invalid ), m_f( base.record_size(), f_invalid )
+{
+    size_t size = std::min( fields.size(), m_f.size() );
+    for( size_t i = 0; i < size; i++ ) {
+        m_f[i] = fields[i];
+    }
+    calc_jdn();
+}
+
 Record::Record( const Base& base, const SValue& ovalue )
     : m_base( base ), m_jdn( f_invalid ), m_f( base.record_size() )
 {
@@ -182,6 +193,11 @@ void Record::calculate_expression( const string& script_expr )
 void Record::update_input()
 {
     m_base.update_input( m_f );
+}
+
+void Record::update_output()
+{
+    m_base.update_output( m_f );
 }
 
 void Record::set_field( Field value, size_t index )

@@ -75,6 +75,8 @@ namespace glich {
 
         // Complete any redundant fields.
         virtual void update_input( FieldVec& fields ) const {}
+        // Complete any redundant fields.
+        virtual void update_output( FieldVec& fields ) const {}
         // Converts the given jdn into the Records' Fields.
         virtual FieldVec get_fields( Field jdn ) const = 0;
 

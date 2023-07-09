@@ -31,7 +31,153 @@
 
 <div id='content' class='nomenu'>
 
-<h2>Page Under Construction</h2>
+<h2>Statement: grammar</h2>
+<p>
+ The grammar statement contains a number of sub-statements
+ which describe how a scheme's input and output is written.
+</p>
+<p>
+ The grammar must be given a unique (within all other grammars) code name
+ by which it can be referred to.
+ It may then contain the following sub-statements in between '{' and '}' braces.
+</p>
+
+<table class='basic'>
+<tr><th colspan='3'>grammar Sub-Statement List</th></tr>
+<tr><th>Sub-Statement</th><th>Use</th><th>Example</th></tr>
+<tr><td class='code'>inherit</td><td>Inherit all the settings from a previously defined grammar.</td><td class='example'>inherit j;</td></tr>
+<tr><td class='code'>fields</td><td>List of base fields, must match base order.</td><td class='example'>fields year month day;</td></tr>
+<tr><td class='code'>calculated</td><td>List of calculated fields.</td><td class='example'>calculated ce ceyear;</td></tr>
+<tr><td class='code'>calculate</td><td>Calculate specified fields based on a given record.</td><td class='example'>calculate {output {: ...}; input {: ...};}</td></tr>
+<tr><td class='code'>optional</td><td>List of optional fields.</td><td class='example'>optional wday;</td></tr>
+<tr><td class='code'>rank</td><td>The field ranking used by the format sub-statements.</td><td class='example'>rank ce ceyear month day;</td></tr>
+<tr><td class='code'>lexicons</td><td>The list of lexicons used with this grammar.</td><td class='example'>lexicons m w jce;</td></tr>
+<tr><td class='code'>alias</td><td>Allow the use of alternative field names.</td><td class='example'>alias field {WDay wday; ...}</td></tr>
+<tr><td class='code'>format</td><td>The description of a format.</td><td class='example'>format dmy "{day} |{month:m:a} |{year}";</td></tr>
+<tr><td class='code'>preferred</td><td>The preferred format to use, unless otherwise stated.</td><td class='example'>preferred dmy;</td></tr>
+</table>
+
+<h3>Sub-Statement: inherit</h3>
+<p>
+ Create a new grammar by extending an existing one.
+ The action of the original grammar is not changed in any way.
+</p>
+
+<h3>Sub-Statement: fields</h3>
+<p>
+ Declare the required fields that match the intended scheme base required fields.
+ This list is checked whenever the grammar is attached to a scheme.
+ If the match fails, an error is generated.
+</p>
+<p>
+ If the grammar inherits, then the inherited fields are appended those given.
+</p>
+
+<h3>Sub-Statement: calculated</h3>
+<p>
+ List fields which are calculated based on the required fields.
+</p>
+
+<h3>Sub-Statement: calculate</h3>
+<p>
+ Provide an object record with the calculations required to complete the calculated
+ fields (for output)
+ or use the calculated fields to complete the required fields (for input).
+</p>
+
+<table class='basic'>
+<tr><th colspan='3'>grammar calculate Sub-Statement</th></tr>
+<tr><th>Sub-Statement</th><th>Use</th><th>Example</th></tr>
+<tr><td class='code'>output</td><td>An expression to process the element before outputting.</td><td class='example'>output @if( year<500, ce, ? );</td></tr>
+<tr><td class='code'>output</td><td>An expression to process the element before outputting.</td><td class='example'>output @if( year<500, ce, ? );</td></tr>
+</table>
+
+<h3>Sub-Statement: optional</h3>
+<p>
+ Declare all the optional fields required.
+ The format definitions can only refer to the required and calculated fields
+ plus the extended fields listed here.
+</p>
+
+<h3>Sub-Statement: rank</h3>
+<p>
+ This is the ranking order to be used by the format statements,
+ unless the format statement has its own rank sub-statement.
+</p>
+<p>
+ Ranking is used with shortcut ranges.
+ For example, "Jul 2023" is a shortcut for the range of all the days in July 2023.
+</p>
+<p>
+ We create the shortcut by omitting the fields to the right of the ranking list.
+</p>
+
+<h3>Sub-Statement: lexicons</h3>
+<p>
+ Declare all the lexicon statements to be used.
+ The format definitions can only refer to the lexicons listed here.
+</p>
+
+<h3>Sub-Statement: alias</h3>
+<p>
+ In a number of places, it is preferable to use a different name than the default.
+ The statement takes the form:-
+</p>
+<table class='basic'>
+ <tr>
+  <td class='code'><b>alias <i>type</i> {</b> <i>alias field-name</i><b>;</b> <i>alias field-name</i><b>;</b> ... <b>}</b></td>
+ </tr>
+</table>
+<p>
+ Where <i>type</i> is one of: <b>field</b>, <b>pseudo</b> or <b>unit</b>.
+</p>
+<table class='basic'>
+<tr><th colspan='3'>grammar alias Sub-Statement</th></tr>
+<tr><th>Sub-Statement</th><th>Use</th><th>Example</th></tr>
+<tr><td class='code'>alias field</td><td>Allow the use of more user friendly field names.</td><td class='example'>alias field {WDay wday; ...}</td></tr>
+<tr><td class='code'>alias pseudo</td><td>The pseudonym matching numbers in the pseudo date.</td><td class='example'>alias pseudo {w wday; dd day; ...}</td></tr>
+<tr><td class='code'>alias unit</td><td>Alternative field name when used as a unit.</td><td class='example'>alias field {d day; m month; ...}</td></tr>
+</table>
+<p>
+ Note, the alias does not replace the field-name, but gives a preferred alternative.
+</p>
+
+<h4>Sub-Statement: alias field</h4>
+<p>
+ Create user friendly names for the fields used in the format strings.
+</p>
+
+<h4>Sub-Statement: alias pseudo</h4>
+<p>
+ When the date format needs to show that numbers will be displayed
+ for a particular element in a particular position,
+ the pseudo alias shown here will be used in creating the pseudo date.
+</p>
+<p>
+ Note, if a lexicon is used to provide output,
+ the pseudo name will be provided by the lexicon definition.
+</p>
+
+<h4>Sub-Statement: alias unit</h4>
+<p>
+ The universal unit format ":u" expects input in one or more 'number unit' pairs.
+ The unit given is (in order of lookup) the unit alias, the field alias or the default field name.
+</p>
+
+<h3>Sub-Statement: format</h3>
+<p>
+ Apart from the grammar:format signature,
+ the format sub-statement is the same as <a href='format.htm'>format statement</a>.
+</p>
+<p>
+ A grammar may have many format sub-statements.
+</p>
+
+<h3>Sub-Statement: preferred</h3>
+<p>
+ The preferred format to use.
+ If this sub-statement is missing, the first format listed is used. 
+</p>
 
 </div><!--id=content-->
 

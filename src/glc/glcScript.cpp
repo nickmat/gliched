@@ -115,6 +115,7 @@ bool Script::statement()
         if( name == "scheme" ) return do_scheme();
         if( name == "lexicon" ) return do_lexicon();
         if( name == "grammar" ) return do_grammar();
+        if( name == "format" ) return do_format();
         if( m_glc->is_local( name ) ) return do_assign( name );
     }
     else if( token.type() == SToken::Type::Semicolon ) {

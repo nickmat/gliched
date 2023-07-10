@@ -1,0 +1,17 @@
+// format001.glcs - Test manual example format statement.
+
+format j:OBLIQUE {
+    separators "/";
+    inout "{day}/|{month}/|{year}";
+}
+
+writeln "";
+writeln text.j:OBLIQUE 2460136;
+writeln date.j:OBLIQUE "27/6/2023";
+
+/*[OUTPUT]
+
+27/6/2023
+2460136
+
+[OUTPUT]*/

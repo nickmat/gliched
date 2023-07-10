@@ -55,10 +55,6 @@ bool Grammar::constuct( const Base* base )
     }
     create_def_format();
     create_u_format();
-    // Construct all contained format definitions.
-    for( auto pair : m_formats ) {
-        pair.second->construct();
-    }
     if( m_pref_input_fcode.empty() ) {
         m_pref_input_fcode = "def";
     }
@@ -292,6 +288,7 @@ void Grammar::create_def_format()
     fmt->set_control_in( control );
     fmt->set_control_out( control );
     fmt->set_style( FormatStyle::Hide );
+    fmt->construct();
 }
 
 void Grammar::create_u_format()
@@ -301,6 +298,7 @@ void Grammar::create_u_format()
         return;
     }
     fmt->set_style( FormatStyle::Hide );
+    fmt->construct();
 }
 
 // End of src/cal/calgrammar.cpp file

@@ -25,8 +25,8 @@
 
 */
 
-#ifndef CAL_CALGREGORIAN_H_GUARD
-#define CAL_CALGREGORIAN_H_GUARD
+#ifndef SRC_GLC_HICGREGORIAN_H_GUARD
+#define SRC_GLC_HICGREGORIAN_H_GUARD
 
 #include "hicJulian.h"
 
@@ -35,7 +35,6 @@ namespace glich {
     class Gregorian : public Julian
     {
     public:
-        Gregorian() {}
         Gregorian( const std::string& data ) : Julian( data ) {}
 
         Field get_jdn( const FieldVec& fields ) const override;
@@ -54,4 +53,4 @@ namespace glich {
 
 }
 
-#endif // CAL_CALGREGORIAN_H_GUARD
+#endif // SRC_GLC_HICGREGORIAN_H_GUARD

@@ -58,6 +58,7 @@ namespace glich {
 
         SValue string_to_object( const std::string& ocode, const Base& base, const std::string& input ) const;;
 
+        virtual FormatType get_format_type() const = 0;
         virtual std::string get_text_output( Record& rec ) const = 0;
         virtual RList string_to_rlist( const Base& base, const std::string& input ) const = 0;
         virtual bool set_input( Record& record, const std::string& input, Boundary rb ) const = 0;

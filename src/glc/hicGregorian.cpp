@@ -140,6 +140,27 @@ FieldVec Gregorian::get_fields( Field jdn ) const
     return fields;
 }
 
+/*static*/
+Field to_jdn( Field year, Field month, Field day )
+{
+    return gregorian_to_jdn( year, month, day );
+}
+
+/*static*/
+Field Gregorian::year_from_jdn( Field jdn )
+{
+    Field year, month, day;
+    gregorian_from_jdn( &year, &month, &day, jdn );
+    return year;
+}
+
+/*static*/
+bool Gregorian::leap_year( Field year )
+{
+    return ( year%4 == 0 && year%100 != 0 ) || year%400 == 0;
+}
+
+/*static*/
 Field Gregorian::today()
 {
     time_t now;
@@ -155,11 +176,6 @@ Field Gregorian::today()
 #endif
 
     return gregorian_to_jdn( tp->tm_year + 1900, tp->tm_mon + 1, tp->tm_mday );
-}
-
-bool Gregorian::is_leap_year( Field year ) const
-{
-    return ( year%4 == 0 && year%100 != 0 ) || year%400 == 0;
 }
 
 // End of src/cal/calgregorian.cpp file

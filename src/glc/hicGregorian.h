@@ -42,10 +42,13 @@ namespace glich {
 
         FieldVec get_fields( Field jdn ) const override;
 
+        static Field to_jdn( Field year, Field month, Field day );
+        static Field year_from_jdn( Field jdn );
+        static bool leap_year( Field year );
         static Field today();
 
     protected:
-        bool is_leap_year( Field year ) const override;
+        bool is_leap_year( Field year ) const override { return leap_year( year ); }
 
     };
 

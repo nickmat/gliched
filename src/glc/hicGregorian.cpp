@@ -141,7 +141,7 @@ FieldVec Gregorian::get_fields( Field jdn ) const
 }
 
 /*static*/
-Field to_jdn( Field year, Field month, Field day )
+Field Gregorian::to_jdn( Field year, Field month, Field day )
 {
     return gregorian_to_jdn( year, month, day );
 }

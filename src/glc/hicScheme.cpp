@@ -129,7 +129,7 @@ std::string Scheme::jdn_to_str( Field jdn, const string& fcode ) const
     return fmt->jdn_to_string( m_base, jdn );
 }
 
-std::string Scheme::range_to_str( Range rng, const std::string& fcode ) const
+std::string Scheme::range_to_str( const Range& rng, const std::string& fcode ) const
 {
     Format* fmt = get_output_format( fcode );
     if( fmt == nullptr ) {
@@ -138,7 +138,7 @@ std::string Scheme::range_to_str( Range rng, const std::string& fcode ) const
     return fmt->range_to_string( m_base, rng );
 }
 
-std::string Scheme::rlist_to_str( RList rlist, const std::string& fcode ) const
+std::string Scheme::rlist_to_str( const RList& rlist, const std::string& fcode ) const
 {
     Format* fmt = get_output_format( fcode );
     if( fmt == nullptr ) {

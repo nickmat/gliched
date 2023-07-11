@@ -62,7 +62,7 @@ string Format::jdn_to_string( const Base& base, Field jdn ) const
     return get_text_output( rec );
 }
 
-string Format::range_to_string( const Base& base, Range rng ) const
+string Format::range_to_string( const Base& base, const Range& rng ) const
 {
     string output = jdn_to_string( base, rng.m_beg );
     output += "..";
@@ -70,10 +70,10 @@ string Format::range_to_string( const Base& base, Range rng ) const
     return output;
 }
 
-string Format::rlist_to_string( const Base& base, RList rlist ) const
+string Format::rlist_to_string( const Base& base, const RList& rlist ) const
 {
     string output;
-    for( Range& rng : rlist ) {
+    for( const Range& rng : rlist ) {
         if( !output.empty() ) {
             output += " | ";
         }

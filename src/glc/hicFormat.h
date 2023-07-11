@@ -63,8 +63,8 @@ namespace glich {
         virtual bool set_input( Record& record, const std::string& input, Boundary rb ) const = 0;
 
         virtual std::string jdn_to_string( const Base& base, Field jdn ) const;
-        virtual std::string range_to_string( const Base& base, Range rng ) const;
-        virtual std::string rlist_to_string( const Base& base, RList rlist ) const;
+        virtual std::string range_to_string( const Base& base, const Range& rng ) const;
+        virtual std::string rlist_to_string( const Base& base, const RList& rlist ) const;
 
     protected:
         std::string m_code;

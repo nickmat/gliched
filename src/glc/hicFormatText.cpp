@@ -313,7 +313,7 @@ bool FormatText::set_input( Record& record, const string& input, Boundary rb ) c
     return (fld != f_invalid);
 }
 
-string FormatText::range_to_string( const Base& base, Range range ) const
+string FormatText::range_to_string( const Base& base, const Range& range ) const
 {
     if( range.m_beg == range.m_end ) {
         return jdn_to_string( base, range.m_beg );

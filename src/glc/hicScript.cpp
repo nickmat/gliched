@@ -59,6 +59,9 @@ namespace {
             else if( name == "gregorian" ) {
                 bs = Scheme::BaseName::gregorian;
             }
+            else if( name == "isoweek" ) {
+                bs = Scheme::BaseName::isoweek;
+            }
             else {
                 script.error( "Base scheme not recognised." );
                 return nullptr;

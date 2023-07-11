@@ -33,6 +33,7 @@
 #include "hicFormat.h"
 #include "hicGrammar.h"
 #include "hicGregorian.h"
+#include "hicIsoWeek.h"
 #include "hicJdn.h"
 #include "hicJulian.h"
 #include "hicOptional.h"
@@ -187,6 +188,8 @@ Base* Scheme::create_base( BaseName bs, const std::string& data )
         return new Julian( data );
     case BaseName::gregorian:
         return new Gregorian( data );
+    case BaseName::isoweek:
+        return new IsoWeek( data );
     }
     return nullptr;
 }
@@ -201,4 +204,4 @@ Base* Scheme::create_base_hybrid( const StdStrVec& fieldnames, const std::vector
     return nullptr;
 }
 
-// End of src/cal/calscheme.cpp file
+// End of src/glc/hicScheme.cpp file

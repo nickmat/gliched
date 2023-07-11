@@ -1,0 +1,54 @@
+// isow-01.glcs - Uppercase iso week scheme
+
+lexicon W {
+    name "Weekday names";
+    fieldname wday;
+    lang en;
+    pseudo    Weekday,  WDay;
+    tokens {
+        1, "Monday",    "Mon";
+        2, "Tuesday",   "Tue";
+        3, "Wednesday", "Wed";
+        4, "Thursday",  "Thur";
+        5, "Friday",    "Fri";
+        6, "Saturday",  "Sat";
+        7, "Sunday",    "Sun";
+    }
+}
+
+grammar ISOW {
+    fields year week day;
+    lexicons W;
+    alias field { wday day; }
+    alias pseudo { d day; ww week; yyyy year; }
+    alias unit { d day; y year; w week; }
+//    format iso { rules iso8601 week; }
+    format  ywd,   "{year}| {week}| {day:W:a}";
+    format "ywd+", "{year}| {week}| {day:W}";
+    preferred ywd;
+}
+
+scheme ISOW {
+    name "ISO:8601 Standard Week";
+    base isoweek;
+    grammar ISOW;
+}
+
+writeln "";
+writeln record.ISOW 2460137;
+writeln record.ISOW:ywd "2023 28 Tue";
+writeln text.ISOW:ywd 2460137;
+writeln text.ISOW:ywd {s:ISOW 2023, 28, 2};
+writeln date.ISOW:ywd "2023 28 Tue";
+writeln date {s:ISOW 2023, 28, 2};
+
+/*[OUTPUT]
+
+{s:ISOW 2023, 28, 2}
+{s:ISOW 2023, 28, 2}
+2023 28 Tue
+2023 28 Tue
+2460137
+2460137
+
+[OUTPUT]*/

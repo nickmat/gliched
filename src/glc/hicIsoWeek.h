@@ -35,7 +35,7 @@ namespace glich {
     class IsoWeek : public Base
     {
     public:
-        IsoWeek( const std::string& data ) : Base( data ) {
+        IsoWeek( const std::string& data = std::string() ) : Base( data ) {
             m_fieldnames = { "year", "week", "day" };
         }
 

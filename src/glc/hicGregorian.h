@@ -38,7 +38,7 @@ namespace glich {
     class Gregorian : public Julian
     {
     public:
-        Gregorian( const std::string& data ) : Julian( data ) {}
+        Gregorian( const std::string& data = std::string() ) : Julian( data ) {}
 
         Field get_jdn( const FieldVec& fields ) const override;
 

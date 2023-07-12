@@ -35,7 +35,7 @@ namespace glich {
     class IsoOrdinal : public Base
     {
     public:
-        IsoOrdinal( const std::string& data ) : Base( data ) {
+        IsoOrdinal( const std::string& data = std::string() ) : Base( data ) {
             m_fieldnames = { "year", "day" };
         }
 

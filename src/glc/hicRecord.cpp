@@ -270,4 +270,13 @@ Field Record::get_field( size_t index ) const
     return field;
 }
 
+Field glich::Record::get_field( size_t index, const BoolVec* mask ) const
+{
+    if( index >= 0 && (!mask || (*mask)[index]) &&
+        index < (int) m_base.record_size() ) {
+        return m_f[index];
+    }
+    return f_invalid;
+}
+
 // End of src/glc/hicRecord.cpp file

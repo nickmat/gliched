@@ -62,6 +62,9 @@ namespace {
             else if( name == "isoweek" ) {
                 bs = Scheme::BaseName::isoweek;
             }
+            else if( name == "isoordinal" ) {
+                bs = Scheme::BaseName::isoordinal;
+            }
             else {
                 script.error( "Base scheme not recognised." );
                 return nullptr;

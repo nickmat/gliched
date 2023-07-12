@@ -30,6 +30,7 @@ set( GLC_SOURCES
     hicGregorian.cpp
     hicHelper.cpp
     hicHybrid.cpp
+    hicIsoOrdinal.cpp
     hicIsoWeek.cpp
     hicJulian.cpp
     hicLexicon.cpp
@@ -67,6 +68,7 @@ set( GLC_HEADERS
     hicGregorian.h
     hicHelper.h
     hicHybrid.h
+    hicIsoOrdinal.h
     hicIsoWeek.h
     hicJdn.h
     hicJulian.h

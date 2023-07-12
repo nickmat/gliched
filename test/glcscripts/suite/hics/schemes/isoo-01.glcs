@@ -1,0 +1,35 @@
+// isoo-01.glcs - Uppercase iso ordinal scheme
+
+grammar ISOO {
+    fields year day;
+    alias pseudo { d day; yyyy year; }
+    alias unit { d day; y year; }
+//    format iso { rules iso8601 ordinal; }
+    format  yd "{year}| {day}";
+    preferred yd;
+}
+
+scheme ISOO {
+    name "ISO:8601 Standard Ordinal";
+    base isoordinal;
+    grammar ISOO;
+}
+
+writeln "";
+writeln record.ISOO 2460138;
+writeln record.ISOO:yd "2023 193";
+writeln text.ISOO:yd 2460138;
+writeln text.ISOO:yd {s:ISOO 2023, 193};
+writeln date.ISOO:yd "2023 193";
+writeln date {s:ISOO 2023, 193};
+
+/*[OUTPUT]
+
+{s:ISOO 2023, 193}
+{s:ISOO 2023, 193}
+2023 193
+2023 193
+2460138
+2460138
+
+[OUTPUT]*/

@@ -96,10 +96,10 @@ namespace glich {
         size_t current;
     };
 
-    enum FormatType { FT_null, FT_text, FT_unit, FT_iso };
+    enum class FormatType { null, text, unit, iso };
 
     struct Format_info {
-        Format_info() : type(FT_null), priority(0), style( FormatStyle::Default ) {}
+        Format_info() : type( FormatType::null), priority(0), style( FormatStyle::Default ) {}
 
         std::string  code;
         FormatType   type;

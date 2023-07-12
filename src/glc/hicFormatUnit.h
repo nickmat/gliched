@@ -39,7 +39,7 @@ namespace glich {
     public:
         FormatUnit( const std::string& code, Grammar& gmr );
 
-        FormatType get_format_type() const override { return FT_text; };
+        FormatType get_format_type() const override { return FormatType::unit; };
         std::string get_text_output( Record& rec ) const override;
         RList string_to_rlist( const Base& base, const std::string& input ) const override;
 

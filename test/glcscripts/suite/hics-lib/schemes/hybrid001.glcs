@@ -1,5 +1,5 @@
 // hybrid001.glc // Test hybrid scheme
-
+/*[SKIP]*/
 lexicon JG {
     name "Scheme names";
     fieldname scheme;

@@ -42,9 +42,9 @@ namespace glich {
         FormatType get_format_type() const override { return FormatType::unit; };
         std::string get_text_output( Record& rec ) const override;
         RList string_to_rlist( const Base& base, const std::string& input ) const override;
+        bool set_input( Record& record, const std::string& input, Boundary rb ) const override;
 
     private:
-        bool set_input( Record& record, const std::string& input, Boundary rb ) const;
         void set_field_by_unit( Record& record, const std::string& value, const std::string& unit ) const;
     };
 

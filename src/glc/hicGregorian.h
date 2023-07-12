@@ -32,6 +32,9 @@
 
 namespace glich {
 
+    void gregorian_from_jdn( Field* year, Field* month, Field* day, Field jdn );
+    Field gregorian_to_jdn( Field year, Field month, Field day );
+
     class Gregorian : public Julian
     {
     public:

@@ -38,92 +38,90 @@
 using namespace glich;
 using std::string;
 
-namespace {
 
-    void gregorian_from_jdn( Field* year, Field* month, Field* day, Field jdn )
+void glich::gregorian_from_jdn( Field* year, Field* month, Field* day, Field jdn )
+{
+    Field date = jdn - BASEDATE_Gregorian;
+    *year = div_f( date, 146097 ) * 400;
+    date = mod_f( date, 146097 );
+
+    if( date < 60 )
     {
-        Field date = jdn - BASEDATE_Gregorian;
-        *year = div_f( date, 146097 ) * 400;
-        date = mod_f( date, 146097 );
-
-        if( date < 60 )
+        if( date < 31 )
         {
-            if( date < 31 )
-            {
-                *month = 1;
-                *day = date + 1;
-                return;
-            }
-            *month = 2;
-            *day = date - 30;
+            *month = 1;
+            *day = date + 1;
             return;
         }
-        --date; // remove the leap day
-        *year += ((date/36524) * 100);
-        date %= 36524;
-
-        if( date < 59 ) // Note, this is not a leap year
-        {
-            if( date < 31 )
-            {
-                *month = 1;
-                *day = date + 1;
-                return;
-            }
-            *month = 2;
-            *day = date - 30;
-            return;
-        }
-        ++date; // add the missing the leap day
-        *year += (date/1461) * 4;
-        date %= 1461;
-
-        if( date < 60 )
-        {
-            if( date < 31 )
-            {
-                *month = 1;
-                *day = date + 1;
-                return;
-            }
-            *month = 2;
-            *day = date - 30;
-            return;
-        }
-        --date; // remove the leap day
-        *year += date / 365;
-        date %= 365;
-        *month = 1;
-        while( date >= latin_diy[(*month)+1] ) {
-            (*month)++;
-        }
-        *day = date - latin_diy[*month] + 1;
+        *month = 2;
+        *day = date - 30;
         return;
     }
+    --date; // remove the leap day
+    *year += ((date / 36524) * 100);
+    date %= 36524;
 
-    Field gregorian_to_jdn( Field year, Field month, Field day )
+    if( date < 59 ) // Note, this is not a leap year
     {
-        Field jdn =
-            div_f( year, 400 ) * 146097           //     days in 400 year cycles
-            + (mod_f( year, 400 ) / 100) * 36524    // - 1 days in 100 year cycles
-            + (mod_f( year, 100 ) / 4) * 1461       // + 1 days in 4 year cycles
-            + mod_f( year, 4 ) * 365              // + 1 days in year
-            + latin_diy[month] + day            // - 1 days numbered from 1 not 0
-            + BASEDATE_Gregorian;
-
-        // Adjust if in the 1st 2 months of 4 year cycle
-        if( month < 3 && year % 4 == 0 ) --jdn;
-
-        // Adjust if in the 1st 2 months of 100 year cycle
-        if( year % 100 == 0 && month < 3 ) ++jdn;
-
-        // Adjust if in the 1st 2 months of 400 year cycle
-        if( year % 400 == 0 && month < 3 ) --jdn;
-
-        return jdn;
+        if( date < 31 )
+        {
+            *month = 1;
+            *day = date + 1;
+            return;
+        }
+        *month = 2;
+        *day = date - 30;
+        return;
     }
+    ++date; // add the missing the leap day
+    *year += (date / 1461) * 4;
+    date %= 1461;
 
+    if( date < 60 )
+    {
+        if( date < 31 )
+        {
+            *month = 1;
+            *day = date + 1;
+            return;
+        }
+        *month = 2;
+        *day = date - 30;
+        return;
+    }
+    --date; // remove the leap day
+    *year += date / 365;
+    date %= 365;
+    *month = 1;
+    while( date >= latin_diy[(*month) + 1] ) {
+        (*month)++;
+    }
+    *day = date - latin_diy[*month] + 1;
+    return;
 }
+
+Field glich::gregorian_to_jdn( Field year, Field month, Field day )
+{
+    Field jdn =
+        div_f( year, 400 ) * 146097           //     days in 400 year cycles
+        + (mod_f( year, 400 ) / 100) * 36524    // - 1 days in 100 year cycles
+        + (mod_f( year, 100 ) / 4) * 1461       // + 1 days in 4 year cycles
+        + mod_f( year, 4 ) * 365              // + 1 days in year
+        + latin_diy[month] + day            // - 1 days numbered from 1 not 0
+        + BASEDATE_Gregorian;
+
+    // Adjust if in the 1st 2 months of 4 year cycle
+    if( month < 3 && year % 4 == 0 ) --jdn;
+
+    // Adjust if in the 1st 2 months of 100 year cycle
+    if( year % 100 == 0 && month < 3 ) ++jdn;
+
+    // Adjust if in the 1st 2 months of 400 year cycle
+    if( year % 400 == 0 && month < 3 ) --jdn;
+
+    return jdn;
+}
+
 
 Field Gregorian::get_jdn( const FieldVec& fields ) const
 {

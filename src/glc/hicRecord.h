@@ -51,6 +51,7 @@ namespace glich {
         void set_jdn( Field jdn );
         Field calc_jdn();
         void set_str( const std::string& str, const Format& fmt, Boundary rb );
+        void set_fields( const FieldVec fields );
         void set_object( const SValue& ovalue );
 
         Field complete_fields_as_beg(); // Returns jdn for record

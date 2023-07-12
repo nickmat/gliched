@@ -65,11 +65,7 @@ Record::Record( const Base& base, const string& str, const Format& fmt, Boundary
 Record::Record( const Base& base, const FieldVec& fields )
     : m_base( base ), m_jdn( f_invalid ), m_f( base.record_size(), f_invalid )
 {
-    size_t size = std::min( fields.size(), m_f.size() );
-    for( size_t i = 0; i < size; i++ ) {
-        m_f[i] = fields[i];
-    }
-    calc_jdn();
+    set_fields( fields );
 }
 
 Record::Record( const Base& base, const SValue& ovalue )
@@ -116,6 +112,15 @@ void Record::set_str( const string& str, const Format& fmt, Boundary rb )
     if( !fmt.set_input( *this, in, rb ) ) {
         clear_fields();
     }
+}
+
+void glich::Record::set_fields( const FieldVec fields )
+{
+    size_t size = std::min( fields.size(), m_f.size() );
+    for( size_t i = 0; i < size; i++ ) {
+        m_f[i] = fields[i];
+    }
+    calc_jdn();
 }
 
 void Record::set_object( const SValue& ovalue )

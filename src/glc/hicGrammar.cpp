@@ -29,6 +29,7 @@
 
 #include <glc/glc.h>
 #include "hicBase.h"
+#include "hicFormatIso.h"
 #include "hicFormatText.h"
 #include "hicFormatUnit.h"
 #include "hicLexicon.h"
@@ -85,6 +86,17 @@ FormatText* Grammar::create_format_text( const string& code )
         return nullptr;
     }
     FormatText* fmt = new FormatText( code, *this );
+    m_formats[code] = fmt;
+    return fmt;
+}
+
+FormatIso* Grammar::create_format_iso( const string& code, const StdStrVec& rules )
+{
+    if( m_formats.count( code ) ) {
+        // Already there
+        return nullptr;
+    }
+    FormatIso* fmt = new FormatIso( code, *this, rules );
     m_formats[code] = fmt;
     return fmt;
 }

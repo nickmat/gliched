@@ -31,6 +31,7 @@
 #include "hicBase.h"
 #include "hicGrammar.h"
 #include "hicHybrid.h"
+#include "hicFormatIso.h"
 #include "hicFormatText.h"
 #include "hicFormatUnit.h"
 #include "hicLexicon.h"
@@ -483,6 +484,33 @@ namespace {
         return fmt;
     }
 
+    FormatIso* create_format_iso( Glich* glc, const string& code, Grammar* gmr, const StdStrVec& rules )
+    {
+        size_t pos = code.find( ':' );
+        if( pos == string::npos ) {
+            if( gmr == nullptr ) {
+                return nullptr;
+            }
+            return gmr->create_format_iso( code, rules );
+        }
+        if( gmr != nullptr ) {
+            return nullptr;
+        }
+        string gcode = code.substr( 0, pos );
+        string fcode = code.substr( pos + 1 );
+        gmr = glc->get_grammar( gcode );
+        if( gmr == nullptr || gmr->get_format( fcode ) != nullptr ) {
+            return nullptr;
+        }
+        FormatIso* fmt = new FormatIso( fcode, *gmr, rules );
+        if( !gmr->add_format( fmt ) ) {
+            delete fmt;
+            return nullptr;
+        }
+        glc->add_format( fmt, code );
+        return fmt;
+    }
+
     FormatUnit* create_format_unit( Glich* glc, const std::string& code, Grammar* gmr )
     {
         size_t pos = code.find( ':' );
@@ -631,15 +659,13 @@ bool glich::do_create_format( Script& script, const string& code, Grammar* gmr )
         }
         fmt = fmtt;
     }
-#if 0
     else if( rules[0] == "iso8601" ) {
-        fmt = m_cals->create_format_iso( code, gmr, rules );
+        fmt = create_format_iso( script.get_glich(), code, gmr, rules );
         if( fmt == nullptr ) {
-            error( "Unable to create ISO format." );
+            script.error( "Unable to create ISO format." );
             return false;
         }
     }
-#endif
     else if( rules[0] == "units" ) {
         fmt = create_format_unit( script.get_glich(), code, gmr );
         if( fmt == nullptr ) {

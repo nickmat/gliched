@@ -1,0 +1,37 @@
+// g-02.glcs  -  Uppercase scheme g ISO formats test
+
+grammar ISOG {
+    fields year month day;
+    format iso1 { rules iso8601 caldate extended year4 nosign; }
+    format iso2 { rules iso8601 basic; }
+    format iso3 { rules iso8601 year6 sign; }
+    format iso4 { rules iso8601 dateset; }
+}
+
+scheme G {
+    name "Gregorian";
+    base gregorian;
+    grammar ISOG;
+}
+
+writeln "";
+writeln text.G:iso1 2460138 + ", " + date.G:iso1 "2023-07-12";
+writeln text.G:iso1 (2460127..2460157) + ", " + date.G:iso1 "2023-07";
+writeln text.G:iso2 2460138 + ", " + date.G:iso2 "20230712";
+writeln text.G:iso3 2460138 + ", " + date.G:iso3 "+002023-07-12";
+writeln text.G:iso4 2460138 + ", " + date.G:iso4 "[2023-07-12]";
+writeln text.G:iso4 (2459946..2460310) + ", " + date.G:iso4 "[2023]";
+writeln text.G:iso4 (2459946 | 2460138 | 2460157) + ", " +
+    date.G:iso4 "[2023-01-01,2023-07-12,2023-07-31]";
+
+/*[OUTPUT]
+
+2023-07-12, 2460138
+2023-07, 2460127..2460157
+20230712, 2460138
++002023-07-12, 2460138
+2023-07-12, 2460138
+2023, 2459946..2460310
+[2023-01-01,2023-07-12,2023-07-31], 2459946 | 2460138 | 2460157
+
+[OUTPUT]*/

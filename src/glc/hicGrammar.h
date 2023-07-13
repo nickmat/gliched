@@ -37,6 +37,7 @@ namespace glich {
     class Base;
     class Grammar;
     class FormatText;
+    class FormatIso;
     class FormatUnit;
 
     class Grammar
@@ -56,6 +57,7 @@ namespace glich {
         void set_preferred( const std::string& fcode );
         void add_lexicon( Lexicon* lex ) { m_lexicons.push_back( lex ); }
         FormatText* create_format_text( const std::string& code );
+        FormatIso* create_format_iso( const std::string& code, const StdStrVec& rules );
         FormatUnit* create_format_unit( const std::string& code );
         bool add_format( Format* fmt );
         void add_alias( const std::string& alias, const StdStrVec& pairs );

@@ -63,8 +63,8 @@ namespace {
             else if( name == "isoweek" ) {
                 bs = Scheme::BaseName::isoweek;
             }
-            else if( name == "isoordinal" ) {
-                bs = Scheme::BaseName::isoordinal;
+            else if( name == "ordinal" ) {
+                bs = Scheme::BaseName::ordinal;
             }
             else {
                 script.error( "Base scheme not recognised." );

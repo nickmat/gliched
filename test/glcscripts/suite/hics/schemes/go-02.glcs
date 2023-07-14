@@ -1,6 +1,6 @@
-// g-02.glcs  -  Uppercase scheme g ISO formats test
+// go-02.glcs  -  Uppercase scheme g ISO formats test
 
-grammar ISOO {
+grammar GO {
     fields year day;
     format iso1 { rules iso8601 ordinal extended year4 nosign; }
     format iso2 { rules iso8601 ordinal basic; }
@@ -10,8 +10,8 @@ grammar ISOO {
 
 scheme G {
     name "Gregorian ISO 8601 Ordinal";
-    base isoordinal;
-    grammar ISOO;
+    base ordinal;
+    grammar GO;
 }
 
 writeln "";

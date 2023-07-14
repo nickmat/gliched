@@ -191,7 +191,7 @@ Base* Scheme::create_base( BaseName bs, const std::string& data )
         return new Gregorian( data );
     case BaseName::isoweek:
         return new IsoWeek( data );
-    case BaseName::isoordinal:
+    case BaseName::ordinal:
         return new IsoOrdinal( data );
     }
     return nullptr;

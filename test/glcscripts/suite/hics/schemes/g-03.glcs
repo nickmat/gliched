@@ -1,0 +1,82 @@
+// g-03.glcs  -  Uppercase version of hics standard library
+
+lexicon W {
+    name "Weekday names";
+    fieldname wday;
+    lang en;
+    pseudo    Weekday,  WDay;
+    tokens {
+        1, "Monday",    "Mon";
+        2, "Tuesday",   "Tue";
+        3, "Wednesday", "Wed";
+        4, "Thursday",  "Thur";
+        5, "Friday",    "Fri";
+        6, "Saturday",  "Sat";
+        7, "Sunday",    "Sun";
+    }
+}
+
+lexicon M {
+    name "Month names";
+    fieldname month;
+    lang en;
+    pseudo     Month,     Mon;
+    tokens {
+        1,  "January",   "Jan";
+        2,  "February",  "Feb";
+        3,  "March",     "Mar";
+        4,  "April",     "Apr";
+        5,  "May";
+        6,  "June",      "Jun";
+        7,  "July",      "Jul";
+        8,  "August",    "Aug";
+        9,  "September", "Sep";
+        10, "October",   "Oct";
+        11, "November",  "Nov";
+        12, "December",  "Dec";
+    }
+}
+
+grammar J {
+    fields year month day;
+    optional wday;
+    lexicons M W;
+    alias pseudo { w wday; dd day; mm month; yyyy year; }
+    alias unit { d day; m month; y year; }
+    format dmy "{day} |{month:M:a} |{year}";
+    format wdmy "{wday:W:a} |{day} |{month:M:a} |{year}";
+    format out { output "{day::os} |{month:M} |{year}"; }
+    format full { output "{wday:W} |{day::os} |{month:M} |{year}"; }
+    format "dmy+" "{day} |{month:M} |{year}";
+    format "wdmy+" "{wday:W} |{day} |{month:M} |{year}";
+    format mdy "{month:M:a} |{day}, |{year}";
+    format ymd "{year}|:{month:M:a}|:{day}";
+    preferred dmy;
+}
+
+grammar G {
+    inherit J;
+    format iso { rules iso8601; }
+    format iso_set { rules iso8601 dateset; }
+    preferred dmy;
+}
+
+scheme G {
+    name "Gregorian";
+    base gregorian;
+    grammar G;
+}
+
+writeln "";
+writeln text.G:wdmy 2460049 + ", " + date.G:wdmy "Fri 14 Apr 2023";
+writeln text.G:iso 2460140 + ", " + date.G:iso "2023-07-14";
+writeln text.G:iso_set (2459946 | 2460140 | 2460157) + ", " +
+    date.G:iso_set "[2023-01-01,2023-07-14,2023-07-31]";
+
+/*[OUTPUT]
+
+Fri 14 Apr 2023, 2460049
+2023-07-14, 2460140
+[2023-01-01,2023-07-14,2023-07-31], 2459946 | 2460140 | 2460157
+
+[OUTPUT]*/

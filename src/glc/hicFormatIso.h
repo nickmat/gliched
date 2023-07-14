@@ -49,6 +49,8 @@ namespace glich {
         std::string rlist_to_string( const Base& base, const RList& rlist ) const override;
 
     private:
+        std::string jdn_to_str( const Base& base, Field jdn ) const;
+        std::string range_to_str( const Base& base, const Range& range ) const;
         std::string get_masked_output( const Record& record, const BoolVec* mask = nullptr ) const;
         std::string output_year( Field year ) const;
 

@@ -231,25 +231,59 @@ string FormatIso::jdn_to_string( const Base& base, Field jdn ) const
     if( jdn == f_minimum || jdn == f_maximum ) {
         return "";
     }
-    Record rec( base, jdn );
-    return get_masked_output( rec );
+    string str = jdn_to_str( base, jdn );
+    if( m_dateset ) {
+        return "[" + str + "]";
+    }
+    return str;
 }
 
 string FormatIso::range_to_string( const Base& base, const Range& range ) const
 {
+    string str = range_to_str( base, range );
+    if( m_dateset ) {
+        return "[" + str + "]";
+    }
+    return str;
+}
+
+string FormatIso::rlist_to_string( const Base& base, const RList& ranges ) const
+{
+    string str;
+    for( size_t i = 0 ; i < ranges.size() ; i++ ) {
+        if( i > 0 ) {
+            str += ( m_dateset ? "," : " | " );
+        }
+        str += range_to_str( base, ranges[i] );
+    }
+    if( m_dateset ) {
+        return "[" + str + "]";
+    }
+    return str;
+}
+
+std::string glich::FormatIso::jdn_to_str( const Base& base, Field jdn ) const
+{
+    Record rec( base, jdn );
+    return get_masked_output( rec );
+}
+
+std::string glich::FormatIso::range_to_str( const Base& base, const Range& range ) const
+{
     if( range.m_beg == range.m_end ) {
-        return jdn_to_string( base, range.m_beg );
+        return jdn_to_str( base, range.m_beg );
     }
     string str1, str2;
     if( range.m_beg == f_minimum || range.m_end == f_maximum ) {
-        str1 = jdn_to_string( base, range.m_beg );
-        str2 = jdn_to_string( base, range.m_end );
-    } else {
+        str1 = jdn_to_str( base, range.m_beg );
+        str2 = jdn_to_str( base, range.m_end );
+    }
+    else {
         Record rec1( base, range.m_beg );
         Record rec2( base, range.m_end );
 
         XIndexVec xref( base.record_size() );
-        for ( size_t i = 0; i < xref.size(); i++ ) {
+        for( size_t i = 0; i < xref.size(); i++ ) {
             xref[i] = i;
         }
         BoolVec mask = rec1.mark_balanced_fields( rec2, xref, base.record_size() );
@@ -261,21 +295,6 @@ string FormatIso::range_to_string( const Base& base, const Range& range ) const
     }
     string sep = m_dateset ? ".." : "/";
     return str1 + sep + str2;
-}
-
-string FormatIso::rlist_to_string( const Base& base, const RList& ranges ) const
-{
-    string str;
-    for( size_t i = 0 ; i < ranges.size() ; i++ ) {
-        if( i > 0 ) {
-            str += ( m_dateset ? "," : " | " );
-        }
-        str += range_to_string( base, ranges[i] );
-    }
-    if( m_dateset ) {
-        return "[" + str + "]";
-    }
-    return str;
 }
 
 string FormatIso::get_masked_output( const Record& record, const BoolVec* mask ) const

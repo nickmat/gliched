@@ -24,12 +24,52 @@
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 */
 
+grammar g {
+    inherit j;
+    format iso { rules iso8601; }
+    format iso_set { rules iso8601 dateset; }
+    preferred dmy;
+}
+
 scheme g {
     name "Gregorian";
     base gregorian;
-    grammar j;
+    grammar g;
 }
 
 set inout g; // Set Gregorian as the default input and output scheme.
+
+grammar gw {
+    fields year week day;
+    lexicons w;
+    alias field { wday week; }
+    alias pseudo { d day; ww week; yyyy year; }
+    alias unit { d day; w week; y year; }
+    format  ywd "{year}| {week}| {day:w:a}";
+    format "ywd+", "{year}| {week}| {day:w}";
+    format iso { rules iso8601 week; }
+    preferred ywd;
+}
+
+scheme gw {
+    name "Gregorian ISO Week";
+    base isoweek;
+    grammar gw;
+}
+
+grammar go {
+    fields year day;
+    alias pseudo { ddd day; yyyy year; }
+    alias unit { d day; y year; }
+    format iso { rules iso8601 ordinal; }
+    format yd "{year}| {day}";
+    preferred yd;
+}
+
+scheme go {
+    name "Gregorian Ordinal";
+    base ordinal;
+    grammar go;
+}
 
 // End of scripts/jdn.hcs file

@@ -54,6 +54,20 @@ bool Grammar::constuct( const Base* base )
     if( m_ok ) {
         return false; // Only run construct once.
     }
+    if( m_inherit ) {
+        if( m_base_fieldnames.empty() ) {
+            m_base_fieldnames = m_inherit->m_base_fieldnames;
+        }
+        if( m_opt_fieldnames.empty() ) {
+            m_opt_fieldnames = m_inherit->m_opt_fieldnames;
+        }
+        if( m_calc_fieldnames.empty() ) {
+            m_calc_fieldnames = m_inherit->m_calc_fieldnames;
+        }
+        if( m_rank_fieldnames.empty() ) {
+            m_rank_fieldnames = m_inherit->m_rank_fieldnames;
+        }
+    }
     create_def_format();
     create_u_format();
     if( m_pref_input_fcode.empty() ) {

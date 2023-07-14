@@ -1,0 +1,37 @@
+// g-02.glcs  -  Uppercase scheme g ISO formats test
+
+grammar ISOW {
+    fields year week day;
+    format iso1 { rules iso8601 week extended year4 nosign; }
+    format iso2 { rules iso8601 week basic; }
+    format iso3 { rules iso8601 week year6 sign; }
+    format iso4 { rules iso8601 week dateset; }
+}
+
+scheme G {
+    name "Gregorian ISO 8601 Week";
+    base isoweek;
+    grammar ISOW;
+}
+
+writeln "";
+writeln text.G:iso1 2460139 + ", " + date.G:iso1 "2023-W28-4";
+writeln text.G:iso1 (2460136 .. 2460142) + ", " + date.G:iso1 "2023-W28";
+writeln text.G:iso2 2460139 + ", " + date.G:iso2 "2023W284";
+writeln text.G:iso3 2460139 + ", " + date.G:iso3 "+002023-W28-4";
+writeln text.G:iso4 2460139 + ", " + date.G:iso4 "[2023-W28-4]";
+writeln text.G:iso4 (2459947..2460310) + ", " + date.G:iso4 "[2023]";
+writeln text.G:iso4 (2459946 | 2460139 | 2460157) + ", " +
+    date.G:iso4 "[2022-W52-7,2023-W28-4,2023-W31-1]";
+
+/*[OUTPUT]
+
+2023-W28-4, 2460139
+2023-W28, 2460136..2460142
+2023W284, 2460139
++002023-W28-4, 2460139
+[2023-W28-4], 2460139
+[2023], 2459946..2460310
+[2022-W52-7,2023-W28-4,2023-W31-1], 2459946 | 2460139 | 2460157
+
+[OUTPUT]*/

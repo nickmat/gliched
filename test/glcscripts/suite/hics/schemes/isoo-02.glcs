@@ -1,0 +1,37 @@
+// g-02.glcs  -  Uppercase scheme g ISO formats test
+
+grammar ISOO {
+    fields year day;
+    format iso1 { rules iso8601 ordinal extended year4 nosign; }
+    format iso2 { rules iso8601 ordinal basic; }
+    format iso3 { rules iso8601 ordinal year6 sign; }
+    format iso4 { rules iso8601 ordinal dateset; }
+}
+
+scheme G {
+    name "Gregorian ISO 8601 Ordinal";
+    base isoordinal;
+    grammar ISOO;
+}
+
+writeln "";
+writeln text.G:iso1 2460140 + ", " + date.G:iso1 "2023-195";
+writeln text.G:iso1 (2459946..2460310) + ", " + date.G:iso1 "2023";
+writeln text.G:iso2 2460140 + ", " + date.G:iso2 "2023195";
+writeln text.G:iso3 2460140 + ", " + date.G:iso3 "+002023-195";
+writeln text.G:iso4 2460140 + ", " + date.G:iso4 "[2023-195]";
+writeln text.G:iso4 (2459946..2460310) + ", " + date.G:iso4 "[2023]";
+writeln text.G:iso4 (2459946 | 2460140 | 2460157) + ", " +
+    date.G:iso4 "[2023-001,2023-195,2023-212]";
+
+/*[OUTPUT]
+
+2023-195, 2460140
+2023, 2459946..2460310
+2023195, 2460140
++002023-195, 2460140
+[2023-195], 2460140
+[2023], 2459946..2460310
+[2023-001,2023-195,2023-212], 2459946 | 2460140 | 2460157
+
+[OUTPUT]*/

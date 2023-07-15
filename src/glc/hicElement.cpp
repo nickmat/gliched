@@ -106,13 +106,13 @@ string Element::get_formatted_element( const Glich& glc, Field field ) const
     }
 
     string result;
+    StrStyle ss = StrStyle::undefined;
+    if ( m_qualifier == "u" ) {
+        ss = StrStyle::uppercase;
+    } else if ( m_qualifier == "l" ) {
+        ss = StrStyle::lowercase;
+    }
     if ( m_lcode.empty() ) {
-        StrStyle ss = StrStyle::undefined;
-        if ( m_qualifier == "u" ) {
-            ss = StrStyle::uppercase;
-        } else if ( m_qualifier == "l" ) {
-            ss = StrStyle::lowercase;
-        }
         if ( m_spec == "oa" ) {
             result = get_ordinal_suffix( field, ss );
         } else if ( m_spec == "os" ) {
@@ -128,6 +128,12 @@ string Element::get_formatted_element( const Glich& glc, Field field ) const
             Lexicon::Pseudo abbrev = (m_spec == "a") ?
                 Lexicon::Pseudo::abbrev : Lexicon::Pseudo::full;
             result = lex->lookup( field, abbrev );
+        }
+        if( ss == StrStyle::uppercase ) {
+            ascii_toupper( result );
+        }
+        else if( ss == StrStyle::lowercase ) {
+            ascii_tolower( result );
         }
     }
     return result;

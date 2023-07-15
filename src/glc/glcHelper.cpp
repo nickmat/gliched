@@ -214,6 +214,24 @@ void glich::ascii_tolower( string& str )
     }
 }
 
+// TODO: This should handle utf8
+string glich::ascii_toupper( const string& str )
+{
+    string result;
+    for( string::const_iterator it = str.begin(); it != str.end(); it++ ) {
+        result += std::toupper( *it );
+    }
+    return result;
+}
+
+// TODO: This should handle utf8
+void glich::ascii_toupper( string& str )
+{
+    for( string::iterator it = str.begin(); it != str.end(); it++ ) {
+        *it = std::toupper( *it );
+    }
+}
+
 string glich::dual_fields_to_str( Field field, Field dual )
 {
     string result = field_to_string( field, Context::hics );

@@ -56,6 +56,8 @@ namespace glich {
 
     std::string ascii_tolower( const std::string& str );
     void ascii_tolower( std::string& str );
+    std::string ascii_toupper( const std::string& str );
+    void ascii_toupper( std::string& str );
 
     std::string dual_fields_to_str( Field field, Field dual );
     std::string get_ordinal_suffix( Field field, StrStyle style = StrStyle::lowercase );

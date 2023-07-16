@@ -1,0 +1,12 @@
+// format002.glcs - Test manual example format statement.
+
+format g:UPPER "{day} |{month:m:a:u} |{year}";
+
+writeln "";
+writeln text.g:UPPER 2460141;
+
+/*[OUTPUT]
+
+15 JUL 2023
+
+[OUTPUT]*/

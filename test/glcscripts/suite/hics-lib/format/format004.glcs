@@ -1,0 +1,19 @@
+// format004.glcs - Test manual example format statement.
+
+grammar XG {
+    inherit g;
+    format html
+        "{day}<sup>{day::oa}</sup> |{month:m} |{year}";
+}
+
+scheme XS { base gregorian; grammar XG; }
+
+writeln "";
+writeln text.XS:html 2460127;
+
+
+/*[OUTPUT]
+
+1<sup>st</sup> July 2023
+
+[OUTPUT]*/

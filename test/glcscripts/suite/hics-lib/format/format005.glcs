@@ -1,0 +1,20 @@
+// format003.glcs - Test replace inherited grammar format.
+
+grammar XG {
+    inherit g;
+    format dmy {
+        output "{day} |{month::rn} |{year}";
+    }
+}
+
+scheme XS { base gregorian; grammar XG; }
+
+writeln "";
+writeln text.XS:dmy 2460141;
+
+
+/*[OUTPUT]
+
+15 VII 2023
+
+[OUTPUT]*/

@@ -1,0 +1,20 @@
+// format003.glcs - Test manual example format statement.
+
+grammar XG {
+    inherit g;
+    format dXmy {
+        output "{day} |{month::rn} |{year}";
+    }
+}
+
+scheme XS { base gregorian; grammar XG; }
+
+writeln "";
+writeln text.XS:dXmy 2460141;
+
+
+/*[OUTPUT]
+
+15 VII 2023
+
+[OUTPUT]*/

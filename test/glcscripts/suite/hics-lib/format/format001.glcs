@@ -6,12 +6,12 @@ format j:OBLIQUE {
 }
 
 writeln "";
-writeln text.j:OBLIQUE 2460136;
+writeln text.g:OBLIQUE 2460136;
 writeln date.j:OBLIQUE "27/6/2023";
 
 /*[OUTPUT]
 
-27/6/2023
+10/7/2023
 2460136
 
 [OUTPUT]*/

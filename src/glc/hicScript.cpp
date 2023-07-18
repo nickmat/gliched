@@ -571,14 +571,6 @@ bool glich::do_create_format( Script& script, const string& code, Grammar* gmr )
                     format_in = script.expr( GetToken::next ).as_string();
                     continue;
                 }
-                if( name == "instring" ) {
-                    instring = script.expr( GetToken::next ).as_string();
-                    continue;
-                }
-                if( name == "outstring" ) {
-                    outstring = script.expr( GetToken::next ).as_string();
-                    continue;
-                }
                 if( name == "separators" ) {
                     separators = script.expr( GetToken::next ).as_string();
                     continue;
@@ -591,10 +583,6 @@ bool glich::do_create_format( Script& script, const string& code, Grammar* gmr )
                     rankoutfields = script.get_string_list( GetToken::next );
                     continue;
                 }
-                if( name == "rules" ) {
-                    rules = script.get_string_list( GetToken::next );
-                    continue;
-                }
                 if( name == "style" ) {
                     string str = script.get_name_or_primary( GetToken::next );
                     if( str == "hide" ) {
@@ -603,6 +591,18 @@ bool glich::do_create_format( Script& script, const string& code, Grammar* gmr )
                     else if( str != "none" ) {
                         script.error( "Style name expected." );
                     }
+                    continue;
+                }
+                if( name == "pseudo:in" ) {
+                    instring = script.expr( GetToken::next ).as_string();
+                    continue;
+                }
+                if( name == "pseudo:out" ) {
+                    outstring = script.expr( GetToken::next ).as_string();
+                    continue;
+                }
+                if( name == "rules" ) {
+                    rules = script.get_string_list( GetToken::next );
                     continue;
                 }
                 script.error( "Expected format sub-statement." );

@@ -26,8 +26,8 @@
 
 grammar d {
     fields day;
-    alias pseudo { ddddd, day; }
-    format d, "{day}";
+    alias pseudo { ddddd day; }
+    format d "{day}";
     preferred d;
 }
 

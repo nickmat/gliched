@@ -141,6 +141,9 @@ void FormatText::setup_control_in()
             ele.add_char( *it );
         }
     }
+    if( get_input_str().empty() ) {
+        set_user_input_str( input );
+    }
 
     BoolVec unused_fields( m_default_fieldnames.size(), true );
     m_fmt_to_rank_index.resize( m_default_fieldnames.size(), 0 );

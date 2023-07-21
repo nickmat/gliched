@@ -52,6 +52,8 @@ namespace glich {
         void set_ok( bool ok ) { m_ok = ok; }
 
         std::string get_code() const { return m_code; }
+        std::string get_input_str() const { return m_input_str; }
+        std::string get_output_str() const { return m_output_str; }
         Grammar* get_owner() const { return &m_owner; }
         const Grammar& get_grammar() const { return m_owner; }
         const Glich& get_glich() const { return get_grammar().get_glich(); }

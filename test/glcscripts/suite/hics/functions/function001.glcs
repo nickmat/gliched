@@ -1,0 +1,14 @@
+// function001.glcs  Test scheme functions
+
+scheme G { base gregorian; }
+
+writeln "";
+writeln {s:G}.pseudo:in( "def" );
+writeln {s:G}.pseudo:out( "def" );
+
+/*[OUTPUT]
+
+year month day
+year month day
+
+[OUTPUT]*/

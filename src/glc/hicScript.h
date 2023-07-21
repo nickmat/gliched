@@ -39,6 +39,7 @@ namespace glich {
     Grammar* do_create_grammar( Script& script, const std::string& code, const Base* base );
     bool do_create_format( Script& script, const std::string& code, Grammar* gmr );
 
+    SValue hics_dot( Script& script, bool& success, Object* obj, const std::string& fcode, const SValue& left );
 }
 
 #endif // SRC_GLC_HICSCRIPT_H

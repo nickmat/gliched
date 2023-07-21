@@ -682,5 +682,35 @@ bool glich::do_create_format( Script& script, const string& code, Grammar* gmr )
     return true;
 }
 
+SValue glich::hics_dot( Script& script, bool& success, Object* obj, const std::string& fcode, const SValue& left )
+{
+    Scheme* sch = dynamic_cast<Scheme*>(obj);
+    if( sch == nullptr ) {
+        return SValue();
+    }
+    SValue value;
+    SValueVec args = script.get_args( value, GetToken::current );
+    if( value.is_error() ) {
+        return value;
+    }
+    if( !args.empty() ) {
+        value = args[0];
+    }
+    success = true;
+    if( fcode == "pseudo:in" && value.type() == SValue::Type::String ) {
+        Format* fmt = sch->get_input_format( value.get_str() );
+        if( fmt ) {
+            return SValue( fmt->get_input_str() );
+        }
+    }
+    if( fcode == "pseudo:out" && value.type() == SValue::Type::String ) {
+        Format* fmt = sch->get_output_format( value.get_str() );
+        if( fmt ) {
+            return SValue( fmt->get_output_str() );
+        }
+    }
+    success = false;
+    return SValue();
+}
 
 // End of src/glc/hicCreateSch.cpp file

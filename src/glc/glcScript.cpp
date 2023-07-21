@@ -1199,6 +1199,11 @@ SValue Script::do_dot( const SValue& left, const SValue& right )
         if( fcode == "mask" ) {
             return dot_mask( obj, &left );
         }
+        bool success = false;
+        SValue value = hics_dot( *this, success, obj, fcode, left );
+        if( success ) {
+            return value;
+        }
         return create_error( "Function not found." );
     }
     return run_function( fun, obj, &left );

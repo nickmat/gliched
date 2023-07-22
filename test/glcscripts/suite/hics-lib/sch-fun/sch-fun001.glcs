@@ -1,0 +1,13 @@
+// sch-fun001.glcs  - Test scheme functions
+
+writeln "";
+writeln {s:g}.name + ": " + {s:g}.pseudo:out("mdy");
+writeln {s:j}.name + ": " + {s:j}.pseudo:in("mdy");
+
+
+/*[OUTPUT]
+
+Gregorian: Mon dd, yyyy
+Julian: month day year
+
+[OUTPUT]*/

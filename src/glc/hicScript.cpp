@@ -709,6 +709,9 @@ SValue glich::hics_dot( Script& script, bool& success, Object* obj, const std::s
             return SValue( fmt->get_output_str() );
         }
     }
+    if( fcode == "name" ) {
+        return SValue( sch->get_name() );
+    }
     success = false;
     return SValue();
 }

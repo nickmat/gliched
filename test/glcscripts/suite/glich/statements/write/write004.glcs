@@ -1,0 +1,9 @@
+// write004.glcs Test write statement
+
+write nl "xxx", "yyy" nl;
+
+/*[OUTPUT]
+
+xxx, yyy
+
+[OUTPUT]*/

@@ -487,17 +487,30 @@ bool Script::do_write( const std::string& term )
         out = m_out;
     }
 
-    SValue value = expr( GetToken::current );
-    *out << value.as_string() << term;
+    for( ;;) {
+        if( current_token().type() == SToken::Type::Semicolon ) {
+            return true;
+        }
+        if( current_token().type() == SToken::Type::Comma ) {
+            next_token();
+            *out << ", ";
+            continue;
+        }
+        if( current_token().type() == SToken::Type::Name && current_token().get_str() == "nl" ) {
+            next_token();
+            *out << "\n";
+            continue;
+        }
 
-    if( value.type() == SValue::Type::Error ) {
-        m_ts.skip_to( SToken::Type::Semicolon );
+        SValue value = expr( GetToken::current );
+        *out << value.as_string() << term;
+
+        if( value.type() == SValue::Type::Error ) {
+            m_ts.skip_to( SToken::Type::Semicolon );
+            return true;
+        }
     }
-    if( current_token().type() != SToken::Type::Semicolon ) {
-        error( "';' expected." );
-        return false;
-    }
-    return true;
+    return false;
 }
 
 Function* Script::create_function()

@@ -489,7 +489,7 @@ bool Script::do_write( const std::string& term )
 
     for( ;;) {
         if( current_token().type() == SToken::Type::Semicolon ) {
-            return true;
+            break;
         }
         if( current_token().type() == SToken::Type::Comma ) {
             next_token();
@@ -503,14 +503,15 @@ bool Script::do_write( const std::string& term )
         }
 
         SValue value = expr( GetToken::current );
-        *out << value.as_string() << term;
+        *out << value.as_string();
 
         if( value.type() == SValue::Type::Error ) {
             m_ts.skip_to( SToken::Type::Semicolon );
-            return true;
+            break;
         }
     }
-    return false;
+    *out << term;
+    return true;
 }
 
 Function* Script::create_function()

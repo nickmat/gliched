@@ -81,7 +81,7 @@ namespace {
         return Scheme::create_base( bs, data );
     }
 
-    Base* do_base_hybrid( Script& script )
+    Base* do_base_hybrid( Script& script, const string& hscode )
     {
         SToken token = script.next_token();
         if( token.type() != SToken::Type::LCbracket ) {
@@ -107,24 +107,14 @@ namespace {
                     fieldnames = script.get_string_list( GetToken::next );
                 }
                 else if( token.get_str() == "scheme" ) {
-                    string scode;
-                    Scheme* sch;
-                    token = script.next_token();
-                    if( token.type() == SToken::Type::LCbracket ) {
-                        // Create anonymous scheme
-                        sch = do_create_scheme( script, "" );
-                        data.scheme = sch;
-                    }
-                    else {
-                        // Find scheme
-                        scode = script.get_name_or_primary( GetToken::current );
-                        sch = script.get_glich()->get_scheme(scode);
-                    }
+                    string scode = hscode + ":" + script.get_name_or_primary( GetToken::next );
+                    Scheme* sch = do_create_scheme( script, scode );
                     if( sch == nullptr ) {
-                        script.error( "Can not find/create scheme " + scode );
+                        script.error( "Unable to create scheme " + scode );
                         continue;
                     }
                     data.base = &sch->get_base();
+                    data.scheme = sch;
                     if( data.ok() ) {
                         data_vec.push_back( data );
                         data = HybridData();
@@ -179,7 +169,7 @@ Scheme* glich::do_create_scheme( Script& script, const std::string& code )
                 base = do_base( script, GetToken::next );
             }
             else if( token.get_str() == "hybrid" ) {
-                base = do_base_hybrid( script );
+                base = do_base_hybrid( script, code );
             }
             else if( token.get_str() == "epoch" ) {
                 epoch = script.expr( GetToken::next ).get_as_field();

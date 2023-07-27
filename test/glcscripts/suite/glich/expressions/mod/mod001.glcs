@@ -1,4 +1,4 @@
-// mod001.glcs Test file to test modulus of fields
+// mod001.glcs Test file to test modulus of integers
 
 let a = 15 mod 3;
 

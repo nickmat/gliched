@@ -1,0 +1,12 @@
+// mod011.glcs Test file to test modulus of fields
+
+let a = 15f mod 3f;
+
+let b = 99f mod 5f;
+
+write a + ", " + b;
+
+
+/*[OUTPUT]
+0, 4
+[OUTPUT]*/

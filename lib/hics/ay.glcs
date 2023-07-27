@@ -1,0 +1,64 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Name:        lib/hics/ay.glcs
+ * Project:     Glich: Extendable Script Language.
+ * Purpose:     Astronomical Year calendar Julian/Gregorian hybrid.
+ * Author:      Nick Matthews
+ * Website:     https://github.com/nickmat/glich
+ * Created:     26th July 2023
+ * Copyright:   Copyright (c) 2023, Nick Matthews.
+ * Licence:     GNU GPLv3
+ *
+ *  Glich is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Glich is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Glich.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+*/
+
+
+lexicon jg {
+    name "Hybrid Julian and Gregorian scheme names";
+    fieldname scheme;
+    lang en;
+    pseudo    Scheme, sch;
+    tokens {
+        0, "Julian",     "j";
+        1, "Gregorian",  "g";
+    }
+}
+
+grammar jg {
+    fields scheme year month day;
+    rank year month day;
+    lexicons m jg;
+    alias pseudo { dd day; mm month; yyyy year; s scheme; }
+    alias unit { d day; m month; y year; s scheme; }
+
+    format  dmys    "{day} |{month:m:a} |{year} |{scheme:jg:a}";
+    format "dmys+", "{day} |{month:m} |{year} |{scheme:jg}";
+    format  dmy     "{day} |{month:m:a} |{year}";
+    format "dmy+",  "{day} |{month:m} |{year}";
+    preferred dmy;
+}
+
+scheme ay {
+    name "Astronomical Year";
+    hybrid {
+        fields scheme year, month, day;
+        scheme 0 { base julian; }
+        change 2299161;  // g# 15 Oct 1582
+        scheme 1 { base gregorian; }
+    }
+    grammar jg;
+}
+
+// End of lib/hics/ay.glcs file

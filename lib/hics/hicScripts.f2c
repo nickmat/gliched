@@ -37,6 +37,7 @@ glich::ScriptModule glich::hics_default_scripts[] = {
     { "julian_shift", @(cp.cpp)"julian_shift.glcs" },
     { "gregorian", @(cp.cpp)"gregorian.glcs" },
     { "jce", @(cp.cpp)"jce.glcs" },
+    { "ay", @(cp.cpp)"ay.glcs" },
 };
 
 size_t glich::hics_default_scripts_size =

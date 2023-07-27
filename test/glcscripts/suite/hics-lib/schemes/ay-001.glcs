@@ -1,0 +1,25 @@
+// ay-01.glc // Test ay hybrid scheme
+
+writeln "";
+
+writeln record.ay 2299160 + ", " + record.ay 2299161;
+writeln record.ay:dmys "4 Oct 1582 j" + ", " + record.ay:dmys "15 Oct 1582 g";
+writeln record.ay:dmys "4 Oct 1582" + ", " + record.ay:dmys "15 Oct 1582";
+writeln text.ay:dmys 2299160 + ", " + text.ay:dmys 2299161;
+writeln text.:dmys {s:ay 0,1582,10,4} + ", " + text.:dmys {s:ay 1,1582,10,15};
+writeln text.ay:dmy 2299160 + ", " + text.ay:dmy 2299161;
+writeln date.ay:dmys "4 Oct 1582" + ", " + date.ay:dmys "15 Oct 1582";
+writeln date {s:ay 0,1582,10,4} + ", " + date {s:ay 1,1582,10,15};
+
+/*[OUTPUT]
+
+{s:ay 0, 1582, 10, 4}, {s:ay 1, 1582, 10, 15}
+{s:ay 0, 1582, 10, 4}, {s:ay 1, 1582, 10, 15}
+{s:ay 0, 1582, 10, 4}, {s:ay 1, 1582, 10, 15}
+4 Oct 1582 j, 15 Oct 1582 g
+4 Oct 1582 j, 15 Oct 1582 g
+4 Oct 1582, 15 Oct 1582
+2299160, 2299161
+2299160, 2299161
+
+[OUTPUT]*/

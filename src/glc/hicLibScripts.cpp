@@ -245,7 +245,7 @@ glich::ScriptModule glich::hics_default_scripts[] = {
  "format full {\n"
  "output \"{wday:w} |{day::os} |{month:m} |{ceyear} |{ce:ce}\";\n"
  "}\n"
- "pref dmye;\n"
+ "preferred dmye;\n"
  "}\n"
  "scheme jce {\n"
  "name \"Julian Common Era\";\n"

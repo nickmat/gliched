@@ -154,7 +154,7 @@ Scheme* glich::do_create_scheme( Script& script, const std::string& code )
     string name, gmr_code;
     Field epoch = f_invalid;
     Grammar* gmr = nullptr;
-    Scheme_style style = SCH_STYLE_Default;
+    SchemeStyle style = SchemeStyle::none;
     for( ;;) {
         token = script.next_token();
         if( token.type() == SToken::Type::RCbracket ||

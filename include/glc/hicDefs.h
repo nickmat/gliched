@@ -67,13 +67,13 @@ namespace glich {
         a.insert( a.end(), b.begin(), b.end() );
     }
 
-    enum Scheme_style { SCH_STYLE_Default, SCH_STYLE_Hide };
+    enum class SchemeStyle { none, hide };
 
     struct Scheme_info
     {
         std::string name;
         std::string code;
-        Scheme_style style;
+        SchemeStyle style;
         std::string grammar_code;
         StdStrVec lexicon_codes;
         StdStrVec lexicon_names;

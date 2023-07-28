@@ -54,7 +54,7 @@ namespace glich {
         SValue complete_object( const std::string& input, const std::string& fcode ) const;
 
         std::string get_name() const { return m_name; }
-        Scheme_style get_style() const { return m_style; }
+        SchemeStyle get_style() const { return m_style; }
         const Base& get_base() const { return m_base; }
         Format* get_output_format( const std::string& fcode ) const;
         Format* get_input_format( const std::string& fcode ) const;
@@ -62,7 +62,7 @@ namespace glich {
         FieldVec get_object_fields( const SValueVec& values ) const;
 
         void set_name( const std::string& name ) { m_name = name; }
-        void set_style( Scheme_style style ) { m_style = style; }
+        void set_style( SchemeStyle style ) { m_style = style; }
 
         std::string jdn_to_str( Field jdn, const std::string& fcode ) const;
         std::string range_to_str( const Range& rng, const std::string& fcode ) const;
@@ -79,7 +79,7 @@ namespace glich {
 
     private:
         std::string  m_name;
-        Scheme_style  m_style;
+        SchemeStyle  m_style;
         const Base&  m_base;
         std::string  m_input_fcode;
         std::string  m_output_fcode;

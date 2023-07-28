@@ -51,10 +51,7 @@ namespace {
         SToken token = (get == GetToken::next) ? script.next_token() : script.current_token();
         if( token.type() == SToken::Type::Name ) {
             string name = token.get_str();
-            if( name == "jdn" ) {
-                bs = Scheme::BaseName::jdn;
-            }
-            else if( name == "julian" ) {
+            if( name == "julian" ) {
                 bs = Scheme::BaseName::julian;
             }
             else if( name == "gregorian" ) {
@@ -65,6 +62,12 @@ namespace {
             }
             else if( name == "ordinal" ) {
                 bs = Scheme::BaseName::ordinal;
+            }
+            else if( name == "jwn" ) {
+                bs = Scheme::BaseName::jwn;
+            }
+            else if( name == "jdn" ) {
+                bs = Scheme::BaseName::jdn;
             }
             else {
                 script.error( "Base scheme not recognised." );

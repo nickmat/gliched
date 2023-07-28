@@ -37,6 +37,7 @@
 #include "hicIsoWeek.h"
 #include "hicJdn.h"
 #include "hicJulian.h"
+#include "hicJwn.h"
 #include "hicOptional.h"
 #include "hicRecord.h"
 
@@ -183,16 +184,18 @@ Base* Scheme::create_base( BaseName bs, const std::string& data )
 {
     switch( bs )
     {
-    case BaseName::jdn:
-        return new Jdn( data );
-    case BaseName::julian:
-        return new Julian( data );
     case BaseName::gregorian:
         return new Gregorian( data );
+    case BaseName::julian:
+        return new Julian( data );
     case BaseName::isoweek:
         return new IsoWeek( data );
     case BaseName::ordinal:
         return new IsoOrdinal( data );
+    case BaseName::jdn:
+        return new Jdn( data );
+    case BaseName::jwn:
+        return new Jwn( data );
     }
     return nullptr;
 }

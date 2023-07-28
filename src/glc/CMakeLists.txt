@@ -34,6 +34,7 @@ set( GLC_SOURCES
     hicIsoOrdinal.cpp
     hicIsoWeek.cpp
     hicJulian.cpp
+    hicJwn.cpp
     hicLexicon.cpp
     hicLibScripts.cpp
     hicMath.cpp
@@ -74,6 +75,7 @@ set( GLC_HEADERS
     hicIsoWeek.h
     hicJdn.h
     hicJulian.h
+    hicJwn.h
     hicLexicon.h
     hicLibScripts.h
     hicMath.h

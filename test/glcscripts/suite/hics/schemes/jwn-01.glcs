@@ -1,0 +1,52 @@
+// jwn-01.glc // Test ay hybrid scheme
+
+lexicon W {
+    name "Weekday names";
+    fieldname wday;
+    lang en;
+    pseudo    Weekday,  WDay;
+    tokens {
+        1, "Monday",    "Mon";
+        2, "Tuesday",   "Tue";
+        3, "Wednesday", "Wed";
+        4, "Thursday",  "Thur";
+        5, "Friday",    "Fri";
+        6, "Saturday",  "Sat";
+        7, "Sunday",    "Sun";
+    }
+}
+
+grammar JWN {
+    fields week day;
+    lexicons W;
+    alias pseudo { wwwww week; d day; }
+    format  wd      "{week}| {day}";
+    format  wday    "{week}| {day:W:a}";
+    format "wday+", "{week}| {day:W}";
+    preferred wday;
+}
+
+scheme JWN {
+    name "Julian Week Number";
+    base jwn;
+    grammar JWN;
+}
+
+write nl;
+write record.JWN 2460154 nl;
+write record.JWN "351450 fri" nl;
+write text.JWN 2460154, text.JWN:wd 2460154 nl;
+write text {s:JWN 351450, 5}, text.:wd {s:JWN 351450, 5} nl;
+write date.JWN "351450 fri" nl;
+write date {s:JWN 351450, 5} nl;
+
+/*[OUTPUT]
+
+{s:JWN 351450, 5}
+{s:JWN 351450, 5}
+351450 Fri, 351450 5
+351450 Fri, 351450 5
+2460154
+2460154
+
+[OUTPUT]*/

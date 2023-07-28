@@ -190,6 +190,15 @@ Scheme* glich::do_create_scheme( Script& script, const std::string& code )
                     gmr = script.get_glich()->get_grammar( gmr_code );
                 }
             }
+            else if( token.get_str() == "style" ) {
+                string str = script.get_name_or_primary( GetToken::next );
+                if( str == "hide" ) {
+                    style = SchemeStyle::hide;
+                }
+                else if( str != "none" ) {
+                    script.error( "Style name expected." );
+                }
+            }
             else {
                 script.error( "Scheme sub-statement expected." );
             }

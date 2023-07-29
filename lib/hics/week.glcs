@@ -57,4 +57,22 @@ lexicon ws {
     }
 }
 
+grammar jwn {
+    fields week day;
+    lexicons w;
+    alias pseudo { wwwww week; d day; }
+    format  wd      "{week}| {day}";
+    format  wday    "{week}| {day:w:a}";
+    format "wday+", "{week}| {day:w}";
+    preferred wday;
+}
+
+scheme jwn {
+    name "Julian Week Number";
+    base jwn;
+    grammar jwn;
+    style hide;
+}
+
+
 // End of scripts/base.hcs file

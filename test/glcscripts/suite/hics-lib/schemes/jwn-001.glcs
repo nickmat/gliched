@@ -1,0 +1,21 @@
+// jwn-001.glc // Test jwn Julian Week Number scheme
+
+
+write nl;
+write record.jwn 2460154 nl;
+write record.jwn "351450 fri" nl;
+write text.jwn 2460154, text.jwn:wd 2460154 nl;
+write text {s:jwn 351450, 5}, text.:wd {s:jwn 351450, 5} nl;
+write date.jwn "351450 fri" nl;
+write date {s:jwn 351450, 5} nl;
+
+/*[OUTPUT]
+
+{s:jwn 351450, 5}
+{s:jwn 351450, 5}
+351450 Fri, 351450 5
+351450 Fri, 351450 5
+2460154
+2460154
+
+[OUTPUT]*/

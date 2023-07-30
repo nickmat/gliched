@@ -39,7 +39,7 @@ using namespace glich;
 using namespace std;
 
 Hybrid::Hybrid( const StdStrVec& fields, const std::vector<HybridData>& data )
-    : m_data( data ), m_rec_size( fields.size() )
+    : m_data( data ), m_rec_size( fields.size() ), Base( std::string() )
 {
     m_fieldnames = fields;
     XRefVec xref( fields.size() );

@@ -35,10 +35,9 @@ namespace glich {
     class Jwn : public Base
     {
     public:
-        Jwn( const std::string& data = std::string() ) : Base( data ) {
-            m_fieldnames = { "week", "day" };
-        }
+        Jwn( const std::string& data );
 
+        void set_data( const std::string& data );
         size_t required_size() const override { return 2; }
 
         Field get_jdn( const FieldVec& fields ) const override;
@@ -46,9 +45,11 @@ namespace glich {
 
         FieldVec get_fields( Field jdn ) const override; // { return { jdn }; }
 
-        static Field to_jdn( Field week, Field day );
-        static void from_jdn( Field* week, Field* day, Field jdn );
+    private:
+        static Field to_jdn( Field week, Field day, Field offset );
+        static void from_jdn( Field* week, Field* day, Field jdn, Field offset );
 
+        Field m_offset;
     };
 
 }

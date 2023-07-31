@@ -1,0 +1,52 @@
+// jwsn-01.glc // Test jwsn Julian Week (Sunday) Number scheme
+
+lexicon WS {
+    name "Weekday names";
+    fieldname wsday;
+    lang en;
+    pseudo    Weekday,  WDay;
+    tokens {
+        1, "Sunday",    "Sun";
+        2, "Monday",    "Mon";
+        3, "Tuesday",   "Tue";
+        4, "Wednesday", "Wed";
+        5, "Thursday",  "Thur";
+        6, "Friday",    "Fri";
+        7, "Saturday",  "Sat";
+    }
+}
+
+grammar JWSN {
+    fields week day;
+    lexicons WS;
+    alias pseudo { wwwww week; d day; }
+    format  wd      "{week}| {day}";
+    format  wday    "{week}| {day:WS:a}";
+    format "wday+", "{week}| {day:WS}";
+    preferred wday;
+}
+
+scheme JWSN {
+    name "Julian Week (Sunday) Number";
+    base jwn sunday;
+    grammar JWSN;
+}
+
+write nl;
+write record.JWSN 2460154 nl;
+write record.JWSN "351450 fri" nl;
+write text.JWSN 2460154, text.JWSN:wd 2460154 nl;
+write text {s:JWSN 351450, 6}, text.:wd {s:JWSN 351450, 6} nl;
+write date.JWSN "351450 fri" nl;
+write date {s:JWSN 351450, 6} nl;
+
+/*[OUTPUT]
+
+{s:JWSN 351450, 6}
+{s:JWSN 351450, 6}
+351450 Fri, 351450 6
+351450 Fri, 351450 6
+2460154
+2460154
+
+[OUTPUT]*/

@@ -27,15 +27,55 @@
 
 #include "hicJwn.h"
 
+#include "glcHelper.h"
 #include "glcMath.h"
 
 using namespace glich;
 using std::string;
 
 
+Jwn::Jwn( const std::string& data )
+    : m_offset( 0 ), Base( string() )
+{
+    m_fieldnames = { "week", "day" };
+    string tail, word = get_first_word( data, &tail );
+    while( !word.empty() ) {
+        set_data( word );
+        word = get_first_word( tail, &tail );
+    }
+}
+
+void Jwn::set_data( const string& data )
+{
+    if( data == "monday" ) {
+        m_offset = 0;
+    }
+    else if( data == "tuesday" ) {
+        m_offset = 6;
+    }
+    else if( data == "wednesday" ) {
+        m_offset = 5;
+    }
+    else if( data == "thursday" ) {
+        m_offset = 4;
+    }
+    else if( data == "friday" ) {
+        m_offset = 3;
+    }
+    else if( data == "saturday" ) {
+        m_offset = 2;
+    }
+    else if( data == "sunday" ) {
+        m_offset = 1;
+    }
+    else {
+        Base::set_data( data );
+    }
+}
+
 Field Jwn::get_jdn( const FieldVec& fields ) const
 {
-    return to_jdn( fields[0], fields[1] );
+    return to_jdn( fields[0], fields[1], m_offset );
 }
 
 Field Jwn::get_end_field_value( const FieldVec& fields, size_t index ) const
@@ -53,19 +93,19 @@ Field Jwn::get_end_field_value( const FieldVec& fields, size_t index ) const
 FieldVec Jwn::get_fields( Field jdn ) const
 {
     FieldVec fields( record_size(), f_invalid );
-    from_jdn( &fields[0], &fields[1], jdn );
+    from_jdn( &fields[0], &fields[1], jdn, m_offset );
     return fields;
 }
 
-Field Jwn::to_jdn( Field week, Field day )
+Field Jwn::to_jdn( Field week, Field day, Field offset )
 {
-    return week * 7 + day - 1;
+    return week * 7 + day - 1 - offset;
 }
 
-void Jwn::from_jdn( Field* week, Field* day, Field jdn )
+void Jwn::from_jdn( Field* week, Field* day, Field jdn, Field offset )
 {
-    *week = fdiv_e( jdn, 7 );
-    *day = fmod_e( jdn, 7 ) + 1;
+    *week = fdiv_e( jdn + offset, 7 );
+    *day = fmod_e( jdn + offset, 7 ) + 1;
 }
 
 // End of src/glc/hicJwn.cpp file.

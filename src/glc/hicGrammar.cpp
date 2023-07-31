@@ -49,10 +49,20 @@ Grammar::~Grammar()
 {
 }
 
+void glich::Grammar::create_error( const std::string& mess )
+{
+    if( m_create_error.empty() ) {
+        m_create_error = mess;
+    }
+}
+
 bool Grammar::constuct( const Base* base )
 {
     if( m_ok ) {
         return false; // Only run construct once.
+    }
+    if( !m_create_error.empty() ) {
+        return false;
     }
     if( m_inherit ) {
         if( m_base_fieldnames.empty() ) {

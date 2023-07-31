@@ -47,6 +47,7 @@ namespace glich {
         ~Grammar();
 
         bool is_ok() const { return m_ok; }
+        void create_error( const std::string& mess );
         bool constuct( const Base* base );
 
         void set_inherit( const std::string& gcode );
@@ -67,6 +68,7 @@ namespace glich {
         }
 
         std::string get_code() const { return m_code; }
+        std::string get_error_string() const { return m_create_error; }
         std::string resolve_field_alias( const std::string& alias );
         std::string resolve_unit_alias( const std::string& alias );
         std::string get_num_pseudo_alias( const std::string& fname ) const;
@@ -97,6 +99,7 @@ namespace glich {
         Glich*      m_glc;
         std::string m_code;
         bool        m_ok;
+        std::string m_create_error;
         Grammar*    m_inherit;
         LexiconVec  m_lexicons;
         FormatMap   m_formats;

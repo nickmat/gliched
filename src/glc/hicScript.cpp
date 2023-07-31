@@ -271,8 +271,12 @@ namespace {
         StdStrVec lexicons = script.get_string_list( GetToken::next );
         for( size_t i = 0; i < lexicons.size(); i++ ) {
             Lexicon* lex = script.get_glich()->get_lexicon( lexicons[i] );
-            assert( lex != nullptr );
-            gmr->add_lexicon( lex );
+            if( lex == nullptr ) {
+                gmr->create_error( "lexicon " + lexicons[i] + " not found." );
+            }
+            else {
+                gmr->add_lexicon( lex );
+            }
         }
     }
 
@@ -450,9 +454,13 @@ Grammar* glich::do_create_grammar( Script& script, const std::string& code, cons
     }
     gmr->constuct( base );
     if( !gmr->is_ok() ) {
+        string gmr_error = gmr->get_error_string();
         delete gmr;
         gmr = nullptr;
-        script.error( "Unable to construct grammar \"" + code + "\"." );
+        if( gmr_error.empty() ) {
+            gmr_error = "Unable to construct grammar \"" + code + "\".";
+        }
+        script.error( gmr_error );
     }
     return gmr;
 }

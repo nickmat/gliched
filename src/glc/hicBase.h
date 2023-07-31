@@ -41,7 +41,7 @@ namespace glich {
         virtual ~Base();
 
         // Set initial data from string.
-        virtual void set_data( const std::string& data );
+        void set_data( const std::string& data );
         virtual bool set_epoch( Field epoch ) { return false; }
 
         bool attach_grammar( Grammar* gmr );

@@ -26,7 +26,7 @@
 
 
 lexicon w {
-    name "Weekday names";
+    name "Weekday names Monday start";
     fieldname wday;
     lang en;
     pseudo    Weekday,  WDay;
@@ -38,22 +38,6 @@ lexicon w {
         5, "Friday",    "Fri";
         6, "Saturday",  "Sat";
         7, "Sunday",    "Sun";
-    }
-}
-
-lexicon ws {
-    name "Weekday names";
-    fieldname wsday;
-    lang en;
-    pseudo    Weekday,  WDay;
-    tokens {
-        1, "Sunday",    "Sun";
-        2, "Monday",    "Mon";
-        3, "Tuesday",   "Tue";
-        4, "Wednesday", "Wed";
-        5, "Thursday",  "Thur";
-        6, "Friday",    "Fri";
-        7, "Saturday",  "Sat";
     }
 }
 
@@ -71,6 +55,39 @@ scheme jwn {
     name "Julian Week Number";
     base jwn;
     grammar jwn;
+    style hide;
+}
+
+lexicon ws {
+    name "Weekday names Sunday start";
+    fieldname wsday;
+    lang en;
+    pseudo    Weekday,  WDay;
+    tokens {
+        1, "Sunday",    "Sun";
+        2, "Monday",    "Mon";
+        3, "Tuesday",   "Tue";
+        4, "Wednesday", "Wed";
+        5, "Thursday",  "Thur";
+        6, "Friday",    "Fri";
+        7, "Saturday",  "Sat";
+    }
+}
+
+grammar jwsn {
+    fields week day;
+    lexicons ws;
+    alias pseudo { wwwww week; d day; }
+    format  wd      "{week}| {day}";
+    format  wday    "{week}| {day:ws:a}";
+    format "wday+", "{week}| {day:ws}";
+    preferred wday;
+}
+
+scheme jwsn {
+    name "Julian Week (Sunday) Number";
+    base jwn sunday;
+    grammar jwsn;
     style hide;
 }
 

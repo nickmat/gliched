@@ -31,7 +31,113 @@
 
 <div id='content' class='nomenu'>
 
-<h2>Page Under Construction</h2>
+<h2>Calendar Description</h2>
+<p>
+ The Julian Week Number calendar scheme does not have any known historical value.
+ The week field number has some value when considering week differences and ranges.
+ It is included for completeness and has the style value set at 'hidden'.
+</p>
+
+<h3>Use Case</h3>
+<p>
+ The seven day week is thought to have originated in ancient Babylonia around 600 BCE.
+ The day of the week is used with the Julian, Gregorian, Hebrew, Islamic and other calendars.
+</p>
+<p>
+ There are more than one way of numbering the week days.
+ If the scheme only uses text names for the week days,
+ any numbering system can be used since they will not normally be visible.
+ However, some calendars routinely use the weekday number
+ (i.e. ISO, Hebrew and Islamic calendars)
+ and so the numbering system can be selected depending on how the scheme is specified.
+</p>
+<p>
+ This scheme is based on the week starting on a Monday,
+ i.e. day 1 = Monday.
+ It is commonly used with the Julian, Gregorian calendars and variants.
+ They use the optional field <code>wday</code>.
+</p>
+
+<h3>Definition</h3>
+<table class='basic data rfloat'>
+<tr><th>day</th><th>Name</th></tr>
+<tr><td>1</td><td>Monday</td></tr>
+<tr><td>2</td><td>Tuesday</td></tr>
+<tr><td>3</td><td>Wednesday</td></tr>
+<tr><td>4</td><td>Thursday</td></tr>
+<tr><td>5</td><td>Friday</td></tr>
+<tr><td>6</td><td>Saturday</td></tr>
+<tr><td>7</td><td>Sunday</td></tr>
+</table>
+
+<p>
+ The day start is not defined and will depend on context.
+</p>
+<p>
+ The <b>Record</b> consists of two <b>Field</b>s named <code>week</code> and <code>day.</code>
+</p>
+<table class='record'>
+<tr><th colspan='2'>Record</th></tr>
+<tr><td>week</td><td>day</td></tr>
+</table>
+
+<p class='lclear'>
+ The calendar is a repeating cycle of 7 days, starting with the first Monday.
+ The weeks are counted from the same era as the jdn scheme.
+</p>
+<div>
+ The <b>Epoch</b> is set at
+ <table class='rec-value'>
+  <tr><td rowspan='2' class='sig'>jwn</td><th>week</th><th>day</th></tr>
+  <tr class='value'><td>1</td><td>1</td></tr>
+ </table>
+ =
+ <table class='rec-value'>
+  <tr><td rowspan='2' class='sig'>jdn</td><th>day</th></tr>
+  <tr class='value'><td>7</td></tr>
+ </table>
+ a Monday.
+</div>
+
+<h3>Script</h3>
+<table class='code lfloat'>
+<tr><th>Default Script</th></tr>
+<tr><td
+>lexicon w {
+    name "Weekday names Monday start";
+    fieldname wday;
+    lang en;
+    pseudo    Weekday,  WDay;
+    tokens {
+        1, "Monday",    "Mon";
+        2, "Tuesday",   "Tue";
+        3, "Wednesday", "Wed";
+        4, "Thursday",  "Thur";
+        5, "Friday",    "Fri";
+        6, "Saturday",  "Sat";
+        7, "Sunday",    "Sun";
+    }
+}
+grammar jwn {
+    fields week day;
+    lexicons w;
+    alias pseudo { wwwww week; d day; }
+    format  wd      "{week}| {day}";
+    format  wday    "{week}| {day:w:a}";
+    format "wday+", "{week}| {day:w}";
+    preferred wday;
+}
+scheme jwn {
+    name "Julian Week Number";
+    base jwn;
+    grammar jwn;
+    style hide;
+}
+</td></tr>
+</table>
+<p>
+ The script has no dependencies.
+</p>
 
 </div><!--id=content-->
 

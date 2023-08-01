@@ -68,29 +68,33 @@
 </p>
 
 <h3>Definition</h3>
-<table class='record'>
-<tr><th>Record</th></tr>
-<tr><td>day</td></tr>
-</table>
-<p class='lclear'>
- Since the Julian Day Number calendar is the same as used by the internal hics library,
- the definition is trivial.
+<p>
  Days start at midnight.
 </p>
 <p>
  The <b>Record</b> consists of a single <b>Field</b> named <code>day.</code>
 </p>
-
+<table class='record'>
+<tr><th>Record</th></tr>
+<tr><td>day</td></tr>
+</table>
+<p class='lclear'>
+ The Julian Day Number calendar is the same as that used by the internal hics library,
+ so its definition in terms of itself is not helpful.
+ Instead, it is defined by a day in history.
+ The date chosen is the day the "Convention du Mètre" was signed, the 20th May 1875.
+ This is also selected as the reference date by the ISO-8601 standard.
+</p>
 <div class='p'>
- The <b>Epoch</b> is the same as the internal version, so
+ By definition,
  <table class='rec-value'>
    <tr><td rowspan='2' class='sig'>jdn</td><th>day</th></tr>
-   <tr class='value'><td>1</td></tr>
+   <tr class='value'><td>2406029</td></tr>
  </table>
  =
  <table class='rec-value'>
-   <tr><td rowspan='2' class='sig'>jdn</td><th>day</th></tr>
-   <tr class='value'><td>1</td></tr>
+   <tr><td rowspan='2' class='sig'>g</td><th>year</th><th>month</th><th>day</th></tr>
+   <tr class='value'><td>1875</td><td>5</td><td>20</td></tr>
  </table>.
 </div>
 
@@ -113,9 +117,10 @@ scheme jdn {
 </td></tr>
 </table>
 <p>
- Although this calendar has no historical uses, it is included in the default
- script because it is used as the intermediate form when converting between
- other calendars. It may also be used to derive other day count calendars.
+ Although this calendar has no historical uses,
+ it is included in the hics library because it is used as the intermediate form
+ when converting between other calendars.
+ It may also be used to derive other day count calendars.
 </p>
 <p>
  The script has no dependencies.

@@ -1,0 +1,13 @@
+// jwsn-002.glc // Test jwn Julian Week (Sunday) Number scheme
+
+
+write nl;
+write date.jwsn "351451", text.jwsn (2460156..2460162) nl;
+write text.:wdmy date.jwsn:wd "351451" nl;
+
+/*[OUTPUT]
+
+2460156..2460162, 351451
+Sun 30 Jul 2023..Sat 5 Aug 2023
+
+[OUTPUT]*/

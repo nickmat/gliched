@@ -399,6 +399,13 @@ Grammar* glich::do_create_grammar( Script& script, const std::string& code, cons
         return nullptr;
     }
     Grammar* gmr = new Grammar( code, script.get_glich() );
+    StdStrVec basefields;
+    if( base != nullptr ) {
+        for( size_t i = 0; i < base->required_size(); i++ ) {
+            basefields.push_back( base->get_fieldname( i ) );
+        }
+        gmr->set_base_fieldnames( basefields );
+    }
     string str;
     for( ;;) {
         token = script.next_token();
@@ -432,7 +439,7 @@ Grammar* glich::do_create_grammar( Script& script, const std::string& code, cons
                 gmr->set_inherit( str );
             }
             else if( name == "fields" ) {
-                StdStrVec basefields = script.get_string_list( GetToken::next );
+                basefields = script.get_string_list( GetToken::next );
                 gmr->set_base_fieldnames( basefields );
             }
             else if( name == "optional" ) {

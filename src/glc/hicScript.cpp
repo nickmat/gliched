@@ -452,7 +452,7 @@ Grammar* glich::do_create_grammar( Script& script, const std::string& code, cons
             script.error( "Grammar sub-statement expected." );
         }
     }
-    gmr->constuct( base );
+    gmr->constuct();
     if( !gmr->is_ok() ) {
         string gmr_error = gmr->get_error_string();
         delete gmr;

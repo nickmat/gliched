@@ -56,7 +56,7 @@ void glich::Grammar::create_error( const std::string& mess )
     }
 }
 
-bool Grammar::constuct( const Base* base )
+bool Grammar::constuct()
 {
     if( m_ok ) {
         return false; // Only run construct once.
@@ -304,7 +304,7 @@ Grammar* Grammar::create_default_grammar( const Base* base, Glich* glc )
 {
     Grammar* gmr = new Grammar( "", glc );
     gmr->set_base_fieldnames( base->get_fieldnames() );
-    gmr->constuct( base );
+    gmr->constuct();
     return gmr;
 }
 

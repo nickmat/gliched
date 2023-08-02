@@ -48,7 +48,7 @@ namespace glich {
 
         bool is_ok() const { return m_ok; }
         void create_error( const std::string& mess );
-        bool constuct( const Base* base );
+        bool constuct();
 
         void set_inherit( const std::string& gcode );
         void set_base_fieldnames( StdStrVec fieldnames ) { m_base_fieldnames = fieldnames; }

@@ -44,46 +44,6 @@ using std::string;
 
 namespace {
 
-    Base* do_base( Script& script, GetToken get )
-    {
-        Scheme::BaseName bs = Scheme::BaseName::null;
-        string data;
-        SToken token = (get == GetToken::next) ? script.next_token() : script.current_token();
-        if( token.type() == SToken::Type::Name ) {
-            string name = token.get_str();
-            if( name == "julian" ) {
-                bs = Scheme::BaseName::julian;
-            }
-            else if( name == "gregorian" ) {
-                bs = Scheme::BaseName::gregorian;
-            }
-            else if( name == "isoweek" ) {
-                bs = Scheme::BaseName::isoweek;
-            }
-            else if( name == "ordinal" ) {
-                bs = Scheme::BaseName::ordinal;
-            }
-            else if( name == "jwn" ) {
-                bs = Scheme::BaseName::jwn;
-            }
-            else if( name == "jdn" ) {
-                bs = Scheme::BaseName::jdn;
-            }
-            else {
-                script.error( "Base scheme not recognised." );
-                return nullptr;
-            }
-            token = script.next_token();
-            if( token.type() != SToken::Type::Semicolon ) {
-                data = script.get_name_or_primary( GetToken::current );
-            }
-        }
-        else {
-            script.error( "Base name expected." );
-        }
-        return Scheme::create_base( bs, data );
-    }
-
     Base* do_base_hybrid( Script& script, const string& hscode )
     {
         SToken token = script.next_token();
@@ -141,6 +101,49 @@ namespace {
         return Scheme::create_base_hybrid( fieldnames, data_vec );
     }
 
+    Base* do_base( Script& script, const string& code )
+    {
+        Scheme::BaseName bs = Scheme::BaseName::null;
+        string data;
+        SToken token = script.next_token();
+        if( token.type() == SToken::Type::Name ) {
+            string name = token.get_str();
+            if( name == "julian" ) {
+                bs = Scheme::BaseName::julian;
+            }
+            else if( name == "gregorian" ) {
+                bs = Scheme::BaseName::gregorian;
+            }
+            else if( name == "isoweek" ) {
+                bs = Scheme::BaseName::isoweek;
+            }
+            else if( name == "ordinal" ) {
+                bs = Scheme::BaseName::ordinal;
+            }
+            else if( name == "jwn" ) {
+                bs = Scheme::BaseName::jwn;
+            }
+            else if( name == "jdn" ) {
+                bs = Scheme::BaseName::jdn;
+            }
+            else if( name == "hybrid" ) {
+                return do_base_hybrid( script, code );
+            }
+            else {
+                script.error( "Base scheme not recognised." );
+                return nullptr;
+            }
+            token = script.next_token();
+            if( token.type() != SToken::Type::Semicolon ) {
+                data = script.get_name_or_primary( GetToken::current );
+            }
+        }
+        else {
+            script.error( "Base name expected." );
+        }
+        return Scheme::create_base( bs, data );
+    }
+
 } // namespace
 
 Scheme* glich::do_create_scheme( Script& script, const std::string& code )
@@ -169,10 +172,7 @@ Scheme* glich::do_create_scheme( Script& script, const std::string& code )
                 name = script.expr( GetToken::next ).as_string();
             }
             else if( token.get_str() == "base" ) {
-                base = do_base( script, GetToken::next );
-            }
-            else if( token.get_str() == "hybrid" ) {
-                base = do_base_hybrid( script, code );
+                base = do_base( script, code );
             }
             else if( token.get_str() == "epoch" ) {
                 epoch = script.expr( GetToken::next ).get_as_field();

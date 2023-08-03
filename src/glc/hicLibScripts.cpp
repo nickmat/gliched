@@ -307,7 +307,7 @@ glich::ScriptModule glich::hics_default_scripts[] = {
  "}\n"
  "scheme ay {\n"
  "name \"Astronomical Year\";\n"
- "hybrid {\n"
+ "base hybrid {\n"
  "fields scheme year, month, day;\n"
  "scheme 0 { base julian; }\n"
  "change 2299161;\n"

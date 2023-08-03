@@ -52,7 +52,7 @@ grammar jg {
 
 scheme ay {
     name "Astronomical Year";
-    hybrid {
+    base hybrid {
         fields scheme year, month, day;
         scheme 0 { base julian; }
         change 2299161;  // g# 15 Oct 1582

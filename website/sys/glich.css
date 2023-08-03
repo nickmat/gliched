@@ -1,8 +1,10 @@
 /* HistoryCal - Home Website CSS File */
 
+/*
 div.p {
  //clear: both;
 }
+*/
 
 blockquote {
  margin: 0 0 0 35%;
@@ -123,6 +125,14 @@ table.record td.rdonly {
  background-color: MistyRose;
 }
 
+table.record td.rec-opt {
+ background-color: rgb(255, 228, 225);
+}
+
+table.record td.rec-calc {
+ background-color: rgb(253, 225, 255);
+}
+
 table.rec-value {
  display: inline-table;
  border: 1px solid black;
@@ -166,4 +176,4 @@ dl.gloss dd {
  margin-bottom: 0.75em;
 }
 
-/* End of hcal.css file */
+/* End of glich.css file */

@@ -1,0 +1,20 @@
+// scheme005.glcs // Website example script dev\man\hics\scheme.htm
+
+let _today = 2460159;
+
+scheme test {
+    base gregorian;
+    grammar {
+        format f "{day::os} day of the |{month::os} month of the |year {year}";
+    }
+}
+write nl;
+write record.test _today nl;
+write text.test:f _today nl;
+
+/*[OUTPUT]
+
+{s:test 2023, 8, 2}
+2nd day of the 8th month of the year 2023
+
+[OUTPUT]*/

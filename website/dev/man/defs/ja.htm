@@ -31,7 +31,88 @@
 
 <div id='content' class='nomenu'>
 
-<h2>Page Under Construction</h2>
+<h2>Calendar Description</h2>
+<p>
+ The Julian Annunciation calendar is a variant of the <a href='j.htm'>Julian</a> calendar obtained
+ by shifting the year change forward from the 1st January to the 25th March.
+ It is also known as the <i>calculus florentinus</i> since this method was used in Florence.
+</p>
+
+<h3>Use Case</h3>
+<p>
+ The Julian Annunciation calendar has been commonly used throughout Europe and the European colonies
+ since the 11th century.
+</p>
+<ul>
+ <li>France from the 11th century until the change to the Gregorian in 1582.</li>
+ <li>England and its overseas territories, from the 12th century to 1st January 1752.</li>
+ <li>Scotland, from the 12th century to 1st January 1600.</li>
+</ul>
+
+<h3>Definition</h3>
+
+<p>
+ The <b>Record</b> consists of three julian required <b>Fields</b> named <code>year,</code>
+ <code>month</code> and <code>day</code>, a calculated field <code>cyear</code>
+ and the optional field <code>wday</code>.
+</p>
+<p>
+ The field <code>cyear</code> is the Civil Year while the <code>year</code> is the Historic Year.
+</p>
+<table class='record'>
+<tr><th colspan='5'>Record - Default order</th></tr>
+<tr><td>year</td><td>month</td><td>day</td><td class='rec-calc'>cyear</td><td class='rec-opt'>wday</td></tr>
+</table>
+<table class='record'>
+<tr><th colspan='5'>Record - Ranking order</th></tr>
+<tr><<td class='rec-calc'>cyear</td><td>month</td><td>day</td><td class='rec-opt'>wday</td><td>year</td></tr>
+</table>
+<p class='lclear'>
+ The field <code>cyear</code> (civil year) equals <code>year</code> (historic year)
+ apart from the days 1st January to 24th March, when <code>cyear</code> equals <code>year - 1</code>
+</p>
+
+<div>
+ The <b>Epoch</b> is set at
+ <table class='rec-value'>
+   <tr><td rowspan='2' class='sig'>ja</td><th>cyear</th><th>month</th><th>day</th></tr>
+   <tr class='value'><td>1</td><td>3</td><td>25</td></tr>
+ </table>
+ =
+ <table class='rec-value'>
+   <tr><td rowspan='2' class='sig'>j</td><th>year</th><th>month</th><th>day</th></tr>
+   <tr class='value'><td>1</td><td>3</td><td>25</td></tr>
+ </table>
+ =
+ <table class='rec-value'>
+  <tr><td rowspan='2' class='sig'>jdn</td><th>day</th></tr>
+  <tr class='value'><td>1721507</td></tr>
+ </table>.
+</div>
+
+<h3>Script</h3>
+<table class='code lfloat'>
+<tr><th>Default Script</th></tr>
+<tr><td
+>scheme ja {
+    name "Julian Annunciation";
+    base julian;
+    epoch 1721507; // j:dmy# 25 Mar 1
+    grammar j_sh;
+}
+</td></tr>
+</table>
+<p class='lclear'>
+ The script uses the <b>grammar</b> "j_sh" definition from
+ <a href='jn.htm'><b>jn</b> Julian Nativity</a>.
+</p>
+<p>
+ It also uses the <b>lexicon</b> "m" definition from
+ <a href='j.htm'><b>j</b> Julian</a> for the <code>month</code> field
+ and "w" definition from the
+ <a href='jwn.htm'><b>jwn</b> Julian Week Number</a> scheme
+ for the optional field <code>wday.</code>
+</p>
 
 </div><!--id=content-->
 

@@ -31,7 +31,97 @@
 
 <div id='content' class='nomenu'>
 
-<h2>Page Under Construction</h2>
+<h2>Calendar Description</h2>
+<p>
+ The Julian Nativity calendar is a variant of the <a href='j.htm'>Julian</a> calendar obtained
+ by shifting the year change back from the 1st January to the 25th December.
+</p>
+
+<h3>Use Case</h3>
+<p>
+ This is the form the <i>Anno Domimi</i> or AD era took when it originated.
+ It was used by the Church and more generally from the 8th century. It was
+ gradually replaced by the Annunciation year change from the 9th century,
+ but was still in use up to the 14th century.
+</p>
+
+<h3>Definition</h3>
+
+<p>
+ The <b>Record</b> consists of three julian required <b>Fields</b> named <code>year,</code>
+ <code>month</code> and <code>day</code>, a calculated field <code>cyear</code>
+ and the optional field <code>wday</code>.
+</p>
+<p>
+ The field <code>cyear</code> is the Civil Year while the <code>year</code> is the Historic Year.
+</p>
+<table class='record'>
+<tr><th colspan='5'>Record - Default order</th></tr>
+<tr><td>year</td><td>month</td><td>day</td><td class='rec-calc'>cyear</td><td class='rec-opt'>wday</td></tr>
+</table>
+<table class='record'>
+<tr><th colspan='5'>Record - Ranking order</th></tr>
+<tr><<td class='rec-calc'>cyear</td><td>month</td><td>day</td><td class='rec-opt'>wday</td><td>year</td></tr>
+</table>
+<p class='lclear'>
+ The field <code>cyear</code> (Civil Year) equals <code>year</code> (Historic Year)
+ apart from the days 25 Dec to 31 dec, when <code>cyear</code> equals <code>year + 1</code>
+</p>
+
+<div>
+ The <b>Epoch</b> is set at
+ <table class='rec-value'>
+   <tr><td rowspan='2' class='sig'>jn</td><th>cyear</th><th>month</th><th>day</th></tr>
+   <tr class='value'><td>1</td><td>12</td><td>25</td></tr>
+ </table>
+ =
+ <table class='rec-value'>
+   <tr><td rowspan='2' class='sig'>j</td><th>year</th><th>month</th><th>day</th></tr>
+   <tr class='value'><td>0</td><td>12</td><td>25</td></tr>
+ </table>
+ =
+ <table class='rec-value'>
+  <tr><td rowspan='2' class='sig'>jdn</td><th>day</th></tr>
+  <tr class='value'><td>1721417</td></tr>
+ </table>.
+</div>
+
+<h3>Script</h3>
+<table class='code lfloat'>
+<tr><th>Default Script</th></tr>
+<tr><td
+>grammar j_sh {
+    fields year month day;
+    calculated cyear;
+    optional wday;
+    rank cyear month day;
+    lexicons m w;
+    alias pseudo { w wday; dd day; mm month; yyyy cyear; }
+    alias unit { d day; m month; y year; }
+    format  dmc "{day} |{month:m:a} |{cyear}";
+    format  dmcy "{day} |{month:m:a} |{cyear/year}";
+    format  wdmcy "{wday:w:a} |{day} |{month:m:a} |{cyear/year}";
+    format  out { output "{day::os} |{month:m} |{cyear/year}"; }
+    format  full { output "{wday:w} |{day::os} |{month:m} |{cyear/year}"; }
+    preferred dmcy;
+}
+scheme jn {
+    name "Julian Nativity";
+    base julian;
+    epoch 1721417; // j:dmy# 25 Dec 0
+    grammar j_sh;
+}
+</td></tr>
+</table>
+<p class='lclear'>
+ The script uses the <b>lexicon</b> "m" definition from
+ <a href='j.htm'><b>j</b> Julian</a> for the <code>month</code> field.
+</p>
+<p>
+ It also uses the <b>lexicon</b> "w" definition from the
+ <a href='jwn.htm'><b>jwn</b> Julian Week Number</a> scheme
+ for the optional field <code>wday.</code>
+</p>
 
 </div><!--id=content-->
 

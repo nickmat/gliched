@@ -27,6 +27,7 @@
 
 #include "hicJulian.h"
 
+#include "glcHelper.h"
 #include "hicmath.h"
 #include "hicrecord.h"
 
@@ -37,7 +38,7 @@ using std::string;
 
 #define BASEDATE_Julian    1721058L
 
-Field glich::julian_to_jdn( Field year, Field month, Field day )
+static Field julian_to_jdn( Field year, Field month, Field day )
 {
     Field jdn =
         div_f( year, 4 ) * 1461 + mod_f( year, 4 ) * 365
@@ -52,7 +53,7 @@ Field glich::julian_to_jdn( Field year, Field month, Field day )
 /*! Splits the given Julian Day Number date into the day, month and year
 *  for the Julian Calendar.
 */
-void glich::julian_from_jdn( Field* year, Field* month, Field* day, Field jdn )
+static void julian_from_jdn( Field* year, Field* month, Field* day, Field jdn )
 {
     jdn -= BASEDATE_Julian;
 
@@ -82,11 +83,34 @@ void glich::julian_from_jdn( Field* year, Field* month, Field* day, Field jdn )
 
 /*! Return the jdn for Easter Sunday in the given year.
 */
-Field julian_easter( Field year )
+static Field julian_easter( Field year )
 {
     Field shifted_epact = ( 14 + 11 * ( year % 19 ) ) % 30;
     Field paschal_moon = julian_to_jdn( year, 4, 19 ) - shifted_epact;
     return kday_after( WDAY_Sunday, paschal_moon );
+}
+
+Julian::Julian( const std::string& data )
+    : m_year_offset(0), Base( string() )
+{
+    m_fieldnames = { "year", "month", "day" };
+    string tail, word = get_first_word( data, &tail );
+    while( !word.empty() ) {
+        set_data( word );
+        word = get_first_word( tail, &tail );
+    }
+}
+
+void Julian::set_data( const std::string& data )
+{
+    string code, tail;
+    split_code( &code, &tail, data );
+    if( code == "year" ) {
+        m_year_offset = str_to_field( tail );
+    }
+    else {
+        Base::set_data( data );
+    }
 }
 
 bool Julian::set_epoch( Field epoch )
@@ -123,7 +147,8 @@ Field Julian::get_jdn( const FieldVec& fields ) const
     if( fields.size() < 3 || fields[0] == f_invalid || fields[1] == f_invalid || fields[2] == f_invalid ) {
         return f_invalid;
     }
-    return julian_to_jdn( fields[0], fields[1], fields[2] );
+    Field year = fields[0] + m_year_offset;
+    return julian_to_jdn( year, fields[1], fields[2] );
 }
 
 Field Julian::get_end_field_value( const FieldVec& fields, size_t index ) const
@@ -147,7 +172,9 @@ Field Julian::get_end_field_value( const FieldVec& fields, size_t index ) const
 FieldVec Julian::get_fields( Field jdn ) const
 {
     FieldVec fields( record_size(), f_invalid );
-    julian_from_jdn( &fields[0], &fields[1], &fields[2], jdn );
+    Field year = f_invalid;
+    julian_from_jdn( &year, &fields[1], &fields[2], jdn );
+    fields[0] = year - m_year_offset;
     return fields;
 }
 

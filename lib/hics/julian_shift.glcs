@@ -69,9 +69,8 @@ scheme jn {
 
 scheme se {
     name "Spanish Era";
-    base julian;
-    epoch 1707544;  // j:dmy# 1 Jan -37
-    grammar j_sh; // We may want to create our own grammar as we don't do dual dating.
+    base julian "year:-38";
+    grammar j;
 }
 
 // End of scripts/julian.hcs file

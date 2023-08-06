@@ -32,18 +32,13 @@
 
 namespace glich {
 
-    Field julian_to_jdn( Field year, Field month, Field day );
-    void julian_from_jdn( Field* year, Field* month, Field* day, Field jdn );
-    Field julian_easter( Field year );
-
     class Julian : public Base
     {
     public:
-        Julian( const std::string& data = std::string() ) : Base( data ) {
-            m_fieldnames = { "year", "month", "day" };
-        }
+        Julian( const std::string& data );
         ~Julian() {}
 
+        void set_data( const std::string& data );
         bool set_epoch( Field epoch ) override;
 
         size_t required_size() const override { return 3; }
@@ -57,6 +52,8 @@ namespace glich {
         virtual bool is_leap_year( Field year ) const;
         Field last_day_in_month( Field year, Field month ) const;
 
+    private:
+        Field m_year_offset;
     };
 
 }

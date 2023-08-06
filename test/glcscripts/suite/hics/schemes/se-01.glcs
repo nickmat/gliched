@@ -37,54 +37,44 @@ lexicon M {
     }
 }
 
-grammar SE {
+grammar J {
     fields year month day;
     optional wday;
-    calculated cyear;
-    rank cyear, month, day;
-    lexicons M, W;
-    alias pseudo { w wday; dd day; mm month; yyyy cyear; }
+    lexicons M W;
+    alias pseudo { w wday; dd day; mm month; yyyy year; }
     alias unit { d day; m month; y year; }
-    format  dmc, "{day} |{month:M:a} |{cyear}";
-    format  wdmc, "{wday:W:a} |{day} |{month:M:a} |{cyear}";
-    format  out {
-        output "{day::os} |{month:M} |{cyear}";
-    }
-    preferred dmc;
+    format dmy "{day} |{month:M:a} |{year}";
+    format wdmy "{wday:W:a} |{day} |{month:M:a} |{year}";
+    format out { output "{day::os} |{month:M} |{year}"; }
+    format full { output "{wday:W} |{day::os} |{month:M} |{year}"; }
+    format "dmy+" "{day} |{month:M} |{year}";
+    format "wdmy+" "{wday:W} |{day} |{month:M} |{year}";
+    format mdy "{month:M:a} |{day}, |{year}";
+    format ymd "{year}|:{month:M:a}|:{day}";
+    preferred dmy;
 }
 
 scheme SE {
     name "Julian Spanish Era";
-    base julian;
-    epoch 1707544;   // j:dmy# 1 Jan -37
-    grammar SE;
+    base julian "year:-38";
+    grammar J;
 }
 
-writeln "";
-writeln record.SE 2360610 + ", " + record.SE 2360611;
-writeln record.SE:dmc "31 dec 1788" + ", " + record.SE:dmc "1 jan 1789";
-writeln text.SE:wdmc 2360610 + ", " + text.SE:wdmc 2360611;
-writeln text.SE:wdmc {s:SE 1750,12,31} + ", " +
-    text.SE:wdmc {s:SE 1751,1,1};
-writeln text.SE:wdmc ({s:SE ,12,31,1788}.input) + ", " +
-    text.SE:wdmc ({s:SE ,1,1,1789}.input);
-writeln date.SE:dmc "31 dec 1788" + ", " + date.SE:dmc "1 jan 1789";
-writeln date.SE:dmc {s:SE 1750,12,31} + ", " +
-    date.SE:dmc {s:SE 1751,1,1};
-writeln date.SE:dmc ({s:SE ,12,31,1788}.input) + ", " +
-    date.SE:dmc ({s:SE ,1,1,1789}.input);
-writeln text.SE:out 2432814;
+write nl;
+write record.SE 2360610, record.SE 2360611 nl;
+write record.SE:dmy "31 dec 1788", record.SE:dmy "1 jan 1789" nl;
+write text.SE:wdmy 2360610, text.SE:wdmy 2360611 nl;
+write text.SE:wdmy {s:SE 1788,12,31}, text.SE:wdmy {s:SE 1789,1,1} nl;
+write date.SE:dmy "31 dec 1788", date.SE:dmy "1 jan 1789" nl;
+write date.SE:dmy {s:SE 1788,12,31}, date.SE:dmy {s:SE 1789,1,1} nl;
 
 /*[OUTPUT]
 
-{s:SE 1750, 12, 31, 1788, 1}, {s:SE 1751, 1, 1, 1789, 2}
-{s:SE 1750, 12, 31, 1788, 1}, {s:SE 1751, 1, 1, 1789, 2}
-Mon 31 Dec 1788, Tue 1 Jan 1789
+{s:SE 1788, 12, 31, 1}, {s:SE 1789, 1, 1, 2}
+{s:SE 1788, 12, 31, 1}, {s:SE 1789, 1, 1, 2}
 Mon 31 Dec 1788, Tue 1 Jan 1789
 Mon 31 Dec 1788, Tue 1 Jan 1789
 2360610, 2360611
 2360610, 2360611
-2360610, 2360611
-6th September 1986
 
 [OUTPUT]*/

@@ -1,10 +1,10 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        lib/hics/hicScripts.f2c
+ * Name:        lib/hics/eh.glcs
  * Project:     Glich: Extendable Script Language.
- * Purpose:     file2cpp template file for hics library scripts.
+ * Purpose:     Julian Era Hispanica scheme for hics library.
  * Author:      Nick Matthews
  * Website:     https://github.com/nickmat/glich
- * Created:     1st April 2023
+ * Created:     7th August 2023
  * Copyright:   Copyright (c) 2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
@@ -22,26 +22,14 @@
  *  along with Glich.  If not, see <http://www.gnu.org/licenses/>.
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
- This template is used to create the src/glc/hicLibScripts.cpp file.
-
 */
 
-#include "hicLibScripts.h"
+// Uses grammar statements from julian.glcs
 
-glich::ScriptModule glich::hics_default_scripts[] = {
-    { "hicLib", @(cp.cpp)"hicLib.glcs" },
-    { "jdn", @(cp.cpp)"jdn.glcs" },
-    { "week", @(cp.cpp)"week.glcs" },
-    { "julian", @(cp.cpp)"julian.glcs" },
-    { "julian_shift", @(cp.cpp)"julian_shift.glcs" },
-    { "eh", @(cp.cpp)"eh.glcs" },
-    { "gregorian", @(cp.cpp)"gregorian.glcs" },
-    { "jce", @(cp.cpp)"jce.glcs" },
-    { "ay", @(cp.cpp)"ay.glcs" },
-};
+scheme eh {
+    name "Julian Era Hispanica";
+    base julian year:38;
+    grammar j;
+}
 
-size_t glich::hics_default_scripts_size =
-    sizeof(glich::hics_default_scripts) / sizeof(glich::ScriptModule);
-
-// End of lib/hics/hicScripts.f2c file
+// End of lib/hics/eh.hcs file

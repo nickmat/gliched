@@ -67,10 +67,4 @@ scheme jn {
     grammar j_sh;
 }
 
-scheme se {
-    name "Spanish Era";
-    base julian "year:-38";
-    grammar j;
-}
-
-// End of scripts/julian.hcs file
+// End of slib/hics/julian_shifted.glcs file

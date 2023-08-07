@@ -187,10 +187,11 @@ glich::ScriptModule glich::hics_default_scripts[] = {
  "base julian;\n"
  "epoch 1721417;\n"
  "grammar j_sh;\n"
- "}\n"
- "scheme se {\n"
- "name \"Spanish Era\";\n"
- "base julian \"year:-38\";\n"
+ "}\n" },
+    { "eh",  /* eh.glcs */
+ "scheme eh {\n"
+ "name \"Julian Era Hispanica\";\n"
+ "base julian year:38;\n"
  "grammar j;\n"
  "}\n" },
     { "gregorian",  /* gregorian.glcs */

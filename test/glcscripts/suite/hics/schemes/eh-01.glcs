@@ -1,4 +1,4 @@
-// se-01.glcs  - Test version of Julian Spanish Era using scheme epoch sub-statement.
+// eh-01.glcs  - Test version of Julian Spanish Era using scheme epoch sub-statement.
 
 lexicon W {
     name "Weekday names";
@@ -56,7 +56,7 @@ grammar J {
 
 scheme SE {
     name "Julian Spanish Era";
-    base julian "year:-38";
+    base julian year:38;
     grammar J;
 }
 

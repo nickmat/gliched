@@ -31,7 +31,107 @@
 
 <div id='content' class='nomenu'>
 
-<h2>Page Under Construction</h2>
+<h2>Calendar Description</h2>
+<p>
+ The Ordinal calendar is defined in terms of the <a href='g.htm'>Gregorian</a> calendar.
+ It consists of a count of years and days.
+ It is also (confusingly) known as the <i>Julian Date</i>
+ and the day number as the <i>Julian Day</i> but these terms are not recommended.
+</p>
+<p>
+ The year is identical to the Gregorian year.
+ The day is the ordinal number of days since 1st of January in that year.
+ The number of days in a year is 365 or 366,
+ the same as the equivalent Gregorian year.
+</p>
+
+<h3>Use Case</h3>
+<p>
+ Often used by modern day industry, where it may be referred to as <i>Julian date</i>.
+</p>
+<p>
+ Details of the scheme where published in 1973 by the International Standards Organisation
+ in their ISO 2711:1973 document.
+ This was superseded in 2004 by the ISO 8601:2004 and later publications.
+</p>
+
+<h3>Definition</h3>
+<p>
+ The Ordinal calendar is defined in terms of the Gregorian calendar.
+</p>
+<p>
+  The <b>Record</b> consists of two <b>Fields</b> named <code>year</code>
+  and <code>day</code>.
+</p>
+<table class='record'>
+<tr><th colspan='2'>Record</th></tr>
+<tr><td>year</td><td>day</td></tr>
+</table>
+<p class='lclear'>
+ The year length and number are the same as the <a href='g.htm'><b>g</b> Gregorian</a> calendar scheme.
+ Day one is defined as 1st January.
+</p>
+
+<p style='display:inline;'>
+ The <b>Epoch</b> is set at
+ <table class='rec-value'>
+   <tr><td rowspan='2' class='sig'>go</td><th>year</th><th>day</th></tr>
+   <tr class='value'><td>1</td><td>1</td></tr>
+ </table>
+ =
+ <table class='rec-value'>
+   <tr><td rowspan='2' class='sig'>g</td><th>year</th><th>month</th><th>day</th></tr>
+   <tr class='value'><td>1</td><td>1</td><td>1</td></tr>
+ </table>
+ =
+ <table class='rec-value'>
+  <tr><td rowspan='2' class='sig'>jdn</td><th>day</th></tr>
+  <tr class='value'><td>1721426</td></tr>
+ </table>.
+</p>
+
+<h3>Script</h3>
+<table class='code lfloat'>
+<tr><th>Default Library Script</th></tr>
+<tr><td
+>grammar go {
+    fields year day;
+    alias pseudo { ddd day; yyyy year; }
+    alias unit { d day; y year; }
+    format iso { rules iso8601 ordinal; }
+    format yd "{year}| {day}";
+    preferred yd;
+}
+scheme go {
+    name "Gregorian Ordinal";
+    base ordinal;
+    grammar go;
+}
+</td></tr>
+</table>
+<p class='lclear'>
+ The script has no dependencies. 
+</p>
+
+<table class='code lfloat'>
+<tr><th>example/iso5.glcs Script</th></tr>
+<tr><td
+>format go:iso_y5d {
+    rules iso8601 ordinal year5;
+}
+</td></tr>
+</table>
+
+<table class='code lfloat'>
+<tr><th>example/iso6.glcs Script</th></tr>
+<tr><td
+>format go:iso_y6d {
+    rules iso8601 ordinal year6;
+}
+</td></tr>
+</table>
+<p>
+</p>
 
 </div><!--id=content-->
 

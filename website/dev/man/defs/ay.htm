@@ -31,7 +31,99 @@
 
 <div id='content' class='nomenu'>
 
-<h2>Page Under Construction</h2>
+<h2>Calendar Description</h2>
+<p>
+ The Astronomical Year calendar is a hybrid variant combining the <a href='j.htm'>Julian</a>
+ and the <a href='g.htm'>Gregorian</a> calendars.
+ The calendar contains the year zero and prior years are shown as negative.
+</p>
+<p>
+ See <a href='https://en.wikipedia.org/wiki/Astronomical_year_numbering'>Wikipedia entry</a>.</li>
+</p>
+
+<h3>Use Case</h3>
+<ul>
+ <li>This calendar is commonly used by astronomers.
+ Typically only the year value is used.
+</ul>
+
+<h3>Definition</h3>
+<p class='lclear'>
+ The <b>Record</b> consists of four <b>Fields</b> named <code>scheme,</code> <code>year,</code>
+ <code>month</code> and <code>day.</code>
+</p>
+<table class='record'>
+<tr><th colspan='4'>Record - Default Order</th></tr>
+<tr><td>scheme</td><td>year</td><td>month</td><td>day</td></tr>
+</table>
+<table class='record'>
+<tr><th colspan='4'>Record - Ranking Order</th></tr>
+<tr><td>year</td><td>month</td><td>day</td><td>scheme</td></tr>
+</table>
+<table class='basic data rfloat'>
+<tr><th colspan='4'>Historic Era</th></tr>
+<tr><th colspan='2'>Calendar Scheme</th><th>Start</th><th>Finish</th></tr>
+<tr><td>0</td><td><a href='j.htm'>Julian</a></td><td>past</td><td>j# 4 Oct 1582</td></tr>
+<tr><td>1</td><td><a href='g.htm'>Gregorian</a></td><td>g# 15 Oct 1582</td><td>future</td></tr>
+</table>
+<p>
+</p>
+<p class='lclear'>
+ For the range past..2299160 (j# 4 Oct 1582) the Julian Calendar is used.
+ There is zero and negative years.
+ For the range (g# 15 Oct 1582) 2299161..future the Gregorian calendar is used.
+</p>
+<p>
+ The year 1582 has 355 days.
+</p>
+<p>
+ As a Hybrid calendar, it has no single epoch.
+</p>
+
+<h3>Script</h3>
+<table class='code lfloat'>
+<tr><th>Default Library Script</th></tr>
+<tr><td
+>lexicon jg {
+    name "Hybrid Julian and Gregorian scheme names";
+    fieldname scheme;
+    lang en;
+    pseudo    Scheme, sch;
+    tokens {
+        0, "Julian",     "j";
+        1, "Gregorian",  "g";
+    }
+}
+grammar jg {
+    fields scheme year month day;
+    rank year month day;
+    lexicons m jg;
+    alias pseudo { dd day; mm month; yyyy year; s scheme; }
+    alias unit { d day; m month; y year; s scheme; }
+
+    format  dmys    "{day} |{month:m:a} |{year} |{scheme:jg:a}";
+    format "dmys+", "{day} |{month:m} |{year} |{scheme:jg}";
+    format  dmy     "{day} |{month:m:a} |{year}";
+    format "dmy+",  "{day} |{month:m} |{year}";
+    preferred dmy;
+}
+scheme ay {
+    name "Astronomical Year";
+    base hybrid {
+        fields scheme year, month, day;
+        scheme 0 { base julian; }
+        change 2299161;  // g# 15 Oct 1582
+        scheme 1 { base gregorian; }
+    }
+    grammar jg;
+}
+</td></tr>
+</table>
+<p class='lclear'>
+ The script uses the <b>lexicon</b> "m" definition from
+ <a href='j.htm'><b>j</b> Julian</a> for the <code>month</code> field.
+</p>
+
 
 </div><!--id=content-->
 

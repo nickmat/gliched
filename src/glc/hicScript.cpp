@@ -120,6 +120,9 @@ namespace {
             else if( name == "ordinal" ) {
                 bs = Scheme::BaseName::ordinal;
             }
+            else if( name == "hebrew" ) {
+                bs = Scheme::BaseName::hebrew;
+            }
             else if( name == "jwn" ) {
                 bs = Scheme::BaseName::jwn;
             }

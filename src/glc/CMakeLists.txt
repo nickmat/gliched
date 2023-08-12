@@ -29,6 +29,7 @@ set( GLC_SOURCES
     hicFormatUnit.cpp
     hicGrammar.cpp
     hicGregorian.cpp
+    hicHebrew.cpp
     hicHelper.cpp
     hicHybrid.cpp
     hicIsoOrdinal.cpp
@@ -69,6 +70,7 @@ set( GLC_HEADERS
     hicFormatUnit.h
     hicGrammar.h
     hicGregorian.h
+    hicHebrew.h
     hicHelper.h
     hicHybrid.h
     hicIsoOrdinal.h

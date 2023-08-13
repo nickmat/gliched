@@ -31,6 +31,7 @@
 #include "glcScript.h"
 #include "glcStore.h"
 #include "hicFormat.h"
+#include "hicFrench.h"
 #include "hicGrammar.h"
 #include "hicGregorian.h"
 #include "hicHebrew.h"
@@ -195,6 +196,8 @@ Base* Scheme::create_base( BaseName bs, const std::string& data )
         return new IsoOrdinal( data );
     case BaseName::hebrew:
         return new Hebrew( data );
+    case BaseName::french:
+        return new French( data );
     case BaseName::jdn:
         return new Jdn( data );
     case BaseName::jwn:

@@ -123,6 +123,9 @@ namespace {
             else if( name == "hebrew" ) {
                 bs = Scheme::BaseName::hebrew;
             }
+            else if( name == "french" ) {
+                bs = Scheme::BaseName::french;
+            }
             else if( name == "jwn" ) {
                 bs = Scheme::BaseName::jwn;
             }

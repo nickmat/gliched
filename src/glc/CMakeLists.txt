@@ -20,6 +20,7 @@ set( GLC_SOURCES
     glcStore.cpp
     glcTokenStream.cpp
     glcValue.cpp
+    hicAstro.cpp
     hicBase.cpp
     hicDatePhrase.cpp
     hicElement.cpp
@@ -27,6 +28,7 @@ set( GLC_SOURCES
     hicFormatIso.cpp
     hicFormatText.cpp
     hicFormatUnit.cpp
+    hicFrench.cpp
     hicGrammar.cpp
     hicGregorian.cpp
     hicHebrew.cpp
@@ -61,6 +63,7 @@ set( GLC_HEADERS
     glcStore.h
     glcTokenStream.h
     glcValue.h
+    hicAstro.h
     hicBase.h
     hicDatePhrase.h
     hicElement.h
@@ -68,6 +71,7 @@ set( GLC_HEADERS
     hicFormatIso.h
     hicFormatText.h
     hicFormatUnit.h
+    hicFrench.h
     hicGrammar.h
     hicGregorian.h
     hicHebrew.h

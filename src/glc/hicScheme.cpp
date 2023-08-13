@@ -30,6 +30,7 @@
 #include "glcFunction.h"
 #include "glcScript.h"
 #include "glcStore.h"
+#include "hicChinese.h"
 #include "hicFormat.h"
 #include "hicFrench.h"
 #include "hicGrammar.h"
@@ -201,6 +202,8 @@ Base* Scheme::create_base( BaseName bs, const std::string& data )
         return new French( data );
     case BaseName::islamic:
         return new Islamic( data );
+    case BaseName::chinese:
+        return new Chinese( data );
     case BaseName::jdn:
         return new Jdn( data );
     case BaseName::jwn:

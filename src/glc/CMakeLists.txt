@@ -22,6 +22,7 @@ set( GLC_SOURCES
     glcValue.cpp
     hicAstro.cpp
     hicBase.cpp
+    hicChinese.cpp
     hicDatePhrase.cpp
     hicElement.cpp
     hicFormat.cpp
@@ -66,6 +67,7 @@ set( GLC_HEADERS
     glcValue.h
     hicAstro.h
     hicBase.h
+    hicChinese.h
     hicDatePhrase.h
     hicElement.h
     hicFormat.h

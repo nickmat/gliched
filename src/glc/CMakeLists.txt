@@ -34,6 +34,7 @@ set( GLC_SOURCES
     hicHebrew.cpp
     hicHelper.cpp
     hicHybrid.cpp
+    hicIslamic.cpp
     hicIsoOrdinal.cpp
     hicIsoWeek.cpp
     hicJulian.cpp
@@ -77,6 +78,7 @@ set( GLC_HEADERS
     hicHebrew.h
     hicHelper.h
     hicHybrid.h
+    hicIslamic.h
     hicIsoOrdinal.h
     hicIsoWeek.h
     hicJdn.h

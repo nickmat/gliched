@@ -35,6 +35,7 @@
 #include "hicGrammar.h"
 #include "hicGregorian.h"
 #include "hicHebrew.h"
+#include "hicIslamic.h"
 #include "hicIsoOrdinal.h"
 #include "hicIsoWeek.h"
 #include "hicJdn.h"
@@ -198,6 +199,8 @@ Base* Scheme::create_base( BaseName bs, const std::string& data )
         return new Hebrew( data );
     case BaseName::french:
         return new French( data );
+    case BaseName::islamic:
+        return new Islamic( data );
     case BaseName::jdn:
         return new Jdn( data );
     case BaseName::jwn:

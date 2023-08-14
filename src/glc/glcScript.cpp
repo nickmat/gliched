@@ -1434,6 +1434,9 @@ SValue Script::function_call()
     else if( name == "read" ) {
         return at_read();
     }
+    else if( name == "phrase" ) {
+        return at_phrase( *this );
+    }
     Function* fun = m_glc->get_function( name );
     if( fun == nullptr ) {
         return create_error( "Function \"" + name + "\" not found." );

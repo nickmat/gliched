@@ -40,6 +40,8 @@ namespace glich {
     bool do_create_format( Script& script, const std::string& code, Grammar* gmr );
 
     SValue hics_dot( Script& script, bool& success, Object* obj, const std::string& fcode, const SValue& left );
+
+    SValue at_phrase( Script& script );
 }
 
 #endif // SRC_GLC_HICSCRIPT_H

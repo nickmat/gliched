@@ -29,6 +29,7 @@
 
 #include "glcScript.h"
 #include "hicBase.h"
+#include "hicDatePhrase.h"
 #include "hicGrammar.h"
 #include "hicHybrid.h"
 #include "hicFormatIso.h"
@@ -38,6 +39,7 @@
 #include "hicScheme.h"
 
 #include <cassert>
+#include <sstream>
 
 using namespace glich;
 using std::string;
@@ -743,6 +745,28 @@ SValue glich::hics_dot( Script& script, bool& success, Object* obj, const std::s
     }
     success = false;
     return SValue();
+}
+
+SValue glich::at_phrase( Script& script )
+{
+    SValue value;
+    SValueVec args = script.get_args( value, GetToken::next );
+    if( value.is_error() ) {
+        return value;
+    }
+    if( args.size() != 1 || args[0].type() != SValue::Type::String ) {
+        value.set_error( "@phrase requires 1 string argument." );
+        return value;
+    }
+    string code = parse_date_expr( args[0].get_str() );
+    if( !code.empty() ) {
+        STokenStream prev_ts = script.m_ts;
+        std::istringstream iss( code );
+        script.m_ts.reset_in( &iss );
+        value = script.expr( GetToken::next );
+        script.m_ts = prev_ts;
+    }
+    return value;
 }
 
 // End of src/glc/hicCreateSch.cpp file

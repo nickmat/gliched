@@ -1,25 +1,25 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/cal/calparse.cpp
- * Project:     Cal: Programmable Historical Calendar library.
- * Purpose:     Functions to help parse scripts.
+ * Name:        src/glc/hicDatePhrase.cpp
+ * Project:     Glich: Extendable Script Language.
+ * Purpose:     Function to convert phrase string to script string.
  * Author:      Nick Matthews
- * Website:     http://historycal.org
- * Created:     20th September 2013
- * Copyright:   Copyright (c) 2013 ~ 2020, Nick Matthews.
+ * Website:     https://github.com/nickmat/glich
+ * Created:     17th March 2023
+ * Copyright:   Copyright (c) 2023, Nick Matthews.
  * Licence:     GNU GPLv3
  *
- *  The Cal library is free software: you can redistribute it and/or modify
+ *  Glich is free software: you can redistribute it and/or modify
  *  it under the terms of the GNU General Public License as published by
  *  the Free Software Foundation, either version 3 of the License, or
  *  (at your option) any later version.
  *
- *  The Cal library is distributed in the hope that it will be useful,
+ *  Glich is distributed in the hope that it will be useful,
  *  but WITHOUT ANY WARRANTY; without even the implied warranty of
  *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  *  GNU General Public License for more details.
  *
  *  You should have received a copy of the GNU General Public License
- *  along with the Cal library.  If not, see <http://www.gnu.org/licenses/>.
+ *  along with Glich.  If not, see <http://www.gnu.org/licenses/>.
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -31,7 +31,6 @@
 
 using namespace glich;
 using std::string;
-
 
 
 namespace {
@@ -145,4 +144,4 @@ string glich::parse_date_expr( const string& str )
     return script;
 }
 
-// End of src/cal/calparse.cpp file
+// End of src/glc/hicDatePhrase.cpp file

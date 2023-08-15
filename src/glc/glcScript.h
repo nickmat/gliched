@@ -43,6 +43,8 @@ namespace glich {
         bool run();
         SValue evaluate() { return expr( GetToken::next ); }
 
+        SValue run_script( std::string& script );
+
         static STokenStream* get_current_ts() { return s_current_ts; }
 
         SToken& current_token() { return m_ts.current(); }

@@ -76,6 +76,16 @@ bool Script::run()
     return ret;
 }
 
+SValue Script::run_script( string& script )
+{
+    STokenStream prev_ts = m_ts;
+    std::istringstream iss( script );
+    m_ts.reset_in( &iss );
+    SValue value = expr( GetToken::next );
+    m_ts = prev_ts;
+    return value;
+}
+
 bool Script::error_value( const SValue& value )
 {
     bool ok;

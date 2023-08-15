@@ -760,11 +760,7 @@ SValue glich::at_phrase( Script& script )
     }
     string code = parse_date_expr( args[0].get_str() );
     if( !code.empty() ) {
-        STokenStream prev_ts = script.m_ts;
-        std::istringstream iss( code );
-        script.m_ts.reset_in( &iss );
-        value = script.expr( GetToken::next );
-        script.m_ts = prev_ts;
+        return script.run_script( code );
     }
     return value;
 }

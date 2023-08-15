@@ -32,7 +32,7 @@
 
 namespace glich {
 
-    std::string parse_date_expr( const std::string& str );
+    std::string parse_date_phrase( const std::string& str );
 
 }
 

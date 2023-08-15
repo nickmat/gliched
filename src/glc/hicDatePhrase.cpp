@@ -60,8 +60,8 @@ namespace {
     }
 }
 
-// Convert a date expression string to a script string.
-string glich::parse_date_expr( const string& str )
+// Convert a date phrase string to a script string.
+string glich::parse_date_phrase( const string& str )
 {
     string script, date, sig;
     string::const_iterator it, nit;

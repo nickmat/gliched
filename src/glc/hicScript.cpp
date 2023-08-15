@@ -758,7 +758,7 @@ SValue glich::at_phrase( Script& script )
         value.set_error( "@phrase requires 1 string argument." );
         return value;
     }
-    string code = parse_date_expr( args[0].get_str() );
+    string code = parse_date_phrase( args[0].get_str() );
     if( !code.empty() ) {
         return script.run_script( code );
     }

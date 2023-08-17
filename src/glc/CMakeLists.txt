@@ -20,6 +20,7 @@ set( GLC_SOURCES
     glcStore.cpp
     glcTokenStream.cpp
     glcValue.cpp
+    glcVersion.cpp
     hicAstro.cpp
     hicBase.cpp
     hicChinese.cpp
@@ -65,6 +66,7 @@ set( GLC_HEADERS
     glcStore.h
     glcTokenStream.h
     glcValue.h
+    glcVersion.h
     hicAstro.h
     hicBase.h
     hicChinese.h

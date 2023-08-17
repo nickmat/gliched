@@ -9,7 +9,7 @@
     { "folder": "new", "name": "news", "label": "News" },
     { "folder": "man", "name": "index", "label": "Manual", "title": "Manual", "subtitle": "Introduction" },
     { "folder": "dev", "name": "index", "label": "Development", "title": "Development", "subtitle": "Introduction", "content": [
-      { "folder": "man", "name": "index", "label": "v0.1.0 Manual", "title": "v0.1.0 Manual", "subtitle": "Introduction", "content": [
+      { "folder": "man", "name": "index", "label": "v0.3.0 Manual", "title": "v0.3.0 Manual", "subtitle": "Introduction", "content": [
         { "folder": "script", "name": "index", "label": "Glich Script", "subtitle": "Glich Script Language", "content": [
           { "name": "expr", "label": "Expressions", "subtitle": "Script Expressions" },
           { "name": "write", "label": "write & file", "subtitle":  "write Statement and Define file"},

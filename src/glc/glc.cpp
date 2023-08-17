@@ -35,6 +35,7 @@
 #include "glcObject.h"
 #include "glcScript.h"
 #include "glcValue.h"
+#include "glcVersion.h"
 #include "hicLibScripts.h"
 #include "hicScheme.h"
 
@@ -102,6 +103,11 @@ Glich::~Glich()
     while( pop_store() );
     delete m_store;
     delete m_inout;
+}
+
+const char* Glich::version()
+{
+    return glc_version;
 }
 
 void Glich::load_builtin_library()

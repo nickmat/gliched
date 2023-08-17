@@ -59,6 +59,8 @@ namespace glich {
         Glich( InitLibrary lib = InitLibrary::None, InOut* inout = nullptr );
         ~Glich();
 
+        static const char* version();
+
         void load_builtin_library();
         void load_hics_library();
 

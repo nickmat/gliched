@@ -61,6 +61,8 @@ namespace glich {
 
         static const char* version();
 
+        RList date_phrase_to_rlist( const std::string& phrase, const std::string& sig = std::string() );
+
         void load_builtin_library();
         void load_hics_library();
 

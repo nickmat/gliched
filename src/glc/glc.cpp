@@ -111,6 +111,52 @@ const char* Glich::version()
     return glc_version;
 }
 
+RList Glich::date_phrase_to_rlist( const string& phrase, const string& sig )
+{
+    string scode, fcode;
+    Scheme* sch = nullptr;
+    Scheme* prev_sch = nullptr;
+    string prev_fcode;
+    if( !sig.empty() ) {
+        split_code( &scode, &fcode, sig );
+        if( !scode.empty() ) {
+            sch = get_scheme( scode );
+            set_ischeme( sch );
+        }
+        if( sch == nullptr ) {
+            sch = get_ischeme();
+            if( sch == nullptr ) {
+                return RList( 0 );
+            }
+        }
+        else {
+            prev_sch = get_ischeme();
+        }
+        if( !fcode.empty() ) {
+            prev_fcode = sch->get_input_format_code();
+            if( prev_fcode == fcode ) { // No change.
+                prev_fcode.clear();
+            }
+            else {
+                sch->set_input_format( fcode );
+            }
+        }
+    }
+
+    string script = parse_date_phrase( phrase );
+    SValue value = evaluate( script );
+    bool success = false;
+    RList rlist = value.get_rlist( success );
+
+    if( !fcode.empty() ) {
+        sch->set_input_format( prev_fcode );
+    }
+    if( prev_sch != nullptr ) {
+        set_ischeme( prev_sch );
+    }
+    return rlist;
+}
+
 void Glich::load_builtin_library()
 {
     for( size_t i = 0; i < glc_builtin_scripts_size; i++ ) {

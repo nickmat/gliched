@@ -208,6 +208,31 @@ string Glich::rlist_to_text( RList rlist, const string& sig )
     return result;
 }
 
+string Glich::range_to_text( Range range, const string& sig )
+{
+    return std::string();
+}
+
+string Glich::field_to_text( Field field, const string& sig )
+{
+    return std::string();
+}
+
+RList Glich::text_to_rlist( const string& text, const string& sig )
+{
+    return RList();
+}
+
+Range Glich::text_to_range( const string& text, const string& sig )
+{
+    return Range();
+}
+
+Field Glich::text_to_field( const string& text, const string& sig )
+{
+    return Field();
+}
+
 void Glich::load_builtin_library()
 {
     for( size_t i = 0; i < glc_builtin_scripts_size; i++ ) {

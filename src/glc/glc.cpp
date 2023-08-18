@@ -35,6 +35,7 @@
 #include "glcObject.h"
 #include "glcScript.h"
 #include "glcValue.h"
+#include "hicDatePhrase.h"
 #include "glcVersion.h"
 #include "hicLibScripts.h"
 #include "hicScheme.h"
@@ -155,9 +156,17 @@ SValue Glich::evaluate( const string& expression, Store* store )
     std::istringstream iss( expression );
     std::ostringstream oss;
     Script scr( this, iss, oss );
-    SValue value = scr.evaluate();
+    SValue value = evaluate( expression );
     pop_store();
     return value;
+}
+
+SValue Glich::evaluate( const string& expression )
+{
+    std::istringstream iss( expression );
+    std::ostringstream oss;
+    Script scr( this, iss, oss );
+    return scr.evaluate();
 }
 
 bool Glich::is_named( const string& name ) const

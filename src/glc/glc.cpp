@@ -157,6 +157,57 @@ RList Glich::date_phrase_to_rlist( const string& phrase, const string& sig )
     return rlist;
 }
 
+string Glich::date_phrase_to_text( const string& phrase, const string& sig_in, const string& sig_out )
+{
+    RList rlist = date_phrase_to_rlist( phrase, sig_in );
+    return rlist_to_text( rlist, sig_out );
+}
+
+string Glich::rlist_to_text( RList rlist, const string& sig )
+{
+    string scode, fcode;
+    Scheme* sch = nullptr;
+    Scheme* prev_sch = nullptr;
+    string prev_fcode;
+    if( !sig.empty() ) {
+        split_code( &scode, &fcode, sig );
+        if( !scode.empty() ) {
+            sch = get_scheme( scode );
+            set_ischeme( sch );
+        }
+        if( sch == nullptr ) {
+            sch = get_oscheme();
+            if( sch == nullptr ) {
+                return string();
+            }
+        }
+        else {
+            prev_sch = get_oscheme();
+        }
+        if( !fcode.empty() ) {
+            prev_fcode = sch->get_input_format_code();
+            if( prev_fcode == fcode ) { // No change.
+                prev_fcode.clear();
+            }
+            else {
+                sch->set_output_format( fcode );
+            }
+        }
+    }
+    if( sch == nullptr ) {
+        return string();
+    }
+    string result = sch->rlist_to_str( rlist, fcode );
+
+    if( !fcode.empty() ) {
+        sch->set_output_format( prev_fcode );
+    }
+    if( prev_sch != nullptr ) {
+        set_oscheme( prev_sch );
+    }
+    return result;
+}
+
 void Glich::load_builtin_library()
 {
     for( size_t i = 0; i < glc_builtin_scripts_size; i++ ) {

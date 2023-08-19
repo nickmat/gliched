@@ -39,4 +39,15 @@ TEST_CASE( "Test Version", "[Version]" )
     REQUIRE( ver_num == "0.3.0" );
 }
 
+TEST_CASE( "Test date_phrase_to_rlist", "[date_phrase_to_rlist]" )
+{
+    RList expect = { { 2460176, 2460176 } };
+    RList rlist = g_glc->date_phrase_to_rlist( "2460176", "jdn" );
+    REQUIRE( rlist == expect );
+    rlist = g_glc->date_phrase_to_rlist( "aug19,2023", "g:mdy");
+    REQUIRE( rlist == expect );
+    rlist = g_glc->date_phrase_to_rlist( "19aug2023" );
+    REQUIRE( rlist == expect );
+}
+
 // End of test/gu/guAPI.cpp file.

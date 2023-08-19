@@ -74,6 +74,17 @@ Scheme::~Scheme()
     delete &m_base;
 }
 
+bool glich::Scheme::reset()
+{
+    Grammar* gmr = m_base.get_grammar();
+    if( gmr == nullptr ) {
+        return false;
+    }
+    m_input_fcode = gmr->get_pref_input_fcode();
+    m_output_fcode = gmr->get_pref_output_fcode();
+    return true;
+}
+
 SValue Scheme::complete_object( Field jdn ) const
 {
     const Base& base = get_base();
@@ -97,7 +108,7 @@ SValue Scheme::complete_object( const string& input, const string& fcode ) const
 Format* Scheme::get_output_format( const string& fcode ) const
 {
     if( fcode.empty() ) {
-        return m_base.get_format( m_base.get_output_fcode() );
+        return m_base.get_format( m_output_fcode );
     }
     return m_base.get_format( fcode );
 }
@@ -105,7 +116,7 @@ Format* Scheme::get_output_format( const string& fcode ) const
 Format* Scheme::get_input_format( const string& fcode ) const
 {
     if( fcode.empty() ) {
-        return m_base.get_format( m_base.get_input_fcode() );
+        return m_base.get_format( m_input_fcode );
     }
     return m_base.get_format( fcode );
 }

@@ -240,6 +240,7 @@ Scheme* glich::do_create_scheme( Script& script, const std::string& code )
         script.error( "Unable to set epoch." );
     }
     Scheme* sch = new Scheme( "s:" + code, *base);
+    sch->reset();
     sch->set_name( name );
     sch->set_style( style );
     return sch;

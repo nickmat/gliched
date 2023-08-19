@@ -50,6 +50,8 @@ namespace glich {
         Scheme( const std::string& code, const Base& base );
         virtual ~Scheme();
 
+        bool reset();
+
         void set_output_format( const std::string& fcode ) { m_output_fcode = fcode; }
         void set_input_format( const std::string& fcode ) { m_input_fcode = fcode; }
 

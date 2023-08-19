@@ -119,6 +119,7 @@ RList Glich::date_phrase_to_rlist( const string& phrase, const string& sig )
     string prev_fcode;
     if( !sig.empty() ) {
         split_code( &scode, &fcode, sig );
+        prev_sch = get_ischeme();
         if( !scode.empty() ) {
             sch = get_scheme( scode );
             set_ischeme( sch );
@@ -128,9 +129,6 @@ RList Glich::date_phrase_to_rlist( const string& phrase, const string& sig )
             if( sch == nullptr ) {
                 return RList( 0 );
             }
-        }
-        else {
-            prev_sch = get_ischeme();
         }
         if( !fcode.empty() ) {
             prev_fcode = sch->get_input_format_code();
@@ -171,6 +169,7 @@ string Glich::rlist_to_text( RList rlist, const string& sig )
     string prev_fcode;
     if( !sig.empty() ) {
         split_code( &scode, &fcode, sig );
+        prev_sch = get_oscheme();
         if( !scode.empty() ) {
             sch = get_scheme( scode );
             set_ischeme( sch );
@@ -182,15 +181,11 @@ string Glich::rlist_to_text( RList rlist, const string& sig )
             }
         }
         else {
-            prev_sch = get_oscheme();
         }
         if( !fcode.empty() ) {
             prev_fcode = sch->get_input_format_code();
             if( prev_fcode == fcode ) { // No change.
                 prev_fcode.clear();
-            }
-            else {
-                sch->set_output_format( fcode );
             }
         }
     }

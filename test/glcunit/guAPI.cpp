@@ -50,4 +50,15 @@ TEST_CASE( "Test date_phrase_to_rlist", "[date_phrase_to_rlist]" )
     REQUIRE( rlist == expect );
 }
 
+TEST_CASE( "Test rlist_to_text", "[rlist_to_text]" )
+{
+    RList rlist = { { 2460176, 2460176 } };
+    string text = g_glc->rlist_to_text( rlist, "jdn" );
+    REQUIRE( text == "2460176" );
+    text = g_glc->rlist_to_text( rlist, "g:mdy" );
+    REQUIRE( text == "Aug 19, 2023" );
+    text = g_glc->rlist_to_text( rlist );
+    REQUIRE( text == "19 Aug 2023" );
+}
+
 // End of test/gu/guAPI.cpp file.

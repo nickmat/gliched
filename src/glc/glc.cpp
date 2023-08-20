@@ -127,7 +127,7 @@ RList Glich::date_phrase_to_rlist( const string& phrase, const string& sig )
         if( sch == nullptr ) {
             sch = get_ischeme();
             if( sch == nullptr ) {
-                return RList( 0 );
+                return RList();
             }
         }
         if( !fcode.empty() ) {
@@ -146,7 +146,7 @@ RList Glich::date_phrase_to_rlist( const string& phrase, const string& sig )
     bool success = false;
     RList rlist = value.get_rlist( success );
 
-    if( !fcode.empty() ) {
+    if( !prev_fcode.empty() ) {
         sch->set_input_format( prev_fcode );
     }
     if( prev_sch != nullptr ) {
@@ -165,42 +165,19 @@ string Glich::rlist_to_text( RList rlist, const string& sig )
 {
     string scode, fcode;
     Scheme* sch = nullptr;
-    Scheme* prev_sch = nullptr;
-    string prev_fcode;
     if( !sig.empty() ) {
         split_code( &scode, &fcode, sig );
-        prev_sch = get_oscheme();
         if( !scode.empty() ) {
             sch = get_scheme( scode );
-            set_ischeme( sch );
-        }
-        if( sch == nullptr ) {
-            sch = get_oscheme();
-            if( sch == nullptr ) {
-                return string();
-            }
-        }
-        else {
-        }
-        if( !fcode.empty() ) {
-            prev_fcode = sch->get_input_format_code();
-            if( prev_fcode == fcode ) { // No change.
-                prev_fcode.clear();
-            }
         }
     }
     if( sch == nullptr ) {
-        return string();
+        sch = get_oscheme();
+        if( sch == nullptr ) {
+            return string();
+        }
     }
-    string result = sch->rlist_to_str( rlist, fcode );
-
-    if( !fcode.empty() ) {
-        sch->set_output_format( prev_fcode );
-    }
-    if( prev_sch != nullptr ) {
-        set_oscheme( prev_sch );
-    }
-    return result;
+    return sch->rlist_to_str( rlist, fcode );
 }
 
 string Glich::range_to_text( Range range, const string& sig )

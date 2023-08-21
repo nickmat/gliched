@@ -71,4 +71,15 @@ TEST_CASE( "Test rlist_to_text", "[rlist_to_text]" )
     REQUIRE( text == "19 Aug 2023" );
 }
 
+TEST_CASE( "Test range_to_text", "[range_to_text]" )
+{
+    Range range = { 2460176, 2460176 };
+    string text = g_glc->range_to_text( range, "jdn" );
+    REQUIRE( text == "2460176" );
+    text = g_glc->range_to_text( range, "g:mdy" );
+    REQUIRE( text == "Aug 19, 2023" );
+    text = g_glc->range_to_text( range );
+    REQUIRE( text == "19 Aug 2023" );
+}
+
 // End of test/gu/guAPI.cpp file.

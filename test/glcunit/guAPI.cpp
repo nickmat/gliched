@@ -107,4 +107,26 @@ TEST_CASE( "Test text_to_rlist", "[text_to_rlist]" )
     REQUIRE( result[0] == expect[0] );
 }
 
+TEST_CASE( "Test text_to_range", "[text_to_range]" )
+{
+    Range expect = { 2460176, 2460176 };
+    Range result = g_glc->text_to_range( "2460176", "jdn" );
+    REQUIRE( result == expect );
+    result = g_glc->text_to_range( "aug19,2023", "g:mdy" );
+    REQUIRE( result == expect );
+    result = g_glc->text_to_range( "19aug2023" );
+    REQUIRE( result == expect );
+}
+
+TEST_CASE( "Test text_to_field", "[text_to_field]" )
+{
+    Field expect = 2460176;
+    Field result = g_glc->text_to_field( "2460176", "jdn" );
+    REQUIRE( result == expect );
+    result = g_glc->text_to_field( "aug19,2023", "g:mdy" );
+    REQUIRE( result == expect );
+    result = g_glc->text_to_field( "19aug2023" );
+    REQUIRE( result == expect );
+}
+
 // End of test/gu/guAPI.cpp file.

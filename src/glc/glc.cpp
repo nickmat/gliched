@@ -182,27 +182,109 @@ string Glich::rlist_to_text( RList rlist, const string& sig )
 
 string Glich::range_to_text( Range range, const string& sig )
 {
-    return std::string();
+    string scode, fcode;
+    Scheme* sch = nullptr;
+    if( !sig.empty() ) {
+        split_code( &scode, &fcode, sig );
+        if( !scode.empty() ) {
+            sch = get_scheme( scode );
+        }
+    }
+    if( sch == nullptr ) {
+        sch = get_oscheme();
+        if( sch == nullptr ) {
+            return string();
+        }
+    }
+    return sch->range_to_str( range, fcode );
 }
 
 string Glich::field_to_text( Field field, const string& sig )
 {
-    return std::string();
+    string scode, fcode;
+    Scheme* sch = nullptr;
+    if( !sig.empty() ) {
+        split_code( &scode, &fcode, sig );
+        if( !scode.empty() ) {
+            sch = get_scheme( scode );
+        }
+    }
+    if( sch == nullptr ) {
+        sch = get_oscheme();
+        if( sch == nullptr ) {
+            return string();
+        }
+    }
+    return sch->jdn_to_str( field, fcode );
 }
 
 RList Glich::text_to_rlist( const string& text, const string& sig )
 {
-    return RList();
+    string scode, fcode;
+    Scheme* sch = nullptr;
+    if( !sig.empty() ) {
+        split_code( &scode, &fcode, sig );
+        if( !scode.empty() ) {
+            sch = get_scheme( scode );
+        }
+    }
+    if( sch == nullptr ) {
+        sch = get_oscheme();
+        if( sch == nullptr ) {
+            return RList();
+        }
+    }
+    return sch->str_to_rlist( text, fcode );
 }
 
 Range Glich::text_to_range( const string& text, const string& sig )
 {
-    return Range();
+    string scode, fcode;
+    Scheme* sch = nullptr;
+    if( !sig.empty() ) {
+        split_code( &scode, &fcode, sig );
+        if( !scode.empty() ) {
+            sch = get_scheme( scode );
+        }
+    }
+    if( sch == nullptr ) {
+        sch = get_oscheme();
+        if( sch == nullptr ) {
+            return Range();
+        }
+    }
+    RList rlist = sch->str_to_rlist( text, fcode );
+    if( rlist.size() != 1 ) {
+        return Range();
+    }
+    return rlist[0];
 }
 
 Field Glich::text_to_field( const string& text, const string& sig )
 {
-    return Field();
+    string scode, fcode;
+    Scheme* sch = nullptr;
+    if( !sig.empty() ) {
+        split_code( &scode, &fcode, sig );
+        if( !scode.empty() ) {
+            sch = get_scheme( scode );
+        }
+    }
+    if( sch == nullptr ) {
+        sch = get_oscheme();
+        if( sch == nullptr ) {
+            return f_invalid;
+        }
+    }
+    RList rlist = sch->str_to_rlist( text, fcode );
+    if( rlist.size() != 1 ) {
+        return f_invalid;
+    }
+    Range range = rlist[0];
+    if( range.m_beg != range.m_end ) {
+        return f_invalid;
+    }
+    return range.m_beg;
 }
 
 void Glich::load_builtin_library()

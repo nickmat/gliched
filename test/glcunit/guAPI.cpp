@@ -82,4 +82,29 @@ TEST_CASE( "Test range_to_text", "[range_to_text]" )
     REQUIRE( text == "19 Aug 2023" );
 }
 
+TEST_CASE( "Test field_to_text", "[field_to_text]" )
+{
+    Field field = 2460176;
+    string text = g_glc->field_to_text( field, "jdn" );
+    REQUIRE( text == "2460176" );
+    text = g_glc->field_to_text( field, "g:mdy" );
+    REQUIRE( text == "Aug 19, 2023" );
+    text = g_glc->field_to_text( field );
+    REQUIRE( text == "19 Aug 2023" );
+}
+
+TEST_CASE( "Test text_to_rlist", "[text_to_rlist]" )
+{
+    RList expect = { { 2460176, 2460176 } };
+    RList result = g_glc->text_to_rlist( "2460176", "jdn" );
+    REQUIRE( result.size() == 1 );
+    REQUIRE( result[0] == expect[0] );
+    result = g_glc->text_to_rlist( "aug19,2023", "g:mdy" );
+    REQUIRE( result.size() == 1 );
+    REQUIRE( result[0] == expect[0] );
+    result = g_glc->text_to_rlist( "19aug2023" );
+    REQUIRE( result.size() == 1 );
+    REQUIRE( result[0] == expect[0] );
+}
+
 // End of test/gu/guAPI.cpp file.

@@ -50,6 +50,16 @@ TEST_CASE( "Test date_phrase_to_rlist", "[date_phrase_to_rlist]" )
     REQUIRE( rlist == expect );
 }
 
+TEST_CASE( "Test date_phrase_to_text", "[date_phrase_to_text]" )
+{
+    string expect = "Aug 19, 2023";
+    string text = g_glc->date_phrase_to_text( "2460176", "jdn", "g:mdy" );
+    REQUIRE( text == expect );
+    expect = "2460176";
+    text = g_glc->date_phrase_to_text( "aug19,2023", ":mdy", "jdn" );
+    REQUIRE( text == expect );
+}
+
 TEST_CASE( "Test rlist_to_text", "[rlist_to_text]" )
 {
     RList rlist = { { 2460176, 2460176 } };

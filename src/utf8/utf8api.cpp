@@ -26,9 +26,9 @@
 */
 
 
-#include "utf8/utf8api.h"
+#include <utf8/utf8api.h>
 
-#include "utf8proc.h"
+#include <utf8proc/utf8proc.h>
 #include <cstring>
 #include <cstdlib>
 
@@ -40,9 +40,9 @@ const char* Utf8api::version()
 std::string Utf8api::normal( const std::string& utf8 )
 {
     uint8_t* retval;
-    ssize_t size = utf8proc_map( (const uint8_t*) utf8.c_str(), 0, &retval,
-        UTF8PROC_NULLTERM | UTF8PROC_STABLE | UTF8PROC_COMPOSE | 
-        UTF8PROC_COMPAT | UTF8PROC_CASEFOLD
+    utf8proc_ssize_t size = utf8proc_map( (const uint8_t*) utf8.c_str(), 0, &retval,
+        utf8proc_option_t( UTF8PROC_NULLTERM | UTF8PROC_STABLE | UTF8PROC_COMPOSE |
+        UTF8PROC_COMPAT | UTF8PROC_CASEFOLD )
     );
     std::string str;
     if( retval ) {

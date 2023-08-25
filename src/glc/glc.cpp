@@ -111,6 +111,27 @@ const char* Glich::version()
     return glc_version;
 }
 
+SchemeList glich::Glich::get_scheme_list() const
+{
+    SchemeList slist;
+    SchemeData sdata;
+
+    for( const auto& object : m_objects ) {
+        Scheme* sch = dynamic_cast<Scheme*>(object.second);
+        if( sch == nullptr ) {
+            continue;
+        }
+        sdata.code = sch->get_code();
+        sdata.scheme = sch;
+        sdata.name = sch->get_name();
+        // TODO: Check, can these be anything else?
+        sdata.has_in_format = true;
+        sdata.has_out_format = true;
+        slist.push_back( sdata );
+    }
+    return slist;
+}
+
 void Glich::get_scheme_info( Scheme_info* info, const string& scode ) const
 {
     Scheme* sch = get_scheme( scode );

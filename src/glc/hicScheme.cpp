@@ -31,7 +31,7 @@
 #include "glcScript.h"
 #include "glcStore.h"
 #include "hicChinese.h"
-#include "hicFormat.h"
+#include "hicFormatText.h"
 #include "hicFrench.h"
 #include "hicGrammar.h"
 #include "hicGregorian.h"
@@ -119,6 +119,31 @@ Format* Scheme::get_input_format( const string& fcode ) const
         return m_base.get_format( m_input_fcode );
     }
     return m_base.get_format( fcode );
+}
+
+void Scheme::get_info( Scheme_info* info ) const
+{
+    info->name = m_name;
+    info->code = get_code();// m_code;
+    info->style = m_style;
+    Grammar* gmr = m_base.get_grammar();
+    if( gmr ) {
+        info->grammar_code = gmr->get_code();
+        info->lexicon_codes = gmr->get_lexicon_codes();
+        info->lexicon_names = gmr->get_lexicon_names();
+    }
+    else {
+        info->grammar_code = "";
+    }
+}
+
+void glich::Scheme::get_format_text_info( FormatText_info* info, const std::string& fcode ) const
+{
+    FormatText* fmt = dynamic_cast<FormatText*>(m_base.get_format( fcode ));
+    if( fmt ) {
+        fmt->get_info( &info->info );
+        info->control_str = fmt->get_control_in();
+    }
 }
 
 FieldVec Scheme::get_object_fields( const SValueVec& values ) const

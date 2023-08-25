@@ -79,6 +79,8 @@ namespace glich {
         Format* get_format( const std::string& code ) const;
         std::string get_pref_input_fcode() const { return m_pref_input_fcode; }
         std::string get_pref_output_fcode() const { return m_pref_output_fcode; }
+        StdStrVec get_lexicon_codes() const;
+        StdStrVec get_lexicon_names() const;
 
         Field find_token( Lexicon** lex, const std::string& word ) const;
         Lexicon* find_lexicon( const std::string& code ) const;

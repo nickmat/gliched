@@ -260,6 +260,30 @@ Format* Grammar::get_format( const string& code ) const
     return it->second;
 }
 
+StdStrVec glich::Grammar::get_lexicon_codes() const
+{
+    StdStrVec vec;
+    if( m_inherit ) {
+        vec = m_inherit->get_lexicon_codes();
+    }
+    for( size_t i = 0; i < m_lexicons.size(); i++ ) {
+        vec.push_back( m_lexicons[i]->get_code() );
+    }
+    return vec;
+}
+
+StdStrVec glich::Grammar::get_lexicon_names() const
+{
+    StdStrVec vec;
+    if( m_inherit ) {
+        vec = m_inherit->get_lexicon_names();
+    }
+    for( size_t i = 0; i < m_lexicons.size(); i++ ) {
+        vec.push_back( m_lexicons[i]->get_name() );
+    }
+    return vec;
+}
+
 Field Grammar::find_token( Lexicon** lex, const std::string& word ) const
 {
     Field field = f_invalid;

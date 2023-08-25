@@ -111,6 +111,22 @@ const char* Glich::version()
     return glc_version;
 }
 
+void Glich::get_scheme_info( Scheme_info* info, const string& scode ) const
+{
+    Scheme* sch = get_scheme( scode );
+    if( sch != nullptr ) {
+        sch->get_info( info );
+    }
+}
+
+void Glich::get_format_text_info( FormatText_info* info, const string& scode, const string& fcode ) const
+{
+    Scheme* sch = get_scheme( scode );
+    if( sch != nullptr ) {
+        sch->get_format_text_info( info, fcode );
+    }
+}
+
 RList Glich::date_phrase_to_rlist( const string& phrase, const string& sig )
 {
     string scode, fcode;

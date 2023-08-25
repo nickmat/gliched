@@ -44,6 +44,16 @@ Format::~Format()
 {
 }
 
+void glich::Format::get_info( Format_info* info ) const
+{
+    info->code = m_code;
+    info->gmr_code = m_owner.get_code();
+    info->input_str = m_input_str;
+    info->output_str = m_output_str;
+    info->type = get_format_type();
+    info->style = m_style;
+}
+
 SValue Format::string_to_object( const string& ocode, const Base& base, const string& input ) const
 {
     Record mask( base, input, *this, Boundary::None );

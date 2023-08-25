@@ -47,6 +47,9 @@ namespace glich {
         void set_control_out( const std::string& format ) { m_control_out = format; }
         void set_control_in( const std::string& format ) { m_control_in = format; }
 
+        std::string get_control_in() const { return m_control_in; }
+        std::string get_control_out() const { return m_control_out; }
+
         FormatType get_format_type() const override { return FormatType::text; };
         std::string get_text_output( Record& record ) const override;
         std::string get_revealed_output( const Record& rec, const BoolVec* reveal ) const;

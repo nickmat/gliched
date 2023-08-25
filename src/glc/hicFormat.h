@@ -52,6 +52,7 @@ namespace glich {
         void set_ok( bool ok ) { m_ok = ok; }
 
         std::string get_code() const { return m_code; }
+        int get_priority() const { return m_priority; }
         std::string get_input_str() const { return m_input_str; }
         std::string get_output_str() const { return m_output_str; }
         Grammar* get_owner() const { return &m_owner; }
@@ -76,6 +77,11 @@ namespace glich {
         Grammar& m_owner;
         bool m_ok;
         FormatStyle m_style;
+        // The priority value is used when the format in/out descriptor string
+        // is the same for more than one format.
+        // If this string is used to select a format (ie from a pick list)
+        // then the format with the highest priority is used.
+        int         m_priority;
         std::string m_input_str;
         std::string m_output_str;
     };

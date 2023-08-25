@@ -77,7 +77,8 @@ namespace glich {
         void load_builtin_library();
         void load_hics_library();
 
-        std::string run_script( const std::string& cmnd );
+        std::string run_script( const std::string& script );
+        std::string run_script_file( const std::string& filename );
         SValue evaluate( const std::string& expression, Store* store );
         SValue evaluate( const std::string& expression );
 

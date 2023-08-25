@@ -336,6 +336,15 @@ string Glich::run_script( const string& script )
     return oss.str();
 }
 
+std::string glich::Glich::run_script_file( const std::string& filename )
+{
+    std::ifstream ifs( filename.c_str() );
+    std::ostringstream oss;
+    Script scr( this, ifs, oss );
+    scr.run();
+    return oss.str();
+}
+
 SValue Glich::evaluate( const string& expression, Store* store )
 {
     if( store ) {

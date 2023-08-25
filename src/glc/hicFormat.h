@@ -57,6 +57,7 @@ namespace glich {
         Grammar* get_owner() const { return &m_owner; }
         const Grammar& get_grammar() const { return m_owner; }
         const Glich& get_glich() const { return get_grammar().get_glich(); }
+        FormatStyle get_style() const { return m_style; }
         void get_info( Format_info* info ) const;
 
         SValue string_to_object( const std::string& ocode, const Base& base, const std::string& input ) const;;

@@ -74,6 +74,11 @@ namespace glich {
         std::string get_num_pseudo_alias( const std::string& fname ) const;
         std::string get_unit_alias( const std::string& fieldname ) const;
 
+        bool has_input_format() const { return has_format( InOut::input ); }
+        void get_input_formats( SchemeFormatInfo* info, const std::string& cur_code ) const;
+        bool has_output_format() const { return has_format( InOut::output ); }
+        void get_output_formats( SchemeFormatInfo* info, const std::string& cur_code ) const;
+
         std::string get_calc_output() const { return m_calculate_output; }
         std::string get_calc_input() const { return m_calculate_input; }
         Format* get_format( const std::string& code ) const;
@@ -95,6 +100,9 @@ namespace glich {
         static Grammar* create_default_grammar( const Base* base, Glich* glc );
 
     private:
+        enum class InOut { input, output };
+        bool has_format( InOut type ) const;
+        void get_format_info( SchemeFormatInfo* info, const std::string& cur_code, InOut type ) const;
         void create_def_format();
         void create_u_format();
 

@@ -63,6 +63,7 @@ namespace glich {
 
         SchemeList get_scheme_list() const;
         void get_scheme_info( Scheme_info* info, const std::string& scode ) const;
+        void get_output_info( SchemeFormatInfo* info, const std::string& scode ) const;
         void get_format_text_info( FormatText_info* info, const std::string& scode, const std::string& fcode ) const;
 
         RList date_phrase_to_rlist( const std::string& phrase, const std::string& sig = std::string() );

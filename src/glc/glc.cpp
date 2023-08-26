@@ -37,6 +37,7 @@
 #include "glcValue.h"
 #include "hicDatePhrase.h"
 #include "glcVersion.h"
+#include "hicGrammar.h"
 #include "hicLibScripts.h"
 #include "hicScheme.h"
 
@@ -111,7 +112,7 @@ const char* Glich::version()
     return glc_version;
 }
 
-SchemeList glich::Glich::get_scheme_list() const
+SchemeList Glich::get_scheme_list() const
 {
     SchemeList slist;
     SchemeData sdata;
@@ -124,9 +125,9 @@ SchemeList glich::Glich::get_scheme_list() const
         sdata.code = sch->get_code();
         sdata.scheme = sch;
         sdata.name = sch->get_name();
-        // TODO: Check, can these be anything else?
-        sdata.has_in_format = true;
-        sdata.has_out_format = true;
+        const Grammar* gmr = sch->get_grammar();
+        sdata.has_in_format = gmr->has_input_format();
+        sdata.has_out_format = gmr->has_output_format();
         slist.push_back( sdata );
     }
     return slist;
@@ -137,6 +138,16 @@ void Glich::get_scheme_info( Scheme_info* info, const string& scode ) const
     Scheme* sch = get_scheme( scode );
     if( sch != nullptr ) {
         sch->get_info( info );
+    }
+}
+
+void Glich::get_output_info( SchemeFormatInfo* info, const string& scode ) const
+{
+    Scheme* sch = get_scheme( scode );
+    if( sch != nullptr ) {
+        string outcode = sch->get_output_format_code();
+        const Grammar* gmr = sch->get_grammar();
+        gmr->get_output_formats( info, outcode );
     }
 }
 

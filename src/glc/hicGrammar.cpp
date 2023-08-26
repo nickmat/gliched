@@ -248,6 +248,22 @@ string Grammar::get_unit_alias( const string& fieldname ) const
     return fieldname;
 }
 
+void Grammar::get_input_formats( SchemeFormatInfo* info, const string& cur_code ) const
+{
+    if( info == nullptr ) return;
+    info->descs.clear();
+    info->current = 0;
+    get_format_info( info, cur_code, InOut::input );
+}
+
+void Grammar::get_output_formats( SchemeFormatInfo* info, const string& cur_code ) const
+{
+    if( info == nullptr ) return;
+    info->descs.clear();
+    info->current = 0;
+    get_format_info( info, cur_code, InOut::output );
+}
+
 Format* Grammar::get_format( const string& code ) const
 {
     auto it = m_formats.find( code );
@@ -330,6 +346,88 @@ Grammar* Grammar::create_default_grammar( const Base* base, Glich* glc )
     gmr->set_base_fieldnames( base->get_fieldnames() );
     gmr->constuct();
     return gmr;
+}
+
+bool Grammar::has_format( InOut type ) const
+{
+    for( auto pair : m_formats ) {
+        Format* fmt = pair.second;
+        if( fmt->get_style() == FormatStyle::Hide ) {
+            continue;
+        }
+        string str = type == InOut::input ? fmt->get_input_str() : fmt->get_output_str();
+        if( !str.empty() ) {
+            return true;
+        }
+    }
+    if( m_inherit ) {
+        return m_inherit->has_format( type );
+    }
+    return false;
+}
+
+void Grammar::get_format_info( SchemeFormatInfo* info, const string& cur_code, InOut type ) const
+{
+    for( auto& format : m_formats ) {
+        Format* fmt = format.second;
+        if( fmt->get_style() == FormatStyle::Hide ) {
+            continue;
+        }
+        string str = type == InOut::input ? fmt->get_input_str() : fmt->get_output_str();
+        if( !str.empty() ) {
+            continue;
+        }
+        PCode pcode;
+        pcode.code = fmt->get_code();
+        pcode.priority = fmt->get_priority();
+        bool found = false;
+        for( size_t i = 0; i < info->descs.size(); i++ ) {
+            if( info->descs[i].desc == str ) {
+                // We are already there.
+                found = true;
+                if( pcode.code == cur_code ) {
+                    info->current = i;
+                }
+                bool inserted = false;
+                for( size_t j = 0; j < info->descs[i].codes.size(); j++ ) {
+                    int p = info->descs[i].codes[j].priority;
+                    if( pcode.priority > p ) {
+                        // Insert it here.
+                        info->descs[i].codes.insert( info->descs[i].codes.begin() + j, pcode );
+                        inserted = true;
+                        break;
+                    }
+                }
+                if( !inserted ) {
+                    info->descs[i].codes.push_back( pcode );
+                }
+                break;
+            }
+            else {
+                for( size_t j = 0; j < info->descs[i].codes.size(); j++ ) {
+                    if( pcode.code == info->descs[i].codes[j].code ) {
+                        found = true;
+                        break;
+                    }
+                }
+                if( found ) {
+                    break;
+                }
+            }
+        }
+        if( !found ) {
+            PDesc desc;
+            desc.desc = str;
+            desc.codes.push_back( pcode );
+            if( pcode.code == cur_code ) {
+                info->current = info->descs.size();
+            }
+            info->descs.push_back( desc );
+        }
+    }
+    if( m_inherit ) {
+        m_inherit->get_format_info( info, cur_code, type );
+    }
 }
 
 void Grammar::create_def_format()

@@ -142,6 +142,16 @@ void Glich::get_scheme_info( Scheme_info* info, const string& scode ) const
     }
 }
 
+void Glich::get_input_info( SchemeFormatInfo* info, const string& scode ) const
+{
+    Scheme* sch = get_scheme( scode );
+    if( sch != nullptr ) {
+        string incode = sch->get_input_format_code();
+        const Grammar* gmr = sch->get_grammar();
+        gmr->get_input_formats( info, incode );
+    }
+}
+
 void Glich::get_output_info( SchemeFormatInfo* info, const string& scode ) const
 {
     Scheme* sch = get_scheme( scode );

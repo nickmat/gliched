@@ -115,7 +115,7 @@ namespace glich {
         std::string control_str;
     };
 
-    struct Vocab_info
+    struct Lexicon_info
     {
         std::string name;
         std::string lang;

@@ -68,7 +68,7 @@ namespace glich {
         std::string get_fieldname() const { return m_fieldname; }
         std::string get_lang() const { return m_lang; }
         std::string get_pseudo_name( Pseudo style ) const;
-        void get_info( Vocab_info* info ) const;
+        void get_info( Lexicon_info* info ) const;
         Field find( const std::string& word ) const;
         std::string lookup( Field field, Pseudo style ) const;
 

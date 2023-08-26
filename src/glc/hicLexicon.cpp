@@ -68,7 +68,7 @@ string Lexicon::get_pseudo_name( Pseudo style ) const
     return style == Lexicon::Pseudo::full ? m_pseudo_name : m_pseudo_a_name;
 }
 
-void Lexicon::get_info( Vocab_info* info ) const
+void Lexicon::get_info( Lexicon_info* info ) const
 {
     if( info ) {
         info->name = m_name;

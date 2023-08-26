@@ -35,9 +35,10 @@
 #include "glcObject.h"
 #include "glcScript.h"
 #include "glcValue.h"
-#include "hicDatePhrase.h"
 #include "glcVersion.h"
+#include "hicDatePhrase.h"
 #include "hicGrammar.h"
+#include "hicLexicon.h"
 #include "hicLibScripts.h"
 #include "hicScheme.h"
 
@@ -157,6 +158,16 @@ void Glich::get_format_text_info( FormatText_info* info, const string& scode, co
     if( sch != nullptr ) {
         sch->get_format_text_info( info, fcode );
     }
+}
+
+bool Glich::get_lexicon_info( Lexicon_info* info, const string& code ) const
+{
+    Lexicon* lex = get_lexicon( code );
+    if( lex == nullptr ) {
+        return false;
+    }
+    lex->get_info( info );
+    return true;
 }
 
 RList Glich::date_phrase_to_rlist( const string& phrase, const string& sig )

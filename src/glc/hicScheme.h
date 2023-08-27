@@ -58,6 +58,7 @@ namespace glich {
         SValue complete_object( Field jdn ) const;
         SValue complete_object( const std::string& input, const std::string& fcode ) const;
 
+        std::string get_scode() const;
         std::string get_name() const { return m_name; }
         SchemeStyle get_style() const { return m_style; }
         const Base& get_base() const { return m_base; }

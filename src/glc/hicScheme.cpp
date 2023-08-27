@@ -105,6 +105,13 @@ SValue Scheme::complete_object( const string& input, const string& fcode ) const
     return fmt->string_to_object( get_code(), m_base, input );
 }
 
+string Scheme::get_scode() const
+{
+    string scode = get_code();
+    assert( scode.length() > 2 );
+    return scode.substr( 2 );
+}
+
 Format* Scheme::get_output_format( const string& fcode ) const
 {
     if( fcode.empty() ) {

@@ -132,7 +132,6 @@ void Scheme::get_info( Scheme_info* info ) const
 {
     info->name = m_name;
     info->code = get_scode();
-    info->style = m_style;
     Grammar* gmr = m_base.get_grammar();
     if( gmr ) {
         info->grammar_code = gmr->get_code();

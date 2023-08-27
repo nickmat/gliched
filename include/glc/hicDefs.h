@@ -39,11 +39,10 @@ namespace glich {
 
     struct SchemeData
     {
-        SchemeData() : scheme(nullptr), has_in_format( false ), has_out_format( false ) {}
+        SchemeData() : has_in_format(false), has_out_format(false) {}
 
         std::string code;
         std::string name;
-        Scheme*     scheme;
         bool        has_in_format;
         bool        has_out_format;
     };

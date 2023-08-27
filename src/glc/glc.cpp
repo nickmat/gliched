@@ -124,7 +124,6 @@ SchemeList Glich::get_scheme_list() const
             continue;
         }
         sdata.code = sch->get_scode();
-        sdata.scheme = sch;
         sdata.name = sch->get_name();
         const Grammar* gmr = sch->get_grammar();
         sdata.has_in_format = gmr->has_input_format();

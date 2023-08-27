@@ -131,7 +131,7 @@ Format* Scheme::get_input_format( const string& fcode ) const
 void Scheme::get_info( Scheme_info* info ) const
 {
     info->name = m_name;
-    info->code = get_code();// m_code;
+    info->code = get_scode();
     info->style = m_style;
     Grammar* gmr = m_base.get_grammar();
     if( gmr ) {

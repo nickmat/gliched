@@ -39,6 +39,18 @@ TEST_CASE( "Test Version", "[Version]" )
     REQUIRE( ver_num == "0.3.0" );
 }
 
+TEST_CASE( "Test get_scheme_list", "[get_scheme_list]" )
+{
+    SchemeList schemes = g_glc->get_scheme_list();
+    REQUIRE( schemes.size() == 13 );
+    size_t index = 0;
+    while( schemes[index].code != "g" ) index++;
+    SchemeData& data = schemes[index];
+    REQUIRE( data.name == "Gregorian" );
+    REQUIRE( data.has_in_format == true );
+    REQUIRE( data.has_out_format == true );
+}
+
 TEST_CASE( "Test date_phrase_to_rlist", "[date_phrase_to_rlist]" )
 {
     RList expect = { { 2460176, 2460176 } };

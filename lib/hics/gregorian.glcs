@@ -35,6 +35,7 @@ scheme g {
     name "Gregorian";
     base gregorian;
     grammar g;
+    style selected;
 }
 
 set inout g; // Set Gregorian as the default input and output scheme.

@@ -144,7 +144,10 @@ SchemeList Glich::get_scheme_list( SchemeStyle style ) const
         if( sch == nullptr ) {
             continue;
         }
-        if( style == SchemeStyle::Default && sch->get_style() == SchemeStyle::Hide ) {
+        if( style == SchemeStyle::Selected && sch->get_style() != SchemeStyle::Selected ) {
+            continue;
+        }
+        if( style == SchemeStyle::Default && sch->get_style() == SchemeStyle::Hidden ) {
             continue;
         }
         sdata.code = sch->get_scode();

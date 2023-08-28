@@ -55,7 +55,7 @@ scheme jwn {
     name "Julian Week Number";
     base jwn;
     grammar jwn;
-    style hide;
+    style hidden;
 }
 
 lexicon ws {
@@ -88,7 +88,7 @@ scheme jwsn {
     name "Julian Week (Sunday) Number";
     base jwn sunday;
     grammar jwsn;
-    style hide;
+    style hidden;
 }
 
 

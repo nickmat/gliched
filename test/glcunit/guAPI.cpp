@@ -41,14 +41,51 @@ TEST_CASE( "Test Version", "[Version]" )
 
 TEST_CASE( "Test get_scheme_list", "[get_scheme_list]" )
 {
-    SchemeList schemes = g_glc->get_scheme_list();
-    REQUIRE( schemes.size() == 13 );
+    SchemeList schemes = g_glc->get_scheme_list( SchemeStyle::Hidden );
+    size_t hidden_size = schemes.size();
     size_t index = 0;
-    while( schemes[index].code != "g" ) index++;
+    while( index < hidden_size && schemes[index].code != "g" ) index++;
+    REQUIRE( index < hidden_size );
     SchemeData& data = schemes[index];
     REQUIRE( data.name == "Gregorian" );
-    REQUIRE( data.has_in_format == true );
-    REQUIRE( data.has_out_format == true );
+
+    index = 0;
+    while( index < hidden_size && schemes[index].code != "ja" ) index++;
+    REQUIRE( index < hidden_size );
+    data = schemes[index];
+    REQUIRE( data.name == "Julian Annunciation Florence" );
+
+    index = 0;
+    while( index < hidden_size && schemes[index].code != "jwn" ) index++;
+    REQUIRE( index < hidden_size );
+    data = schemes[index];
+    REQUIRE( data.name == "Julian Week Number" );
+
+    schemes = g_glc->get_scheme_list( SchemeStyle::Default );
+    size_t default_size = schemes.size();
+    REQUIRE( default_size < hidden_size );
+    index = 0;
+    while( index < default_size && schemes[index].code != "g" ) index++;
+    REQUIRE( index < default_size );
+    index = 0;
+    while( index < default_size && schemes[index].code != "ja" ) index++;
+    REQUIRE( index < default_size );
+    index = 0;
+    while( index < default_size && schemes[index].code != "jwn" ) index++;
+    REQUIRE( index == default_size );
+
+    schemes = g_glc->get_scheme_list( SchemeStyle::Selected );
+    size_t selected_size = schemes.size();
+    REQUIRE( selected_size < default_size );
+    index = 0;
+    while( index < selected_size && schemes[index].code != "g" ) index++;
+    REQUIRE( index < selected_size );
+    index = 0;
+    while( index < selected_size && schemes[index].code != "ja" ) index++;
+    REQUIRE( index == selected_size );
+    index = 0;
+    while( index < selected_size && schemes[index].code != "jwn" ) index++;
+    REQUIRE( index == selected_size );
 }
 
 TEST_CASE( "Test date_phrase_to_rlist", "[date_phrase_to_rlist]" )

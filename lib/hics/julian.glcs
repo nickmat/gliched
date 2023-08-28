@@ -68,6 +68,7 @@ scheme j {
     name "Julian";
     base julian;
     grammar j;
+    style selected;
 }
 
 // End of lib/hics/julian.glcs file

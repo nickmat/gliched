@@ -76,7 +76,7 @@ glich::ScriptModule glich::hics_default_scripts[] = {
  "name \"Julian Week Number\";\n"
  "base jwn;\n"
  "grammar jwn;\n"
- "style hide;\n"
+ "style hidden;\n"
  "}\n"
  "lexicon ws {\n"
  "name \"Weekday names Sunday start\";\n"
@@ -106,7 +106,7 @@ glich::ScriptModule glich::hics_default_scripts[] = {
  "name \"Julian Week (Sunday) Number\";\n"
  "base jwn sunday;\n"
  "grammar jwsn;\n"
- "style hide;\n"
+ "style hidden;\n"
  "}\n" },
     { "julian",  /* julian.glcs */
  "lexicon m {\n"
@@ -149,6 +149,7 @@ glich::ScriptModule glich::hics_default_scripts[] = {
  "name \"Julian\";\n"
  "base julian;\n"
  "grammar j;\n"
+ "style selected;\n"
  "}\n" },
     { "julian_shift",  /* julian_shift.glcs */
  "grammar j_sh {\n"
@@ -171,7 +172,7 @@ glich::ScriptModule glich::hics_default_scripts[] = {
  "preferred dmcy;\n"
  "}\n"
  "scheme ja {\n"
- "name \"Julian Annunciation\";\n"
+ "name \"Julian Annunciation Florence\";\n"
  "base julian;\n"
  "epoch 1721507;\n"
  "grammar j_sh;\n"
@@ -205,6 +206,7 @@ glich::ScriptModule glich::hics_default_scripts[] = {
  "name \"Gregorian\";\n"
  "base gregorian;\n"
  "grammar g;\n"
+ "style selected;\n"
  "}\n"
  "set inout g;\n"
  "grammar gw {\n"

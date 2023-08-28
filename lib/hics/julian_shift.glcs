@@ -47,7 +47,7 @@ grammar j_sh {
 }
 
 scheme ja {
-    name "Julian Annunciation";
+    name "Julian Annunciation Florence";
     base julian;
     epoch 1721507;    // j:dmy# 25 Mar 1
     grammar j_sh;

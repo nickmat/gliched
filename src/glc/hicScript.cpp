@@ -206,10 +206,13 @@ Scheme* glich::do_create_scheme( Script& script, const std::string& code )
             }
             else if( token.get_str() == "style" ) {
                 string str = script.get_name_or_primary( GetToken::next );
-                if( str == "hide" ) {
-                    style = SchemeStyle::Hide;
+                if( str == "hidden" ) {
+                    style = SchemeStyle::Hidden;
                 }
-                else if( str != "none" ) {
+                else if( str == "selected" ) {
+                    style = SchemeStyle::Selected;
+                }
+                else if( str != "default" ) {
                     script.error( "Style name expected." );
                 }
             }

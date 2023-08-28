@@ -32,6 +32,7 @@
 #include "glcStore.h"
 #include "hicBase.h"
 #include "hicFormat.h"
+#include "hicGregorian.h"
 #include "hicOptional.h"
 
 #include <algorithm>
@@ -107,6 +108,10 @@ void Record::set_str( const string& str, const Format& fmt, Boundary rb )
     }
     if( in == "future" ) {
         m_jdn = m_f[0] = f_maximum;
+        return;
+    }
+    if( in == "today" ) {
+        set_jdn( Gregorian::today() );
         return;
     }
     if( !fmt.set_input( *this, in, rb ) ) {

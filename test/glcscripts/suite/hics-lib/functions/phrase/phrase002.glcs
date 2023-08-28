@@ -1,0 +1,10 @@
+// suite/hics-lib/functions/phrase/phrase002.hcs
+// Test @phrase with default date value.
+
+let today_ = today;
+let phrase_ = @phrase( "today" );
+write today_ = phrase_;
+
+/*[OUTPUT]
+true
+[OUTPUT]*/

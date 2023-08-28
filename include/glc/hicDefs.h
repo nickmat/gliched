@@ -37,11 +37,11 @@ namespace glich {
     using SchemeMap = std::map<std::string, Scheme*>;
     using SchemeVec = std::vector<Scheme*>;
 
-    enum class SchemeStyle { none, hide };
+    enum class SchemeStyle { Default, Hide };
 
     struct SchemeData
     {
-        SchemeData() : style(SchemeStyle::none), has_in_format(false), has_out_format(false) {}
+        SchemeData() : style(SchemeStyle::Default), has_in_format(false), has_out_format(false) {}
 
         std::string code;
         std::string name;

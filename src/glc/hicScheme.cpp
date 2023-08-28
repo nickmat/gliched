@@ -52,7 +52,7 @@ using namespace glich;
 using std::string;
 
 glich::Scheme::Scheme( const std::string& code, const Base& base )
-    : m_style( SchemeStyle::none ), m_base( base ), Object( code )
+    : m_style( SchemeStyle::Default ), m_base( base ), Object( code )
 {
     set_value_names( base.get_fieldnames() );
     string calc_output = base.get_calc_output();

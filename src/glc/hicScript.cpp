@@ -171,7 +171,7 @@ Scheme* glich::do_create_scheme( Script& script, const std::string& code )
     string name, gmr_code;
     Field epoch = f_invalid;
     Grammar* gmr = nullptr;
-    SchemeStyle style = SchemeStyle::none;
+    SchemeStyle style = SchemeStyle::Default;
     for( ;;) {
         token = script.next_token();
         if( token.type() == SToken::Type::RCbracket ||
@@ -207,7 +207,7 @@ Scheme* glich::do_create_scheme( Script& script, const std::string& code )
             else if( token.get_str() == "style" ) {
                 string str = script.get_name_or_primary( GetToken::next );
                 if( str == "hide" ) {
-                    style = SchemeStyle::hide;
+                    style = SchemeStyle::Hide;
                 }
                 else if( str != "none" ) {
                     script.error( "Style name expected." );

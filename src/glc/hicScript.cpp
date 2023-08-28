@@ -382,7 +382,7 @@ Lexicon* glich::do_create_lexicon( Script& script, const std::string& code )
         else if( token.type() == SToken::Type::Name ) {
             string name = token.get_str();
             if( name == "name" ) {
-                name = script.expr( GetToken::next ).as_string();
+                str = script.expr( GetToken::next ).as_string();
                 lex->set_name( str );
             }
             else if( name == "fieldname" ) {

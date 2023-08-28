@@ -134,6 +134,26 @@ SchemeList Glich::get_scheme_list() const
     return slist;
 }
 
+SchemeList Glich::get_scheme_list( SchemeStyle style ) const
+{
+    SchemeList slist;
+    SchemeData sdata;
+
+    for( const auto& object : m_objects ) {
+        Scheme* sch = dynamic_cast<Scheme*>(object.second);
+        if( sch == nullptr ) {
+            continue;
+        }
+        if( style == SchemeStyle::none && sch->get_style() == SchemeStyle::hide ) {
+            continue;
+        }
+        sdata.code = sch->get_scode();
+        sdata.name = sch->get_name();
+        slist.push_back( sdata );
+    }
+    return slist;
+}
+
 void Glich::get_scheme_info( Scheme_info* info, const string& scode ) const
 {
     Scheme* sch = get_scheme( scode );

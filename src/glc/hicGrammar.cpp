@@ -374,7 +374,7 @@ void Grammar::get_format_info( SchemeFormatInfo* info, const string& cur_code, I
             continue;
         }
         string str = type == InOut::input ? fmt->get_input_str() : fmt->get_output_str();
-        if( !str.empty() ) {
+        if( str.empty() ) {
             continue;
         }
         PCode pcode;

@@ -3,7 +3,7 @@
  * Project:     glcUnit: Unit test program for the Glich Hics library.
  * Purpose:     Program main function header.
  * Author:      Nick Matthews
- * Website:     http://thefamilypack.org
+ * Website:     https://github.com/nickmat/glich
  * Created:     17th August 2023
  * Copyright:   Copyright (c) 2023, Nick Matthews.
  * Licence:     GNU GPLv3
@@ -31,5 +31,43 @@
 #include "glc/glc.h"
 
 extern glich::Glich* g_glc;
+
+constexpr size_t guTT_size = 33;
+
+constexpr glich::Field guTT_jdn[guTT_size] = {
+    1507232,
+    1660038,
+    1746894,
+    1770642,
+    1892732,
+    1931580,
+    1974852,
+    2091165,
+    2121510,
+    2155780,
+    2174030,
+    2191585,
+    2195262,
+    2229275,
+    2245581,
+    2266101,
+    2288543,
+    2290902,
+    2323141,
+    2334849,
+    2348021,
+    2366979,
+    2385649,
+    2392826,
+    2416224,
+    2425849,
+    2430267,
+    2430834,
+    2431005,
+    2448699,
+    2450139,
+    2465738,
+    2486077
+};
 
 #endif // TEST_GLCUNIT_GUMAIN_H

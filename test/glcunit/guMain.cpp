@@ -3,7 +3,7 @@
  * Project:     glcUnit: Unit test program for the Glich Hics library.
  * Purpose:     Program main function source.
  * Author:      Nick Matthews
- * Website:     http://thefamilypack.org
+ * Website:     https://github.com/nickmat/glich
  * Created:     17th August 2023
  * Copyright:   Copyright (c) 2023, Nick Matthews.
  * Licence:     GNU GPLv3

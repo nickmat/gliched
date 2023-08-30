@@ -121,4 +121,17 @@ TEST_CASE( "Scheme g Test Range", "[g TestRange]" )
     }
 }
 
+TEST_CASE( "Scheme g Test RList", "[g TestRList]" )
+{
+    string str = "30aug2023 | 1800..1837 | may2030..future | past..1756";
+    RList expect = { { f_minimum, 2362791 }, { 2378497, 2392375 }, { 2460187, 2460187 }, { 2462623, f_maximum } };
+    RList rlist = g_glc->text_to_rlist( str, "g:dmy" );
+    REQUIRE( rlist.size() == expect.size() );
+    for( size_t i = 0; i < expect.size(); i++ ) {
+        REQUIRE( rlist[i] == expect[i] );
+    }
+    string result = g_glc->rlist_to_text( rlist, "g:dmy" );
+    REQUIRE( result == "past..1756 | 1800..1837 | 30 Aug 2023 | May 2030..future" );
+}
+
 // End of test/gu/guSch_g.cpp file.

@@ -33,45 +33,45 @@ using namespace glich;
 using std::string;
 
 
-const char* test_strs[guTT_size][2] = {
-    //   dmy           mdy
-    { "24 Jul -586", "Jul 24, -586" },
-    { "5 Dec -168",  "Dec 5, -168"  },
-    { "24 Sep 70",   "Sep 24, 70"   },
-    { "2 Oct 135",   "Oct 2, 135"   },
-    { "8 Jan 470",   "Jan 8, 470"   },
-    { "20 May 576",  "May 20, 576"  },
-    { "10 Nov 694",  "Nov 10, 694"  },
-    { "25 Apr 1013", "Apr 25, 1013" },
-    { "24 May 1096", "May 24, 1096" },
-    { "23 Mar 1190", "Mar 23, 1190" },
-    { "10 Mar 1240", "Mar 10, 1240" },
-    { "2 Apr 1288",  "Apr 2, 1288"  },
-    { "27 Apr 1298", "Apr 27, 1298" },
-    { "12 Jun 1391", "Jun 12, 1391" },
-    { "3 Feb 1436",  "Feb 3, 1436"  },
-    { "9 Apr 1492",  "Apr 9, 1492"  },
-    { "19 Sep 1553", "Sep 19, 1553" },
-    { "5 Mar 1560",  "Mar 5, 1560"  },
-    { "10 Jun 1648", "Jun 10, 1648" },
-    { "30 Jun 1680", "Jun 30, 1680" },
-    { "24 Jul 1716", "Jul 24, 1716" },
-    { "19 Jun 1768", "Jun 19, 1768" },
-    { "2 Aug 1819",  "Aug 2, 1819"  },
-    { "27 Mar 1839", "Mar 27, 1839" },
-    { "19 Apr 1903", "Apr 19, 1903" },
-    { "25 Aug 1929", "Aug 25, 1929" },
-    { "29 Sep 1941", "Sep 29, 1941" },
-    { "19 Apr 1943", "Apr 19, 1943" },
-    { "7 Oct 1943",  "Oct 7, 1943"  },
-    { "17 Mar 1992", "Mar 17, 1992" },
-    { "25 Feb 1996", "Feb 25, 1996" },
-    { "10 Nov 2038", "Nov 10, 2038" },
-    { "18 Jul 2094", "Jul 18, 2094" }
+const char* test_strs[guTT_size][4] = {
+    //   dmy           mdy            wdmy               wmdy+
+    { "24 Jul -586", "Jul 24, -586", "Sun 24 Jul -586", "Sunday, July 24, -586"       },
+    { "5 Dec -168",  "Dec 5, -168",  "Wed 5 Dec -168",  "Wednesday, December 5, -168" },
+    { "24 Sep 70",   "Sep 24, 70",   "Wed 24 Sep 70",   "Wednesday, September 24, 70" },
+    { "2 Oct 135",   "Oct 2, 135",   "Sun 2 Oct 135",   "Sunday, October 2, 135"      },
+    { "8 Jan 470",   "Jan 8, 470",   "Wed 8 Jan 470",   "Wednesday, January 8, 470"   },
+    { "20 May 576",  "May 20, 576",  "Mon 20 May 576",  "Monday, May 20, 576"         },
+    { "10 Nov 694",  "Nov 10, 694",  "Sat 10 Nov 694",  "Saturday, November 10, 694"  },
+    { "25 Apr 1013", "Apr 25, 1013", "Sun 25 Apr 1013", "Sunday, April 25, 1013"      },
+    { "24 May 1096", "May 24, 1096", "Sun 24 May 1096", "Sunday, May 24, 1096"        },
+    { "23 Mar 1190", "Mar 23, 1190", "Fri 23 Mar 1190", "Friday, March 23, 1190"      },
+    { "10 Mar 1240", "Mar 10, 1240", "Sat 10 Mar 1240", "Saturday, March 10, 1240"    },
+    { "2 Apr 1288",  "Apr 2, 1288",  "Fri 2 Apr 1288",  "Friday, April 2, 1288"       },
+    { "27 Apr 1298", "Apr 27, 1298", "Sun 27 Apr 1298", "Sunday, April 27, 1298"      },
+    { "12 Jun 1391", "Jun 12, 1391", "Sun 12 Jun 1391", "Sunday, June 12, 1391"       },
+    { "3 Feb 1436",  "Feb 3, 1436",  "Wed 3 Feb 1436",  "Wednesday, February 3, 1436" },
+    { "9 Apr 1492",  "Apr 9, 1492",  "Sat 9 Apr 1492",  "Saturday, April 9, 1492"     },
+    { "19 Sep 1553", "Sep 19, 1553", "Sat 19 Sep 1553", "Saturday, September 19, 1553"},
+    { "5 Mar 1560",  "Mar 5, 1560",  "Sat 5 Mar 1560",  "Saturday, March 5, 1560"     },
+    { "10 Jun 1648", "Jun 10, 1648", "Wed 10 Jun 1648", "Wednesday, June 10, 1648"    },
+    { "30 Jun 1680", "Jun 30, 1680", "Sun 30 Jun 1680", "Sunday, June 30, 1680"       },
+    { "24 Jul 1716", "Jul 24, 1716", "Fri 24 Jul 1716", "Friday, July 24, 1716"       },
+    { "19 Jun 1768", "Jun 19, 1768", "Sun 19 Jun 1768", "Sunday, June 19, 1768"       },
+    { "2 Aug 1819",  "Aug 2, 1819",  "Mon 2 Aug 1819",  "Monday, August 2, 1819"      },
+    { "27 Mar 1839", "Mar 27, 1839", "Wed 27 Mar 1839", "Wednesday, March 27, 1839"   },
+    { "19 Apr 1903", "Apr 19, 1903", "Sun 19 Apr 1903", "Sunday, April 19, 1903"      },
+    { "25 Aug 1929", "Aug 25, 1929", "Sun 25 Aug 1929", "Sunday, August 25, 1929"     },
+    { "29 Sep 1941", "Sep 29, 1941", "Mon 29 Sep 1941", "Monday, September 29, 1941"  },
+    { "19 Apr 1943", "Apr 19, 1943", "Mon 19 Apr 1943", "Monday, April 19, 1943"      },
+    { "7 Oct 1943",  "Oct 7, 1943",  "Thur 7 Oct 1943", "Thursday, October 7, 1943"   },
+    { "17 Mar 1992", "Mar 17, 1992", "Tue 17 Mar 1992", "Tuesday, March 17, 1992"     },
+    { "25 Feb 1996", "Feb 25, 1996", "Sun 25 Feb 1996", "Sunday, February 25, 1996"   },
+    { "10 Nov 2038", "Nov 10, 2038", "Wed 10 Nov 2038", "Wednesday, November 10, 2038"},
+    { "18 Jul 2094", "Jul 18, 2094", "Sun 18 Jul 2094", "Sunday, July 18, 2094"       }
 };
 
 
-TEST_CASE( "Libray Scheme g", "[g]" )
+TEST_CASE( "Library Scheme g", "[g]" )
 {
     Scheme_info info;
     g_glc->get_scheme_info( &info, "g" );
@@ -96,6 +96,16 @@ TEST_CASE( "Scheme g Test Table", "[g TestTable]" )
         REQUIRE( jdn == guTT_jdn[i] );
         str = g_glc->field_to_text( jdn, "g:mdy" );
         REQUIRE( str == test_strs[i][1] );
+
+        jdn = g_glc->text_to_field( test_strs[i][2], "g:wdmy" );
+        REQUIRE( jdn == guTT_jdn[i] );
+        str = g_glc->field_to_text( jdn, "g:wdmy" );
+        REQUIRE( str == test_strs[i][2] );
+
+        jdn = g_glc->text_to_field( test_strs[i][3], "g:wmdy+" );
+        REQUIRE( jdn == guTT_jdn[i] );
+        str = g_glc->field_to_text( jdn, "g:wmdy+" );
+        REQUIRE( str == test_strs[i][3] );
     }
 }
 

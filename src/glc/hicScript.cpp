@@ -732,13 +732,13 @@ SValue glich::hics_dot( Script& script, bool& success, Object* obj, const std::s
         value = args[0];
     }
     success = true;
-    if( fcode == "pseudo:in" && value.type() == SValue::Type::String ) {
+    if( fcode == "pseudo_in" && value.type() == SValue::Type::String ) {
         Format* fmt = sch->get_input_format( value.get_str() );
         if( fmt ) {
             return SValue( fmt->get_input_str() );
         }
     }
-    if( fcode == "pseudo:out" && value.type() == SValue::Type::String ) {
+    if( fcode == "pseudo_out" && value.type() == SValue::Type::String ) {
         Format* fmt = sch->get_output_format( value.get_str() );
         if( fmt ) {
             return SValue( fmt->get_output_str() );

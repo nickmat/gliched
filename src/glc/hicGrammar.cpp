@@ -78,8 +78,10 @@ bool Grammar::constuct()
             m_rank_fieldnames = m_inherit->m_rank_fieldnames;
         }
     }
-    create_def_format();
-    create_u_format();
+    else {
+        create_def_format();
+        create_u_format();
+    }
     if( m_pref_input_fcode.empty() ) {
         m_pref_input_fcode = "def";
     }

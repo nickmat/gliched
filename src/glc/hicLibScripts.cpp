@@ -201,8 +201,8 @@ glich::ScriptModule glich::hics_default_scripts[] = {
     { "gregorian",  /* gregorian.glcs */
  "grammar g {\n"
  "inherit j;\n"
- "format iso { rules iso8601; }\n"
- "format iso_set { rules iso8601 dateset; }\n"
+ "format iso { rules iso8601 minus; }\n"
+ "format iso_set { rules iso8601 dateset minus; }\n"
  "preferred dmy;\n"
  "}\n"
  "scheme g {\n"

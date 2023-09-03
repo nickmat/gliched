@@ -26,8 +26,8 @@
 
 grammar g {
     inherit j;
-    format iso { rules iso8601; }
-    format iso_set { rules iso8601 dateset; }
+    format iso { rules iso8601 minus; }
+    format iso_set { rules iso8601 dateset minus; }
     preferred dmy;
 }
 

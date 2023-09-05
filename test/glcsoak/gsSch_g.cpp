@@ -63,7 +63,7 @@ TEST_CASE( "Scheme g Soak Test", "[g Soak]" )
 
     string sig = "g:def";
     string date = cvt_fields( GLCTEST_G_START_YEAR, 1, 1 );
-    Field daycount = g_glc->text_to_field( date, "g:def" );
+    Field daycount = g_glc->text_to_field( date, sig );
     REQUIRE( daycount == GLCTEST_G_START_JDN );
 
     string cvtdate;
@@ -93,7 +93,7 @@ TEST_CASE( "Scheme g Soak Test", "[g Soak]" )
             REQUIRE( date == cvtdate );
         }
         date = cvt_fields( year );
-        range = g_glc->text_to_range( date );
+        range = g_glc->text_to_range( date, sig );
         REQUIRE( month1 == range.m_beg );
         REQUIRE( daycount - 1 == range.m_end );
         cvtdate = g_glc->range_to_text( range, sig );

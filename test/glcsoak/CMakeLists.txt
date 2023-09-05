@@ -11,6 +11,7 @@
 set( TEST_GLCSOAK_FILES
     gsMain.cpp
     gsSch_g.cpp
+    gsSch_j.cpp
 )
 
 set( TEST_GLCSOAK_HEADERS

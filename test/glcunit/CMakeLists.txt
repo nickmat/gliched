@@ -12,6 +12,7 @@ set( TEST_GLCUNIT_FILES
     guAPI.cpp
     guMain.cpp
     guSch_g.cpp
+    guSch_j.cpp
 )
 
 set( TEST_GLCUNIT_HEADERS

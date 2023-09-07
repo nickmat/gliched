@@ -172,6 +172,7 @@ glich::ScriptModule glich::hics_default_scripts[] = {
  "format full {\n"
  "output \"{wday:w} |{day::os} |{month:m} |{cyear/year}\";\n"
  "}\n"
+ "format cdef \"{cyear}| {month}| {day}\";\n"
  "preferred dmcy;\n"
  "}\n"
  "scheme ja {\n"

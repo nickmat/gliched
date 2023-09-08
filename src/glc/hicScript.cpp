@@ -621,7 +621,7 @@ bool glich::do_create_format( Script& script, const string& code, Grammar* gmr )
                 if( name == "style" ) {
                     string str = script.get_name_or_primary( GetToken::next );
                     if( str == "hidden" ) {
-                        style = FormatStyle::Hide;
+                        style = FormatStyle::Hidden;
                     }
                     else if( str != "default" ) {
                         script.error( "Style name expected." );

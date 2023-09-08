@@ -78,7 +78,7 @@ namespace glich {
         StdStrVec lexicon_names;
     };
 
-    enum class FormatStyle { Default, Hide };
+    enum class FormatStyle { Selected, Default, Hidden };
 
     struct PCode {
         std::string code;

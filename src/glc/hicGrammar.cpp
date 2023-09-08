@@ -354,7 +354,7 @@ bool Grammar::has_format( InOut type ) const
 {
     for( auto pair : m_formats ) {
         Format* fmt = pair.second;
-        if( fmt->get_style() == FormatStyle::Hide ) {
+        if( fmt->get_style() == FormatStyle::Hidden ) {
             continue;
         }
         string str = type == InOut::input ? fmt->get_input_str() : fmt->get_output_str();
@@ -372,7 +372,7 @@ void Grammar::get_format_info( SchemeFormatInfo* info, const string& cur_code, I
 {
     for( auto& format : m_formats ) {
         Format* fmt = format.second;
-        if( fmt->get_style() == FormatStyle::Hide ) {
+        if( fmt->get_style() == FormatStyle::Hidden ) {
             continue;
         }
         string str = type == InOut::input ? fmt->get_input_str() : fmt->get_output_str();
@@ -447,7 +447,7 @@ void Grammar::create_def_format()
     }
     fmt->set_control_in( control );
     fmt->set_control_out( control );
-    fmt->set_style( FormatStyle::Hide );
+    fmt->set_style( FormatStyle::Hidden );
     fmt->construct();
 }
 
@@ -457,7 +457,7 @@ void Grammar::create_u_format()
     if( fmt == nullptr ) {
         return;
     }
-    fmt->set_style( FormatStyle::Hide );
+    fmt->set_style( FormatStyle::Hidden );
     fmt->construct();
 }
 

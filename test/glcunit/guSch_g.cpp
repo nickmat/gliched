@@ -42,6 +42,7 @@ const char* test_strs[guTT_size][5] = {
     { "8 Jan 470",   "Jan 8, 470",   "Wed 8 Jan 470",   "Wednesday, January 8, 470",   "0470-01-08" },
     { "20 May 576",  "May 20, 576",  "Mon 20 May 576",  "Monday, May 20, 576",         "0576-05-20" },
     { "10 Nov 694",  "Nov 10, 694",  "Sat 10 Nov 694",  "Saturday, November 10, 694",  "0694-11-10" },
+    { "2 Jan 988",   "Jan 2, 988",   "Wed 2 Jan 988",   "Wednesday, January 2, 988",   "0988-01-02" },
     { "25 Apr 1013", "Apr 25, 1013", "Sun 25 Apr 1013", "Sunday, April 25, 1013",      "1013-04-25" },
     { "24 May 1096", "May 24, 1096", "Sun 24 May 1096", "Sunday, May 24, 1096",        "1096-05-24" },
     { "23 Mar 1190", "Mar 23, 1190", "Fri 23 Mar 1190", "Friday, March 23, 1190",      "1190-03-23" },

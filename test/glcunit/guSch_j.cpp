@@ -42,6 +42,7 @@ const char* table_j[guTT_size][5] = {
     { "7 Jan 470",   "Jan 7, 470",   "Wed 7 Jan 470",   "Wednesday, January 7, 470"   },
     { "18 May 576",  "May 18, 576",  "Mon 18 May 576",  "Monday, May 18, 576"         },
     { "7 Nov 694",   "Nov 7, 694",   "Sat 7 Nov 694",   "Saturday, November 7, 694"   },
+    { "28 Dec 987",  "Dec 28, 987",  "Wed 28 Dec 987",  "Wednesday, December 28, 987" },
     { "19 Apr 1013", "Apr 19, 1013", "Sun 19 Apr 1013", "Sunday, April 19, 1013"      },
     { "18 May 1096", "May 18, 1096", "Sun 18 May 1096", "Sunday, May 18, 1096"        },
     { "16 Mar 1190", "Mar 16, 1190", "Fri 16 Mar 1190", "Friday, March 16, 1190"      },

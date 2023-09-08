@@ -32,7 +32,7 @@
 
 extern glich::Glich* g_glc;
 
-constexpr size_t guTT_size = 33;
+constexpr size_t guTT_size = 34;
 
 constexpr glich::Field guTT_jdn[guTT_size] = {
     1507232,
@@ -42,6 +42,7 @@ constexpr glich::Field guTT_jdn[guTT_size] = {
     1892732,
     1931580,
     1974852,
+    2081921,
     2091165,
     2121510,
     2155780,

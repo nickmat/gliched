@@ -182,7 +182,7 @@ bool ElementControlIn::expand_specifier( Grammar* gmr )
 //    m_calc_field = gmr->get_calc_field( m_field_name );
     m_record_field_name = gmr->resolve_field_alias( m_field_name );
     if( m_lex ) {
-        m_type = IFT_vocab;
+        m_type = IFT_lexicon;
         m_default_value = m_lex->find( m_default_text );
     }
     else if( !m_dual_field_name.empty() ) {

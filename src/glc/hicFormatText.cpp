@@ -440,7 +440,7 @@ int FormatText::parse_date( InputFieldVec& ifs, const string& str ) const
                         return -1; // Unrecognised token
                     }
                     ifs[i].value = f;
-                    ifs[i].type = IFT_vocab;
+                    ifs[i].type = IFT_lexicon;
                     i++;
                 }
                 if( i == size ) {

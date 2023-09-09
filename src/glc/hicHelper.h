@@ -38,7 +38,7 @@ namespace glich {
     bool split_code( std::string* scheme, std::string* format, const std::string& str );
 
     enum InputFieldType {
-        IFT_null, IFT_quest, IFT_number, IFT_dual1, IFT_dual2, IFT_vocab, IFT_calc
+        IFT_null, IFT_quest, IFT_number, IFT_dual1, IFT_dual2, IFT_lexicon, IFT_calc
     };
 
     class Lexicon;

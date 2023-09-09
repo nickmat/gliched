@@ -31,6 +31,7 @@
 #include "glcMath.h"
 #include "hicBase.h"
 #include "hicElement.h"
+#include "hicLexicon.h"
 #include "hicRecord.h"
 
 #include <algorithm>
@@ -489,7 +490,6 @@ bool FormatText::resolve_input( const Base& base, FieldVec& fields, InputFieldVe
     FieldVec element_list;
     bool has_elements = false;;
     for( size_t i = 0; i < input.size(); i++ ) {
-#if 0
         if( input[i].type == IFT_dual2 ) {
             int index = base.get_fieldname_index( m_dual2_fieldname );
             if( index >= 0 ) {
@@ -497,10 +497,10 @@ bool FormatText::resolve_input( const Base& base, FieldVec& fields, InputFieldVe
             }
             continue;
         }
-        if( input[i].type == IFT_vocab ) {
-            string vname = input[i].vocab->get_fieldname();
-            if( !is_input_field( vname ) ) {
-                int index = base->get_fieldname_index( vname );
+        if( input[i].type == IFT_lexicon ) {
+            string vname = input[i].lexicon->get_fieldname();
+            if( !is_significant_rank_name( vname ) ) {
+                int index = base.get_fieldname_index( vname );
                 if( index >= 0 ) {
                     fields[index] = input[i].value;
                     continue;
@@ -513,7 +513,6 @@ bool FormatText::resolve_input( const Base& base, FieldVec& fields, InputFieldVe
                 }
             }
         }
-#endif
         if( input[i].type != IFT_null ) {
             element_list.push_back( input[i].value );
         }

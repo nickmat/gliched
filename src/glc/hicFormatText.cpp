@@ -488,7 +488,6 @@ bool FormatText::resolve_input( const Base& base, FieldVec& fields, InputFieldVe
     size_t size = base.record_size();
     FieldVec fs( size, f_invalid );
     FieldVec element_list;
-    bool has_elements = false;;
     for( size_t i = 0; i < input.size(); i++ ) {
         if( input[i].type == IFT_dual2 ) {
             int index = base.get_fieldname_index( m_dual2_fieldname );
@@ -503,14 +502,8 @@ bool FormatText::resolve_input( const Base& base, FieldVec& fields, InputFieldVe
                 int index = base.get_fieldname_index( vname );
                 if( index >= 0 ) {
                     fields[index] = input[i].value;
-                    continue;
                 }
-                else {
-                    // Assume field is an element
-                    input[i].type = IFT_calc;
-                    has_elements = true;
-                    continue;
-                }
+                continue;
             }
         }
         if( input[i].type != IFT_null ) {

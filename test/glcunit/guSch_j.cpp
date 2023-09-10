@@ -33,7 +33,7 @@ using namespace glich;
 using std::string;
 
 
-const char* table_j[guTT_size][5] = {
+const char* table_j[guTT_size][4] = {
     // dmy            mdy             wdmy               wmdy+
     { "30 Jul -586", "Jul 30, -586", "Sun 30 Jul -586", "Sunday, July 30, -586"       },
     { "8 Dec -168",  "Dec 8, -168",  "Wed 8 Dec -168",  "Wednesday, December 8, -168" },

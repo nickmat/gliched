@@ -71,6 +71,7 @@ namespace glich {
         std::string get_error_string() const { return m_create_error; }
         std::string resolve_field_alias( const std::string& alias );
         std::string resolve_unit_alias( const std::string& alias );
+        std::string resolve_lex_alias( const std::string& alias ) const;
         std::string get_num_pseudo_alias( const std::string& fname ) const;
         std::string get_unit_alias( const std::string& fieldname ) const;
 
@@ -120,6 +121,7 @@ namespace glich {
         StdStrVec   m_calc_fieldnames;
         StdStrVec   m_rank_fieldnames;
         StdStrMap   m_field_alias;
+        StdStrMap   m_lex_alias;
         StdStrMap   m_num_pseudo_alias;
         StdStrMap   m_unit_alias;
         StrUnitMap  m_unit_type_alias;

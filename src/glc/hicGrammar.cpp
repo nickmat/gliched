@@ -167,6 +167,11 @@ void Grammar::add_alias( const string& alias, const StdStrVec& pairs )
             m_field_alias[pairs[i]] = pairs[i + 1];
         }
     }
+    else if( alias == "lexicon" ) {
+        for( size_t i = 0; i < pairs.size(); i += 2 ) {
+            m_lex_alias[pairs[i + 1]] = pairs[i];
+        }
+    }
     else if( alias == "pseudo" ) {
         for( size_t i = 0; i < pairs.size(); i += 2 ) {
             m_num_pseudo_alias[pairs[i + 1]] = pairs[i];
@@ -218,6 +223,17 @@ std::string Grammar::resolve_unit_alias( const std::string& alias )
         return m_inherit->resolve_unit_alias( alias );
     }
     return resolve_field_alias( alias );
+}
+
+std::string Grammar::resolve_lex_alias( const std::string& alias ) const
+{
+    if( m_lex_alias.count( alias ) > 0 ) {
+        return m_lex_alias.find( alias )->second;
+    }
+    if( m_inherit ) {
+        return m_inherit->resolve_lex_alias( alias );
+    }
+    return alias;
 }
 
 string Grammar::get_num_pseudo_alias( const string& fname ) const

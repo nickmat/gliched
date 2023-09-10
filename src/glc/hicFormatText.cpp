@@ -498,6 +498,7 @@ bool FormatText::resolve_input( const Base& base, FieldVec& fields, InputFieldVe
         }
         if( input[i].type == IFT_lexicon ) {
             string vname = input[i].lexicon->get_fieldname();
+            vname = get_grammar().resolve_lex_alias( vname );
             if( !is_significant_rank_name( vname ) ) {
                 int index = base.get_fieldname_index( vname );
                 if( index >= 0 ) {

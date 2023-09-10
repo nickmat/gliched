@@ -19,10 +19,10 @@ lexicon W {
 grammar ISOW {
     fields year week day;
     lexicons W;
-    alias field { wday day; }
+    alias lexicon { day wday; }
     alias pseudo { d day; ww week; yyyy year; }
     alias unit { d day; y year; w week; }
-//    format iso { rules iso8601 week; }
+    format iso { rules iso8601 week; }
     format  ywd,   "{year}| {week}| {day:W:a}";
     format "ywd+", "{year}| {week}| {day:W}";
     preferred ywd;
@@ -34,20 +34,24 @@ scheme ISOW {
     grammar ISOW;
 }
 
-writeln "";
-writeln record.ISOW 2460137;
-writeln record.ISOW:ywd "2023 28 Tue";
-writeln text.ISOW:ywd 2460137;
-writeln text.ISOW:ywd {s:ISOW 2023, 28, 2};
-writeln date.ISOW:ywd "2023 28 Tue";
-writeln date {s:ISOW 2023, 28, 2};
+write nl;
+write record.ISOW 2460137 nl;
+write record.ISOW:ywd "2023 28 Tue" nl;
+write record.ISOW:iso "2023W282" nl;
+write text.ISOW:ywd 2460137 nl;
+write text.ISOW:ywd {s:ISOW 2023, 28, 2} nl;
+write text.ISOW:iso 2460137 nl;
+write date.ISOW:ywd "2023 28 Tue" nl;
+write date {s:ISOW 2023, 28, 2} nl;
 
 /*[OUTPUT]
 
 {s:ISOW 2023, 28, 2}
 {s:ISOW 2023, 28, 2}
+{s:ISOW 2023, 28, 2}
 2023 28 Tue
 2023 28 Tue
+2023-W28-2
 2460137
 2460137
 

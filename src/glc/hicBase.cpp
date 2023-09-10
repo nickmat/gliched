@@ -124,6 +124,17 @@ std::string glich::Base::get_output_fcode() const
     return m_grammar->get_pref_output_fcode();
 }
 
+bool Base::is_complete( const FieldVec& fields ) const
+{
+    size_t size = required_size();
+    for( size_t i = 0; i < size; i++ ) {
+        if( fields[i] == f_invalid ) {
+            return false;
+        }
+    }
+    return true;
+}
+
 Field Base::get_beg_field_value( const FieldVec& fields, size_t index ) const
 {
     if( index > 0 && fields[0] == f_minimum ) {

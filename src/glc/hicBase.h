@@ -66,6 +66,7 @@ namespace glich {
         Format* get_format( const std::string& fcode ) const;
         std::string get_input_fcode() const;
         std::string get_output_fcode() const;
+        bool is_complete( const FieldVec& fields ) const;
 
         // Converts the Field's into a jdn and returns it.
         virtual Field get_jdn( const FieldVec& fields ) const = 0;

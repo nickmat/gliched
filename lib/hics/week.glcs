@@ -44,6 +44,7 @@ lexicon w {
 grammar jwn {
     fields week day;
     lexicons w;
+    alias lexicon { day wday; }
     alias pseudo { wwwww week; d day; }
     format  wd      "{week}| {day}";
     format  wday    "{week}| {day:w:a}";
@@ -77,6 +78,7 @@ lexicon ws {
 grammar jwsn {
     fields week day;
     lexicons ws;
+    alias lexicon { day wsday; }
     alias pseudo { wwwww week; d day; }
     format  wd      "{week}| {day}";
     format  wday    "{week}| {day:ws:a}";

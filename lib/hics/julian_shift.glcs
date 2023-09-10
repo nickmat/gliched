@@ -37,9 +37,14 @@ grammar j_sh {
     format  dmc "{day} |{month:m:a} |{cyear}";
     format  dmcy "{day} |{month:m:a} |{cyear/year}";
     format  wdmcy "{wday:w:a} |{day} |{month:m:a} |{cyear/year}";
+    format "wdmcy+" "{wday:w} |{day} |{month:m} |{cyear/year}";
     format  out { output "{day::os} |{month:m} |{cyear/year}"; }
     format  full { output "{wday:w} |{day::os} |{month:m} |{cyear/year}"; }
-    format cdef {
+    format  mdcy "{month:m:a} |{day}, |{cyear/year}";
+    format "mdcy+" "{month:m} |{day}, |{cyear/year}";
+    format  wmdcy "{wday:w:a}, |{month:m:a} |{day}, |{cyear/year}";
+    format "wmdcy+" "{wday:w}, |{month:m} |{day}, |{cyear/year}";
+    format  cdef {
         inout "{cyear}| {month}| {day}";
         style hidden;
     }

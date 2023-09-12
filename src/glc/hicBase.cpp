@@ -36,7 +36,7 @@
 using namespace glich;
 using std::string;
 
-Base::Base( const string& data ) : m_grammar( nullptr )
+Base::Base( const string& data ) : m_record_size(0), m_grammar( nullptr )
 {
     string tail, word = get_first_word( data, &tail );
     while( !word.empty() ) {
@@ -82,6 +82,7 @@ bool Base::attach_grammar( Grammar* gmr )
 
     m_grammar = gmr;
     vec_append( m_fieldnames, gmr->get_calc_fieldnames() );
+    m_record_size = m_fieldnames.size();
     vec_append( m_fieldnames, gmr->get_opt_fieldnames() );
     m_calculate_input = gmr->get_calc_input();
     m_calculate_output = gmr->get_calc_output();

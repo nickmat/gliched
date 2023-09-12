@@ -277,12 +277,14 @@ BoolVec Record::mark_balanced_fields( Record& rec, const XIndexVec& rank_to_def,
 
 Field Record::get_field( size_t index ) const
 {
-    assert( index < m_f.size() );
-    Field field = m_f[index];
-    if( field == f_invalid ) {
-        field = GetOptionalField( m_base.get_fieldname( index ), m_jdn );
+    if( index < m_base.record_size() ) {
+        return m_f[index];
     }
-    return field;
+    if( index < m_base.object_size() )
+    {
+        return GetOptionalField( m_base.get_fieldname( index ), m_jdn );
+    }
+    return f_invalid;
 }
 
 Field glich::Record::get_field( size_t index, const BoolVec* mask ) const

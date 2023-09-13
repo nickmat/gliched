@@ -178,7 +178,7 @@ void Record::calculate_expression( const string& script_expr )
 {
     Store* store = new Store;
     StdStrVec names = m_base.get_fieldnames();
-    assert( names.size() == m_f.size() );
+    assert( names.size() >= m_f.size() );
     SValueVec rec_values( m_f.size() + 1 );
     rec_values[0] = ":";
     for( size_t i = 0; i < m_f.size();i++ ) {
@@ -241,15 +241,16 @@ RList Record::get_rlist_from_mask() const
 
 SValue Record::get_object( const string& ocode ) const
 {
-    SValueVec values( m_f.size() + 1);
+    SValueVec values( m_base.object_size() + 1);
     values[0] = { ocode };
-    for( size_t i = 1; i < values.size(); i++ ) {
-        if( m_f[i-1] == f_invalid ) {
-            // TODO: Check if an optional field first.
-            values[i] = GetOptional( m_base.get_fieldnames()[i-1], m_jdn );
+    for( size_t i = 0; i < m_f.size(); i++ ) {
+        if( m_f[i] == f_invalid ) {
             continue;
         }
-        values[i].set_field(m_f[i-1]);
+        values[i + 1].set_field( m_f[i] );
+    }
+    for( size_t i = m_f.size(); i < m_base.object_size(); i++ ) {
+        values[i + 1] = GetOptional( m_base.get_fieldname( i ), m_jdn );
     }
     return { values };
 }

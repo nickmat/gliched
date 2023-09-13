@@ -295,7 +295,7 @@ RList FormatText::string_to_rlist( const Base& base, const string& input ) const
 bool FormatText::set_input( Record& record, const string& input, Boundary rb ) const
 {
     const Base& base = record.get_base();
-    InputFieldVec ifs( base.record_size() );
+    InputFieldVec ifs( base.object_size() );
     parse_date( ifs, input );
     bool ret = resolve_input( base, record.get_field_vec(), ifs );
     if( ret && base.has_calc_input() ) {
@@ -490,7 +490,7 @@ bool FormatText::resolve_input( const Base& base, FieldVec& fields, InputFieldVe
     FieldVec element_list;
     for( size_t i = 0; i < input.size(); i++ ) {
         if( input[i].type == IFT_dual2 ) {
-            int index = base.get_fieldname_index( m_dual2_fieldname );
+            int index = base.get_fieldname_record_index( m_dual2_fieldname );
             if( index >= 0 ) {
                 fields[index] = input[i].value;
             }
@@ -500,7 +500,7 @@ bool FormatText::resolve_input( const Base& base, FieldVec& fields, InputFieldVe
             string vname = input[i].lexicon->get_fieldname();
             vname = get_grammar().resolve_lex_alias( vname );
             if( !is_significant_rank_name( vname ) ) {
-                int index = base.get_fieldname_index( vname );
+                int index = base.get_fieldname_record_index( vname );
                 if( index >= 0 ) {
                     fields[index] = input[i].value;
                 }

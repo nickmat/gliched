@@ -136,6 +136,7 @@ RList FormatIso::string_to_rlist( const Base& base, const string& input ) const
 
 bool FormatIso::set_input( Record& record, const string& input, Boundary rb ) const
 {
+    size_t field_size = 3;
     // This format only works with Gregorian, ISO Week or ISO Ordinal schemes
     // so one of the following will valid and the other two NULL.
     const Gregorian* greg = dynamic_cast<const Gregorian*>(&record.get_base());
@@ -148,10 +149,11 @@ bool FormatIso::set_input( Record& record, const string& input, Boundary rb ) co
             if( isoo == nullptr ) {
                 return false;
             }
+            field_size = 2;
         }
     }
 
-    FieldVec fields( 3, f_invalid );
+    FieldVec fields( field_size, f_invalid );
     DateRep instyle;
     if( input[0] == 'R' ) {
         instyle = recurring_interval( fields, input, rb );

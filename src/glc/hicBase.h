@@ -58,6 +58,7 @@ namespace glich {
         StdStrVec get_fieldnames() const { return m_fieldnames; }
         std::string get_fieldname( size_t index ) const { return m_fieldnames[index]; }
         int get_fieldname_index( const std::string& fieldname ) const;
+        int get_fieldname_record_index( const std::string& fieldname ) const;
         int get_alias_fieldname_index( const std::string& alias ) const;
 
         std::string get_calc_input() const { return m_calculate_input; }

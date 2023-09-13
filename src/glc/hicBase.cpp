@@ -36,7 +36,7 @@
 using namespace glich;
 using std::string;
 
-Base::Base( const string& data ) : m_record_size(0), m_grammar( nullptr )
+Base::Base( const string& data, size_t size ) : m_record_size(size), m_grammar( nullptr )
 {
     string tail, word = get_first_word( data, &tail );
     while( !word.empty() ) {
@@ -97,6 +97,16 @@ int Base::get_fieldname_index( const std::string& fieldname ) const
             return index;
         }
         index++;
+    }
+    return -1;
+}
+
+int Base::get_fieldname_record_index( const std::string& fieldname ) const
+{
+    for( size_t i = 0; i < m_record_size; i++ ) {
+        if( fieldname == m_fieldnames[i] ) {
+            return i;
+        }
     }
     return -1;
 }

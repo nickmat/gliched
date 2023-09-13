@@ -237,7 +237,7 @@ namespace {
 
 
 Chinese::Chinese( const string& data )
-    : Base( data )
+    : Base( data, 5 )
 {
     m_fieldnames = { "cycle", "cyear", "month", "lmonth", "day" };
 }

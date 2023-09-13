@@ -91,7 +91,7 @@ static Field julian_easter( Field year )
 }
 
 Julian::Julian( const std::string& data )
-    : m_year_offset(0), Base( string() )
+    : m_year_offset(0), Base( string(), 3 )
 {
     m_fieldnames = { "year", "month", "day" };
     string tail, word = get_first_word( data, &tail );

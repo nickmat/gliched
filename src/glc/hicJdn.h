@@ -35,7 +35,7 @@ namespace glich {
     class Jdn : public Base
     {
     public:
-        Jdn( const std::string& data = std::string() ) : Base( data ) {
+        Jdn( const std::string& data = std::string() ) : Base( data, 1 ) {
             m_fieldnames = { "day" };
         }
 

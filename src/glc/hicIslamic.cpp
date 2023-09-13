@@ -36,7 +36,7 @@ using std::string;
 #define BASEDATE_Islamic    1948440
 
 Islamic::Islamic( const string& data )
-    : m_delta(14), m_basedate(BASEDATE_Islamic), Base(data)
+    : m_delta(14), m_basedate(BASEDATE_Islamic), Base(data, 3)
 {
     m_fieldnames = { "year", "month", "day" };
     string tail, word = get_first_word( data, &tail );

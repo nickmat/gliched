@@ -195,7 +195,7 @@ namespace {
 //===================================
 
 Hebrew::Hebrew( const string& data ) 
-    : Base( data )
+    : Base( data, 3 )
 {
     m_fieldnames = { "year", "month", "day" };
 }

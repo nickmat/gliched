@@ -35,7 +35,7 @@ using std::string;
 
 
 Jwn::Jwn( const std::string& data )
-    : m_offset( 0 ), Base( string() )
+    : m_offset( 0 ), Base( string(), 2 )
 {
     m_fieldnames = { "week", "day" };
     string tail, word = get_first_word( data, &tail );

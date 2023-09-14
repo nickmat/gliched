@@ -73,6 +73,15 @@ Glich::Glich( InitLibrary lib, InOut* inout )
     STokenStream::init( this );
     SValue::init( this );
 
+    // Add blank built-in functions to avoid redefinition.
+    Function* blank = new Function( string() );
+    m_functions = {
+        { "if", blank },
+        { "read", blank },
+        // Hics functions
+        { "phrase", blank }
+    };
+    
     m_constants = {
         { "true", true },
         { "false", false },

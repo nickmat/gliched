@@ -1,11 +1,11 @@
 // at-if002.hcs - Test redefine @if function error.
 
-writeln "";
+write nl;
 
 function if(c,a,b) { if c result=a; else result=b; endif }
 
 /*[OUTPUT]
 
-Error (5): Can not redefine built-in function "@if".
+Error (5): The function "if" already exists.
 
 [OUTPUT]*/

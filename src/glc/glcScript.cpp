@@ -524,24 +524,8 @@ bool Script::do_write( const std::string& term )
     return true;
 }
 
-Function* Script::create_function()
+Function* Script::create_function( const std::string& code )
 {
-    string code = get_name_or_primary( GetToken::next );
-    if( code.empty() ) {
-        error( "Function name missing." );
-        return nullptr;
-    }
-    const char* builtin[] = { "if", "read" };
-    for( auto bi : builtin ) {
-        if( code.compare( bi ) == 0 ) {
-            error( "Can not redefine built-in function \"@" + string( bi ) + "\"." );
-            return nullptr;
-        }
-    }
-    if( m_glc->get_function( code ) != nullptr ) {
-        error( "function \"" + code + "\" already exists." );
-        return nullptr;
-    }
     SToken token = current_token();
     StdStrVec args;
     SValueVec defs;
@@ -593,7 +577,16 @@ Function* Script::create_function()
 
 bool glich::Script::do_function()
 {
-    Function* fun = create_function();
+    string code = get_name_or_primary( GetToken::next );
+    if( code.empty() ) {
+        error( "Function name missing." );
+        return false;
+    }
+    if( m_glc->get_function( code ) != nullptr ) {
+        error( "The function \"" + code + "\" already exists." );
+        return false;
+    }
+    Function* fun = create_function( code );
     if( fun == nullptr ) {
         return false;
     }
@@ -704,7 +697,8 @@ bool glich::Script::do_object()
                 obj->set_value_names( values );
             }
             else if( name == "function" ) {
-                Function* fun = create_function();
+                string fcode = get_name_or_primary( GetToken::next );
+                Function* fun = create_function( fcode );
                 if( fun == nullptr ) {
                     error( "Unable to create function." );
                     return false;
@@ -1239,7 +1233,7 @@ SValue Script::text_cast()
     Scheme* sch = nullptr;
     string sig, scode, fcode;
     if( token.type() == SToken::Type::Dot ) {
-        // Includes scheme:format signiture
+        // Includes scheme:format signature
         sig = get_name_or_primary( GetToken::next );
         split_code( &scode, &fcode, sig );
         sch = m_glc->get_scheme( scode );

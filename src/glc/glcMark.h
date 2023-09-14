@@ -35,7 +35,6 @@
 namespace glich {
 
     class Function;
-    class Command;
     class Object;
     class File;
     class Lexicon;
@@ -56,7 +55,7 @@ namespace glich {
         bool create_local( const std::string& name, Store* store );
 
         void add_function( Function* function ) { m_functions.push_back( function ); }
-        void add_command( Command* command ) { m_commands.push_back( command ); }
+        void add_command( Function* command ) { m_commands.push_back( command ); }
         void add_object( Object* object ) { m_objects.push_back( object ); }
         void add_file( File* file ) { m_files.push_back( file ); }
         void add_lexicon( Lexicon* lex ) { m_lexicons.push_back( lex ); }
@@ -86,7 +85,7 @@ namespace glich {
         std::string            m_name;
         StdStrVec              m_locals;
         std::vector<Function*> m_functions;
-        std::vector<Command*>  m_commands;
+        std::vector<Function*> m_commands;
         std::vector<Object*>   m_objects;
         std::vector<File*>     m_files;
         std::vector<Lexicon*>  m_lexicons;

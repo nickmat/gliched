@@ -90,7 +90,7 @@ string Mark::remove_next_command()
 {
     string code;
     if( !m_commands.empty() ) {
-        Command* com = m_commands[m_commands.size() - 1];
+        Function* com = m_commands[m_commands.size() - 1];
         code = com->get_code();
         delete com;
         m_commands.pop_back();

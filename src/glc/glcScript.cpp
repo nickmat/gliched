@@ -604,53 +604,12 @@ bool glich::Script::do_command()
         error( "command \"" + code + "\" already exists." );
         return false;
     }
-    SToken token = current_token();
-    StdStrVec args;
-    SValueVec defs;
-    if( token.type() == SToken::Type::Lbracket ) {
-        token = next_token();
-        for( ;;) {
-            if( token.type() == SToken::Type::Rbracket ) {
-                break;
-            }
-            string str = current_token().get_str();
-            if( token.type() != SToken::Type::Name || str.empty() ) {
-                error( "Argument name expected." );
-                return false;
-            }
-            args.push_back( str );
-            token = next_token();
-            SValue value;
-            if( token.type() == SToken::Type::Equal ) {
-                value = expr( GetToken::next );
-            }
-            defs.push_back( value );
-            token = current_token();
-            if( token.type() == SToken::Type::Comma ) {
-                token = next_token();
-            }
-        }
-        token = next_token();
-    }
-    if( token.type() != SToken::Type::LCbracket ) {
-        error( "'{' expected." );
-        return false;
-    }
-    int line = m_ts.get_line();
-    string script = m_ts.read_until( "}", "{" );
-    if( script.empty() ) {
-        error( "Terminating '}' not found." );
-        return false;
-    }
-    Command* com = m_glc->create_command( code );
+
+    Function* com = create_function( code );
     if( com == nullptr ) {
         return false;
     }
-    com->set_args( args );
-    com->set_defaults( defs );
-    com->set_line( line );
-    com->set_script( script );
-    return true;
+    return m_glc->add_command( com );
 }
 
 bool Script::do_call()
@@ -1552,7 +1511,7 @@ SValue glich::Script::command_call()
     if( value.is_error() ) {
         return value;
     }
-    Command* com = m_glc->get_command( name );
+    Function* com = m_glc->get_command( name );
     if( com == nullptr ) {
         value.set_error( "Command \"" + name + "\" not found." );
         return value;

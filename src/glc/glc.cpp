@@ -521,16 +521,15 @@ Function* Glich::get_function( const string& code ) const
     return nullptr;
 }
 
-Command* Glich::create_command( const string& code )
+bool Glich::add_command( Function* com )
 {
-    Command* com = new Command( code );
     assert( m_marks.size() > 0 );
     m_marks[m_marks.size() - 1]->add_command( com );
-    m_commands[code] = com;
-    return com;
+    m_commands[com->get_code()] = com;
+    return true;
 }
 
-Command* Glich::get_command( const string& code ) const
+Function* Glich::get_command( const string& code ) const
 {
     if( m_commands.count( code ) > 0 ) {
         return m_commands.find( code )->second;

@@ -100,8 +100,8 @@ namespace glich {
 
         bool add_function( Function* fun );
         Function* get_function( const std::string& code ) const;
-        Command* create_command( const std::string& code );
-        Command* get_command( const std::string& code ) const;
+        bool add_command( Function* com );
+        Function* get_command( const std::string& code ) const;
         Object* create_object( const std::string & code );
         bool add_object( Object* obj, const std::string& code );
         Object* get_object( const std::string& code ) const;
@@ -131,7 +131,7 @@ namespace glich {
 
     private:
         FunctionMap m_functions;
-        CommandMap m_commands;
+        FunctionMap m_commands;
         ObjectMap m_objects;
         FileMap m_files;
         LexiconMap m_lexicons;

@@ -95,7 +95,6 @@ namespace glich {
         SValue date_cast();
         SValue record_cast();
         SValue element_cast();
-        SValue error_cast();
         StdStrVec get_qualifiers( GetToken get );
         SValueVec get_args( SValue& value, GetToken get );
         SValue function_call();

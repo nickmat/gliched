@@ -1024,9 +1024,6 @@ SValue Script::primary( GetToken get )
     case SToken::Type::element:
         value = element_cast();
         break;
-    case SToken::Type::Error:
-        value = error_cast();
-        break;
     case SToken::Type::At:
         value = function_call();
         break;
@@ -1359,18 +1356,6 @@ SValue Script::element_cast()
     return value;
 }
 
-SValue Script::error_cast()
-{
-    SValue value = primary( GetToken::next );
-    bool ok = false;
-    string mess = value.get_str( ok );
-    if( !ok ) {
-        mess = "Unable to read error message.";
-    }
-    value.set_error( mess );
-    return value;
-}
-
 StdStrVec glich::Script::get_qualifiers( GetToken get )
 {
     SToken token = (get == GetToken::next) ? m_ts.next() : current_token();
@@ -1410,10 +1395,6 @@ SValueVec Script::get_args( SValue& value, GetToken get )
 SValue Script::function_call()
 {
     SToken token = next_token();
-    // Need this until "Error" string is not a SToken::Type
-    if( token.type() == SToken::Type::Error ) {
-        return at_error();
-    }
     if( token.type() != SToken::Type::Name ) {
         return create_error( "Function name expected." );
     }

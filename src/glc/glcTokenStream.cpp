@@ -162,9 +162,6 @@ SToken& STokenStream::next()
         else if( str == "element" ) {
             set_type( SToken::Type::element );
         }
-        else if( str == "error" ) {
-            set_type( SToken::Type::Error );
-        }
         else {
             set_current( SToken::Type::Name, str );
         }

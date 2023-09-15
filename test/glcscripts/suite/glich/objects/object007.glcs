@@ -6,7 +6,7 @@ object complex {
         if comp[.object] = "complex"
             result = {complex real+comp[real], imaginary+comp[imaginary]};
         else
-            result = error "Must have 'complex' argument";
+            result = @error( "Must have 'complex' argument" );
         endif
     }
 }

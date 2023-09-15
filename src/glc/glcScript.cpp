@@ -527,8 +527,18 @@ bool Script::do_write( const std::string& term )
 Function* Script::create_function( const std::string& code )
 {
     SToken token = current_token();
+    StdStrVec quals;
     StdStrVec args;
     SValueVec defs;
+    while( token.type() == SToken::Type::Dot ) {
+        string qual = get_name_or_primary( GetToken::next );
+        if( qual.empty() ) {
+            error( "Qualifier name required." );
+            return nullptr;
+        }
+        quals.push_back( qual );
+        token = current_token();
+    }
     if( token.type() == SToken::Type::Lbracket ) {
         token = next_token();
         for( ;;) {
@@ -568,6 +578,7 @@ Function* Script::create_function( const std::string& code )
     if( fun == nullptr ) {
         return nullptr;
     }
+    fun->set_qualifiers( quals );
     fun->set_args( args );
     fun->set_defaults( defs );
     fun->set_line( line );
@@ -1360,6 +1371,18 @@ SValue Script::error_cast()
     return value;
 }
 
+StdStrVec glich::Script::get_qualifiers( GetToken get )
+{
+    SToken token = (get == GetToken::next) ? m_ts.next() : current_token();
+    StdStrVec quals;
+    while( token.type() == SToken::Type::Dot ) {
+        string str = get_name_or_primary( GetToken::next );
+        quals.push_back( str );
+        token = current_token();
+    }
+    return quals;
+}
+
 SValueVec Script::get_args( SValue& value, GetToken get )
 {
     SToken token = (get == GetToken::next) ? m_ts.next() : current_token();
@@ -1411,7 +1434,8 @@ SValue Script::run_function( Function* fun, const Object* obj, const SValue* lef
 {
     SValue value;
     GetToken get = (obj == nullptr) ? GetToken::next : GetToken::current;
-    SValueVec args = get_args( value, get );
+    StdStrVec qualifiers = get_qualifiers( get );
+    SValueVec args = get_args( value, GetToken::current );
     if( value.is_error() ) {
         return value;
     }
@@ -1438,6 +1462,17 @@ SValue Script::run_function( Function* fun, const Object* obj, const SValue* lef
                 m_glc->update_local( vname.first, left_values[vname.second] );
             }
         }
+    }
+    for( size_t i = 0; i < fun->get_qualifier_size(); i++ ) {
+        string qual_name = fun->get_qualifier_name( i );
+        m_glc->create_local( qual_name );
+        if( i < qualifiers.size() ) {
+            value = qualifiers[i];
+        }
+        else {
+            value = "";
+        }
+        m_glc->update_local( qual_name, value );
     }
     for( size_t i = 0; i < fun->get_arg_size(); i++ ) {
         string arg_name = fun->get_arg_name( i );

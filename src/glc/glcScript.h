@@ -96,6 +96,7 @@ namespace glich {
         SValue record_cast();
         SValue element_cast();
         SValue error_cast();
+        StdStrVec get_qualifiers( GetToken get );
         SValueVec get_args( SValue& value, GetToken get );
         SValue function_call();
         SValue run_function( Function* fun, const Object* obj = nullptr, const SValue* left = nullptr );

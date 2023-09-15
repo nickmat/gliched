@@ -1,0 +1,11 @@
+// function017.glcs - Test function in a expression with qualifiers.
+
+function test_q.good(arg = "work") {
+    result = good + "-" + arg;
+}
+
+write @test_q, @test_q.home, @test_q( "time" ), @test_q.home("time");
+
+/*[OUTPUT]
+-work, home-work, -time, home-time
+[OUTPUT]*/

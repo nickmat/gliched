@@ -1,0 +1,7 @@
+// at-error001.hcs - Test @error function.
+
+write @error( "this." ) nl;
+
+/*[OUTPUT]
+Error (3): this.
+[OUTPUT]*/

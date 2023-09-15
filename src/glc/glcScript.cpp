@@ -1410,12 +1410,19 @@ SValueVec Script::get_args( SValue& value, GetToken get )
 SValue Script::function_call()
 {
     SToken token = next_token();
+    // Need this until "Error" string is not a SToken::Type
+    if( token.type() == SToken::Type::Error ) {
+        return at_error();
+    }
     if( token.type() != SToken::Type::Name ) {
         return create_error( "Function name expected." );
     }
     string name = token.get_str();
     if( name == "if" ) {
         return at_if();
+    }
+    else if( name == "error" ) {
+        return at_error();
     }
     else if( name == "read" ) {
         return at_read();
@@ -1626,6 +1633,23 @@ SValue Script::at_read()
         prompt = args[0].get_str();
     }
     return m_glc->read_input( prompt );
+}
+
+// Return an error value
+// @error( message = "" )
+SValue Script::at_error()
+{
+    SValue value;
+    SValueVec args = get_args( value, GetToken::next );
+    if( value.is_error() ) {
+        return value;
+    }
+    string mess;
+    if( args.size() > 0 && args[0].type() == SValue::Type::String ) {
+        mess = args[0].get_str();
+    }
+    value.set_error( mess );
+    return value;
 }
 
 SValue Script::get_value_var( const std::string& name )

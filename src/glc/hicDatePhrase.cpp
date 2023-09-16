@@ -44,7 +44,7 @@ namespace {
             switch ( ct )
             {
             case CT_date:
-                d = "date" + sig + "\"" + d + "\"";
+                d = "@date" + sig + "(\"" + d + "\")";
                 break;
             case CT_record:
                 d = "record" + sig + "\"" + d + "\"";
@@ -119,7 +119,7 @@ string glich::parse_date_phrase( const string& str )
                     ct = CT_none;
                 }
             } else {
-                sig = ",\"" + date + "\" ";
+                sig = ".\"" + date + "\"";
                 date.clear();
             }
             break;

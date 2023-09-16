@@ -751,6 +751,54 @@ SValue glich::hics_dot( Script& script, bool& success, Object* obj, const std::s
     return SValue();
 }
 
+SValue glich::at_date( Script& script )
+{
+    SValue value;
+    StdStrVec quals = script.get_qualifiers( GetToken::next );
+    SValueVec args = script.get_args( value, GetToken::current );
+    string sig, scode, fcode;
+    if( !quals.empty() ) {
+        sig = quals[0];
+    }
+    split_code( &scode, &fcode, sig );
+    Glich* glc = script.get_glich();
+    Scheme* sch = glc->get_scheme( scode );
+    if( args.empty() ) {
+        value.set_error( "One argument required." );
+        return value;
+    }
+    value = args[0];
+    if( value.type() == SValue::Type::Object ) {
+        Object* obj = value.get_object_ptr();
+        if( obj == nullptr ) {
+            value.set_error( "Object type not recognised." );
+            return value;
+        }
+        // We ignore any suffix scheme setting
+        sch = dynamic_cast<Scheme*>(obj);
+        if( sch == nullptr ) {
+            value.set_error( "Object is not a scheme." );
+            return value;
+        }
+        return sch->object_to_demoted_rlist( value );
+    }
+    if( value.type() == SValue::Type::String ) {
+        if( sch == nullptr ) {
+            sch = glc->get_ischeme();
+            if( sch == nullptr ) {
+                value.set_error( "No default scheme set." );
+                return value;
+            }
+            scode = sch->get_code();
+        }
+        RList rlist = sch->str_to_rlist( value.get_str(), fcode );
+        value.set_rlist_demote( rlist );
+        return value;
+    }
+    value.set_error( "Expected an object or string type." );
+    return value;
+}
+
 SValue glich::at_phrase( Script& script )
 {
     SValue value;

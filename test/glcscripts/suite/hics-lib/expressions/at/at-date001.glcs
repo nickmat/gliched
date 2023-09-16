@@ -1,0 +1,7 @@
+// at-date001.hcs - Test @date function.
+
+write @date.j:dmy("2sep2023"), @date("15sep2023");
+
+/*[OUTPUT]
+2460203, 2460203
+[OUTPUT]*/

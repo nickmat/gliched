@@ -1,0 +1,7 @@
+// at-date002.hcs - Test @date function.
+
+write @date( {s:j 2023, 9, 2} );
+
+/*[OUTPUT]
+2460203
+[OUTPUT]*/

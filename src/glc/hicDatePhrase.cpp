@@ -88,17 +88,20 @@ string glich::parse_date_phrase( const string& str )
                 }
             }
             break;
-        case '&': case '-': case '/': // Must be followed by dot.
+        case '&': case '.': case '/': // Must be followed by dot.
             nit = it+1;
             if( nit != str.end() && ( *nit == '.' ) ) {
                 script += create_date_str( sig, date, ct );
                 script += *it; // It's an operator.
+                if( *it == '.' ) {
+                    script += ".";
+                }
                 it++;       // Step over dot.
             } else {
                 date += *it; // Treat & as part of date string.
             }
             break;
-        case '|': case '(': case ')': case '~': // Always recognised operators.
+        case '|': case '(': case ')': // Always recognised operators.
         case '\\': case '^': case '!': case '+': case '*':
             script += create_date_str( sig, date, ct );
             script += *it;

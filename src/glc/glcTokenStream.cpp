@@ -153,9 +153,6 @@ SToken& STokenStream::next()
         else if( str == "text" ) {
             set_type( SToken::Type::text );
         }
-        else if( str == "date" ) {
-            set_type( SToken::Type::date );
-        }
         else if( str == "record" ) {
             set_type( SToken::Type::record );
         }

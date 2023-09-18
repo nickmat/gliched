@@ -1015,9 +1015,6 @@ SValue Script::primary( GetToken get )
     case SToken::Type::text:
         value = text_cast();
         break;
-    case SToken::Type::date:
-        value = date_cast();
-        break;
     case SToken::Type::record:
         value = record_cast();
         break;
@@ -1250,49 +1247,6 @@ SValue Script::text_cast()
     return value;
 }
 
-SValue Script::date_cast()
-{
-    SToken token = next_token();
-    Scheme* sch = nullptr;
-    string sig, scode, fcode;
-    if( token.type() == SToken::Type::Dot ) {
-        // Includes scheme:format signiture
-        sig = get_name_or_primary( GetToken::next );
-        split_code( &scode, &fcode, sig );
-        sch = m_glc->get_scheme( scode );
-    }
-    SValue value = primary( GetToken::current );
-    if( value.type() == SValue::Type::Object ) {
-        Object* obj = value.get_object_ptr();
-        if( obj == nullptr ) {
-            value.set_error( "Object type not recognised." );
-            return value;
-        }
-        // We ignore any suffix scheme setting
-        sch = dynamic_cast<Scheme*>(obj);
-        if( sch == nullptr ) {
-            value.set_error( "Object is not a scheme." );
-            return value;
-        }
-        return sch->object_to_demoted_rlist( value );
-    }
-    if( value.type() == SValue::Type::String ) {
-        if( sch == nullptr ) {
-            sch = m_glc->get_ischeme();
-            if( sch == nullptr ) {
-                value.set_error( "No default scheme set." );
-                return value;
-            }
-            scode = sch->get_code();
-        }
-        RList rlist = sch->str_to_rlist( value.get_str(), fcode );
-        value.set_rlist_demote( rlist );
-        return value;
-    }
-    value.set_error( "Expected an object or string type." );
-    return value;
-}
-
 SValue Script::record_cast()
 {
     SToken token = next_token();
@@ -1395,10 +1349,6 @@ SValueVec Script::get_args( SValue& value, GetToken get )
 SValue Script::function_call()
 {
     SToken token = next_token();
-    // Required until date cast removed
-    if( token.type() == SToken::Type::date ) {
-        return at_date( *this );
-    }
     if( token.type() != SToken::Type::Name ) {
         return create_error( "Function name expected." );
     }

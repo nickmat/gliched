@@ -49,7 +49,7 @@ namespace glich {
             Lbracket, Rbracket, LCbracket, RCbracket,
             LSbracket, RSbracket,
             Div, Mod, And, Or, Not,
-            text, date, record, element,
+            text, record, element,
             DotDot,      //  ".."
             NotEqual,    //  "<>"
             GtThan,      //  ">"

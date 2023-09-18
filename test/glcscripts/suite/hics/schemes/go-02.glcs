@@ -15,14 +15,14 @@ scheme G {
 }
 
 writeln "";
-writeln text.G:iso1 2460140 + ", " + date.G:iso1 "2023-195";
-writeln text.G:iso1 (2459946..2460310) + ", " + date.G:iso1 "2023";
-writeln text.G:iso2 2460140 + ", " + date.G:iso2 "2023195";
-writeln text.G:iso3 2460140 + ", " + date.G:iso3 "+002023-195";
-writeln text.G:iso4 2460140 + ", " + date.G:iso4 "[2023-195]";
-writeln text.G:iso4 (2459946..2460310) + ", " + date.G:iso4 "[2023]";
-writeln text.G:iso4 (2459946 | 2460140 | 2460157) + ", " +
-    date.G:iso4 "[2023-001,2023-195,2023-212]";
+write text.G:iso1 2460140, @date.G:iso1( "2023-195" ) nl;
+write text.G:iso1 (2459946..2460310), @date.G:iso1( "2023" ) nl;
+write text.G:iso2 2460140, @date.G:iso2( "2023195" ) nl;
+write text.G:iso3 2460140, @date.G:iso3( "+002023-195" ) nl;
+write text.G:iso4 2460140, @date.G:iso4( "[2023-195]" ) nl;
+write text.G:iso4 (2459946..2460310), @date.G:iso4( "[2023]" ) nl;
+write text.G:iso4 (2459946 | 2460140 | 2460157),
+    @date.G:iso4( "[2023-001,2023-195,2023-212]" ) nl;
 
 /*[OUTPUT]
 

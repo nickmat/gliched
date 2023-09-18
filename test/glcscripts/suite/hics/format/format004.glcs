@@ -7,10 +7,10 @@ grammar G {
 
 scheme J { base julian; grammar G; }
 
-writeln "";
-writeln date.J:DEF "1948 9 6";
-writeln date.J:DEF "1948 9 1..1948 9 6";
-writeln date.J:DEF "1948 2 22..1948 2 29 | 1948 9 1..1948 9 6";
+write nl;
+write @date.J:DEF( "1948 9 6" ) nl;
+write @date.J:DEF( "1948 9 1..1948 9 6" ) nl;
+write @date.J:DEF( "1948 2 22..1948 2 29 | 1948 9 1..1948 9 6" ) nl;
 
 /*[OUTPUT]
 

@@ -63,7 +63,7 @@ scheme JA {
 writeln "";
 writeln record.JA:dmc "24 mar 1749/50" + ", " + record.JA:dmc "25 Mar 1750";
 writeln text.JA:wdmc 2360328 + ", " + text.JA:wdmc 2360329;
-writeln date.JA:dmc "24 mar 1749/50" + ", " + date.JA:dmc "25 Mar 1750";
+write @date.JA:dmc( "24 mar 1749/50" ), @date.JA:dmc( "25 Mar 1750" ) nl;
 writeln text.JA:out 2430792;
 
 /*[OUTPUT]

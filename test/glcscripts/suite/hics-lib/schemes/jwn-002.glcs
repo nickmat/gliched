@@ -2,8 +2,8 @@
 
 
 write nl;
-write date.jwn "351451", text.jwn (2460157..2460163) nl;
-write text.:wdmy date.jwn:wd "351451" nl;
+write @date.jwn( "351451" ), text.jwn (2460157..2460163) nl;
+write text.:wdmy @date.jwn:wd( "351451" ) nl;
 
 /*[OUTPUT]
 

@@ -8,8 +8,8 @@ writeln record.ay:dmys "4 Oct 1582" + ", " + record.ay:dmys "15 Oct 1582";
 writeln text.ay:dmys 2299160 + ", " + text.ay:dmys 2299161;
 writeln text.:dmys {s:ay 0,1582,10,4} + ", " + text.:dmys {s:ay 1,1582,10,15};
 writeln text.ay:dmy 2299160 + ", " + text.ay:dmy 2299161;
-writeln date.ay:dmys "4 Oct 1582" + ", " + date.ay:dmys "15 Oct 1582";
-writeln date {s:ay 0,1582,10,4} + ", " + date {s:ay 1,1582,10,15};
+write @date.ay:dmys( "4 Oct 1582" ), @date.ay:dmys( "15 Oct 1582" ) nl;
+write @date( {s:ay 0,1582,10,4} ), @date( {s:ay 1,1582,10,15} ) nl;
 
 /*[OUTPUT]
 

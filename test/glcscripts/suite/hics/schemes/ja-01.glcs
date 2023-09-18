@@ -71,11 +71,9 @@ writeln text.JA:wdmc {s:JA 1750,3,24} + ", " +
     text.JA:wdmc {s:JA 1750,3,25};
 writeln text.JA:wdmc ({s:JA ,3,24,1749}.input) + ", " +
     text.JA:wdmc ({s:JA ,3,25,1750}.input);
-writeln date.JA:dmc "24 mar 1749" + ", " + date.JA:dmc "25 Mar 1750";
-writeln date.JA:dmc {s:JA 1750,3,24} + ", " +
-    date.JA:dmc {s:JA 1750,3,25};
-writeln date.JA:dmc ({s:JA ,3,24,1749}.input) + ", " +
-    date.JA:dmc ({s:JA ,3,25,1750}.input);
+write @date.JA:dmc( "24 mar 1749" ), @date.JA:dmc( "25 Mar 1750" ) nl;
+write @date.JA:dmc( {s:JA 1750,3,24} ), @date.JA:dmc( {s:JA 1750,3,25} ) nl;
+write @date.JA:dmc( {s:JA ,3,24,1749}.input ), @date.JA:dmc( {s:JA ,3,25,1750}.input ) nl;
 writeln text.JA:out 2432814;
 
 /*[OUTPUT]

@@ -1,7 +1,7 @@
 // function013.hcs - 
 
 function get_today {
-    let _today = date "21 May 2017";
+    let _today = @date( "21 May 2017" );
     result = "(" + text.g:dmy _today + ")";
 }
 

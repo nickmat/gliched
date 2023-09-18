@@ -15,14 +15,14 @@ scheme G {
 }
 
 writeln "";
-writeln text.G:iso1 2460138 + ", " + date.G:iso1 "2023-07-12";
-writeln text.G:iso1 (2460127..2460157) + ", " + date.G:iso1 "2023-07";
-writeln text.G:iso2 2460138 + ", " + date.G:iso2 "20230712";
-writeln text.G:iso3 2460138 + ", " + date.G:iso3 "+002023-07-12";
-writeln text.G:iso4 2460138 + ", " + date.G:iso4 "[2023-07-12]";
-writeln text.G:iso4 (2459946..2460310) + ", " + date.G:iso4 "[2023]";
-writeln text.G:iso4 (2459946 | 2460138 | 2460157) + ", " +
-    date.G:iso4 "[2023-01-01,2023-07-12,2023-07-31]";
+write text.G:iso1 2460138, @date.G:iso1( "2023-07-12" ) nl;
+write text.G:iso1 (2460127..2460157), @date.G:iso1( "2023-07" ) nl;
+write text.G:iso2 2460138, @date.G:iso2( "20230712" ) nl;
+write text.G:iso3 2460138, @date.G:iso3( "+002023-07-12" ) nl;
+write text.G:iso4 2460138, @date.G:iso4( "[2023-07-12]" ) nl;
+write text.G:iso4 (2459946..2460310), @date.G:iso4( "[2023]" ) nl;
+write text.G:iso4 (2459946 | 2460138 | 2460157),
+    @date.G:iso4( "[2023-01-01,2023-07-12,2023-07-31]" ) nl;
 
 /*[OUTPUT]
 

@@ -7,8 +7,8 @@ grammar G {
 
 scheme J { base julian; grammar G; }
 
-write date.J:U "1948year 6day 9month";
-write ", " + date.J:U "9month 1948year";
+write @date.J:U( "1948year 6day 9month" ),;
+write @date.J:U( "9month 1948year" );
 
 /*[OUTPUT]
 2432814, 2432809..2432838

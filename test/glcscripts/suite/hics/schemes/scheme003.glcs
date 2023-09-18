@@ -2,7 +2,7 @@
 
 scheme T { base gregorian; }
 
-write text.T 2460048 + ", " + date.T "1948 9 19";
+write text.T 2460048, @date.T( "1948 9 19" );
 
 /*[OUTPUT]
 2023 4 13, 2432814

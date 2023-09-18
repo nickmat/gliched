@@ -71,11 +71,9 @@ writeln text.JAP:wdmc {s:JAP 1750,3,24} + ", " +
     text.JAP:wdmc {s:JAP 1750,3,25};
 writeln text.JAP:wdmc ({s:JAP ,3,24,1750}.input) + ", " +
     text.JAP:wdmc ({s:JAP ,3,25,1751}.input);
-writeln date.JAP:dmc "24 mar 1750" + ", " + date.JAP:dmc "25 Mar 1751";
-writeln date.JAP:dmc {s:JAP 1750,3,24} + ", " +
-    date.JAP:dmc {s:JAP 1750,3,25};
-writeln date.JAP:dmc ({s:JAP ,3,24,1750}.input) + ", " +
-    date.JAP:dmc ({s:JAP ,3,25,1751}.input);
+write @date.JAP:dmc( "24 mar 1750" ), @date.JAP:dmc( "25 Mar 1751" ) nl;
+write @date.JAP:dmc( {s:JAP 1750,3,24} ), @date.JAP:dmc( {s:JAP 1750,3,25} ) nl;
+write @date.JAP:dmc( {s:JAP ,3,24,1750}.input ), @date.JAP:dmc( {s:JAP ,3,25,1751}.input ) nl;
 writeln text.JAP:out 2432814;
 
 /*[OUTPUT]

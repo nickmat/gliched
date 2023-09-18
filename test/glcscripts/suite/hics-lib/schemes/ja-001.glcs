@@ -11,11 +11,9 @@ writeln text.ja:dmcy {s:ja 1750,3,24} + ", " +
     text.ja:dmcy {s:ja 1750,3,25};
 writeln text.ja:dmcy ({s:ja ,3,24,1749}.input) + ", " +
     text.ja:dmcy ({s:ja ,3,25,1750}.input);
-writeln date.ja:dmcy "24 mar 1749" + ", " + date.ja:dmcy "25 Mar 1750";
-writeln date.ja:dmcy {s:ja 1750,3,24} + ", " +
-    date.ja:dmcy {s:ja 1750,3,25};
-writeln date.ja:dmcy ({s:ja ,3,24,1749}.input) + ", " +
-    date.ja:dmcy ({s:ja ,3,25,1750}.input);
+write @date.ja:dmcy( "24 mar 1749" ), @date.ja:dmcy( "25 Mar 1750" ) nl;
+write @date.ja:dmcy( {s:ja 1750,3,24} ), @date.ja:dmcy( {s:ja 1750,3,25} ) nl;
+write @date.ja:dmcy( {s:ja ,3,24,1749}.input ), @date.ja:dmcy( {s:ja ,3,25,1750}.input ) nl;
 writeln text.ja:out 2430792;
 writeln text.ja:full 2430792;
 

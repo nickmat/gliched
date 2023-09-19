@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/gliched/gedFrame.cpp
+ * Name:        src/gliched/gliched.rc
  * Project:     Gliched: Glich Script Language IDE.
- * Purpose:     Program Main Frame.
+ * Purpose:     Window Gliched program resource file
  * Author:      Nick Matthews
  * Created:     19th September 2023
  * Copyright:   Copyright (c) 2023, Nick Matthews.
@@ -22,28 +22,6 @@
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
- */
+*/
 
-#include "wx/wxprec.h"
-
-#ifndef WX_PRECOMP
-#include "wx/wx.h"
-#endif
-
-#include "gedApp.h"
-
-#include "gedFrame.h"
-
-
-IMPLEMENT_APP(gedApp)
-
-bool gedApp::OnInit()
-{
-    long style = wxMINIMIZE_BOX | wxRESIZE_BORDER | wxSYSTEM_MENU |
-        wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN | wxTAB_TRAVERSAL;
-    frame = new gedFrame( "Glich Editor", wxDefaultPosition, wxSize( -1, -1 ), style );
-    frame->Show();
-    return true;
-}
-
-// End of src/gliched/gedFrame.cpp file
+gliched_icon ICON "gliched.ico"

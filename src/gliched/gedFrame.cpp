@@ -37,6 +37,8 @@ gedFrame::gedFrame(
     const wxString& title, const wxPoint& pos, const wxSize& size, long style )
     : fbGedFrame( (wxFrame*) NULL, wxID_ANY, title, pos, size, style )
 {
+    // Set frames Icon
+    SetIcon( wxICON( gliched_icon ) );
 
     wxMessageBox( "Gliched Script Editor is in startup.", "Start" );
 

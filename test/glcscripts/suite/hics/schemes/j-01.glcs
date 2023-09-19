@@ -64,12 +64,12 @@ let d = 2432617;
 let t = "22feb1948";
 let r = {s:J 1948, 2, 22};
 
-let d_t = text.J d;
+let d_t = @text.J( d );
 let d_r = record.J d;
 let t_d = @date.J( t );
 let t_r = record.J t;
 let r_d = @date( r );
-let r_t = text r;
+let r_t = @text( r );
 
 writeln "";
 writeln "text.J cast:   " + d[.type] + ", " + d_t + ", " + d_t[.type];

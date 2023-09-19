@@ -7,10 +7,10 @@ grammar G {
 
 scheme J { base julian; grammar G; }
 
-writeln "";
-writeln text.J:U 2432814;
-writeln text.J:U (2432809..2432838);
-writeln text.J:U (2432809..2432838 | 2432596..2432624);
+write nl;
+write @text.J:U( 2432814 ) nl;
+write @text.J:U (2432809..2432838) nl;
+write @text.J:U (2432809..2432838 | 2432596..2432624) nl;
 
 /*[OUTPUT]
 

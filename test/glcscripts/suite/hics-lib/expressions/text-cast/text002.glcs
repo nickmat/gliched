@@ -1,8 +1,8 @@
 // text001.hcs Test file to test text cast expressions
 
-writeln "";
-writeln text (2460036..2460065);
-writeln text.g:wdmy (2460036..2460065);
+write nl;
+write @text (2460036..2460065) nl;
+write @text.g:wdmy (2460036..2460065) nl;
 
 /*[OUTPUT]
 

@@ -64,12 +64,12 @@ let d = 2432617;
 let t = "6mar1948";
 let r = {s:G 1948, 3, 6};
 
-let d_t = text.G d;
+let d_t = @text.G( d );
 let d_r = record.G d;
 let t_d = @date.G( t );
 let t_r = record.G t;
 let r_d = @date( r );
-let r_t = text r;
+let r_t = @text( r );
 
 writeln "";
 writeln "text.G cast:   " + d[.type] + ", " + d_t + ", " + d_t[.type];

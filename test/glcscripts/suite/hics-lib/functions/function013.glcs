@@ -8,7 +8,7 @@ function this_week {
     result = start .. ( start + 6 );
 }
 
-write text @this_week;
+write @text( @this_week );
 
 mark test;
 

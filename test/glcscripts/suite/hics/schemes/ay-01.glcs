@@ -62,9 +62,9 @@ writeln "";
 writeln record.AY 2299160 + ", " + record.AY 2299161;
 writeln record.AY:dmys "4 Oct 1582 j" + ", " + record.AY:dmys "15 Oct 1582 g";
 writeln record.AY:dmys "4 Oct 1582" + ", " + record.AY:dmys "15 Oct 1582";
-writeln text.AY:dmys 2299160 + ", " + text.AY:dmys 2299161;
-writeln text.:dmys {s:AY 0,1582,10,4} + ", " + text.:dmys {s:AY 1,1582,10,15};
-writeln text.AY:dmy 2299160 + ", " + text.AY:dmy 2299161;
+write @text.AY:dmys( 2299160 ), @text.AY:dmys( 2299161 ) nl;
+write @text.:dmys( {s:AY 0,1582,10,4} ), @text.:dmys( {s:AY 1,1582,10,15} ) nl;
+write @text.AY:dmy( 2299160 ), @text.AY:dmy( 2299161 ) nl;
 write @date.AY:dmys( "4 Oct 1582" ), @date.AY:dmys( "15 Oct 1582" ) nl;
 write @date( {s:AY 0,1582,10,4} ), @date( {s:AY 1,1582,10,15} ) nl;
 

@@ -5,8 +5,8 @@ format j:OBLIQUE {
     inout "{day}/|{month}/|{year}";
 }
 
-writeln "";
-writeln text.g:OBLIQUE 2460136;
+write nl;
+write @text.g:OBLIQUE( 2460136 ) nl;
 write @date.j:OBLIQUE( "27/6/2023" ) nl;
 
 /*[OUTPUT]

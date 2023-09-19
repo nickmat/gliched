@@ -8,12 +8,9 @@ grammar XG {
 
 scheme XS { base gregorian; grammar XG; }
 
-writeln "";
-writeln text.XS:html 2460127;
+write @text.XS:html( 2460127 );
 
 
 /*[OUTPUT]
-
 1<sup>st</sup> July 2023
-
 [OUTPUT]*/

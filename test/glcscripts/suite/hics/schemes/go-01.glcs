@@ -15,11 +15,11 @@ scheme GO {
     grammar GO;
 }
 
-writeln "";
+write nl;
 writeln record.GO 2460138;
 writeln record.GO:yd "2023 193";
-writeln text.GO:yd 2460138;
-writeln text.GO:yd {s:GO 2023, 193};
+write @text.GO:yd( 2460138 ) nl;
+write @text.GO:yd( {s:GO 2023, 193} ) nl;
 write @date.GO:yd( "2023 193" ) nl;
 write @date( {s:GO 2023, 193} ) nl;
 

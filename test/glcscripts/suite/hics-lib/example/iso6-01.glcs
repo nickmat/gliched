@@ -20,10 +20,10 @@ format go:ISO_y6d {
 
 
 write nl;
-write text.g:ISO_y6 _today nl;
-write text.g:ISO_y6set _today nl;
-write text.gw:ISO_y6wd _today nl;
-write text.go:ISO_y6d _today nl;
+write @text.g:ISO_y6( _today ) nl;
+write @text.g:ISO_y6set( _today ) nl;
+write @text.gw:ISO_y6wd( _today ) nl;
+write @text.go:ISO_y6d( _today ) nl;
 
 /*[OUTPUT]
 

@@ -35,7 +35,7 @@ scheme G {
     grammar J;
 }
 
-write text.G:dmy (2459946..2460310) + ", " + text.G:dmy (2459977..2460004);
+write @text.G:dmy (2459946..2460310), @text.G:dmy (2459977..2460004);
 
 /*[OUTPUT]
 2023, Feb 2023

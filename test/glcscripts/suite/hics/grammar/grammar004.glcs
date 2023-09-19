@@ -29,7 +29,7 @@ grammar G {
 
 scheme J { base julian; grammar G; }
 
-write text.J:DMY 2432814,;
+write @text.J:DMY( 2432814 ),;
 write @date.J:DMY( "22feb1948" );
 
 /*[OUTPUT]

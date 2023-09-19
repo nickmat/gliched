@@ -10,7 +10,7 @@ scheme test {
 }
 write nl;
 write record.test _today nl;
-write text.test:f _today nl;
+write @text.test:f( _today ) nl;
 
 /*[OUTPUT]
 

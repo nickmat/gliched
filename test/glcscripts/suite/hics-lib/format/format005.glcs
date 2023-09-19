@@ -9,12 +9,9 @@ grammar XG {
 
 scheme XS { base gregorian; grammar XG; }
 
-writeln "";
-writeln text.XS:dmy 2460141;
+write @text.XS:dmy( 2460141 );
 
 
 /*[OUTPUT]
-
 15 VII 2023
-
 [OUTPUT]*/

@@ -67,10 +67,10 @@ scheme G {
     grammar G;
 }
 
-writeln "";
-write text.G:wdmy 2460049, @date.G:wdmy( "Fri 14 Apr 2023" ) nl;
-write text.G:iso 2460140, @date.G:iso( "2023-07-14" ) nl;
-write text.G:iso_set (2459946 | 2460140 | 2460157),
+write nl;
+write @text.G:wdmy( 2460049 ), @date.G:wdmy( "Fri 14 Apr 2023" ) nl;
+write @text.G:iso( 2460140 ), @date.G:iso( "2023-07-14" ) nl;
+write @text.G:iso_set (2459946 | 2460140 | 2460157),
     @date.G:iso_set( "[2023-01-01,2023-07-14,2023-07-31]" ) nl;
 
 /*[OUTPUT]

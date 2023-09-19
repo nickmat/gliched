@@ -14,14 +14,14 @@ scheme G {
     grammar ISOW;
 }
 
-writeln "";
-write text.G:iso1 2460139, @date.G:iso1( "2023-W28-4" ) nl;
-write text.G:iso1 (2460136 .. 2460142), @date.G:iso1( "2023-W28" ) nl;
-write text.G:iso2 2460139, @date.G:iso2( "2023W284" ) nl;
-write text.G:iso3 2460139, @date.G:iso3( "+002023-W28-4" ) nl;
-write text.G:iso4 2460139, @date.G:iso4( "[2023-W28-4]" ) nl;
-write text.G:iso4 (2459947..2460310), @date.G:iso4( "[2023]" ) nl;
-write text.G:iso4 (2459946 | 2460139 | 2460157),
+write nl;
+write @text.G:iso1( 2460139 ), @date.G:iso1( "2023-W28-4" ) nl;
+write @text.G:iso1 (2460136 .. 2460142), @date.G:iso1( "2023-W28" ) nl;
+write @text.G:iso2( 2460139 ), @date.G:iso2( "2023W284" ) nl;
+write @text.G:iso3( 2460139 ), @date.G:iso3( "+002023-W28-4" ) nl;
+write @text.G:iso4( 2460139 ), @date.G:iso4( "[2023-W28-4]" ) nl;
+write @text.G:iso4 (2459947..2460310), @date.G:iso4( "[2023]" ) nl;
+write @text.G:iso4 (2459946 | 2460139 | 2460157),
     @date.G:iso4( "[2022-W52-7,2023-W28-4,2023-W31-1]" ) nl;
 
 /*[OUTPUT]

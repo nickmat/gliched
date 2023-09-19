@@ -1290,10 +1290,6 @@ SValueVec Script::get_args( SValue& value, GetToken get )
 SValue Script::function_call()
 {
     SToken token = next_token();
-    // Required until date cast removed
-    if( token.type() == SToken::Type::text ) {
-        return at_text( *this );
-    }
     if( token.type() != SToken::Type::Name ) {
         return create_error( "Function name expected." );
     }

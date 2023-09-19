@@ -150,9 +150,6 @@ SToken& STokenStream::next()
         else if( str == "mod" ) {
             set_type( SToken::Type::Mod );
         }
-        else if( str == "text" ) {
-            set_type( SToken::Type::text );
-        }
         else if( str == "record" ) {
             set_type( SToken::Type::record );
         }

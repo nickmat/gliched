@@ -1012,9 +1012,6 @@ SValue Script::primary( GetToken get )
         value = get_object( GetToken::next );
         next_token();
         break;
-    case SToken::Type::text:
-        value = text_cast();
-        break;
     case SToken::Type::record:
         value = record_cast();
         break;
@@ -1189,62 +1186,6 @@ SValue Script::do_dot( const SValue& left, const SValue& right )
         return create_error( "Function not found." );
     }
     return run_function( fun, obj, &left );
-}
-
-SValue Script::text_cast()
-{
-    SToken token = next_token();
-    Scheme* sch = nullptr;
-    string sig, scode, fcode;
-    if( token.type() == SToken::Type::Dot ) {
-        // Includes scheme:format signature
-        sig = get_name_or_primary( GetToken::next );
-        split_code( &scode, &fcode, sig );
-        sch = m_glc->get_scheme( scode );
-    }
-    SValue value = primary( GetToken::current );
-    if( value.type() == SValue::Type::Object ) {
-        Object* obj = value.get_object_ptr();
-        if( obj == nullptr ) {
-            value.set_error( "Object type not recognised." );
-            return value;
-        }
-        // We ignore any suffix scheme setting
-        sch = dynamic_cast<Scheme*>(obj);
-        if( sch == nullptr ) {
-            value.set_error( "Object is not a scheme." );
-            return value;
-        }
-        string str = sch->object_to_str( value, fcode );
-        value.set_str( str );
-        return value;
-    }
-    if( sch == nullptr ) {
-        sch = m_glc->get_oscheme();
-        if( sch == nullptr ) {
-            value.set_error( "No default scheme set." );
-            return value;
-        }
-    }
-    bool success = false;
-    Field jdn = value.get_field( success );
-    if( success ) {
-        value.set_str( sch->jdn_to_str( jdn, fcode ) );
-        return value;
-    }
-    Range rng = value.get_range( success );
-    if( success ) {
-        value.set_str( sch->range_to_str( rng, fcode ) );
-        return value;
-    }
-    RList rlist = value.get_rlist( success );
-    if( !success ) {
-        value.set_error( "Expected field, range, rlist or record type." );
-        return value;
-    }
-    value.set_error( "Not range or rlist yet." );
-    value.set_str( sch->rlist_to_str( rlist, fcode ) );
-    return value;
 }
 
 SValue Script::record_cast()

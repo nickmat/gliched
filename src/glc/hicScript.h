@@ -41,6 +41,7 @@ namespace glich {
 
     SValue hics_dot( Script& script, bool& success, Object* obj, const std::string& fcode, const SValue& left );
 
+    SValue at_text( Script& script );
     SValue at_date( Script& script );
     SValue at_phrase( Script& script );
 }

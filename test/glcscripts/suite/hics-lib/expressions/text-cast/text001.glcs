@@ -1,6 +1,6 @@
 // text001.hcs Test file to test text cast expressions
 
-write text.j (2159139..2159495);
+write @text.j(2159139..2159495);
 
 /*[OUTPUT]
 27 May 1199..17 May 1200

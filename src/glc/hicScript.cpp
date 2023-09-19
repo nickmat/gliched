@@ -751,6 +751,67 @@ SValue glich::hics_dot( Script& script, bool& success, Object* obj, const std::s
     return SValue();
 }
 
+SValue glich::at_text( Script& script )
+{
+    SValue value;
+    StdStrVec quals = script.get_qualifiers( GetToken::next );
+    SValueVec args = script.get_args( value, GetToken::current );
+    string sig, scode, fcode;
+    if( !quals.empty() ) {
+        sig = quals[0];
+    }
+    split_code( &scode, &fcode, sig );
+    Glich* glc = script.get_glich();
+    Scheme* sch = glc->get_scheme( scode );
+    if( args.empty() ) {
+        value.set_error( "One argument required." );
+        return value;
+    }
+    value = args[0];
+    if( value.type() == SValue::Type::Object ) {
+        Object* obj = value.get_object_ptr();
+        if( obj == nullptr ) {
+            value.set_error( "Object type not recognised." );
+            return value;
+        }
+        // We ignore any suffix scheme setting
+        sch = dynamic_cast<Scheme*>(obj);
+        if( sch == nullptr ) {
+            value.set_error( "Object is not a scheme." );
+            return value;
+        }
+        string str = sch->object_to_str( value, fcode );
+        value.set_str( str );
+        return value;
+    }
+    if( sch == nullptr ) {
+        sch = glc->get_oscheme();
+        if( sch == nullptr ) {
+            value.set_error( "No default scheme set." );
+            return value;
+        }
+    }
+    bool success = false;
+    Field jdn = value.get_field( success );
+    if( success ) {
+        value.set_str( sch->jdn_to_str( jdn, fcode ) );
+        return value;
+    }
+    Range rng = value.get_range( success );
+    if( success ) {
+        value.set_str( sch->range_to_str( rng, fcode ) );
+        return value;
+    }
+    RList rlist = value.get_rlist( success );
+    if( !success ) {
+        value.set_error( "Expected field, range, rlist or record type." );
+        return value;
+    }
+    value.set_error( "Not range or rlist yet." );
+    value.set_str( sch->rlist_to_str( rlist, fcode ) );
+    return value;
+}
+
 SValue glich::at_date( Script& script )
 {
     SValue value;

@@ -1,23 +1,24 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/hceapp.cpp
- * Project:     hcsedit: HistoryCal Script Editor.
- * Purpose:     Application main and supporting functions.
+ * Name:        src/gliched/gedFrame.cpp
+ * Project:     Gliched: Glich Script Language IDE.
+ * Purpose:     Program Main Frame.
  * Author:      Nick Matthews
- * Created:     23rd May 2020
- * Copyright:   Copyright (c) 2020, Nick Matthews.
- * Licence:     Boost - Version 1.0
+ * Created:     19th September 2023
+ * Copyright:   Copyright (c) 2023, Nick Matthews.
+ * Licence:     GNU GPLv3
  *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE, TITLE AND NON-INFRINGEMENT. IN NO EVENT
- * SHALL THE COPYRIGHT HOLDERS OR ANYONE DISTRIBUTING THE SOFTWARE BE LIABLE
- * FOR ANY DAMAGES OR OTHER LIABILITY, WHETHER IN CONTRACT, TORT OR OTHERWISE,
- * ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER
- * DEALINGS IN THE SOFTWARE.
+ *  Gliched is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
  *
- * Distributed under the Boost Software License, Version 1.0.
- * See accompanying file license.txt or copy at
- * http://www.boost.org/LICENSE_1_0.txt
+ *  Gliched is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Gliched.  If not, see <http://www.gnu.org/licenses/>.
  *
  * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
@@ -45,4 +46,4 @@ bool gedApp::OnInit()
     return true;
 }
 
-// End of src/hceapp.cpp file
+// End of src/gliched/gedFrame.cpp file

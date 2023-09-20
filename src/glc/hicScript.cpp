@@ -860,6 +860,35 @@ SValue glich::at_date( Script& script )
     return value;
 }
 
+SValue glich::at_record( Script& script )
+{
+    SValue value;
+    StdStrVec quals = script.get_qualifiers( GetToken::next );
+    SValueVec args = script.get_args( value, GetToken::current );
+    string sig, scode, fcode;
+    if( !quals.empty() ) {
+        sig = quals[0];
+    }
+    split_code( &scode, &fcode, sig );
+    Glich* glc = script.get_glich();
+    Scheme* sch = glc->get_scheme( scode );
+    if( args.empty() ) {
+        value.set_error( "One argument required." );
+        return value;
+    }
+    value = args[0];
+    bool success = false;
+    Field jdn = value.get_field( success );
+    if( success ) {
+        return sch->complete_object( jdn );
+    }
+    if( value.type() == SValue::Type::String ) {
+        return sch->complete_object( value.get_str(), fcode );
+    }
+    value.set_error( "Expected a field or string type." );
+    return value;
+}
+
 SValue glich::at_phrase( Script& script )
 {
     SValue value;

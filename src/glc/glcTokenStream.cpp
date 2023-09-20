@@ -150,9 +150,6 @@ SToken& STokenStream::next()
         else if( str == "mod" ) {
             set_type( SToken::Type::Mod );
         }
-        else if( str == "element" ) {
-            set_type( SToken::Type::element );
-        }
         else {
             set_current( SToken::Type::Name, str );
         }

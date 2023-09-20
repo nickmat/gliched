@@ -1012,9 +1012,6 @@ SValue Script::primary( GetToken get )
         value = get_object( GetToken::next );
         next_token();
         break;
-    case SToken::Type::element:
-        value = element_cast();
-        break;
     case SToken::Type::At:
         value = function_call();
         break;
@@ -1185,33 +1182,6 @@ SValue Script::do_dot( const SValue& left, const SValue& right )
     return run_function( fun, obj, &left );
 }
 
-SValue Script::element_cast()
-{
-    SToken token = next_token();
-    string sig;
-    if( token.type() == SToken::Type::Dot ) {
-        sig = get_name_or_primary( GetToken::next );
-    }
-    SValue value = primary( GetToken::current );
-    Element ele;
-    if( !sig.empty() ) {
-        ele.add_char( ':' );
-        ele.add_string( sig );
-    }
-    bool success = false;
-    Field fld = value.get_field( success );
-    if( success ) {
-        value.set_str( ele.get_formatted_element( *m_glc, fld ) );
-    }
-    else if( value.type() == SValue::Type::String ) {
-        value.set_field( ele.get_converted_field( m_glc, value.get_str() ) );
-    }
-    else {
-        value.set_error( "Element requires field like or string type." );
-    }
-    return value;
-}
-
 StdStrVec glich::Script::get_qualifiers( GetToken get )
 {
     SToken token = (get == GetToken::next) ? m_ts.next() : current_token();
@@ -1273,6 +1243,9 @@ SValue Script::function_call()
     }
     else if( name == "record" ) {
         return at_record( *this );
+    }
+    else if( name == "element" ) {
+        return at_element( *this );
     }
     else if( name == "phrase" ) {
         return at_phrase( *this );

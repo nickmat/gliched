@@ -16,9 +16,9 @@ lexicon W {
     }
 }
 
-write element.W 2 + ", " + element.W:a 7;
+write @element.W( 2 ), @element.W:a( 7 ),;
 
-write ", " + element.W "wed";
+write @element.W( "wed" );
 
 /*[OUTPUT]
 Tuesday, Sun, 3

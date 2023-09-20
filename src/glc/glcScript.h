@@ -91,7 +91,6 @@ namespace glich {
 
         SValue do_subscript( const SValue& left, const SValue& right );
         SValue do_dot( const SValue& left, const SValue& right );
-        SValue element_cast();
         StdStrVec get_qualifiers( GetToken get );
         SValueVec get_args( SValue& value, GetToken get );
         SValue function_call();

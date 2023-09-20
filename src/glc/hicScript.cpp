@@ -30,6 +30,7 @@
 #include "glcScript.h"
 #include "hicBase.h"
 #include "hicDatePhrase.h"
+#include "hicElement.h"
 #include "hicGrammar.h"
 #include "hicHybrid.h"
 #include "hicFormatIso.h"
@@ -886,6 +887,36 @@ SValue glich::at_record( Script& script )
         return sch->complete_object( value.get_str(), fcode );
     }
     value.set_error( "Expected a field or string type." );
+    return value;
+}
+
+SValue glich::at_element( Script& script )
+{
+    SValue value;
+    StdStrVec quals = script.get_qualifiers( GetToken::next );
+    SValueVec args = script.get_args( value, GetToken::current );
+    string sig;
+    if( !quals.empty() ) {
+        sig = quals[0];
+    }
+    Element ele;
+    if( !sig.empty() ) {
+        ele.add_char( ':' );
+        ele.add_string( sig );
+    }
+    Glich* glc = script.get_glich();
+    value = args[0];
+    bool success = false;
+    Field fld = value.get_field( success );
+    if( success ) {
+        value.set_str( ele.get_formatted_element( *glc, fld ) );
+    }
+    else if( value.type() == SValue::Type::String ) {
+        value.set_field( ele.get_converted_field( glc, value.get_str() ) );
+    }
+    else {
+        value.set_error( "Element requires field like or string type." );
+    }
     return value;
 }
 

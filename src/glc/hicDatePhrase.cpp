@@ -47,7 +47,7 @@ namespace {
                 d = "@date" + sig + "(\"" + d + "\")";
                 break;
             case CT_record:
-                d = "record" + sig + "\"" + d + "\"";
+                d = "@record" + sig + "(\"" + d + "\")";
                 break;
             case CT_none:
                 break;

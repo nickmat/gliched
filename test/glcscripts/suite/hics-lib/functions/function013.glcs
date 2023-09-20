@@ -4,7 +4,7 @@ mark test;
 
 function this_week {
     let _today = 2460049;
-    let start = _today - ( record _today[wday] ) + 1;
+    let start = _today - ( @record.g( _today )[wday] ) + 1;
     result = start .. ( start + 6 );
 }
 

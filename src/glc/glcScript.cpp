@@ -1012,9 +1012,6 @@ SValue Script::primary( GetToken get )
         value = get_object( GetToken::next );
         next_token();
         break;
-    case SToken::Type::record:
-        value = record_cast();
-        break;
     case SToken::Type::element:
         value = element_cast();
         break;
@@ -1188,42 +1185,6 @@ SValue Script::do_dot( const SValue& left, const SValue& right )
     return run_function( fun, obj, &left );
 }
 
-SValue Script::record_cast()
-{
-    SToken token = next_token();
-    Scheme* sch = nullptr;
-    string sig, scode, fcode;
-    if( token.type() == SToken::Type::Dot ) {
-        // Includes scheme:format signiture
-        sig = get_name_or_primary( GetToken::next );
-        split_code( &scode, &fcode, sig );
-        sch = m_glc->get_scheme( scode );
-    }
-    SValue value = primary( GetToken::current );
-    if( sch == nullptr ) {
-        sch = m_glc->get_ischeme();
-        if( sch == nullptr ) {
-            value.set_error( "No default scheme set." );
-            return value;
-        }
-        scode = sch->get_code();
-    }
-    if( scode.empty() ) {
-        value.set_error( "No scheme set." );
-        return value;
-    }
-    bool success = false;
-    Field jdn = value.get_field( success );
-    if( success ) {
-        return sch->complete_object( jdn );
-    }
-    if( value.type() == SValue::Type::String ) {
-        return sch->complete_object( value.get_str(), fcode );
-    }
-    value.set_error( "Expected a field or string type." );
-    return value;
-}
-
 SValue Script::element_cast()
 {
     SToken token = next_token();
@@ -1309,6 +1270,9 @@ SValue Script::function_call()
     }
     else if( name == "text" ) {
         return at_text( *this );
+    }
+    else if( name == "record" ) {
+        return at_record( *this );
     }
     else if( name == "phrase" ) {
         return at_phrase( *this );

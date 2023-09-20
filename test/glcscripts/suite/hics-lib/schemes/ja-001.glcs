@@ -1,9 +1,9 @@
 // ja-001.glc // Test formats
 
-writeln "";
-writeln record.ja 2360328 + ", " + record.ja 2360329;
-writeln record.ja:dmc "24 mar 1749" + ", " + record.ja:dmc "25 Mar 1750";
-writeln record.ja:dmcy "24 mar 1749" + ", " + record.ja:dmcy "25 Mar 1750";
+write nl;
+write @record.ja( 2360328 ), @record.ja( 2360329 ) nl;
+write @record.ja:dmc( "24 mar 1749" ), @record.ja:dmc( "25 Mar 1750" ) nl;
+write @record.ja:dmcy( "24 mar 1749" ), @record.ja:dmcy( "25 Mar 1750" ) nl;
 write @text.ja:dmc( 2360328 ), @text.ja:dmc( 2360329 ) nl;
 write @text.ja:dmcy( 2360328 ), @text.ja:dmcy( 2360329 ) nl;
 write @text.ja:wdmcy( 2360328 ), @text.ja:wdmcy( 2360329 ) nl;

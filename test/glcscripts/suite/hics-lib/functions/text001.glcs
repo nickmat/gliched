@@ -1,0 +1,16 @@
+// text001.hcs - 
+
+write nl;
+write @text( 2460209 ), @text( {s:g 2023, 9, 21} ), @text( {s:j 2023, 9, 8} ) nl;
+write @text.j( 2460209 ), @text.j( {s:g 2023, 9, 21} ) nl;
+write @text.:ymd( 2460209 ), @text.:ymd( {s:j 2023, 9, 8} ) nl;
+write @text.j:ymd( 2460209 ), @text.j:ymd( {s:g 2023, 9, 21} ) nl;
+
+/*[OUTPUT]
+
+21 Sep 2023, 21 Sep 2023, 8 Sep 2023
+8 Sep 2023, 8 Sep 2023
+2023:Sep:21, 2023:Sep:8
+2023:Sep:8, 2023:Sep:8
+
+[OUTPUT]*/

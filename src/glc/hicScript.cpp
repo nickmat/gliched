@@ -764,32 +764,32 @@ SValue glich::at_text( Script& script )
     split_code( &scode, &fcode, sig );
     Glich* glc = script.get_glich();
     Scheme* sch = glc->get_scheme( scode );
+    Scheme* rec_sch = nullptr;
     if( args.empty() ) {
-        value.set_error( "One argument required." );
-        return value;
+        return SValue( "One argument required.", SValue::Type::Error );
     }
     value = args[0];
     if( value.type() == SValue::Type::Object ) {
         Object* obj = value.get_object_ptr();
         if( obj == nullptr ) {
-            value.set_error( "Object type not recognised." );
-            return value;
+            return SValue( "Object type not recognised.", SValue::Type::Error );
         }
         // We ignore any suffix scheme setting
-        sch = dynamic_cast<Scheme*>(obj);
-        if( sch == nullptr ) {
-            value.set_error( "Object is not a scheme." );
-            return value;
+        rec_sch = dynamic_cast<Scheme*>(obj);
+        if( rec_sch == nullptr ) {
+            return SValue( "Object is not a scheme.", SValue::Type::Error );
         }
-        string str = sch->object_to_str( value, fcode );
-        value.set_str( str );
-        return value;
+        value = rec_sch->object_to_demoted_rlist( value );
     }
     if( sch == nullptr ) {
-        sch = glc->get_oscheme();
+        if( rec_sch != nullptr ) {
+            sch = rec_sch;
+        }
+        else {
+            sch = glc->get_oscheme();
+        }
         if( sch == nullptr ) {
-            value.set_error( "No default scheme set." );
-            return value;
+            return SValue( "No default scheme set.", SValue::Type::Error );
         }
     }
     bool success = false;
@@ -805,10 +805,8 @@ SValue glich::at_text( Script& script )
     }
     RList rlist = value.get_rlist( success );
     if( !success ) {
-        value.set_error( "Expected field, range, rlist or record type." );
-        return value;
+        return SValue( "Expected field, range, rlist or record type.", SValue::Type::Error );
     }
-    value.set_error( "Not range or rlist yet." );
     value.set_str( sch->rlist_to_str( rlist, fcode ) );
     return value;
 }

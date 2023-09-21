@@ -1,0 +1,18 @@
+// element001.glcs - 
+
+write nl;
+write @element.m( 2 ), @element.m( "mar" ) nl;
+write @element.m::u(9), @element.m:a:l(9) nl;
+write @element.:os(3),  @element.:os(10),
+    @element.:oa(3),  @element.:oa(10) nl;
+write @element.:rn(19), @element.:rn:l(48),
+    @element.:rn("xix"), @element.:rn("XLVIII") nl;
+
+/*[OUTPUT]
+
+February, 3
+SEPTEMBER, sep
+3rd, 10th, rd, th
+XIX, xlviii, 19, 48
+
+[OUTPUT]*/

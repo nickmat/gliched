@@ -1,0 +1,12 @@
+// date001.hcs - 
+
+write nl;
+write @date( "21sep2023" ), @date( {s:g 2023, 9, 21, 4} ) nl;
+write @date.j( "8sep2023" ), @date.j:mdy( "sep8,2023" ) nl;
+
+/*[OUTPUT]
+
+2460209, 2460209
+2460209, 2460209
+
+[OUTPUT]*/

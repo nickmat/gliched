@@ -1,4 +1,4 @@
-// function013.hcs - 
+// record001.hcs - 
 
 write nl;
 write @record( 2460209 ), @record( "21sep2023" ) nl;

@@ -864,8 +864,13 @@ SValue glich::at_date( Script& script )
 SValue glich::at_record( Script& script )
 {
     SValue value;
+    const char* no_default_mess = "No default scheme set.";
     StdStrVec quals = script.get_qualifiers( GetToken::next );
     SValueVec args = script.get_args( value, GetToken::current );
+    if( args.empty() ) {
+        return SValue( "One argument required.", SValue::Type::Error );
+    }
+    value = args[0];
     string sig, scode, fcode;
     if( !quals.empty() ) {
         sig = quals[0];
@@ -873,17 +878,24 @@ SValue glich::at_record( Script& script )
     split_code( &scode, &fcode, sig );
     Glich* glc = script.get_glich();
     Scheme* sch = glc->get_scheme( scode );
-    if( args.empty() ) {
-        value.set_error( "One argument required." );
-        return value;
-    }
-    value = args[0];
     bool success = false;
     Field jdn = value.get_field( success );
     if( success ) {
+        if( sch == nullptr ) {
+            sch = glc->get_oscheme();
+            if( sch == nullptr ) {
+                return SValue( no_default_mess, SValue::Type::Error );
+            }
+        }
         return sch->complete_object( jdn );
     }
     if( value.type() == SValue::Type::String ) {
+        if( sch == nullptr ) {
+            sch = glc->get_ischeme();
+            if( sch == nullptr ) {
+                return SValue( no_default_mess, SValue::Type::Error );
+            }
+        }
         return sch->complete_object( value.get_str(), fcode );
     }
     value.set_error( "Expected a field or string type." );

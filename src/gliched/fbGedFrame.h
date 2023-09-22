@@ -73,13 +73,13 @@ class fbGedFrame : public wxFrame
 
 	public:
 
-		fbGedFrame( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = wxEmptyString, const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( 569,463 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		fbGedFrame( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Glich Editor"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
 		~fbGedFrame();
 
 		void m_splitter2OnIdle( wxIdleEvent& )
 		{
-			m_splitter2->SetSashPosition( 143 );
+			m_splitter2->SetSashPosition( 150 );
 			m_splitter2->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbGedFrame::m_splitter2OnIdle ), NULL, this );
 		}
 

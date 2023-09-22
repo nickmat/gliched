@@ -39,6 +39,22 @@ public:
         long style = wxDEFAULT_FRAME_STYLE );
 
 private:
+	void OnFileNew( wxCommandEvent& event ) override { event.Skip(); }
+	void OnFileOpen( wxCommandEvent& event ) override { event.Skip(); }
+	void OnFileSave( wxCommandEvent& event ) override { event.Skip(); }
+	void OnFileSaveAs( wxCommandEvent& event ) override { event.Skip(); }
+	void OnFileClose( wxCommandEvent& event ) override { event.Skip(); }
+	void OnExit( wxCommandEvent& event ) override;
+	void OnEditUndo( wxCommandEvent& event ) override { event.Skip(); }
+	void OnEditRedo( wxCommandEvent& event ) override { event.Skip(); }
+	void OnEditCut( wxCommandEvent& event ) override { event.Skip(); }
+	void OnEditCopy( wxCommandEvent& event ) override { event.Skip(); }
+	void OnEditPaste( wxCommandEvent& event ) override { event.Skip(); }
+	void OnEditDelete( wxCommandEvent& event ) override { event.Skip(); }
+	void OnWebsite( wxCommandEvent& event ) override { event.Skip(); }
+	void OnAbout( wxCommandEvent& event ) override { event.Skip(); }
+	void OnRun( wxCommandEvent& event ) override { event.Skip(); }
+
 };
 
 #endif // SRC_GLICHED_GEDFRAME_H_GUARD

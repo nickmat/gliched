@@ -44,13 +44,13 @@
             <property name="hidden">0</property>
             <property name="id">wxID_ANY</property>
             <property name="maximum_size"></property>
-            <property name="minimum_size"></property>
+            <property name="minimum_size">750,500</property>
             <property name="name">fbGedFrame</property>
             <property name="pos"></property>
-            <property name="size">569,463</property>
+            <property name="size">-1,-1</property>
             <property name="style">wxDEFAULT_FRAME_STYLE</property>
             <property name="subclass"></property>
-            <property name="title"></property>
+            <property name="title">Glich Editor</property>
             <property name="tooltip"></property>
             <property name="two_step_creation">0</property>
             <property name="window_extra_style"></property>
@@ -477,8 +477,8 @@
                         <property name="pin_button">1</property>
                         <property name="pos"></property>
                         <property name="resize">Resizable</property>
-                        <property name="sashgravity">0.0</property>
-                        <property name="sashpos">143</property>
+                        <property name="sashgravity">0.25</property>
+                        <property name="sashpos">150</property>
                         <property name="sashsize">-1</property>
                         <property name="show">1</property>
                         <property name="size"></property>
@@ -682,7 +682,7 @@
                                             <property name="pin_button">1</property>
                                             <property name="pos"></property>
                                             <property name="resize">Resizable</property>
-                                            <property name="sashgravity">0.0</property>
+                                            <property name="sashgravity">0.75</property>
                                             <property name="sashpos">180</property>
                                             <property name="sashsize">-1</property>
                                             <property name="show">1</property>

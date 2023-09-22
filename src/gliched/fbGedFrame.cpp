@@ -13,7 +13,7 @@
 
 fbGedFrame::fbGedFrame( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxDefaultSize, wxDefaultSize );
+	this->SetSizeHints( wxSize( 750,500 ), wxDefaultSize );
 
 	wxMenuBar* m_menubar;
 	m_menubar = new wxMenuBar( 0 );
@@ -100,6 +100,7 @@ fbGedFrame::fbGedFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	bSizer11 = new wxBoxSizer( wxVERTICAL );
 
 	m_splitter2 = new wxSplitterWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_NO_XP_THEME );
+	m_splitter2->SetSashGravity( 0.25 );
 	m_splitter2->Connect( wxEVT_IDLE, wxIdleEventHandler( fbGedFrame::m_splitter2OnIdle ), NULL, this );
 
 	m_panel3 = new wxPanel( m_splitter2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
@@ -118,6 +119,7 @@ fbGedFrame::fbGedFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	bSizer15 = new wxBoxSizer( wxVERTICAL );
 
 	m_splitter4 = new wxSplitterWindow( m_panel4, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_NO_XP_THEME );
+	m_splitter4->SetSashGravity( 0.75 );
 	m_splitter4->Connect( wxEVT_IDLE, wxIdleEventHandler( fbGedFrame::m_splitter4OnIdle ), NULL, this );
 
 	m_panel6 = new wxPanel( m_splitter4, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
@@ -184,12 +186,13 @@ fbGedFrame::fbGedFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	m_panel4->SetSizer( bSizer15 );
 	m_panel4->Layout();
 	bSizer15->Fit( m_panel4 );
-	m_splitter2->SplitVertically( m_panel3, m_panel4, 143 );
+	m_splitter2->SplitVertically( m_panel3, m_panel4, 150 );
 	bSizer11->Add( m_splitter2, 1, wxEXPAND, 5 );
 
 
 	this->SetSizer( bSizer11 );
 	this->Layout();
+	bSizer11->Fit( this );
 	m_statusBar1 = this->CreateStatusBar( 1, wxSTB_SIZEGRIP, wxID_ANY );
 
 	this->Centre( wxBOTH );

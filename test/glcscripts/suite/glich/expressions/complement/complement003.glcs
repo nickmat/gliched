@@ -1,0 +1,8 @@
+// complement003.glcs
+
+write !0, !(-infinity..-1|1..infinity);
+
+
+/*[OUTPUT]
+-infinity..-1 | 1..+infinity, 0
+[OUTPUT]*/

@@ -797,4 +797,20 @@ Scheme* Glich::get_oscheme() const
     return nullptr;
 }
 
+static Glich* s_glc = nullptr;
+
+void glich::init_glc( InitLibrary lib )
+{
+    if( s_glc ) {
+        delete s_glc;
+    }
+    s_glc = new Glich( lib );
+}
+
+Glich* glich::get_glc()
+{ 
+    assert( s_glc != nullptr );
+    return s_glc;
+}
+
 // End of src/hg/historygen.cpp

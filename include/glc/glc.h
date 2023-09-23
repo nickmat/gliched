@@ -143,6 +143,10 @@ namespace glich {
         InOut* m_inout;
     };
 
+    void init_glc( InitLibrary lib );
+    Glich* get_glc();
+
+
 } // namespace glich
 
 #endif // INCLUDE_GLC_GLC_H_GUARD

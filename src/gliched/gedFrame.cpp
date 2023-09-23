@@ -32,6 +32,10 @@
 
 #include "gedFrame.h"
 
+#include <glc/glc.h>
+
+using std::string;
+
 
 gedFrame::gedFrame(
     const wxString& title, const wxPoint& pos, const wxSize& size, long style )
@@ -45,6 +49,13 @@ void gedFrame::OnExit( wxCommandEvent& event )
 {
     // Close all windows and exit.
     wxTheApp->Exit();
+}
+
+void gedFrame::OnRun( wxCommandEvent& event )
+{
+    string script = m_ctrlEdit->GetText();
+    string result = glich::get_glc()->run_script( script );
+    m_ctrlResult->SetValue( result );
 }
 
 // End of src/gliched/gedFrame.cpp file.

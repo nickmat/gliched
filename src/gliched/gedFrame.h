@@ -53,7 +53,7 @@ private:
 	void OnEditDelete( wxCommandEvent& event ) override { event.Skip(); }
 	void OnWebsite( wxCommandEvent& event ) override { event.Skip(); }
 	void OnAbout( wxCommandEvent& event ) override { event.Skip(); }
-	void OnRun( wxCommandEvent& event ) override { event.Skip(); }
+	void OnRun( wxCommandEvent& event ) override;
 
 };
 

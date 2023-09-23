@@ -48,9 +48,9 @@ class fbGedFrame : public wxFrame
 		wxPanel* m_panel4;
 		wxSplitterWindow* m_splitter4;
 		wxPanel* m_panel6;
-		wxStyledTextCtrl* m_scintilla3;
+		wxStyledTextCtrl* m_ctrlEdit;
 		wxPanel* m_panel7;
-		wxTextCtrl* m_textCtrl5;
+		wxTextCtrl* m_ctrlResult;
 		wxStatusBar* m_statusBar1;
 
 		// Virtual event handlers, override them in your derived class

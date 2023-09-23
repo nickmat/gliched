@@ -34,11 +34,14 @@
 
 #include "gedFrame.h"
 
+#include <glc/glc.h>
 
 IMPLEMENT_APP(gedApp)
 
 bool gedApp::OnInit()
 {
+    glich::init_glc( glich::InitLibrary::Hics );
+
     long style = wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxSYSTEM_MENU |
         wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN | wxTAB_TRAVERSAL;
 

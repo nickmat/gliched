@@ -807,6 +807,11 @@ void glich::init_glc( InitLibrary lib )
     s_glc = new Glich( lib );
 }
 
+void glich::exit_glc()
+{
+    delete s_glc;
+}
+
 Glich* glich::get_glc()
 { 
     assert( s_glc != nullptr );

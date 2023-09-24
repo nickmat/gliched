@@ -144,6 +144,7 @@ namespace glich {
     };
 
     void init_glc( InitLibrary lib );
+    void exit_glc();
     Glich* get_glc();
 
 

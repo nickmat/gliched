@@ -122,27 +122,6 @@ const char* Glich::version()
     return glc_version;
 }
 
-SchemeList Glich::get_scheme_list() const
-{
-    SchemeList slist;
-    SchemeData sdata;
-
-    for( const auto& object : m_objects ) {
-        Scheme* sch = dynamic_cast<Scheme*>(object.second);
-        if( sch == nullptr ) {
-            continue;
-        }
-        sdata.code = sch->get_scode();
-        sdata.name = sch->get_name();
-        sdata.style = sch->get_style();
-        const Grammar* gmr = sch->get_grammar();
-        sdata.has_in_format = gmr->has_input_format();
-        sdata.has_out_format = gmr->has_output_format();
-        slist.push_back( sdata );
-    }
-    return slist;
-}
-
 SchemeList Glich::get_scheme_list( SchemeStyle style ) const
 {
     SchemeList slist;

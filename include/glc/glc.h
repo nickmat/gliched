@@ -61,7 +61,6 @@ namespace glich {
 
         static const char* version();
 
-        SchemeList get_scheme_list() const;
         SchemeList get_scheme_list( SchemeStyle style ) const;
         void get_scheme_info( Scheme_info* info, const std::string& scode ) const;
         void get_input_info( SchemeFormatInfo* info, const std::string& scode ) const;

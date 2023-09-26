@@ -178,4 +178,33 @@ TEST_CASE( "Test text_to_field", "[text_to_field]" )
     REQUIRE( result == expect );
 }
 
+TEST_CASE( "Test get_glc_data", "[get_glc_data]" )
+{
+    string script =
+        "mark  test;\n"
+        "let vnumber = 123;\n"
+        "let vstring = \"text\";\n"
+        ;
+    g_glc->run_script( script );
+    GlcMarkVec marks = g_glc->get_glc_data();
+    int cnt = 0;
+    for( auto& mark : marks ) {
+        if( mark.name == "test" ) {
+            for( auto& item : mark.data ) {
+                if( item.type == GlcDataType::variable ) {
+                    if( item.name == "vnumber" ) {
+                        REQUIRE( item.value == "123" );
+                        cnt++;
+                    }
+                    else if( item.name == "vstring" ) {
+                        REQUIRE( item.value == "text" );
+                        cnt++;
+                    }
+                }
+            }
+        }
+    }
+    REQUIRE( cnt == 2 );
+}
+
 // End of test/gu/guAPI.cpp file.

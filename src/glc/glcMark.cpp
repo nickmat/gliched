@@ -162,4 +162,70 @@ string Mark::remove_next_format()
     return code;
 }
 
+GlcMark Mark::get_mark_data( const Glich* glc ) const
+{
+    GlcMark mark;
+    mark.name = m_name;
+    GlcData data;
+    for( auto fun : m_functions ) {
+        data.type = GlcDataType::function;
+        data.name = fun->get_code();
+        data.value = string();
+        mark.data.push_back( data );
+    }
+    for( auto com : m_commands ) {
+        data.type = GlcDataType::command;
+        data.name = com->get_code();
+        data.value = string();
+        mark.data.push_back( data );
+    }
+    for( auto file : m_files ) {
+        data.type = GlcDataType::file;
+        data.name = file->get_code();
+        data.value = string();
+        mark.data.push_back( data );
+    }
+    for( auto object : m_objects ) {
+        Scheme* sch = dynamic_cast<Scheme*>(object);
+        if( sch == nullptr ) {
+            data.type = GlcDataType::object;
+            data.name = object->get_code();
+            data.value = string();
+        }
+        else {
+            data.type = GlcDataType::scheme;
+            data.name = sch->get_code();
+            data.value = sch->get_name();
+        }
+        mark.data.push_back( data );
+    }
+    for( auto lex : m_lexicons ) {
+        data.type = GlcDataType::lexicon;
+        data.name = lex->get_code();
+        data.value = lex->get_name();
+        mark.data.push_back( data );
+    }
+    for( auto gmr : m_grammars ) {
+        data.type = GlcDataType::lexicon;
+        data.name = gmr->get_code();
+        data.value = string();
+        mark.data.push_back( data );
+    }
+    for( auto fmt : m_formats ) {
+        data.type = GlcDataType::format;
+        data.name = fmt->get_code();
+        data.value = string();
+        mark.data.push_back( data );
+    }
+    for( auto& local : m_locals ) {
+        data.type = GlcDataType::variable;
+        data.name = local;
+        SValue value = glc->get_local( local );
+        data.value = value.as_string();
+        mark.data.push_back( data );
+    }
+
+    return mark;
+}
+
 // End of src/glc/glcMark.cpp

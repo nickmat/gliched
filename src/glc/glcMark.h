@@ -79,6 +79,8 @@ namespace glich {
         Scheme* get_ischeme() const { return m_ischeme; }
         Scheme* get_oscheme() const { return m_oscheme; }
 
+        GlcMark get_mark_data( const Glich* glc ) const;
+
     private:
         static inline Store*   s_zero_store = nullptr;
 

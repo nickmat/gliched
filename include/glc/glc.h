@@ -78,6 +78,8 @@ namespace glich {
         Range text_to_range( const std::string& text, const std::string& sig = std::string() );
         Field text_to_field( const std::string& text, const std::string& sig = std::string() );
 
+        GlcMarkVec get_glc_data() const;
+
         void load_builtin_library();
         void load_hics_library();
 

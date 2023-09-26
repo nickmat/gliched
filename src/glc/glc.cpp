@@ -367,6 +367,16 @@ Field Glich::text_to_field( const string& text, const string& sig )
     return range.m_beg;
 }
 
+GlcMarkVec Glich::get_glc_data() const
+{
+    GlcMarkVec glcmarks;
+    for( auto& mark : m_marks ) {
+        GlcMark glcmark = mark->get_mark_data( this );
+        glcmarks.push_back( glcmark );
+    }
+    return glcmarks;
+}
+
 void Glich::load_builtin_library()
 {
     for( size_t i = 0; i < glc_builtin_scripts_size; i++ ) {

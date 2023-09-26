@@ -121,6 +121,25 @@ namespace glich {
         return v1;
     }
 
+    // Internal data storage
+    enum class GlcDataType {
+        variable, object, function, command, file, lexicon, grammar, format, scheme
+    };
+
+    struct GlcData {
+        GlcDataType type;
+        std::string name;
+        std::string value;
+    };
+
+    using GlcDataVec = std::vector<GlcData>;
+
+    struct GlcMark {
+        std::string name;
+        GlcDataVec  data;
+    };
+
+    using GlcMarkVec = std::vector<GlcMark>;
 
 }
 

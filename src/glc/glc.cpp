@@ -66,7 +66,7 @@ Glich::Glich( InitLibrary lib, InOut* inout )
     : m_store( new Store ), m_inout( inout )
 {
     Mark::set_zero_store( m_store );
-    m_marks.push_back( new Mark( "", nullptr ) );
+    m_marks.push_back( new Mark( "__:root:__", nullptr ) );
     if( !m_inout ) {
         m_inout = new InOut;
     }

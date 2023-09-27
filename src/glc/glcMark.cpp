@@ -171,19 +171,19 @@ GlcMark Mark::get_mark_data( const Glich* glc ) const
         data.type = GlcDataType::function;
         data.name = fun->get_code();
         data.value = string();
-        mark.data.push_back( data );
+        mark.fun.push_back( data );
     }
     for( auto com : m_commands ) {
         data.type = GlcDataType::command;
         data.name = com->get_code();
         data.value = string();
-        mark.data.push_back( data );
+        mark.com.push_back( data );
     }
     for( auto file : m_files ) {
         data.type = GlcDataType::file;
         data.name = file->get_code();
         data.value = string();
-        mark.data.push_back( data );
+        mark.file.push_back( data );
     }
     for( auto object : m_objects ) {
         Scheme* sch = dynamic_cast<Scheme*>(object);
@@ -191,38 +191,41 @@ GlcMark Mark::get_mark_data( const Glich* glc ) const
             data.type = GlcDataType::object;
             data.name = object->get_code();
             data.value = string();
+            mark.obj.push_back( data );
         }
         else {
             data.type = GlcDataType::scheme;
-            data.name = sch->get_code();
+            string code = sch->get_code();
+            assert( code.substr( 0, 2 ) == "s:" );
+            data.name = code.substr( 2 );
             data.value = sch->get_name();
+            mark.sch.push_back( data );
         }
-        mark.data.push_back( data );
     }
     for( auto lex : m_lexicons ) {
         data.type = GlcDataType::lexicon;
         data.name = lex->get_code();
         data.value = lex->get_name();
-        mark.data.push_back( data );
+        mark.lex.push_back( data );
     }
     for( auto gmr : m_grammars ) {
-        data.type = GlcDataType::lexicon;
+        data.type = GlcDataType::grammar;
         data.name = gmr->get_code();
         data.value = string();
-        mark.data.push_back( data );
+        mark.gmr.push_back( data );
     }
     for( auto fmt : m_formats ) {
         data.type = GlcDataType::format;
         data.name = fmt->get_code();
         data.value = string();
-        mark.data.push_back( data );
+        mark.fmt.push_back( data );
     }
     for( auto& local : m_locals ) {
         data.type = GlcDataType::variable;
         data.name = local;
         SValue value = glc->get_local( local );
         data.value = value.as_string();
-        mark.data.push_back( data );
+        mark.var.push_back( data );
     }
 
     return mark;

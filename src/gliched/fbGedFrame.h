@@ -21,7 +21,7 @@
 #include <wx/settings.h>
 #include <wx/button.h>
 #include <wx/toolbar.h>
-#include <wx/dataview.h>
+#include <wx/treelist.h>
 #include <wx/sizer.h>
 #include <wx/panel.h>
 #include <wx/stc/stc.h>
@@ -44,7 +44,7 @@ class fbGedFrame : public wxFrame
 		wxButton* m_buttonRun;
 		wxSplitterWindow* m_splitter2;
 		wxPanel* m_panel3;
-		wxDataViewCtrl* m_dataViewCtrl1;
+		wxTreeListCtrl* m_treeListCtrl;
 		wxPanel* m_panel4;
 		wxSplitterWindow* m_splitter4;
 		wxPanel* m_panel6;
@@ -79,13 +79,13 @@ class fbGedFrame : public wxFrame
 
 		void m_splitter2OnIdle( wxIdleEvent& )
 		{
-			m_splitter2->SetSashPosition( 150 );
+			m_splitter2->SetSashPosition( 250 );
 			m_splitter2->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbGedFrame::m_splitter2OnIdle ), NULL, this );
 		}
 
 		void m_splitter4OnIdle( wxIdleEvent& )
 		{
-			m_splitter4->SetSashPosition( 180 );
+			m_splitter4->SetSashPosition( 250 );
 			m_splitter4->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbGedFrame::m_splitter4OnIdle ), NULL, this );
 		}
 

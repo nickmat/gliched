@@ -54,4 +54,10 @@ bool gedApp::OnInit()
     return true;
 }
 
+int gedApp::OnExit()
+{
+    glich::exit_glc();
+    return 0;
+}
+
 // End of src/gliched/gedFrame.cpp file

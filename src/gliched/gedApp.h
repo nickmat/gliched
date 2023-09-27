@@ -29,7 +29,8 @@
 
 class gedApp: public wxApp
 {
-    virtual bool OnInit();
+    bool OnInit() override;
+    int OnExit() override;
 
     wxFrame* frame;
 };

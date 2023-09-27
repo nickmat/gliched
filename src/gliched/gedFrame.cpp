@@ -43,6 +43,13 @@ gedFrame::gedFrame(
 {
     // Set frames Icon
     SetIcon( wxICON( gliched_icon ) );
+
+    m_treeListCtrl->AppendColumn( "Type" );
+    m_treeListCtrl->AppendColumn( "Name" );
+    m_treeListCtrl->AppendColumn( "Value" );
+
+    UpdateDataTree();
+
 }
 
 void gedFrame::OnExit( wxCommandEvent& event )
@@ -56,6 +63,86 @@ void gedFrame::OnRun( wxCommandEvent& event )
     string script = m_ctrlEdit->GetText();
     string result = glich::get_glc()->run_script( script );
     m_ctrlResult->SetValue( result );
+    UpdateDataTree();
+}
+
+void gedFrame::UpdateDataTree()
+{
+    m_treeListCtrl->DeleteAllItems();
+    glich::GlcMarkVec tree = glich::get_glc()->get_glc_data();
+    wxTreeListItem root = m_treeListCtrl->GetRootItem();
+    for( auto& mark : tree ) {
+        string type = mark.name.empty() ? "root" : "mark";
+        if( mark.name.empty() ) {}
+        wxTreeListItem item0 = m_treeListCtrl->InsertItem( root, wxTLI_LAST, type );
+        wxTreeListItem item1;
+        wxTreeListItem item2;
+        m_treeListCtrl->SetItemText( item0, 1, mark.name );
+        if( !mark.obj.empty() ) {
+            item1 = m_treeListCtrl->InsertItem( item0, wxTLI_LAST, "object" );
+            for( auto& data : mark.obj ) {
+                item2 = m_treeListCtrl->InsertItem( item1, wxTLI_LAST, data.name );
+                m_treeListCtrl->SetItemText( item2, 1, data.value );
+            }
+        }
+        if( !mark.file.empty() ) {
+            item1 = m_treeListCtrl->InsertItem( item0, wxTLI_LAST, "file" );
+            for( auto& data : mark.file ) {
+                item2 = m_treeListCtrl->InsertItem( item1, wxTLI_LAST, data.name );
+                m_treeListCtrl->SetItemText( item2, 1, data.value );
+            }
+        }
+        if( !mark.fun.empty() ) {
+            item1 = m_treeListCtrl->InsertItem( item0, wxTLI_LAST, "function" );
+            for( auto& data : mark.fun ) {
+                item2 = m_treeListCtrl->InsertItem( item1, wxTLI_LAST, data.name );
+                m_treeListCtrl->SetItemText( item2, 1, data.value );
+            }
+        }
+        if( !mark.com.empty() ) {
+            item1 = m_treeListCtrl->InsertItem( item0, wxTLI_LAST, "command" );
+            for( auto& data : mark.com ) {
+                item2 = m_treeListCtrl->InsertItem( item1, wxTLI_LAST, data.name );
+                m_treeListCtrl->SetItemText( item2, 1, data.value );
+            }
+        }
+        if( !mark.lex.empty() ) {
+            item1 = m_treeListCtrl->InsertItem( item0, wxTLI_LAST, "lexicon" );
+            for( auto& data : mark.lex ) {
+                item2 = m_treeListCtrl->InsertItem( item1, wxTLI_LAST, data.name );
+                m_treeListCtrl->SetItemText( item2, 1, data.value );
+            }
+        }
+        if( !mark.gmr.empty() ) {
+            item1 = m_treeListCtrl->InsertItem( item0, wxTLI_LAST, "grammar" );
+            for( auto& data : mark.gmr ) {
+                item2 = m_treeListCtrl->InsertItem( item1, wxTLI_LAST, data.name );
+                m_treeListCtrl->SetItemText( item2, 1, data.value );
+            }
+        }
+        if( !mark.fmt.empty() ) {
+            item1 = m_treeListCtrl->InsertItem( item0, wxTLI_LAST, "format" );
+            for( auto& data : mark.fmt ) {
+                item2 = m_treeListCtrl->InsertItem( item1, wxTLI_LAST, data.name );
+                m_treeListCtrl->SetItemText( item2, 1, data.value );
+            }
+        }
+        if( !mark.sch.empty() ) {
+            item1 = m_treeListCtrl->InsertItem( item0, wxTLI_LAST, "scheme" );
+            for( auto& data : mark.sch ) {
+                item2 = m_treeListCtrl->InsertItem( item1, wxTLI_LAST, data.name );
+                m_treeListCtrl->SetItemText( item2, 1, data.value );
+            }
+        }
+        if( !mark.var.empty() ) {
+            item1 = m_treeListCtrl->InsertItem( item0, wxTLI_LAST, "varibles" );
+            for( auto& data : mark.var ) {
+                item2 = m_treeListCtrl->InsertItem( item1, wxTLI_LAST, data.type );
+                m_treeListCtrl->SetItemText( item2, 1, data.name );
+                m_treeListCtrl->SetItemText( item2, 2, data.value );
+            }
+        }
+    }
 }
 
 // End of src/gliched/gedFrame.cpp file.

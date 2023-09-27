@@ -55,6 +55,7 @@ private:
 	void OnAbout( wxCommandEvent& event ) override { event.Skip(); }
 	void OnRun( wxCommandEvent& event ) override;
 
+	void UpdateDataTree();
 };
 
 #endif // SRC_GLICHED_GEDFRAME_H_GUARD

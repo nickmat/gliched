@@ -46,6 +46,9 @@ namespace glich {
         enum class Type {
             Null, Error, String, Bool, Number, field, range, rlist, Float, Object
         };
+        static constexpr const char* s_typename[] = {
+            "null", "error", "string", "bool", "number", "field", "range", "rlist", "float", "object"
+        };
         SValue() : m_type( Type::Null ) {}
         SValue( const SValue& value );
         SValue( const std::string& str ) : m_type( Type::String ), m_data( str ) {}
@@ -140,6 +143,7 @@ namespace glich {
         void compliment();
 
         Type type() const { return m_type; }
+        const char* type_str() const { return s_typename[static_cast<size_t>(m_type)]; }
         bool is_integer() const { return (m_type == Type::Number || m_type == Type::field); }
 
     private:

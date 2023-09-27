@@ -191,15 +191,13 @@ TEST_CASE( "Test get_glc_data", "[get_glc_data]" )
     for( auto& mark : marks ) {
         if( mark.name == "test" ) {
             for( auto& item : mark.var ) {
-                if( item.type == GlcDataType::variable ) {
-                    if( item.name == "vnumber" ) {
-                        REQUIRE( item.value == "123" );
-                        cnt++;
-                    }
-                    else if( item.name == "vstring" ) {
-                        REQUIRE( item.value == "text" );
-                        cnt++;
-                    }
+                if( item.name == "vnumber" ) {
+                    REQUIRE( item.value == "123" );
+                    cnt++;
+                }
+                else if( item.name == "vstring" ) {
+                    REQUIRE( item.value == "text" );
+                    cnt++;
                 }
             }
         }

@@ -7,17 +7,17 @@
 # Licence:     GNU GPLv3
 # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
 
-set(GED_HEADERS
-  fbGedFrame.h
-  gedApp.h
-  gedFrame.h
+set(GE_HEADERS
+  fbGeFrame.h
+  geApp.h
+  geFrame.h
 )
-set(GED_SOURCES
-  fbGedFrame.cpp
-  gedApp.cpp
-  gedFrame.cpp
+set(GE_SOURCES
+  fbGeFrame.cpp
+  geApp.cpp
+  geFrame.cpp
 )
 
-add_executable(gliched WIN32 ${GED_SOURCES} ${GED_HEADERS} gliched.rc)
+add_executable(gliched WIN32 ${GE_SOURCES} ${GE_HEADERS} gliched.rc)
 
 target_link_libraries (gliched PUBLIC glc wx::stc wx::net wx::core wx::base)

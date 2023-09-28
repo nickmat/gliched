@@ -24,10 +24,10 @@
 
  */
 
-#ifndef SRC_GLICHED_GEDAPP_H_GUARD
-#define SRC_GLICHED_GEDAPP_H_GUARD
+#ifndef SRC_GLICHED_GEAPP_H_GUARD
+#define SRC_GLICHED_GEAPP_H_GUARD
 
-class gedApp: public wxApp
+class geApp: public wxApp
 {
     bool OnInit() override;
     int OnExit() override;
@@ -35,6 +35,6 @@ class gedApp: public wxApp
     wxFrame* frame;
 };
 
-wxDECLARE_APP( gedApp );
+wxDECLARE_APP( geApp );
 
-#endif // SRC_GLICHED_GEDAPP_H_GUARD
+#endif // SRC_GLICHED_GEAPP_H_GUARD

@@ -24,15 +24,15 @@
 
  */
 
-#ifndef SRC_GLICHED_GEDFRAME_H_GUARD
-#define SRC_GLICHED_GEDFRAME_H_GUARD
+#ifndef SRC_GLICHED_GEFRAME_H_GUARD
+#define SRC_GLICHED_GEFRAME_H_GUARD
 
-#include "fbGedFrame.h"
+#include "fbGeFrame.h"
 
-class gedFrame : public fbGedFrame
+class geFrame : public fbGeFrame
 {
 public:
-    gedFrame( 
+    geFrame( 
         const wxString& title, 
         const wxPoint& pos = wxDefaultPosition,
         const wxSize& size = wxDefaultSize,
@@ -56,6 +56,7 @@ private:
 	void OnRun( wxCommandEvent& event ) override;
 
 	void UpdateDataTree();
+
 };
 
-#endif // SRC_GLICHED_GEDFRAME_H_GUARD
+#endif // SRC_GLICHED_GEFRAME_H_GUARD

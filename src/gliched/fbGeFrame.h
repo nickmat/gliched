@@ -33,9 +33,9 @@
 ///////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////
-/// Class fbGedFrame
+/// Class fbGeFrame
 ///////////////////////////////////////////////////////////////////////////////
-class fbGedFrame : public wxFrame
+class fbGeFrame : public wxFrame
 {
 	private:
 
@@ -48,7 +48,7 @@ class fbGedFrame : public wxFrame
 		wxPanel* m_panel4;
 		wxSplitterWindow* m_splitter4;
 		wxPanel* m_panel6;
-		wxStyledTextCtrl* m_ctrlEdit;
+		wxStyledTextCtrl* m_ctrlEditSTC;
 		wxPanel* m_panel7;
 		wxTextCtrl* m_ctrlResult;
 		wxStatusBar* m_statusBar1;
@@ -73,20 +73,20 @@ class fbGedFrame : public wxFrame
 
 	public:
 
-		fbGedFrame( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Glich Editor"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
+		fbGeFrame( wxWindow* parent, wxWindowID id = wxID_ANY, const wxString& title = _("Glich Editor"), const wxPoint& pos = wxDefaultPosition, const wxSize& size = wxSize( -1,-1 ), long style = wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL );
 
-		~fbGedFrame();
+		~fbGeFrame();
 
 		void m_splitter2OnIdle( wxIdleEvent& )
 		{
 			m_splitter2->SetSashPosition( 250 );
-			m_splitter2->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbGedFrame::m_splitter2OnIdle ), NULL, this );
+			m_splitter2->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbGeFrame::m_splitter2OnIdle ), NULL, this );
 		}
 
 		void m_splitter4OnIdle( wxIdleEvent& )
 		{
 			m_splitter4->SetSashPosition( 250 );
-			m_splitter4->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbGedFrame::m_splitter4OnIdle ), NULL, this );
+			m_splitter4->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbGeFrame::m_splitter4OnIdle ), NULL, this );
 		}
 
 };

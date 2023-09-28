@@ -7,11 +7,11 @@
 
 #include <wx/wxprec.h>
 
-#include "fbGedFrame.h"
+#include "fbGeFrame.h"
 
 ///////////////////////////////////////////////////////////////////////////
 
-fbGedFrame::fbGedFrame( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
+fbGeFrame::fbGeFrame( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
 	this->SetSizeHints( wxSize( 800,500 ), wxDefaultSize );
 
@@ -101,7 +101,7 @@ fbGedFrame::fbGedFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 
 	m_splitter2 = new wxSplitterWindow( this, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_NO_XP_THEME );
 	m_splitter2->SetSashGravity( 0.25 );
-	m_splitter2->Connect( wxEVT_IDLE, wxIdleEventHandler( fbGedFrame::m_splitter2OnIdle ), NULL, this );
+	m_splitter2->Connect( wxEVT_IDLE, wxIdleEventHandler( fbGeFrame::m_splitter2OnIdle ), NULL, this );
 
 	m_panel3 = new wxPanel( m_splitter2, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer16;
@@ -121,50 +121,50 @@ fbGedFrame::fbGedFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 
 	m_splitter4 = new wxSplitterWindow( m_panel4, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxSP_NO_XP_THEME );
 	m_splitter4->SetSashGravity( 0.75 );
-	m_splitter4->Connect( wxEVT_IDLE, wxIdleEventHandler( fbGedFrame::m_splitter4OnIdle ), NULL, this );
+	m_splitter4->Connect( wxEVT_IDLE, wxIdleEventHandler( fbGeFrame::m_splitter4OnIdle ), NULL, this );
 	m_splitter4->SetMinimumPaneSize( 100 );
 
 	m_panel6 = new wxPanel( m_splitter4, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer17;
 	bSizer17 = new wxBoxSizer( wxVERTICAL );
 
-	m_ctrlEdit = new wxStyledTextCtrl( m_panel6, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, wxEmptyString );
-	m_ctrlEdit->SetUseTabs( false );
-	m_ctrlEdit->SetTabWidth( 4 );
-	m_ctrlEdit->SetIndent( 4 );
-	m_ctrlEdit->SetTabIndents( true );
-	m_ctrlEdit->SetBackSpaceUnIndents( true );
-	m_ctrlEdit->SetViewEOL( false );
-	m_ctrlEdit->SetViewWhiteSpace( false );
-	m_ctrlEdit->SetMarginWidth( 2, 0 );
-	m_ctrlEdit->SetIndentationGuides( true );
-	m_ctrlEdit->SetReadOnly( false );
-	m_ctrlEdit->SetMarginType( 1, wxSTC_MARGIN_SYMBOL );
-	m_ctrlEdit->SetMarginMask( 1, wxSTC_MASK_FOLDERS );
-	m_ctrlEdit->SetMarginWidth( 1, 16);
-	m_ctrlEdit->SetMarginSensitive( 1, true );
-	m_ctrlEdit->SetProperty( wxT("fold"), wxT("1") );
-	m_ctrlEdit->SetFoldFlags( wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED | wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED );
-	m_ctrlEdit->SetMarginType( 0, wxSTC_MARGIN_NUMBER );
-	m_ctrlEdit->SetMarginWidth( 0, m_ctrlEdit->TextWidth( wxSTC_STYLE_LINENUMBER, wxT("_99999") ) );
-	m_ctrlEdit->MarkerDefine( wxSTC_MARKNUM_FOLDER, wxSTC_MARK_BOXPLUS );
-	m_ctrlEdit->MarkerSetBackground( wxSTC_MARKNUM_FOLDER, wxColour( wxT("BLACK") ) );
-	m_ctrlEdit->MarkerSetForeground( wxSTC_MARKNUM_FOLDER, wxColour( wxT("WHITE") ) );
-	m_ctrlEdit->MarkerDefine( wxSTC_MARKNUM_FOLDEROPEN, wxSTC_MARK_BOXMINUS );
-	m_ctrlEdit->MarkerSetBackground( wxSTC_MARKNUM_FOLDEROPEN, wxColour( wxT("BLACK") ) );
-	m_ctrlEdit->MarkerSetForeground( wxSTC_MARKNUM_FOLDEROPEN, wxColour( wxT("WHITE") ) );
-	m_ctrlEdit->MarkerDefine( wxSTC_MARKNUM_FOLDERSUB, wxSTC_MARK_EMPTY );
-	m_ctrlEdit->MarkerDefine( wxSTC_MARKNUM_FOLDEREND, wxSTC_MARK_BOXPLUS );
-	m_ctrlEdit->MarkerSetBackground( wxSTC_MARKNUM_FOLDEREND, wxColour( wxT("BLACK") ) );
-	m_ctrlEdit->MarkerSetForeground( wxSTC_MARKNUM_FOLDEREND, wxColour( wxT("WHITE") ) );
-	m_ctrlEdit->MarkerDefine( wxSTC_MARKNUM_FOLDEROPENMID, wxSTC_MARK_BOXMINUS );
-	m_ctrlEdit->MarkerSetBackground( wxSTC_MARKNUM_FOLDEROPENMID, wxColour( wxT("BLACK") ) );
-	m_ctrlEdit->MarkerSetForeground( wxSTC_MARKNUM_FOLDEROPENMID, wxColour( wxT("WHITE") ) );
-	m_ctrlEdit->MarkerDefine( wxSTC_MARKNUM_FOLDERMIDTAIL, wxSTC_MARK_EMPTY );
-	m_ctrlEdit->MarkerDefine( wxSTC_MARKNUM_FOLDERTAIL, wxSTC_MARK_EMPTY );
-	m_ctrlEdit->SetSelBackground( true, wxSystemSettings::GetColour( wxSYS_COLOUR_HIGHLIGHT ) );
-	m_ctrlEdit->SetSelForeground( true, wxSystemSettings::GetColour( wxSYS_COLOUR_HIGHLIGHTTEXT ) );
-	bSizer17->Add( m_ctrlEdit, 1, wxEXPAND | wxALL, 5 );
+	m_ctrlEditSTC = new wxStyledTextCtrl( m_panel6, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, wxEmptyString );
+	m_ctrlEditSTC->SetUseTabs( false );
+	m_ctrlEditSTC->SetTabWidth( 4 );
+	m_ctrlEditSTC->SetIndent( 4 );
+	m_ctrlEditSTC->SetTabIndents( true );
+	m_ctrlEditSTC->SetBackSpaceUnIndents( true );
+	m_ctrlEditSTC->SetViewEOL( false );
+	m_ctrlEditSTC->SetViewWhiteSpace( false );
+	m_ctrlEditSTC->SetMarginWidth( 2, 0 );
+	m_ctrlEditSTC->SetIndentationGuides( true );
+	m_ctrlEditSTC->SetReadOnly( false );
+	m_ctrlEditSTC->SetMarginType( 1, wxSTC_MARGIN_SYMBOL );
+	m_ctrlEditSTC->SetMarginMask( 1, wxSTC_MASK_FOLDERS );
+	m_ctrlEditSTC->SetMarginWidth( 1, 16);
+	m_ctrlEditSTC->SetMarginSensitive( 1, true );
+	m_ctrlEditSTC->SetProperty( wxT("fold"), wxT("1") );
+	m_ctrlEditSTC->SetFoldFlags( wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED | wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED );
+	m_ctrlEditSTC->SetMarginType( 0, wxSTC_MARGIN_NUMBER );
+	m_ctrlEditSTC->SetMarginWidth( 0, m_ctrlEditSTC->TextWidth( wxSTC_STYLE_LINENUMBER, wxT("_99999") ) );
+	m_ctrlEditSTC->MarkerDefine( wxSTC_MARKNUM_FOLDER, wxSTC_MARK_BOXPLUS );
+	m_ctrlEditSTC->MarkerSetBackground( wxSTC_MARKNUM_FOLDER, wxColour( wxT("BLACK") ) );
+	m_ctrlEditSTC->MarkerSetForeground( wxSTC_MARKNUM_FOLDER, wxColour( wxT("WHITE") ) );
+	m_ctrlEditSTC->MarkerDefine( wxSTC_MARKNUM_FOLDEROPEN, wxSTC_MARK_BOXMINUS );
+	m_ctrlEditSTC->MarkerSetBackground( wxSTC_MARKNUM_FOLDEROPEN, wxColour( wxT("BLACK") ) );
+	m_ctrlEditSTC->MarkerSetForeground( wxSTC_MARKNUM_FOLDEROPEN, wxColour( wxT("WHITE") ) );
+	m_ctrlEditSTC->MarkerDefine( wxSTC_MARKNUM_FOLDERSUB, wxSTC_MARK_EMPTY );
+	m_ctrlEditSTC->MarkerDefine( wxSTC_MARKNUM_FOLDEREND, wxSTC_MARK_BOXPLUS );
+	m_ctrlEditSTC->MarkerSetBackground( wxSTC_MARKNUM_FOLDEREND, wxColour( wxT("BLACK") ) );
+	m_ctrlEditSTC->MarkerSetForeground( wxSTC_MARKNUM_FOLDEREND, wxColour( wxT("WHITE") ) );
+	m_ctrlEditSTC->MarkerDefine( wxSTC_MARKNUM_FOLDEROPENMID, wxSTC_MARK_BOXMINUS );
+	m_ctrlEditSTC->MarkerSetBackground( wxSTC_MARKNUM_FOLDEROPENMID, wxColour( wxT("BLACK") ) );
+	m_ctrlEditSTC->MarkerSetForeground( wxSTC_MARKNUM_FOLDEROPENMID, wxColour( wxT("WHITE") ) );
+	m_ctrlEditSTC->MarkerDefine( wxSTC_MARKNUM_FOLDERMIDTAIL, wxSTC_MARK_EMPTY );
+	m_ctrlEditSTC->MarkerDefine( wxSTC_MARKNUM_FOLDERTAIL, wxSTC_MARK_EMPTY );
+	m_ctrlEditSTC->SetSelBackground( true, wxSystemSettings::GetColour( wxSYS_COLOUR_HIGHLIGHT ) );
+	m_ctrlEditSTC->SetSelForeground( true, wxSystemSettings::GetColour( wxSYS_COLOUR_HIGHLIGHTTEXT ) );
+	bSizer17->Add( m_ctrlEditSTC, 1, wxEXPAND | wxALL, 5 );
 
 
 	m_panel6->SetSizer( bSizer17 );
@@ -200,26 +200,26 @@ fbGedFrame::fbGedFrame( wxWindow* parent, wxWindowID id, const wxString& title, 
 	this->Centre( wxBOTH );
 
 	// Connect Events
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGedFrame::OnFileNew ), this, m_menuFileNew->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGedFrame::OnFileOpen ), this, m_menuFileOpen->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGedFrame::OnFileSave ), this, m_menuFileSave->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGedFrame::OnFileSaveAs ), this, m_menuFileSaveAs->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGedFrame::OnFileClose ), this, m_menuFileClose->GetId());
-	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGedFrame::OnExit ), this, m_menuExit->GetId());
-	m_menuEdit->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGedFrame::OnEditUndo ), this, m_menuEditUndo->GetId());
-	m_menuEdit->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGedFrame::OnEditRedo ), this, m_menuEditRedo->GetId());
-	m_menuEdit->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGedFrame::OnEditCut ), this, m_menuEditCut->GetId());
-	m_menuEdit->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGedFrame::OnEditCopy ), this, m_menuEditCopy->GetId());
-	m_menuEdit->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGedFrame::OnEditPaste ), this, m_menuEditPaste->GetId());
-	m_menuEdit->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGedFrame::OnEditDelete ), this, m_menuEditDelete->GetId());
-	m_menuHelp->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGedFrame::OnWebsite ), this, m_menuHelpWebsite->GetId());
-	m_menuHelp->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGedFrame::OnAbout ), this, m_menuHelpAbout->GetId());
-	m_buttonRun->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbGedFrame::OnRun ), NULL, this );
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnFileNew ), this, m_menuFileNew->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnFileOpen ), this, m_menuFileOpen->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnFileSave ), this, m_menuFileSave->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnFileSaveAs ), this, m_menuFileSaveAs->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnFileClose ), this, m_menuFileClose->GetId());
+	m_menuFile->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnExit ), this, m_menuExit->GetId());
+	m_menuEdit->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnEditUndo ), this, m_menuEditUndo->GetId());
+	m_menuEdit->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnEditRedo ), this, m_menuEditRedo->GetId());
+	m_menuEdit->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnEditCut ), this, m_menuEditCut->GetId());
+	m_menuEdit->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnEditCopy ), this, m_menuEditCopy->GetId());
+	m_menuEdit->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnEditPaste ), this, m_menuEditPaste->GetId());
+	m_menuEdit->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnEditDelete ), this, m_menuEditDelete->GetId());
+	m_menuHelp->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnWebsite ), this, m_menuHelpWebsite->GetId());
+	m_menuHelp->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnAbout ), this, m_menuHelpAbout->GetId());
+	m_buttonRun->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbGeFrame::OnRun ), NULL, this );
 }
 
-fbGedFrame::~fbGedFrame()
+fbGeFrame::~fbGeFrame()
 {
 	// Disconnect Events
-	m_buttonRun->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbGedFrame::OnRun ), NULL, this );
+	m_buttonRun->Disconnect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbGeFrame::OnRun ), NULL, this );
 
 }

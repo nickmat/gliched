@@ -30,22 +30,22 @@
 #include "wx/wx.h"
 #endif
 
-#include "gedApp.h"
+#include "geApp.h"
 
-#include "gedFrame.h"
+#include "geFrame.h"
 
 #include <glc/glc.h>
 
-IMPLEMENT_APP(gedApp)
+IMPLEMENT_APP(geApp)
 
-bool gedApp::OnInit()
+bool geApp::OnInit()
 {
     glich::init_glc( glich::InitLibrary::Hics );
 
     long style = wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxSYSTEM_MENU |
         wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN | wxTAB_TRAVERSAL;
 
-    gedFrame* frame = new gedFrame( "Glich Editor", wxDefaultPosition, wxSize( -1, -1 ), style );
+    geFrame* frame = new geFrame( "Glich Editor", wxDefaultPosition, wxSize( -1, -1 ), style );
 
     frame->Show( true );
 
@@ -54,7 +54,7 @@ bool gedApp::OnInit()
     return true;
 }
 
-int gedApp::OnExit()
+int geApp::OnExit()
 {
     glich::exit_glc();
     return 0;

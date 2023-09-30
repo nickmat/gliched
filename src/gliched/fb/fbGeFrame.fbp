@@ -44,7 +44,7 @@
             <property name="hidden">0</property>
             <property name="id">wxID_ANY</property>
             <property name="maximum_size"></property>
-            <property name="minimum_size">800,500</property>
+            <property name="minimum_size">1000,750</property>
             <property name="name">fbGeFrame</property>
             <property name="pos"></property>
             <property name="size">-1,-1</property>
@@ -714,7 +714,7 @@
                                             <property name="pos"></property>
                                             <property name="resize">Resizable</property>
                                             <property name="sashgravity">0.75</property>
-                                            <property name="sashpos">250</property>
+                                            <property name="sashpos">500</property>
                                             <property name="sashsize">-1</property>
                                             <property name="show">1</property>
                                             <property name="size"></property>
@@ -812,12 +812,12 @@
                                                                 <property name="enabled">1</property>
                                                                 <property name="fg"></property>
                                                                 <property name="floatable">1</property>
-                                                                <property name="folding">1</property>
+                                                                <property name="folding">0</property>
                                                                 <property name="font"></property>
                                                                 <property name="gripper">0</property>
                                                                 <property name="hidden">0</property>
                                                                 <property name="id">wxID_ANY</property>
-                                                                <property name="indentation_guides">1</property>
+                                                                <property name="indentation_guides">0</property>
                                                                 <property name="line_numbers">1</property>
                                                                 <property name="max_size"></property>
                                                                 <property name="maximize_button">0</property>

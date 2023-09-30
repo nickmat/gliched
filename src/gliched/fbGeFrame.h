@@ -85,7 +85,7 @@ class fbGeFrame : public wxFrame
 
 		void m_splitter4OnIdle( wxIdleEvent& )
 		{
-			m_splitter4->SetSashPosition( 250 );
+			m_splitter4->SetSashPosition( 500 );
 			m_splitter4->Disconnect( wxEVT_IDLE, wxIdleEventHandler( fbGeFrame::m_splitter4OnIdle ), NULL, this );
 		}
 

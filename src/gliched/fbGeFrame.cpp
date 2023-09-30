@@ -13,7 +13,7 @@
 
 fbGeFrame::fbGeFrame( wxWindow* parent, wxWindowID id, const wxString& title, const wxPoint& pos, const wxSize& size, long style ) : wxFrame( parent, id, title, pos, size, style )
 {
-	this->SetSizeHints( wxSize( 800,500 ), wxDefaultSize );
+	this->SetSizeHints( wxSize( 1000,750 ), wxDefaultSize );
 
 	wxMenuBar* m_menubar;
 	m_menubar = new wxMenuBar( 0 );
@@ -137,14 +137,9 @@ fbGeFrame::fbGeFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_ctrlEditSTC->SetViewEOL( false );
 	m_ctrlEditSTC->SetViewWhiteSpace( false );
 	m_ctrlEditSTC->SetMarginWidth( 2, 0 );
-	m_ctrlEditSTC->SetIndentationGuides( true );
+	m_ctrlEditSTC->SetIndentationGuides( false );
 	m_ctrlEditSTC->SetReadOnly( false );
-	m_ctrlEditSTC->SetMarginType( 1, wxSTC_MARGIN_SYMBOL );
-	m_ctrlEditSTC->SetMarginMask( 1, wxSTC_MASK_FOLDERS );
-	m_ctrlEditSTC->SetMarginWidth( 1, 16);
-	m_ctrlEditSTC->SetMarginSensitive( 1, true );
-	m_ctrlEditSTC->SetProperty( wxT("fold"), wxT("1") );
-	m_ctrlEditSTC->SetFoldFlags( wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED | wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED );
+	m_ctrlEditSTC->SetMarginWidth( 1, 0 );
 	m_ctrlEditSTC->SetMarginType( 0, wxSTC_MARGIN_NUMBER );
 	m_ctrlEditSTC->SetMarginWidth( 0, m_ctrlEditSTC->TextWidth( wxSTC_STYLE_LINENUMBER, wxT("_99999") ) );
 	m_ctrlEditSTC->MarkerDefine( wxSTC_MARKNUM_FOLDER, wxSTC_MARK_BOXPLUS );
@@ -181,7 +176,7 @@ fbGeFrame::fbGeFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_panel7->SetSizer( bSizer18 );
 	m_panel7->Layout();
 	bSizer18->Fit( m_panel7 );
-	m_splitter4->SplitHorizontally( m_panel6, m_panel7, 250 );
+	m_splitter4->SplitHorizontally( m_panel6, m_panel7, 500 );
 	bSizer15->Add( m_splitter4, 1, wxEXPAND, 5 );
 
 

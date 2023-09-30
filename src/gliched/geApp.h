@@ -1,5 +1,5 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/gliched/gedApp.h
+ * Name:        src/gliched/geApp.h
  * Project:     Gliched: Glich Script Language IDE.
  * Purpose:     Application main and supporting functions.
  * Author:      Nick Matthews

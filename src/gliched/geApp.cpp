@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/gliched/gedFrame.cpp
+ * Name:        src/gliched/geApp.cpp
  * Project:     Gliched: Glich Script Language IDE.
- * Purpose:     Program Main Frame.
+ * Purpose:     Program Main Application Source.
  * Author:      Nick Matthews
  * Created:     19th September 2023
  * Copyright:   Copyright (c) 2023, Nick Matthews.
@@ -60,4 +60,4 @@ int geApp::OnExit()
     return 0;
 }
 
-// End of src/gliched/gedFrame.cpp file
+// End of src/gliched/geApp.cpp file

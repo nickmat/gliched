@@ -1,0 +1,36 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Name:        src/gliched/gePrefs.h
+ * Project:     Gliched: Glich Script Language IDE.
+ * Purpose:     Additional STC test Preferences initialization.
+ * Author:      Nick Matthews
+ * Created:     29th September 2023
+ * Copyright:   Copyright (c) 2023, Nick Matthews.
+ * Licence:     GNU GPLv3
+ *
+ *  Gliched is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Gliched is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Gliched.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+ */
+
+#ifndef SRC_GLICHED_GEPREFS_H_GUARD
+#define SRC_GLICHED_GEPREFS_H_GUARD
+
+#define DEFAULT_LANGUAGE "<default>"
+#define STYLE_TYPES_COUNT 32
+
+ // The (uniform) style used for the annotations.
+const int ANNOTATION_STYLE = wxSTC_STYLE_LASTPREDEFINED + 1;
+
+#endif // SRC_GLICHED_GEPREFS_H_GUARD

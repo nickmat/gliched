@@ -11,11 +11,14 @@ set(GE_HEADERS
   fbGeFrame.h
   geApp.h
   geFrame.h
+  gePrefs.h
+  prefs.h
 )
 set(GE_SOURCES
   fbGeFrame.cpp
   geApp.cpp
   geFrame.cpp
+  prefs.cpp
 )
 
 add_executable(gliched WIN32 ${GE_SOURCES} ${GE_HEADERS} gliched.rc)

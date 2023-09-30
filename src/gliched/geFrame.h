@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/gliched/gedFrame.h
+ * Name:        src/gliched/geFrame.h
  * Project:     Gliched: Glich Script Language IDE.
- * Purpose:     Program Main Frame.
+ * Purpose:     Program Main Frame Class Header.
  * Author:      Nick Matthews
  * Created:     19th September 2023
  * Copyright:   Copyright (c) 2023, Nick Matthews.
@@ -28,6 +28,8 @@
 #define SRC_GLICHED_GEFRAME_H_GUARD
 
 #include "fbGeFrame.h"
+#include "prefs.h"
+
 
 class geFrame : public fbGeFrame
 {
@@ -40,7 +42,7 @@ public:
 
 private:
 	void OnFileNew( wxCommandEvent& event ) override { event.Skip(); }
-	void OnFileOpen( wxCommandEvent& event ) override { event.Skip(); }
+	void OnFileOpen( wxCommandEvent& event ) override;
 	void OnFileSave( wxCommandEvent& event ) override { event.Skip(); }
 	void OnFileSaveAs( wxCommandEvent& event ) override { event.Skip(); }
 	void OnFileClose( wxCommandEvent& event ) override { event.Skip(); }
@@ -56,6 +58,24 @@ private:
 	void OnRun( wxCommandEvent& event ) override;
 
 	void UpdateDataTree();
+
+	//! language/lexer
+	wxString DeterminePrefs( const wxString& filename );
+	bool InitializePrefs( const wxString& name );
+	bool DoFileOpen( wxString filename );
+
+	wxString m_filename;
+	LanguageInfo const* m_language;
+
+	// margin variables
+	int m_LineNrID;
+	int m_LineNrMargin;
+	int m_FoldingID;
+	int m_FoldingMargin;
+	int m_DividerID;
+
+	// call tip data
+	int m_calltipNo;
 
 };
 

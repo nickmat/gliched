@@ -1,7 +1,7 @@
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
- * Name:        src/gliched/gedApp.cpp
+ * Name:        src/gliched/geFrame.cpp
  * Project:     Gliched: Glich Script Language IDE.
- * Purpose:     Application main and supporting functions.
+ * Purpose:     Program Main Frame Class Source.
  * Author:      Nick Matthews
  * Created:     19th September 2023
  * Copyright:   Copyright (c) 2023, Nick Matthews.
@@ -36,11 +36,32 @@
 
 using std::string;
 
+// A small image of a hashtag symbol used in the autocompletion window.
+const char* hashtag_xpm[] = {
+    "10 10 2 1",
+    "  c None",
+    ". c #BD08F9",
+    "  ..  ..  ",
+    "  ..  ..  ",
+    "..........",
+    "..........",
+    "  ..  ..  ",
+    "  ..  ..  ",
+    "..........",
+    "..........",
+    "  ..  ..  ",
+    "  ..  ..  " };
+
 #define MY_FOLDMARGIN 2
 
 geFrame::geFrame(
     const wxString& title, const wxPoint& pos, const wxSize& size, long style )
-    : fbGeFrame( (wxFrame*) nullptr, wxID_ANY, title, pos, size, style )
+    : m_language( nullptr ),
+    m_LineNrID( 0 ), m_LineNrMargin( m_ctrlEditSTC->TextWidth( wxSTC_STYLE_LINENUMBER, "_99999" ) ),
+    m_DividerID( 1 ),
+    m_FoldingID( 2 ), m_FoldingMargin( FromDIP( 16 ) ),
+    m_calltipNo( 1 ),
+    fbGeFrame( (wxFrame*) nullptr, wxID_ANY, title, pos, size, style )
 {
     // Set frames Icon
     SetIcon( wxICON( gliched_icon ) );
@@ -51,6 +72,40 @@ geFrame::geFrame(
 
     UpdateDataTree();
 
+    InitializePrefs( DEFAULT_LANGUAGE );
+
+    // set visibility
+    m_ctrlEditSTC->SetVisiblePolicy( wxSTC_VISIBLE_STRICT | wxSTC_VISIBLE_SLOP, 1 );
+    m_ctrlEditSTC->SetXCaretPolicy( wxSTC_CARET_EVEN | wxSTC_VISIBLE_STRICT | wxSTC_CARET_SLOP, 1 );
+    m_ctrlEditSTC->SetYCaretPolicy( wxSTC_CARET_EVEN | wxSTC_VISIBLE_STRICT | wxSTC_CARET_SLOP, 1 );
+
+    // annotations
+    m_ctrlEditSTC->AnnotationSetVisible( wxSTC_ANNOTATION_BOXED );
+
+    // autocompletion
+    wxBitmap bmp( hashtag_xpm );
+    m_ctrlEditSTC->RegisterImage( 0, bmp );
+
+    // call tips
+    m_ctrlEditSTC->CallTipSetBackground( *wxYELLOW );
+
+    // miscellaneous
+    m_ctrlEditSTC->CmdKeyClear( wxSTC_KEY_TAB, 0 ); // this is done by the menu accelerator key
+    m_ctrlEditSTC->SetLayoutCache( wxSTC_CACHE_PAGE );
+    m_ctrlEditSTC->UsePopUp( wxSTC_POPUP_ALL );
+}
+
+void geFrame::OnFileOpen( wxCommandEvent& event )
+{
+    if( !m_filename ) {
+        wxFileDialog dlg( this, "Open file", wxEmptyString, wxEmptyString,
+            "Any file (*)|*", wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR );
+        if( dlg.ShowModal() != wxID_OK ) {
+            return;
+        }
+        m_filename = dlg.GetPath();
+    }
+    DoFileOpen( m_filename );
 }
 
 void geFrame::OnExit( wxCommandEvent& event )
@@ -144,6 +199,167 @@ void geFrame::UpdateDataTree()
             }
         }
     }
+}
+
+wxString geFrame::DeterminePrefs( const wxString& filename )
+{
+    LanguageInfo const* curInfo;
+
+    // determine language from filepatterns
+    int languageNr;
+    for( languageNr = 0; languageNr < g_LanguagePrefsSize; languageNr++ ) {
+        curInfo = &g_LanguagePrefs[languageNr];
+        wxString filepattern = curInfo->filepattern;
+        filepattern.Lower();
+        while( !filepattern.empty() ) {
+            wxString cur = filepattern.BeforeFirst( ';' );
+            if( (cur == filename) ||
+                (cur == (filename.BeforeLast( '.' ) + ".*")) ||
+                (cur == ("*." + filename.AfterLast( '.' ))) ) {
+                return curInfo->name;
+            }
+            filepattern = filepattern.AfterFirst( ';' );
+        }
+    }
+    return wxEmptyString;
+}
+
+bool geFrame::InitializePrefs( const wxString& name )
+{
+    // initialize styles
+    m_ctrlEditSTC->StyleClearAll();
+    LanguageInfo const* curInfo = nullptr;
+
+    // determine language
+    bool found = false;
+    int languageNr;
+    for( languageNr = 0; languageNr < g_LanguagePrefsSize; languageNr++ ) {
+        curInfo = &g_LanguagePrefs[languageNr];
+        if( curInfo->name == name ) {
+            found = true;
+            break;
+        }
+    }
+    if( !found ) {
+        return false;
+    }
+
+    // set lexer and language
+    m_ctrlEditSTC->SetLexer( curInfo->lexer );
+    m_language = curInfo;
+
+    // set margin for line numbers
+    m_ctrlEditSTC->SetMarginType( m_LineNrID, wxSTC_MARGIN_NUMBER );
+    m_ctrlEditSTC->StyleSetForeground( wxSTC_STYLE_LINENUMBER, wxColour( "DARK GREY" ) );
+    m_ctrlEditSTC->StyleSetBackground( wxSTC_STYLE_LINENUMBER, *wxWHITE );
+    m_ctrlEditSTC->SetMarginWidth( m_LineNrID, m_LineNrMargin ); // start out visible
+
+    // annotations style
+    m_ctrlEditSTC->StyleSetBackground( ANNOTATION_STYLE, wxColour( 244, 220, 220 ) );
+    m_ctrlEditSTC->StyleSetForeground( ANNOTATION_STYLE, *wxBLACK );
+    m_ctrlEditSTC->StyleSetSizeFractional( ANNOTATION_STYLE,
+        (m_ctrlEditSTC->StyleGetSizeFractional( wxSTC_STYLE_DEFAULT ) * 4) / 5 );
+
+    // default fonts for all styles!
+    int Nr;
+    for( Nr = 0; Nr < wxSTC_STYLE_LASTPREDEFINED; Nr++ ) {
+        wxFont font( wxFontInfo( 10 ).Family( wxFONTFAMILY_MODERN ) );
+        m_ctrlEditSTC->StyleSetFont( Nr, font );
+    }
+
+    // set common styles
+    m_ctrlEditSTC->StyleSetForeground( wxSTC_STYLE_DEFAULT, wxColour( "DARK GREY" ) );
+    m_ctrlEditSTC->StyleSetForeground( wxSTC_STYLE_INDENTGUIDE, wxColour( "DARK GREY" ) );
+
+    // initialize settings
+    if( g_CommonPrefs.syntaxEnable ) {
+        int keywordnr = 0;
+        for( Nr = 0; Nr < STYLE_TYPES_COUNT; Nr++ ) {
+            if( curInfo->styles[Nr].type == -1 ) continue;
+            const StyleInfo& curType = g_StylePrefs[curInfo->styles[Nr].type];
+            wxFont font( wxFontInfo( curType.fontsize )
+                .Family( wxFONTFAMILY_MODERN )
+                .FaceName( curType.fontname ) );
+            m_ctrlEditSTC->StyleSetFont( Nr, font );
+            if( curType.foreground.length() ) {
+                m_ctrlEditSTC->StyleSetForeground( Nr, wxColour( curType.foreground ) );
+            }
+            if( curType.background.length() ) {
+                m_ctrlEditSTC->StyleSetBackground( Nr, wxColour( curType.background ) );
+            }
+            m_ctrlEditSTC->StyleSetBold( Nr, (curType.fontstyle & mySTC_STYLE_BOLD) > 0 );
+            m_ctrlEditSTC->StyleSetItalic( Nr, (curType.fontstyle & mySTC_STYLE_ITALIC) > 0 );
+            m_ctrlEditSTC->StyleSetUnderline( Nr, (curType.fontstyle & mySTC_STYLE_UNDERL) > 0 );
+            m_ctrlEditSTC->StyleSetVisible( Nr, (curType.fontstyle & mySTC_STYLE_HIDDEN) == 0 );
+            m_ctrlEditSTC->StyleSetCase( Nr, curType.lettercase );
+            const char* pwords = curInfo->styles[Nr].words;
+            if( pwords ) {
+                m_ctrlEditSTC->SetKeyWords( keywordnr, pwords );
+                keywordnr += 1;
+            }
+        }
+    }
+
+    // set margin as unused
+    m_ctrlEditSTC->SetMarginType( m_DividerID, wxSTC_MARGIN_SYMBOL );
+    m_ctrlEditSTC->SetMarginWidth( m_DividerID, 0 );
+    m_ctrlEditSTC->SetMarginSensitive( m_DividerID, false );
+
+    // folding
+    m_ctrlEditSTC->SetMarginType( m_FoldingID, wxSTC_MARGIN_SYMBOL );
+    m_ctrlEditSTC->SetMarginMask( m_FoldingID, wxSTC_MASK_FOLDERS );
+    m_ctrlEditSTC->StyleSetBackground( m_FoldingID, *wxWHITE );
+    m_ctrlEditSTC->SetMarginWidth( m_FoldingID, 0 );
+    m_ctrlEditSTC->SetMarginSensitive( m_FoldingID, false );
+    if( g_CommonPrefs.foldEnable ) {
+        m_ctrlEditSTC->SetMarginWidth( m_FoldingID, curInfo->folds != 0 ? m_FoldingMargin : 0 );
+        m_ctrlEditSTC->SetMarginSensitive( m_FoldingID, curInfo->folds != 0 );
+        m_ctrlEditSTC->SetProperty( "fold", curInfo->folds != 0 ? "1" : "0" );
+        m_ctrlEditSTC->SetProperty( "fold.comment",
+            (curInfo->folds & mySTC_FOLD_COMMENT) > 0 ? "1" : "0" );
+        m_ctrlEditSTC->SetProperty( "fold.compact",
+            (curInfo->folds & mySTC_FOLD_COMPACT) > 0 ? "1" : "0" );
+        m_ctrlEditSTC->SetProperty( "fold.preprocessor",
+            (curInfo->folds & mySTC_FOLD_PREPROC) > 0 ? "1" : "0" );
+        m_ctrlEditSTC->SetProperty( "fold.html",
+            (curInfo->folds & mySTC_FOLD_HTML) > 0 ? "1" : "0" );
+        m_ctrlEditSTC->SetProperty( "fold.html.preprocessor",
+            (curInfo->folds & mySTC_FOLD_HTMLPREP) > 0 ? "1" : "0" );
+        m_ctrlEditSTC->SetProperty( "fold.comment.python",
+            (curInfo->folds & mySTC_FOLD_COMMENTPY) > 0 ? "1" : "0" );
+        m_ctrlEditSTC->SetProperty( "fold.quotes.python",
+            (curInfo->folds & mySTC_FOLD_QUOTESPY) > 0 ? "1" : "0" );
+    }
+    m_ctrlEditSTC->SetFoldFlags( wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED |
+        wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED );
+
+    // others
+    m_ctrlEditSTC->SetIndentationGuides( g_CommonPrefs.indentGuideEnable );
+    m_ctrlEditSTC->SetEdgeColumn( 80 );
+    m_ctrlEditSTC->SetEdgeMode( g_CommonPrefs.longLineOnEnable ? wxSTC_EDGE_LINE : wxSTC_EDGE_NONE );
+    m_ctrlEditSTC->SetOvertype( g_CommonPrefs.overTypeInitial );
+    m_ctrlEditSTC->SetReadOnly( g_CommonPrefs.readOnlyInitial );
+    m_ctrlEditSTC->SetWrapMode( g_CommonPrefs.wrapModeInitial ?
+        wxSTC_WRAP_WORD : wxSTC_WRAP_NONE );
+
+    return true;
+}
+
+bool geFrame::DoFileOpen( wxString filename )
+{
+    // load file in edit and clear undo
+    if( !filename.empty() ) {
+        m_filename = filename;
+    }
+    m_ctrlEditSTC->LoadFile( m_filename );
+
+    m_ctrlEditSTC->EmptyUndoBuffer();
+
+    // determine lexer language
+    wxFileName fname( m_filename );
+    InitializePrefs( DeterminePrefs( fname.GetFullName() ) );
+
+    return true;
 }
 
 // End of src/gliched/gedFrame.cpp file.

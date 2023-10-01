@@ -77,6 +77,29 @@ fbGeFrame::fbGeFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 
 	m_menubar->Append( m_menuEdit, _("&Edit") );
 
+	m_menuView = new wxMenu();
+	m_menuLang = new wxMenu();
+	wxMenuItem* m_menuLangItem = new wxMenuItem( m_menuView, wxID_ANY, _("&Language"), wxEmptyString, wxITEM_NORMAL, m_menuLang );
+	wxMenuItem* m_menuItemGlich;
+	m_menuItemGlich = new wxMenuItem( m_menuLang, wxID_ANY, wxString( _("&Glich") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuLang->Append( m_menuItemGlich );
+
+	wxMenuItem* m_menuItemCpp;
+	m_menuItemCpp = new wxMenuItem( m_menuLang, wxID_ANY, wxString( _("&C++") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuLang->Append( m_menuItemCpp );
+
+	wxMenuItem* m_menuItemPython;
+	m_menuItemPython = new wxMenuItem( m_menuLang, wxID_ANY, wxString( _("&Python") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuLang->Append( m_menuItemPython );
+
+	wxMenuItem* m_menuItemDefault;
+	m_menuItemDefault = new wxMenuItem( m_menuLang, wxID_ANY, wxString( _("<&default>") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuLang->Append( m_menuItemDefault );
+
+	m_menuView->Append( m_menuLangItem );
+
+	m_menubar->Append( m_menuView, _("&View") );
+
 	wxMenu* m_menuHelp;
 	m_menuHelp = new wxMenu();
 	wxMenuItem* m_menuHelpWebsite;
@@ -207,6 +230,10 @@ fbGeFrame::fbGeFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_menuEdit->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnEditCopy ), this, m_menuEditCopy->GetId());
 	m_menuEdit->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnEditPaste ), this, m_menuEditPaste->GetId());
 	m_menuEdit->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnEditDelete ), this, m_menuEditDelete->GetId());
+	m_menuLang->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnLanguageGlich ), this, m_menuItemGlich->GetId());
+	m_menuLang->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnLanguageCpp ), this, m_menuItemCpp->GetId());
+	m_menuLang->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnLanguagePython ), this, m_menuItemPython->GetId());
+	m_menuLang->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnLanguageDefault ), this, m_menuItemDefault->GetId());
 	m_menuHelp->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnWebsite ), this, m_menuHelpWebsite->GetId());
 	m_menuHelp->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnAbout ), this, m_menuHelpAbout->GetId());
 	m_buttonRun->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbGeFrame::OnRun ), NULL, this );

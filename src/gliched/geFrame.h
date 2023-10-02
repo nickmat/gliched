@@ -60,6 +60,8 @@ private:
 	void UpdateDataTree();
 
 	//! language/lexer
+	void OnMarginClick( wxStyledTextEvent& event );
+
 	wxString DeterminePrefs( const wxString& filename );
 	bool InitializePrefs( const wxString& name );
 	bool DoFileOpen( wxString filename );

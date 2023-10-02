@@ -72,6 +72,8 @@ geFrame::geFrame(
 
     UpdateDataTree();
 
+    m_ctrlEditSTC->Bind( wxEVT_STC_MARGINCLICK, &geFrame::OnMarginClick, this );
+
     InitializePrefs( DEFAULT_LANGUAGE );
 
     // set visibility
@@ -197,6 +199,17 @@ void geFrame::UpdateDataTree()
                 m_treeListCtrl->SetItemText( item2, 1, data.name );
                 m_treeListCtrl->SetItemText( item2, 2, data.value );
             }
+        }
+    }
+}
+
+void geFrame::OnMarginClick( wxStyledTextEvent& event )
+{
+    if( event.GetMargin() == 2 ) {
+        int lineClick = m_ctrlEditSTC->LineFromPosition( event.GetPosition() );
+        int levelClick = m_ctrlEditSTC->GetFoldLevel( lineClick );
+        if( (levelClick & wxSTC_FOLDLEVELHEADERFLAG) > 0 ) {
+            m_ctrlEditSTC->ToggleFold( lineClick );
         }
     }
 }

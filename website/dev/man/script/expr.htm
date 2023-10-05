@@ -25,7 +25,7 @@
   <a href='../../../dev/man/index.htm' class='m-item'>v0.3.0 Manual</a>
   <a href='../../../dev/man/script/index.htm' class='m-item'>Glich Script</a>
   <a href='expr.htm' class='m-item thispage'>Expressions</a>
-  <a href='../../../dev/man/script/write.htm' class='m-item nav'>►</a>
+  <a href='../../../dev/man/script/bi-functions.htm' class='m-item nav'>►</a>
   <a href='../../../dev/man/script/index.htm' class='m-item nav'>◄</a>
  </div>
 
@@ -521,59 +521,6 @@
  <tr><td class='example'>4 * @power(2,4) + 10</td><td class='example'>74</td></tr>
 </table>
 
-<h4>Built-in Functions</h4>
-<p>
- There some built-in functions that are always available.
-</p>
-
-<h4>@if( comp, t, f ) Built-in Function</h4>
-<p>
- The @if function behaves similar to the C language ? : tertiary operator.
- If the comp argument is true the result is the t argument,
- otherwise the result is the f argument.
- The function is equivalent to the following statement.
-</p>
-<table class='code'>
-<tr><td
->function if( comp, t, f ) { if comp result = t; else result = f; endif }
-</td></tr>
-</table>
-
-<h4>@read( prompt = "" ) Built-in Function</h4>
-<p>
- The current version is limited to writing and reading from the standard in/out streams.
-</p>
-<p>
- If given, the prompt is written to standard out.
- Then the standard is stream is read up to the next new line.
-</p>
-<p>
- The result of the function is always a string value.
- Use the convert cast to read a field value.
-</p>
-
-<h3>Type Conversions</h3>
-<p>
- Cast operators are used by the <b>Hics</b> language extension
- to change the way date ranges are held.
- These are documented in the Hics specification section.
-</p>
-
-<h4>Cast error</h4>
-<p>
- The error cast operator converts a string into an error.
- This can be used to signal an unusable value in a calculation or function.
-</p>
-<p>
- The prefix "Error (" + line + "): " is added to message,
- where line is the line number of the the error cast operator.
-</p>
-<table class='basic'>
-<tr><th>Example</th><th>Result</th></tr>
- <tr><td class='example'>error "Age is negative."</td><td class='example'>"Error (10): Age is negative."</td></tr>
- <tr><td class='example'>error ("Age of " + age + " is too high.")</td><td class='example'>"Error (10): Age of 150 is too high."</td></tr>
-</table>
-
 <h2>Operator Precedence</h2>
 <p>
  Expressions are evaluated according to the operators detailed in the table.
@@ -638,12 +585,13 @@
  and, if used as signature codes, they must be enclosed in double quotes.
 </p>
 <p>
- <b>and, date, do, endif, element, else, elseif, error, false, future, if, inf, infinite, loop, mod,
- nan, not, null, or, past, record, text, this, today, true, until, while</b>
+ <b>and, do, endif, element, else, elseif, false, future, if, inf, infinite, loop, mod,
+ nan, not, null, or, past, this, today, true</b>
 </p>
 <p>
  The other statement words
- <b>call, command, end, file, format, function, grammar, let, lexicon, mark, object, scheme, set, write, writeln</b>
+ <b>call, command, end, file, format, function, grammar, let, lexicon, mark, object,
+ scheme, set, until, while, write, writeln</b>
  are not strictly keyword, but are best avoided.
  If they are used as variable names then all assignments must start with 'let'.
 </p>
@@ -656,7 +604,7 @@
   <a href='../../../dev/man/index.htm' class='m-item'>v0.3.0 Manual</a>
   <a href='../../../dev/man/script/index.htm' class='m-item'>Glich Script</a>
   <a href='expr.htm' class='m-item thispage'>Expressions</a>
-  <a href='../../../dev/man/script/write.htm' class='m-item nav'>►</a>
+  <a href='../../../dev/man/script/bi-functions.htm' class='m-item nav'>►</a>
   <a href='../../../dev/man/script/index.htm' class='m-item nav'>◄</a>
  </div>
 

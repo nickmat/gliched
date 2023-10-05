@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
+<head>
+ <title>Glich - Built-in Functions</title>
+ <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
+ <link rel='icon' type='image/png' href='../../../sys/logo32x32.png' />
+ <link rel='stylesheet' type='text/css' href='../../../sys/livery.css' />
+ <link rel='stylesheet' type='text/css' href='../../../sys/glich.css' />
+</head>
+<body>
+
+ <div class='heading'>
+  <div class='logo'>
+   <a  href='https://nickmat.github.io/glich/website/index.htm'>
+    <img class='logo' src='../../../sys/logo266x100.png' alt='Logo' />
+   </a>
+  </div>
+  Glich - v0.3.0 Manual<br />Built-in Functions
+  <div class='clear'></div>
+ </div>
+
+ <div class="crumbs">
+  <a href='../../../index.htm' class='m-item'>Home</a>
+  <a href='../../../dev/index.htm' class='m-item'>Development</a>
+  <a href='../../../dev/man/index.htm' class='m-item'>v0.3.0 Manual</a>
+  <a href='../../../dev/man/script/index.htm' class='m-item'>Glich Script</a>
+  <a href='bi-functions.htm' class='m-item thispage'>Built-in Functions</a>
+  <a href='../../../dev/man/script/bi-objects.htm' class='m-item nav'>►</a>
+  <a href='../../../dev/man/script/expr.htm' class='m-item nav'>◄</a>
+ </div>
+
+<div id='content' class='nomenu'>
+
+
+<h2>Introduction</h2>
+<p>
+ The language has a number of functions built-in which are always available.
+</p>
+<table class='basic'>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td>@<b>error</b>( <i>message</i> )</td><td>Create an error value.</td></tr>
+<tr><td>@<b>if</b>( <i>comp, t, f</i> )</td><td>Acts as a comparison operator.</td></tr>
+<tr><td>@<b>read</b>.<i>input</i>( <i>prompt</i> )</td><td>Obtain text from file or console.</td></tr>
+</table>
+<p>
+ Mathematical functions are planned to be added in a future version.
+</p>
+
+<h4>Function @if( comp, t, f )</h4>
+<p>
+ The @if function behaves similar to the C language ? : tertiary operator.
+ If the comp argument is true the result is the t argument,
+ otherwise the result is the f argument.
+ The function is equivalent to the following statement.
+</p>
+<table class='code'>
+<tr><td
+>function if( comp, t, f ) { if comp result = t; else result = f; endif }
+</td></tr>
+</table>
+
+<h4>Function @read.input( prompt = "" )</h4>
+<p>
+ The current version is limited to writing and reading from the standard in/out streams.
+</p>
+<p>
+ If given, the prompt is written to standard out.
+ Then the standard is stream is read up to the next new line.
+</p>
+<p>
+ The result of the function is always a string value.
+ Use the convert cast to read a field value.
+</p>
+
+<h4>Function @error( message )</h4>
+<p>
+ The error function converts a string message into an error value.
+ This can be used to signal an unusable value in a calculation or function.
+</p>
+<p>
+ The prefix "Error (" + <i>line</i> + "): " is added to message,
+ where <i>line</i> is the line number of the the error function.
+</p>
+<table class='basic'>
+<tr><th>Example</th><th>Result</th></tr>
+ <tr><td class='example'>@error( "Age is negative." )</td><td class='example'>"Error (10): Age is negative."</td></tr>
+ <tr><td class='example'>@error( "Age of " + age + " is too high." )</td><td class='example'>"Error (10): Age of 150 is too high."</td></tr>
+</table>
+
+
+</div><!--id=content-->
+
+ <div class="crumbs">
+  <a href='../../../index.htm' class='m-item'>Home</a>
+  <a href='../../../dev/index.htm' class='m-item'>Development</a>
+  <a href='../../../dev/man/index.htm' class='m-item'>v0.3.0 Manual</a>
+  <a href='../../../dev/man/script/index.htm' class='m-item'>Glich Script</a>
+  <a href='bi-functions.htm' class='m-item thispage'>Built-in Functions</a>
+  <a href='../../../dev/man/script/bi-objects.htm' class='m-item nav'>►</a>
+  <a href='../../../dev/man/script/expr.htm' class='m-item nav'>◄</a>
+ </div>
+
+ <div class='tail'></div>
+
+ <div id='valid'>
+  <p>
+   <a href='https://nickmat.github.io/WebPageLayout/website/index.htm'><img src='../../../sys/wpl_16.png' alt='Managed by WebPageLayout' height='16' width='16' /></a>
+   <a href='https://www.gueury.com/mozilla/'><img src='../../../sys/tidy_16.gif' alt='Validated by HTML Validator (based on Tidy)' height='16' width='39' /></a>
+  </p>
+ </div>
+
+ <div id='create-date'><p>21<sup>st</sup> October 2015</p></div>
+
+
+</body>
+</html>

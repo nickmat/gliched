@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html xmlns='http://www.w3.org/1999/xhtml' xml:lang='en' lang='en'>
 <head>
- <title>Glich - Hics Expressions</title>
+ <title>Glich - Built-in Functions</title>
  <meta http-equiv='Content-Type' content='text/html; charset=utf-8' />
  <link rel='icon' type='image/png' href='../../../sys/logo32x32.png' />
  <link rel='stylesheet' type='text/css' href='../../../sys/livery.css' />
@@ -15,7 +15,7 @@
     <img class='logo' src='../../../sys/logo266x100.png' alt='Logo' />
    </a>
   </div>
-  Glich - v0.3.0 Manual<br />Hics Language Expressions
+  Glich - v0.3.0 Manual<br />Built-in Functions
   <div class='clear'></div>
  </div>
 
@@ -24,17 +24,16 @@
   <a href='../../../dev/index.htm' class='m-item'>Development</a>
   <a href='../../../dev/man/index.htm' class='m-item'>v0.3.0 Manual</a>
   <a href='../../../dev/man/hics/index.htm' class='m-item'>Hics Extension</a>
-  <a href='expr.htm' class='m-item thispage'>Hics Expressions</a>
+  <a href='bi-functions.htm' class='m-item thispage'>Built-in Functions</a>
   <a href='../../../dev/man/hics/lexicon.htm' class='m-item nav'>►</a>
   <a href='../../../dev/man/hics/index.htm' class='m-item nav'>◄</a>
  </div>
 
 <div id='content' class='nomenu'>
 
-<h2>Page Under Construction</h2>
-<h2>Hics Extensions to Expressions</h2>
+<h2>Hics Extension Built-in Functions</h2>
 <p>
- The hics extension adds four type conversions (casts) to expressions:
+ The hics extension adds four functions,
  text, date, record and element.
 </p>
 
@@ -55,23 +54,23 @@
  </li>
 </ul>
 <p>
- The script language uses cast operators to convert between these forms.
+ The script language uses functions to convert between these forms.
 </p>
 <p>
  Additionally, a text element and field in a record can be converted
- using an <b>element</b> cast.
+ using an <b>element</b> function.
 </p>
 
-<h4>Cast date</h4>
+<h4>Function date</h4>
 <p>
  A date, in this context, means a rlist or an well ordered list of ranges.
- The date cast converts to these types from a text string or a record (scheme object).
- The date cast puts these two record types into a consistent rlist type.
+ The date function converts to these types from a text string or a record (scheme object).
+ The date function puts these two record types into a consistent rlist type.
  The rlist will then be demoted to a range or field if appropriate.
 </p>
 <p>
  If the original type is a string,
- then the cast operation will need to know the scheme and format to be used.
+ then the function will need to know the scheme and format to be used.
  To convert to a record then the record scheme is required.
  If these are missing, the system output default settings are used.
  Note the a string description of an rlist may include embedded range and union symbols,
@@ -80,17 +79,17 @@
 </p>
 <table class='basic'>
 <tr><th>Example</th><th>Result</th></tr>
- <tr><td class='example'>date "19sep1948"</td><td class='example'>2432814</td></tr>
- <tr><td class='example'>date "1940..1950|1945..1955"</td><td class='example'>2429630 .. 2435473</td></tr>
- <tr><td class='example'>date.g:iso "[1940..1950,1945..1955]"</td><td class='example'>2429630 .. 2435473</td></tr>
- <tr><td class='example'>date {s:g 1948, 9, 19}</td><td class='example'>2432814</td></tr>
- <tr><td class='example'>date {s:g 1948}</td><td class='example'>2432552 .. 2432917</td></tr>
+ <tr><td class='example'>@date( "19sep1948" )</td><td class='example'>2432814</td></tr>
+ <tr><td class='example'>@date( "1940..1950|1945..1955" )</td><td class='example'>2429630 .. 2435473</td></tr>
+ <tr><td class='example'>@date.g:iso( "[1940..1950,1945..1955]" )</td><td class='example'>2429630 .. 2435473</td></tr>
+ <tr><td class='example'>@date( {s:g 1948, 9, 19} )</td><td class='example'>2432814</td></tr>
+ <tr><td class='example'>@date( {s:g 1948} )</td><td class='example'>2432552 .. 2432917</td></tr>
  <tr><td colspan='2'>The above examples assume a system input setting of "g:dmy".</td></tr>
 </table>
 
-<h4>Cast text</h4>
+<h4>Function text</h4>
 <p>
- The text cast operator converts a field, range, rlist or record type into a string type.
+ The text function converts a field, range, rlist or record type into a string type.
 </p>
 <p>
  Except for a record type, the scheme code signature must be provided.
@@ -99,59 +98,60 @@
 </p>
 <table class='basic'>
 <tr><th>Example</th><th>Result</th></tr>
- <tr><td class='example'>string."g:dmy+" 2432814</td><td class='example'>"19 September 1948"</td></tr>
- <tr><td class='example'>string.g 2429630..2435473</td><td class='example'>"1940 .. 1955"</td></tr>
- <tr><td class='example'>string.g:iso 2429630 .. 2429995 | 2433283 .. 2435473</td><td class='example'>"[1940,1950..1955]"</td></tr>
- <tr><td class='example'>string {s:g 1948, 9, 19}</td><td class='example'>"19 Sep 1948"</td></tr>
- <tr><td class='example'>string {s:j 1948}</td><td class='example'>"1948"</td></tr>
+ <tr><td class='example'>@text."g:dmy+"( 2432814 )</td><td class='example'>"19 September 1948"</td></tr>
+ <tr><td class='example'>@text.g( 2429630..2435473 )</td><td class='example'>"1940 .. 1955"</td></tr>
+ <tr><td class='example'>@text.g:iso( 2429630..2429995 | 2433283..2435473 )</td><td class='example'>"[1940,1950..1955]"</td></tr>
+ <tr><td class='example'>@text( {s:g 1948, 9, 19} )</td><td class='example'>"19 Sep 1948"</td></tr>
+ <tr><td class='example'>@text( {s:j 1948} )</td><td class='example'>"1948"</td></tr>
  <tr><td colspan='2'>The above examples assume a system output setting of "g:dmy".</td></tr>
 </table>
 
-<h4>Cast record</h4>
+<h4>Function record</h4>
 <p>
- The record cast operator converts a field (as a julian day number) or string type into a record type.
- At this time, using the record cast with a range or rlist type is an error.
+ The record function converts a field (as a julian day number) or string type into a record type.
+ At this time, using the record function with a range or rlist type is an error.
 </p>
 <p>
  If a scheme:format signature is not given,
- then to cast a field the output default setting is used,
- whereas if casting a string, the input default is used.
+ then to convert a field, the output default setting is used,
+ whereas if converting a string, the input default is used.
 </p>
 <p>
- Note that a record created from a cast always has all the fields included, even the optional ones.
+ Note that a record created from the function always has all the fields included, even the optional ones.
  Only main fields are given values though.
  Records created using the record operator '{}' only include the given fields,
  even if this does not fully qualify a date.
 </p>
 <table class='basic'>
 <tr><th>Example</th><th>Result</th></tr>
- <tr><td class='example'>record.g:dmy "19sep1948"</td><td class='example'>{s:g 1948, 9, 19, 7}</td></tr>
- <tr><td class='example'>record "21??"</td><td class='example'>{s:g null, null, 21, null}</td></tr>
- <tr><td class='example'>record.:u "1948year 9month 19day"</td><td class='example'>{s:g 1948, 9, 19, 7}</td></tr>
- <tr><td class='example'>record.j 2432814</td><td class='example'>{s:j 1948, 9, 6, 7}</td></tr>
- <tr><td class='example'>record 2429630..2435473</td><td class='example'>Error</td></tr>
+ <tr><td class='example'>@record.g:dmy( "19sep1948" )</td><td class='example'>{s:g 1948, 9, 19, 7}</td></tr>
+ <tr><td class='example'>@record( "21??" )</td><td class='example'>{s:g null, null, 21, null}</td></tr>
+ <tr><td class='example'>@record.:u( "1948year 9month 19day" )</td><td class='example'>{s:g 1948, 9, 19, 7}</td></tr>
+ <tr><td class='example'>@record.j( 2432814 )</td><td class='example'>{s:j 1948, 9, 6, 7}</td></tr>
+ <tr><td class='example'>@record( 2429630..2435473 )</td><td class='example'>Error</td></tr>
  <tr><td colspan='2'>The above examples assume a system input and output setting of "g:dmy".</td></tr>
 </table>
 
-<h4>Cast element</h4>
+<h4>Function element</h4>
 <p>
- The element cast converts between a string and a field.
- If a lexicon code is given with the cast then that lexicon is used to provide the conversion.
- Using the cast on any type other than a field or string results in an error.
+ The element function converts between a string and a field.
+ If a lexicon code is given with the function
+ then that lexicon is used to provide the conversion.
+ Using the function on any type other than a field or string results in an error.
 </p>
 <table class='basic'>
 <tr><th>Example</th><th>Result</th></tr>
- <tr><td class='example'>element.w 7</td><td class='example'>"Sunday"</td></tr>
- <tr><td class='example'>element.ws:a 7</td><td class='example'>"Sat"</td></tr>
- <tr><td class='example'>element.w "wed"</td><td class='example'>3</td></tr>
- <tr><td class='example'>element.:rn "xiv"</td><td class='example'>14</td></tr>
- <tr><td class='example'>element.:rn 14</td><td class='example'>"XIV"</td></tr>
- <tr><td class='example'>element.:rn:l 14</td><td class='example'>"xiv"</td></tr>
- <tr><td class='example'>element.:os 2</td><td class='example'>"2nd"</td></tr>
- <tr><td class='example'>element.:oa 2</td><td class='example'>"nd"</td></tr>
- <tr><td class='example'>element.:oa:u 2</td><td class='example'>"ND"</td></tr>
- <tr><td class='example'>element "10"</td><td class='example'>10</td></tr>
- <tr><td class='example'>element 10</td><td class='example'>"10"</td></tr>
+ <tr><td class='example'>@element.w( 7 )</td><td class='example'>"Sunday"</td></tr>
+ <tr><td class='example'>@element.ws:a( 7 )</td><td class='example'>"Sat"</td></tr>
+ <tr><td class='example'>@element.w( "wed" )</td><td class='example'>3</td></tr>
+ <tr><td class='example'>@element.:rn( "xiv" )</td><td class='example'>14</td></tr>
+ <tr><td class='example'>@element.:rn( 14 )</td><td class='example'>"XIV"</td></tr>
+ <tr><td class='example'>@element.:rn:l( 14 )</td><td class='example'>"xiv"</td></tr>
+ <tr><td class='example'>@element.:os( 2 )</td><td class='example'>"2nd"</td></tr>
+ <tr><td class='example'>@element.:oa( 2 )</td><td class='example'>"nd"</td></tr>
+ <tr><td class='example'>@element.:oa:u( 2 )</td><td class='example'>"ND"</td></tr>
+ <tr><td class='example'>@element( "10" )</td><td class='example'>10</td></tr>
+ <tr><td class='example'>@element( 10 )</td><td class='example'>"10"</td></tr>
 </table>
 
 </div><!--id=content-->
@@ -161,7 +161,7 @@
   <a href='../../../dev/index.htm' class='m-item'>Development</a>
   <a href='../../../dev/man/index.htm' class='m-item'>v0.3.0 Manual</a>
   <a href='../../../dev/man/hics/index.htm' class='m-item'>Hics Extension</a>
-  <a href='expr.htm' class='m-item thispage'>Hics Expressions</a>
+  <a href='bi-functions.htm' class='m-item thispage'>Built-in Functions</a>
   <a href='../../../dev/man/hics/lexicon.htm' class='m-item nav'>►</a>
   <a href='../../../dev/man/hics/index.htm' class='m-item nav'>◄</a>
  </div>

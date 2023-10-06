@@ -25,7 +25,7 @@
   <a href='../../../dev/man/index.htm' class='m-item'>v0.3.0 Manual</a>
   <a href='../../../dev/man/script/index.htm' class='m-item'>Glich Script</a>
   <a href='function.htm' class='m-item thispage'>Define function</a>
-  <a href='../../../dev/man/script/command.htm' class='m-item nav'>►</a>
+  <a href='../../../dev/man/script/bi-functions.htm' class='m-item nav'>►</a>
   <a href='../../../dev/man/script/do.htm' class='m-item nav'>◄</a>
  </div>
 
@@ -36,10 +36,13 @@
 <p>
  A function statement defines a function that can be used in an expression
  with the function operator '@'.
- Optionally, arguments can be passed to the function
- which can then be used as local variables.
- When calling the function, these augments may be given values or omitted.
+ The dot operator can be used to add an
+ optional qualifying string to the function name.
+ Arguments may also be passed to the function.
+ These, with the qualifier, become local variables within the function.
+ When calling the function, these values may be given values or omitted.
  An argument can be given a default value when the function is defined.
+ The default for the qualifier is an empty string.
 </p>
 <p>
  When the function is run, the arguments are treated as local variables.
@@ -56,14 +59,16 @@
 
 <table class='basic'>
 <tr><th>function Statement Format</th></tr>
-<tr> <!-- See test file - test\tscripts\suite\functions\function015.hcs -->
-<td class='code'><b>function</b> <i>name</i><b>(</b><i>arg</i>[<b>=</b><i>value</i>]<b>,</b> <i>arg</i>[<b>=</b><i>value</i>]<b>) {</b>
+<tr> <!-- See test file - test\glcscripts\suite\glich\statements\function\function015.glcs -->
+<td class='code'><b>function</b> <i>name.qualifier</i><b>(</b><i>arg</i>[<b>=</b><i>value</i>]<b>,</b> <i>arg</i>[<b>=</b><i>value</i>]<b>) {</b>
     ... <b>result</b> = <i>expr</i><b>; ...</b>
 <b>}</b>
 
-write <b>@</b><i>name</i><b>(</b><i>value1</i><b>,</b> <i>value2</i><b>);</b>
+write <b>@</b><i>name.qualifier</i><b>(</b><i>value1</i><b>,</b> <i>value2</i><b>);</b>
 write <b>@</b><i>name</i><b>(</b><i>value1</i><b>);</b>
+write <b>@</b><i>name.qualifier</i><b>;</b>
 write <b>@</b><i>name</i><b>;</b></td>
+
 </tr>
 <tr> <!-- See test file - test\tscripts\suite\functions\function013.hcs -->
 <td class='code'><b>function</b> <i>name</i> <b>{</b>
@@ -116,7 +121,7 @@ write text <b>@</b>this_week;</td>
   <a href='../../../dev/man/index.htm' class='m-item'>v0.3.0 Manual</a>
   <a href='../../../dev/man/script/index.htm' class='m-item'>Glich Script</a>
   <a href='function.htm' class='m-item thispage'>Define function</a>
-  <a href='../../../dev/man/script/command.htm' class='m-item nav'>►</a>
+  <a href='../../../dev/man/script/bi-functions.htm' class='m-item nav'>►</a>
   <a href='../../../dev/man/script/do.htm' class='m-item nav'>◄</a>
  </div>
 

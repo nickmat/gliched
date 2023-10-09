@@ -62,10 +62,14 @@ private:
 	//! language/lexer
 	void OnMarginClick( wxStyledTextEvent& event );
 
-	wxString DeterminePrefs( const wxString& filename );
-	bool InitializePrefs( const wxString& name );
+	enum geLang : size_t {
+		geLang_glich, geLang_cpp, geLang_python, geLang_text, geLang_size
+	};
+	geLang DeterminePrefs( const wxString& filename );
+	bool InitializePrefs( geLang index );
 	bool DoFileOpen( wxString filename );
 
+	geLang m_lang_index;
 	wxString m_filename;
 	LanguageInfo const* m_language;
 

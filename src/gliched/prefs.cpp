@@ -94,122 +94,171 @@ const char* PythonWordlist2 =
 
 //----------------------------------------------------------------------------
 //! languages
-const LanguageInfo g_LanguagePrefs [] = {
-    // C++
-    {"C++",
-     "*.c;*.cc;*.cpp;*.cxx;*.cs;*.h;*.hh;*.hpp;*.hxx;*.sma",
-     wxSTC_LEX_CPP,
-     {{mySTC_TYPE_DEFAULT, nullptr},
-      {mySTC_TYPE_COMMENT, nullptr},
-      {mySTC_TYPE_COMMENT_LINE, nullptr},
-      {mySTC_TYPE_COMMENT_DOC, nullptr},
-      {mySTC_TYPE_NUMBER, nullptr},
-      {mySTC_TYPE_WORD1, CppWordlist1}, // KEYWORDS
-      {mySTC_TYPE_STRING, nullptr},
-      {mySTC_TYPE_CHARACTER, nullptr},
-      {mySTC_TYPE_UUID, nullptr},
-      {mySTC_TYPE_PREPROCESSOR, nullptr},
-      {mySTC_TYPE_OPERATOR, nullptr},
-      {mySTC_TYPE_IDENTIFIER, nullptr},
-      {mySTC_TYPE_STRING_EOL, nullptr},
-      {mySTC_TYPE_DEFAULT, nullptr}, // VERBATIM
-      {mySTC_TYPE_REGEX, nullptr},
-      {mySTC_TYPE_COMMENT_SPECIAL, nullptr}, // DOXY
-      {mySTC_TYPE_WORD2, CppWordlist2}, // EXTRA WORDS
-      {mySTC_TYPE_WORD3, CppWordlist3}, // DOXY KEYWORDS
-      {mySTC_TYPE_ERROR, nullptr}, // KEYWORDS ERROR
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr}},
-     mySTC_FOLD_COMMENT | mySTC_FOLD_COMPACT | mySTC_FOLD_PREPROC},
-    // Python
-    {"Python",
-     "*.py;*.pyw",
-     wxSTC_LEX_PYTHON,
-     {{mySTC_TYPE_DEFAULT, nullptr},
-      {mySTC_TYPE_COMMENT_LINE, nullptr},
-      {mySTC_TYPE_NUMBER, nullptr},
-      {mySTC_TYPE_STRING, nullptr},
-      {mySTC_TYPE_CHARACTER, nullptr},
-      {mySTC_TYPE_WORD1, PythonWordlist1}, // KEYWORDS
-      {mySTC_TYPE_DEFAULT, nullptr}, // TRIPLE
-      {mySTC_TYPE_DEFAULT, nullptr}, // TRIPLEDOUBLE
-      {mySTC_TYPE_DEFAULT, nullptr}, // CLASSNAME
-      {mySTC_TYPE_DEFAULT, PythonWordlist2}, // DEFNAME
-      {mySTC_TYPE_OPERATOR, nullptr},
-      {mySTC_TYPE_IDENTIFIER, nullptr},
-      {mySTC_TYPE_DEFAULT, nullptr}, // COMMENT_BLOCK
-      {mySTC_TYPE_STRING_EOL, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr}},
-     mySTC_FOLD_COMMENTPY | mySTC_FOLD_QUOTESPY},
-    // * (any)
-    {wxTRANSLATE(DEFAULT_LANGUAGE),
-     "*.*",
-     wxSTC_LEX_PROPERTIES,
-     {{mySTC_TYPE_DEFAULT, nullptr},
-      {mySTC_TYPE_DEFAULT, nullptr},
-      {mySTC_TYPE_DEFAULT, nullptr},
-      {mySTC_TYPE_DEFAULT, nullptr},
-      {mySTC_TYPE_DEFAULT, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr},
-      {-1, nullptr}},
-     0},
-    };
+//! // See https://wiki.wxwidgets.org/Adding_a_custom_lexer_with_syntax_highlighting_and_folding_to_a_WxStyledTextCtrl
+const LanguageInfo g_LanguagePrefs[] = {
+    {   // Glich
+        "Glich",
+        "*.glcs",
+        wxSTC_LEX_CONTAINER,
+        {
+            { mySTC_TYPE_DEFAULT, nullptr },
+            { mySTC_TYPE_COMMENT, nullptr },
+            { mySTC_TYPE_COMMENT_LINE, nullptr },
+            { mySTC_TYPE_COMMENT_DOC, nullptr },
+            { mySTC_TYPE_NUMBER, nullptr },
+            { mySTC_TYPE_WORD1, nullptr }, // KEYWORDS
+            { mySTC_TYPE_STRING, nullptr },
+            { mySTC_TYPE_CHARACTER, nullptr },
+            { mySTC_TYPE_UUID, nullptr },
+            { mySTC_TYPE_PREPROCESSOR, nullptr },
+            { mySTC_TYPE_OPERATOR, nullptr },
+            { mySTC_TYPE_IDENTIFIER, nullptr },
+            { mySTC_TYPE_STRING_EOL, nullptr },
+            { mySTC_TYPE_DEFAULT, nullptr }, // VERBATIM
+            { mySTC_TYPE_REGEX, nullptr },
+            { mySTC_TYPE_COMMENT_SPECIAL, nullptr }, // DOXY
+            { mySTC_TYPE_WORD2, nullptr }, // STATEMENT WORDS
+            { mySTC_TYPE_WORD3, nullptr },
+            { mySTC_TYPE_ERROR, nullptr }, // KEYWORDS ERROR
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr }
+        },
+    mySTC_FOLD_COMMENT | mySTC_FOLD_COMPACT | mySTC_FOLD_PREPROC
+    },
+    {   // C++
+        "C++",
+        "*.c;*.cc;*.cpp;*.cxx;*.cs;*.h;*.hh;*.hpp;*.hxx;*.sma",
+        wxSTC_LEX_CPP,
+        {
+            { mySTC_TYPE_DEFAULT, nullptr },
+            { mySTC_TYPE_COMMENT, nullptr },
+            { mySTC_TYPE_COMMENT_LINE, nullptr },
+            { mySTC_TYPE_COMMENT_DOC, nullptr },
+            { mySTC_TYPE_NUMBER, nullptr },
+            { mySTC_TYPE_WORD1, CppWordlist1 }, // KEYWORDS
+            { mySTC_TYPE_STRING, nullptr },
+            { mySTC_TYPE_CHARACTER, nullptr },
+            { mySTC_TYPE_UUID, nullptr },
+            { mySTC_TYPE_PREPROCESSOR, nullptr },
+            { mySTC_TYPE_OPERATOR, nullptr },
+            { mySTC_TYPE_IDENTIFIER, nullptr },
+            { mySTC_TYPE_STRING_EOL, nullptr },
+            { mySTC_TYPE_DEFAULT, nullptr }, // VERBATIM
+            { mySTC_TYPE_REGEX, nullptr },
+            { mySTC_TYPE_COMMENT_SPECIAL, nullptr }, // DOXY
+            { mySTC_TYPE_WORD2, CppWordlist2 }, // EXTRA WORDS
+            { mySTC_TYPE_WORD3, CppWordlist3 }, // DOXY KEYWORDS
+            { mySTC_TYPE_ERROR, nullptr }, // KEYWORDS ERROR
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr }
+        },
+        mySTC_FOLD_COMMENT | mySTC_FOLD_COMPACT | mySTC_FOLD_PREPROC
+    },
+    {   // Python
+        "Python",
+        "*.py;*.pyw",
+        wxSTC_LEX_PYTHON,
+        {
+            { mySTC_TYPE_DEFAULT, nullptr },
+            { mySTC_TYPE_COMMENT_LINE, nullptr },
+            { mySTC_TYPE_NUMBER, nullptr },
+            { mySTC_TYPE_STRING, nullptr },
+            { mySTC_TYPE_CHARACTER, nullptr },
+            { mySTC_TYPE_WORD1, PythonWordlist1 }, // KEYWORDS
+            { mySTC_TYPE_DEFAULT, nullptr }, // TRIPLE
+            { mySTC_TYPE_DEFAULT, nullptr }, // TRIPLEDOUBLE
+            { mySTC_TYPE_DEFAULT, nullptr }, // CLASSNAME
+            { mySTC_TYPE_DEFAULT, PythonWordlist2 }, // DEFNAME
+            { mySTC_TYPE_OPERATOR, nullptr },
+            { mySTC_TYPE_IDENTIFIER, nullptr },
+            { mySTC_TYPE_DEFAULT, nullptr }, // COMMENT_BLOCK
+            { mySTC_TYPE_STRING_EOL, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr }
+        },
+        mySTC_FOLD_COMMENTPY | mySTC_FOLD_QUOTESPY
+    },
+    {   // * (any)
+        wxTRANSLATE( DEFAULT_LANGUAGE ),
+        "*.*",
+        wxSTC_LEX_PROPERTIES,
+        {
+            { mySTC_TYPE_DEFAULT, nullptr },
+            { mySTC_TYPE_DEFAULT, nullptr },
+            { mySTC_TYPE_DEFAULT, nullptr },
+            { mySTC_TYPE_DEFAULT, nullptr },
+            { mySTC_TYPE_DEFAULT, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr },
+            { -1, nullptr }
+        },
+        0
+    }
+};
 
-const int g_LanguagePrefsSize = WXSIZEOF(g_LanguagePrefs);
-
+const int g_LanguagePrefsSize = WXSIZEOF( g_LanguagePrefs );
 //----------------------------------------------------------------------------
 //! style types
 const StyleInfo g_StylePrefs [] = {

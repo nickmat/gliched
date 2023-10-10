@@ -44,7 +44,7 @@ private:
 	void OnFileNew( wxCommandEvent& event ) override { event.Skip(); }
 	void OnFileOpen( wxCommandEvent& event ) override;
 	void OnFileSave( wxCommandEvent& event ) override { event.Skip(); }
-	void OnFileSaveAs( wxCommandEvent& event ) override { event.Skip(); }
+	void OnFileSaveAs( wxCommandEvent& event ) override;
 	void OnFileClose( wxCommandEvent& event ) override { event.Skip(); }
 	void OnExit( wxCommandEvent& event ) override;
 	void OnEditUndo( wxCommandEvent& event ) override { event.Skip(); }
@@ -54,6 +54,10 @@ private:
 	void OnEditPaste( wxCommandEvent& event ) override { event.Skip(); }
 	void OnEditDelete( wxCommandEvent& event ) override { event.Skip(); }
 	void OnWebsite( wxCommandEvent& event ) override { event.Skip(); }
+	void OnLanguageGlich( wxCommandEvent& event ) override { event.Skip(); }
+	void OnLanguageCpp( wxCommandEvent& event ) override { event.Skip(); }
+	void OnLanguagePython( wxCommandEvent& event ) override { event.Skip(); }
+	void OnLanguageDefault( wxCommandEvent& event ) override { event.Skip(); }
 	void OnAbout( wxCommandEvent& event ) override { event.Skip(); }
 	void OnRun( wxCommandEvent& event ) override;
 
@@ -68,10 +72,12 @@ private:
 	geLang DeterminePrefs( const wxString& filename );
 	bool InitializePrefs( geLang index );
 	bool DoFileOpen( wxString filename );
+	bool DoFileSave( wxString filename );
 
 	geLang m_lang_index;
 	wxString m_filename;
-	LanguageInfo const* m_language;
+	wxString m_filepath;
+	LanguageInfo const* m_lang;
 
 	// margin variables
 	int m_LineNrID;

@@ -25,6 +25,7 @@
 #include <wx/sizer.h>
 #include <wx/panel.h>
 #include <wx/stc/stc.h>
+#include <wx/notebook.h>
 #include <wx/textctrl.h>
 #include <wx/splitter.h>
 #include <wx/statusbr.h>
@@ -50,6 +51,8 @@ class fbGeFrame : public wxFrame
 		wxPanel* m_panel4;
 		wxSplitterWindow* m_splitter4;
 		wxPanel* m_panel6;
+		wxNotebook* m_codebook;
+		wxPanel* m_panel61;
 		wxStyledTextCtrl* m_ctrlEditSTC;
 		wxPanel* m_panel7;
 		wxTextCtrl* m_ctrlResult;

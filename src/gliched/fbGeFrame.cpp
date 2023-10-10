@@ -24,7 +24,7 @@ fbGeFrame::fbGeFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_menuFile->Append( m_menuFileNew );
 
 	wxMenuItem* m_menuFileOpen;
-	m_menuFileOpen = new wxMenuItem( m_menuFile, wxID_ANY, wxString( _("&Open...") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuFileOpen = new wxMenuItem( m_menuFile, wxID_ANY, wxString( _("&Open...") ) , _("Open a new file."), wxITEM_NORMAL );
 	m_menuFile->Append( m_menuFileOpen );
 
 	wxMenuItem* m_menuFileSave;
@@ -32,7 +32,7 @@ fbGeFrame::fbGeFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_menuFile->Append( m_menuFileSave );
 
 	wxMenuItem* m_menuFileSaveAs;
-	m_menuFileSaveAs = new wxMenuItem( m_menuFile, wxID_ANY, wxString( _("Save &As...") ) , wxEmptyString, wxITEM_NORMAL );
+	m_menuFileSaveAs = new wxMenuItem( m_menuFile, wxID_ANY, wxString( _("Save &As...") ) , _("Save current file as..."), wxITEM_NORMAL );
 	m_menuFile->Append( m_menuFileSaveAs );
 
 	wxMenuItem* m_menuFileClose;
@@ -151,7 +151,12 @@ fbGeFrame::fbGeFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	wxBoxSizer* bSizer17;
 	bSizer17 = new wxBoxSizer( wxVERTICAL );
 
-	m_ctrlEditSTC = new wxStyledTextCtrl( m_panel6, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, wxEmptyString );
+	m_codebook = new wxNotebook( m_panel6, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
+	m_panel61 = new wxPanel( m_codebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	wxBoxSizer* bSizer6;
+	bSizer6 = new wxBoxSizer( wxVERTICAL );
+
+	m_ctrlEditSTC = new wxStyledTextCtrl( m_panel61, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, wxEmptyString );
 	m_ctrlEditSTC->SetUseTabs( false );
 	m_ctrlEditSTC->SetTabWidth( 4 );
 	m_ctrlEditSTC->SetIndent( 4 );
@@ -182,7 +187,15 @@ fbGeFrame::fbGeFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_ctrlEditSTC->MarkerDefine( wxSTC_MARKNUM_FOLDERTAIL, wxSTC_MARK_EMPTY );
 	m_ctrlEditSTC->SetSelBackground( true, wxSystemSettings::GetColour( wxSYS_COLOUR_HIGHLIGHT ) );
 	m_ctrlEditSTC->SetSelForeground( true, wxSystemSettings::GetColour( wxSYS_COLOUR_HIGHLIGHTTEXT ) );
-	bSizer17->Add( m_ctrlEditSTC, 1, wxEXPAND | wxALL, 5 );
+	bSizer6->Add( m_ctrlEditSTC, 1, wxEXPAND | wxALL, 5 );
+
+
+	m_panel61->SetSizer( bSizer6 );
+	m_panel61->Layout();
+	bSizer6->Fit( m_panel61 );
+	m_codebook->AddPage( m_panel61, _("Glich"), false );
+
+	bSizer17->Add( m_codebook, 1, wxEXPAND | wxALL, 5 );
 
 
 	m_panel6->SetSizer( bSizer17 );
@@ -213,7 +226,7 @@ fbGeFrame::fbGeFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	this->SetSizer( bSizer11 );
 	this->Layout();
 	bSizer11->Fit( this );
-	m_statusBar1 = this->CreateStatusBar( 1, wxSTB_SIZEGRIP, wxID_ANY );
+	m_statusBar1 = this->CreateStatusBar( 2, wxSTB_SIZEGRIP, wxID_ANY );
 
 	this->Centre( wxBOTH );
 

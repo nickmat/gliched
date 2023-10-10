@@ -121,7 +121,8 @@ extern const CommonInfo g_CommonPrefs;
 
 struct LanguageInfo {
     const char *name;
-    const char *filepattern;
+    const char* filepattern;
+    const char* default_fp;
     int lexer;
     struct {
         int type;

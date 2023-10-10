@@ -56,7 +56,7 @@ const char* hashtag_xpm[] = {
 
 geFrame::geFrame(
     const wxString& title, const wxPoint& pos, const wxSize& size, long style )
-    : m_lang_index( geLang_glich ), m_language( &g_LanguagePrefs[geLang_glich] ),
+    : m_lang_index( geLang_glich ), m_lang( &g_LanguagePrefs[geLang_glich] ),
     m_LineNrID( 0 ), m_LineNrMargin( m_ctrlEditSTC->TextWidth( wxSTC_STYLE_LINENUMBER, "_99999" ) ),
     m_DividerID( 1 ),
     m_FoldingID( 2 ), m_FoldingMargin( FromDIP( 16 ) ),
@@ -108,6 +108,15 @@ void geFrame::OnFileOpen( wxCommandEvent& event )
         m_filename = dlg.GetPath();
     }
     DoFileOpen( m_filename );
+}
+
+void geFrame::OnFileSaveAs( wxCommandEvent& event )
+{
+    wxFileDialog dlg( this, "Save file", wxString(), wxString(), m_lang->default_fp, wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+    if( dlg.ShowModal() != wxID_OK ) return;
+    m_filepath = dlg.GetPath();
+    m_filename = wxFileNameFromPath( m_filepath );
+    DoFileSave( m_filepath );
 }
 
 void geFrame::OnExit( wxCommandEvent& event )
@@ -238,7 +247,7 @@ bool geFrame::InitializePrefs( geLang index )
     // initialize styles
     m_ctrlEditSTC->StyleClearAll();
 
-    m_language = &g_LanguagePrefs[index];
+    m_lang = &g_LanguagePrefs[index];
 //    LanguageInfo const* curInfo = nullptr;
 
     // determine language
@@ -248,7 +257,7 @@ bool geFrame::InitializePrefs( geLang index )
     }
 
     // set lexer and language
-    m_ctrlEditSTC->SetLexer( m_language->lexer );
+    m_ctrlEditSTC->SetLexer( m_lang->lexer );
 
     // set margin for line numbers
     m_ctrlEditSTC->SetMarginType( m_LineNrID, wxSTC_MARGIN_NUMBER );
@@ -277,8 +286,8 @@ bool geFrame::InitializePrefs( geLang index )
     if( g_CommonPrefs.syntaxEnable ) {
         int keywordnr = 0;
         for( Nr = 0; Nr < STYLE_TYPES_COUNT; Nr++ ) {
-            if( m_language->styles[Nr].type == -1 ) continue;
-            const StyleInfo& curType = g_StylePrefs[m_language->styles[Nr].type];
+            if( m_lang->styles[Nr].type == -1 ) continue;
+            const StyleInfo& curType = g_StylePrefs[m_lang->styles[Nr].type];
             wxFont font( wxFontInfo( curType.fontsize )
                 .Family( wxFONTFAMILY_MODERN )
                 .FaceName( curType.fontname ) );
@@ -294,7 +303,7 @@ bool geFrame::InitializePrefs( geLang index )
             m_ctrlEditSTC->StyleSetUnderline( Nr, (curType.fontstyle & mySTC_STYLE_UNDERL) > 0 );
             m_ctrlEditSTC->StyleSetVisible( Nr, (curType.fontstyle & mySTC_STYLE_HIDDEN) == 0 );
             m_ctrlEditSTC->StyleSetCase( Nr, curType.lettercase );
-            const char* pwords = m_language->styles[Nr].words;
+            const char* pwords = m_lang->styles[Nr].words;
             if( pwords ) {
                 m_ctrlEditSTC->SetKeyWords( keywordnr, pwords );
                 keywordnr += 1;
@@ -314,23 +323,23 @@ bool geFrame::InitializePrefs( geLang index )
     m_ctrlEditSTC->SetMarginWidth( m_FoldingID, 0 );
     m_ctrlEditSTC->SetMarginSensitive( m_FoldingID, false );
     if( g_CommonPrefs.foldEnable ) {
-        m_ctrlEditSTC->SetMarginWidth( m_FoldingID, m_language->folds != 0 ? m_FoldingMargin : 0 );
-        m_ctrlEditSTC->SetMarginSensitive( m_FoldingID, m_language->folds != 0 );
-        m_ctrlEditSTC->SetProperty( "fold", m_language->folds != 0 ? "1" : "0" );
+        m_ctrlEditSTC->SetMarginWidth( m_FoldingID, m_lang->folds != 0 ? m_FoldingMargin : 0 );
+        m_ctrlEditSTC->SetMarginSensitive( m_FoldingID, m_lang->folds != 0 );
+        m_ctrlEditSTC->SetProperty( "fold", m_lang->folds != 0 ? "1" : "0" );
         m_ctrlEditSTC->SetProperty( "fold.comment",
-            (m_language->folds & mySTC_FOLD_COMMENT) > 0 ? "1" : "0" );
+            (m_lang->folds & mySTC_FOLD_COMMENT) > 0 ? "1" : "0" );
         m_ctrlEditSTC->SetProperty( "fold.compact",
-            (m_language->folds & mySTC_FOLD_COMPACT) > 0 ? "1" : "0" );
+            (m_lang->folds & mySTC_FOLD_COMPACT) > 0 ? "1" : "0" );
         m_ctrlEditSTC->SetProperty( "fold.preprocessor",
-            (m_language->folds & mySTC_FOLD_PREPROC) > 0 ? "1" : "0" );
+            (m_lang->folds & mySTC_FOLD_PREPROC) > 0 ? "1" : "0" );
         m_ctrlEditSTC->SetProperty( "fold.html",
-            (m_language->folds & mySTC_FOLD_HTML) > 0 ? "1" : "0" );
+            (m_lang->folds & mySTC_FOLD_HTML) > 0 ? "1" : "0" );
         m_ctrlEditSTC->SetProperty( "fold.html.preprocessor",
-            (m_language->folds & mySTC_FOLD_HTMLPREP) > 0 ? "1" : "0" );
+            (m_lang->folds & mySTC_FOLD_HTMLPREP) > 0 ? "1" : "0" );
         m_ctrlEditSTC->SetProperty( "fold.comment.python",
-            (m_language->folds & mySTC_FOLD_COMMENTPY) > 0 ? "1" : "0" );
+            (m_lang->folds & mySTC_FOLD_COMMENTPY) > 0 ? "1" : "0" );
         m_ctrlEditSTC->SetProperty( "fold.quotes.python",
-            (m_language->folds & mySTC_FOLD_QUOTESPY) > 0 ? "1" : "0" );
+            (m_lang->folds & mySTC_FOLD_QUOTESPY) > 0 ? "1" : "0" );
     }
     m_ctrlEditSTC->SetFoldFlags( wxSTC_FOLDFLAG_LINEBEFORE_CONTRACTED |
         wxSTC_FOLDFLAG_LINEAFTER_CONTRACTED );
@@ -362,6 +371,11 @@ bool geFrame::DoFileOpen( wxString filename )
     InitializePrefs( DeterminePrefs( fname.GetFullName() ) );
 
     return true;
+}
+
+bool geFrame::DoFileSave( wxString filename )
+{
+    return m_ctrlEditSTC->SaveFile( filename );
 }
 
 // End of src/gliched/gedFrame.cpp file.

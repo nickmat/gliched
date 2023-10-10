@@ -99,6 +99,7 @@ const LanguageInfo g_LanguagePrefs[] = {
     {   // Glich
         "Glich",
         "*.glcs",
+        "Glich (*.glc)|*.glcs",
         wxSTC_LEX_CONTAINER,
         {
             { mySTC_TYPE_DEFAULT, nullptr },
@@ -139,6 +140,7 @@ const LanguageInfo g_LanguagePrefs[] = {
     {   // C++
         "C++",
         "*.c;*.cc;*.cpp;*.cxx;*.cs;*.h;*.hh;*.hpp;*.hxx;*.sma",
+        "C++ (*.cpp)|*.cpp",
         wxSTC_LEX_CPP,
         {
             { mySTC_TYPE_DEFAULT, nullptr },
@@ -179,6 +181,7 @@ const LanguageInfo g_LanguagePrefs[] = {
     {   // Python
         "Python",
         "*.py;*.pyw",
+        "Python (*.py)|*.py",
         wxSTC_LEX_PYTHON,
         {
             { mySTC_TYPE_DEFAULT, nullptr },
@@ -219,6 +222,7 @@ const LanguageInfo g_LanguagePrefs[] = {
     {   // * (any)
         wxTRANSLATE( DEFAULT_LANGUAGE ),
         "*.*",
+        "Any file (*.*)|*",
         wxSTC_LEX_PROPERTIES,
         {
             { mySTC_TYPE_DEFAULT, nullptr },

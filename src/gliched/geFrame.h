@@ -43,7 +43,7 @@ public:
 private:
 	void OnFileNew( wxCommandEvent& event ) override { event.Skip(); }
 	void OnFileOpen( wxCommandEvent& event ) override;
-	void OnFileSave( wxCommandEvent& event ) override { event.Skip(); }
+	void OnFileSave( wxCommandEvent& event ) override;
 	void OnFileSaveAs( wxCommandEvent& event ) override;
 	void OnFileClose( wxCommandEvent& event ) override { event.Skip(); }
 	void OnExit( wxCommandEvent& event ) override;

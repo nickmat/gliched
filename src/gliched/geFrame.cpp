@@ -110,6 +110,14 @@ void geFrame::OnFileOpen( wxCommandEvent& event )
     DoFileOpen( m_filename );
 }
 
+void geFrame::OnFileSave( wxCommandEvent& event )
+{
+    if( m_filepath.empty() ) {
+        OnFileSaveAs( event );
+    }
+    DoFileSave( m_filepath );
+}
+
 void geFrame::OnFileSaveAs( wxCommandEvent& event )
 {
     wxFileDialog dlg( this, "Save file", wxString(), wxString(), m_lang->default_fp, wxFD_SAVE | wxFD_OVERWRITE_PROMPT);

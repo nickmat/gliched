@@ -27,12 +27,14 @@
 #ifndef SRC_GLICHED_GEAPP_H_GUARD
 #define SRC_GLICHED_GEAPP_H_GUARD
 
+#include "geFrame.h"
+
 class geApp: public wxApp
 {
     bool OnInit() override;
     int OnExit() override;
 
-    wxFrame* frame;
+    geFrame* m_frame;
 };
 
 wxDECLARE_APP( geApp );

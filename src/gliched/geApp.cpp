@@ -45,11 +45,11 @@ bool geApp::OnInit()
     long style = wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxSYSTEM_MENU |
         wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN | wxTAB_TRAVERSAL;
 
-    m_frame = new geFrame( "Glich Editor", wxDefaultPosition, wxSize( -1, -1 ), style );
+    geFrame* frame = new geFrame( "Glich Editor", wxDefaultPosition, wxSize( -1, -1 ), style );
 
-    m_frame->Show( true );
+    frame->Show( true );
 
-    SetTopWindow( m_frame );
+    SetTopWindow( frame );
 
     return true;
 }

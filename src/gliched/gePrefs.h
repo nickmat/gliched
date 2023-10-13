@@ -27,10 +27,42 @@
 #ifndef SRC_GLICHED_GEPREFS_H_GUARD
 #define SRC_GLICHED_GEPREFS_H_GUARD
 
+
+enum geLang : size_t {
+	geLang_glich, geLang_cpp, geLang_python, geLang_text, geLang_size
+};
+
+struct geLangInfo {
+    const char* name;
+    const char* filepattern;
+    const char* default_fp;
+};
+
+const geLangInfo g_lang_prefs[] = {
+    {
+        "Glich",
+        "*.glcs",
+        "Glich (*.glc)|*.glcs"
+    }, {
+        "C++",
+        "*.c;*.cc;*.cpp;*.cxx;*.cs;*.h;*.hh;*.hpp;*.hxx;*.sma",
+        "C++ (*.cpp)|*.cpp",
+    }, {
+        "Python",
+        "*.py;*.pyw",
+        "Python (*.py)|*.py",
+    }, {
+        "<default>",
+        "*.*",
+        "Any file (*.*)|*",
+
+    }
+};
+
 #define DEFAULT_LANGUAGE "<default>"
-#define STYLE_TYPES_COUNT 32
 
  // The (uniform) style used for the annotations.
-const int ANNOTATION_STYLE = wxSTC_STYLE_LASTPREDEFINED + 1;
+//const int ANNOTATION_STYLE = wxSTC_STYLE_LASTPREDEFINED + 1;
+//#define STYLE_TYPES_COUNT 32
 
 #endif // SRC_GLICHED_GEPREFS_H_GUARD

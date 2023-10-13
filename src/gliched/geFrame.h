@@ -28,7 +28,8 @@
 #define SRC_GLICHED_GEFRAME_H_GUARD
 
 #include "fbGeFrame.h"
-#include "prefs.h"
+#include "gePrefs.h"
+//#include "prefs.h"
 
 
 class geFrame : public fbGeFrame
@@ -66,9 +67,7 @@ private:
 	//! language/lexer
 	void OnMarginClick( wxStyledTextEvent& event );
 
-	enum geLang : size_t {
-		geLang_glich, geLang_cpp, geLang_python, geLang_text, geLang_size
-	};
+
 	geLang DeterminePrefs( const wxString& filename );
 	bool InitializePrefs( geLang index );
 	bool DoFileOpen( wxString filename );
@@ -77,8 +76,9 @@ private:
 	geLang m_lang_index;
 	wxString m_filename;
 	wxString m_filepath;
-	LanguageInfo const* m_lang;
+	geLangInfo const* m_lang;
 
+#if 0
 	// margin variables
 	int m_LineNrID;
 	int m_LineNrMargin;
@@ -88,6 +88,7 @@ private:
 
 	// call tip data
 	int m_calltipNo;
+#endif
 
 };
 

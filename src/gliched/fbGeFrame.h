@@ -24,7 +24,7 @@
 #include <wx/treelist.h>
 #include <wx/sizer.h>
 #include <wx/panel.h>
-#include <wx/stc/stc.h>
+#include "geEdit.h"
 #include <wx/notebook.h>
 #include <wx/textctrl.h>
 #include <wx/splitter.h>
@@ -52,8 +52,8 @@ class fbGeFrame : public wxFrame
 		wxSplitterWindow* m_splitter4;
 		wxPanel* m_panel6;
 		wxNotebook* m_codebook;
-		wxPanel* m_panel61;
-		wxStyledTextCtrl* m_ctrlEditSTC;
+		wxPanel* m_panelEdit;
+		geEdit* m_edit;
 		wxPanel* m_panel7;
 		wxTextCtrl* m_ctrlResult;
 		wxStatusBar* m_statusBar1;

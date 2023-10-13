@@ -152,48 +152,18 @@ fbGeFrame::fbGeFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	bSizer17 = new wxBoxSizer( wxVERTICAL );
 
 	m_codebook = new wxNotebook( m_panel6, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
-	m_panel61 = new wxPanel( m_codebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_panelEdit = new wxPanel( m_codebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer6;
 	bSizer6 = new wxBoxSizer( wxVERTICAL );
 
-	m_ctrlEditSTC = new wxStyledTextCtrl( m_panel61, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0, wxEmptyString );
-	m_ctrlEditSTC->SetUseTabs( false );
-	m_ctrlEditSTC->SetTabWidth( 4 );
-	m_ctrlEditSTC->SetIndent( 4 );
-	m_ctrlEditSTC->SetTabIndents( true );
-	m_ctrlEditSTC->SetBackSpaceUnIndents( true );
-	m_ctrlEditSTC->SetViewEOL( false );
-	m_ctrlEditSTC->SetViewWhiteSpace( false );
-	m_ctrlEditSTC->SetMarginWidth( 2, 0 );
-	m_ctrlEditSTC->SetIndentationGuides( false );
-	m_ctrlEditSTC->SetReadOnly( false );
-	m_ctrlEditSTC->SetMarginWidth( 1, 0 );
-	m_ctrlEditSTC->SetMarginType( 0, wxSTC_MARGIN_NUMBER );
-	m_ctrlEditSTC->SetMarginWidth( 0, m_ctrlEditSTC->TextWidth( wxSTC_STYLE_LINENUMBER, wxT("_99999") ) );
-	m_ctrlEditSTC->MarkerDefine( wxSTC_MARKNUM_FOLDER, wxSTC_MARK_BOXPLUS );
-	m_ctrlEditSTC->MarkerSetBackground( wxSTC_MARKNUM_FOLDER, wxColour( wxT("BLACK") ) );
-	m_ctrlEditSTC->MarkerSetForeground( wxSTC_MARKNUM_FOLDER, wxColour( wxT("WHITE") ) );
-	m_ctrlEditSTC->MarkerDefine( wxSTC_MARKNUM_FOLDEROPEN, wxSTC_MARK_BOXMINUS );
-	m_ctrlEditSTC->MarkerSetBackground( wxSTC_MARKNUM_FOLDEROPEN, wxColour( wxT("BLACK") ) );
-	m_ctrlEditSTC->MarkerSetForeground( wxSTC_MARKNUM_FOLDEROPEN, wxColour( wxT("WHITE") ) );
-	m_ctrlEditSTC->MarkerDefine( wxSTC_MARKNUM_FOLDERSUB, wxSTC_MARK_EMPTY );
-	m_ctrlEditSTC->MarkerDefine( wxSTC_MARKNUM_FOLDEREND, wxSTC_MARK_BOXPLUS );
-	m_ctrlEditSTC->MarkerSetBackground( wxSTC_MARKNUM_FOLDEREND, wxColour( wxT("BLACK") ) );
-	m_ctrlEditSTC->MarkerSetForeground( wxSTC_MARKNUM_FOLDEREND, wxColour( wxT("WHITE") ) );
-	m_ctrlEditSTC->MarkerDefine( wxSTC_MARKNUM_FOLDEROPENMID, wxSTC_MARK_BOXMINUS );
-	m_ctrlEditSTC->MarkerSetBackground( wxSTC_MARKNUM_FOLDEROPENMID, wxColour( wxT("BLACK") ) );
-	m_ctrlEditSTC->MarkerSetForeground( wxSTC_MARKNUM_FOLDEROPENMID, wxColour( wxT("WHITE") ) );
-	m_ctrlEditSTC->MarkerDefine( wxSTC_MARKNUM_FOLDERMIDTAIL, wxSTC_MARK_EMPTY );
-	m_ctrlEditSTC->MarkerDefine( wxSTC_MARKNUM_FOLDERTAIL, wxSTC_MARK_EMPTY );
-	m_ctrlEditSTC->SetSelBackground( true, wxSystemSettings::GetColour( wxSYS_COLOUR_HIGHLIGHT ) );
-	m_ctrlEditSTC->SetSelForeground( true, wxSystemSettings::GetColour( wxSYS_COLOUR_HIGHLIGHTTEXT ) );
-	bSizer6->Add( m_ctrlEditSTC, 1, wxEXPAND | wxALL, 5 );
+	m_edit = new geEdit( m_panelEdit );
+	bSizer6->Add( m_edit, 1, wxALL|wxEXPAND, 5 );
 
 
-	m_panel61->SetSizer( bSizer6 );
-	m_panel61->Layout();
-	bSizer6->Fit( m_panel61 );
-	m_codebook->AddPage( m_panel61, _("Glich"), false );
+	m_panelEdit->SetSizer( bSizer6 );
+	m_panelEdit->Layout();
+	bSizer6->Fit( m_panelEdit );
+	m_codebook->AddPage( m_panelEdit, _("Glich"), false );
 
 	bSizer17->Add( m_codebook, 1, wxEXPAND | wxALL, 5 );
 

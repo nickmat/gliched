@@ -36,31 +36,14 @@
 
 using std::string;
 
-// A small image of a hashtag symbol used in the autocompletion window.
-const char* hashtag_xpm[] = {
-    "10 10 2 1",
-    "  c None",
-    ". c #BD08F9",
-    "  ..  ..  ",
-    "  ..  ..  ",
-    "..........",
-    "..........",
-    "  ..  ..  ",
-    "  ..  ..  ",
-    "..........",
-    "..........",
-    "  ..  ..  ",
-    "  ..  ..  " };
-
-#define MY_FOLDMARGIN 2
 
 geFrame::geFrame(
     const wxString& title, const wxPoint& pos, const wxSize& size, long style )
-    : m_lang_index( geLang_glich ), m_lang( &g_LanguagePrefs[geLang_glich] ),
+    : m_lang_index( geLang_glich ), /*m_lang(&g_LanguagePrefs[geLang_glich]),
     m_LineNrID( 0 ), m_LineNrMargin( m_ctrlEditSTC->TextWidth( wxSTC_STYLE_LINENUMBER, "_99999" ) ),
     m_DividerID( 1 ),
     m_FoldingID( 2 ), m_FoldingMargin( FromDIP( 16 ) ),
-    m_calltipNo( 1 ),
+    m_calltipNo( 1 ),*/
     fbGeFrame( (wxFrame*) nullptr, wxID_ANY, title, pos, size, style )
 {
     // Set frames Icon
@@ -72,10 +55,11 @@ geFrame::geFrame(
 
     UpdateDataTree();
 
-    m_ctrlEditSTC->Bind( wxEVT_STC_MARGINCLICK, &geFrame::OnMarginClick, this );
+//    m_ctrlEditSTC->Bind( wxEVT_STC_MARGINCLICK, &geFrame::OnMarginClick, this );
 
     InitializePrefs( m_lang_index );
 
+#if 0
     // set visibility
     m_ctrlEditSTC->SetVisiblePolicy( wxSTC_VISIBLE_STRICT | wxSTC_VISIBLE_SLOP, 1 );
     m_ctrlEditSTC->SetXCaretPolicy( wxSTC_CARET_EVEN | wxSTC_VISIBLE_STRICT | wxSTC_CARET_SLOP, 1 );
@@ -95,6 +79,7 @@ geFrame::geFrame(
     m_ctrlEditSTC->CmdKeyClear( wxSTC_KEY_TAB, 0 ); // this is done by the menu accelerator key
     m_ctrlEditSTC->SetLayoutCache( wxSTC_CACHE_PAGE );
     m_ctrlEditSTC->UsePopUp( wxSTC_POPUP_ALL );
+#endif
 }
 
 void geFrame::OnFileOpen( wxCommandEvent& event )
@@ -135,7 +120,7 @@ void geFrame::OnExit( wxCommandEvent& event )
 
 void geFrame::OnRun( wxCommandEvent& event )
 {
-    string script = m_ctrlEditSTC->GetText();
+    string script = m_edit->GetText();
     string result = glich::get_glc()->run_script( script );
     m_ctrlResult->SetValue( result );
     UpdateDataTree();
@@ -222,6 +207,7 @@ void geFrame::UpdateDataTree()
 
 void geFrame::OnMarginClick( wxStyledTextEvent& event )
 {
+#if 0
     if( event.GetMargin() == 2 ) {
         int lineClick = m_ctrlEditSTC->LineFromPosition( event.GetPosition() );
         int levelClick = m_ctrlEditSTC->GetFoldLevel( lineClick );
@@ -229,13 +215,14 @@ void geFrame::OnMarginClick( wxStyledTextEvent& event )
             m_ctrlEditSTC->ToggleFold( lineClick );
         }
     }
+#endif
 }
 
-geFrame::geLang geFrame::DeterminePrefs( const wxString& filename )
+geLang geFrame::DeterminePrefs( const wxString& filename )
 {
     // determine language from filepatterns
     for( size_t i = 0; i < geLang_size; i++ ) {
-        wxString filepattern = g_LanguagePrefs[i].filepattern;
+        wxString filepattern = g_lang_prefs[i].filepattern;
         filepattern.Lower();
         while( !filepattern.empty() ) {
             wxString cur = filepattern.BeforeFirst( ';' );
@@ -252,6 +239,7 @@ geFrame::geLang geFrame::DeterminePrefs( const wxString& filename )
 
 bool geFrame::InitializePrefs( geLang index )
 {
+#if 0
     // initialize styles
     m_ctrlEditSTC->StyleClearAll();
 
@@ -360,7 +348,7 @@ bool geFrame::InitializePrefs( geLang index )
     m_ctrlEditSTC->SetReadOnly( g_CommonPrefs.readOnlyInitial );
     m_ctrlEditSTC->SetWrapMode( g_CommonPrefs.wrapModeInitial ?
         wxSTC_WRAP_WORD : wxSTC_WRAP_NONE );
-
+#endif
     return true;
 }
 
@@ -370,9 +358,9 @@ bool geFrame::DoFileOpen( wxString filename )
     if( !filename.empty() ) {
         m_filename = filename;
     }
-    m_ctrlEditSTC->LoadFile( m_filename );
+    m_edit->LoadFile( m_filename );
 
-    m_ctrlEditSTC->EmptyUndoBuffer();
+    m_edit->EmptyUndoBuffer();
 
     // determine lexer language
     wxFileName fname( m_filename );
@@ -383,7 +371,7 @@ bool geFrame::DoFileOpen( wxString filename )
 
 bool geFrame::DoFileSave( wxString filename )
 {
-    return m_ctrlEditSTC->SaveFile( filename );
+    return m_edit->SaveFile( filename );
 }
 
 // End of src/gliched/gedFrame.cpp file.

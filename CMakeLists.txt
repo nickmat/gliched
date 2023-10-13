@@ -17,6 +17,9 @@ set( CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR} )
 set( CMAKE_CXX_STANDARD 17 )
 set( CMAKE_CXX_STANDARD_REQUIRED On )
 
+# Leave this here for when we want to check for memory leaks.
+#add_compile_options(-fsanitize=address)
+
 include_directories( include )
 
 add_subdirectory( 3rdparty/glich )

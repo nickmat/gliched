@@ -28,12 +28,28 @@
 #define SRC_GLICHED_GEEDIT_H_GUARD
 
 #include <wx/stc/stc.h>
+#include "gePrefs.h"
 
 class geEdit : public wxStyledTextCtrl {
 public:
-    geEdit( wxWindow* parent ) : wxStyledTextCtrl( parent ) {}
+    geEdit( wxWindow* parent );
     ~geEdit() {}
 
+    bool InitializePrefs( geLang index );
+
+    void OnFileOpen();
+    void OnFileSave();
+    void OnFileSaveAs();
+
+    geLang DeterminePrefs( const wxString& filename );
+
+    bool DoFileOpen( wxString filename );
+
+private:
+    geLang m_lang_index;
+    wxString m_filename;
+    wxString m_filepath;
+    const geLangInfo* m_lang;
 };
 
 #endif // SRC_GLICHED_GEEDIT_H_GUARD

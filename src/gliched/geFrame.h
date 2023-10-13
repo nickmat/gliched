@@ -28,8 +28,6 @@
 #define SRC_GLICHED_GEFRAME_H_GUARD
 
 #include "fbGeFrame.h"
-#include "gePrefs.h"
-//#include "prefs.h"
 
 
 class geFrame : public fbGeFrame
@@ -63,32 +61,6 @@ private:
 	void OnRun( wxCommandEvent& event ) override;
 
 	void UpdateDataTree();
-
-	//! language/lexer
-	void OnMarginClick( wxStyledTextEvent& event );
-
-
-	geLang DeterminePrefs( const wxString& filename );
-	bool InitializePrefs( geLang index );
-	bool DoFileOpen( wxString filename );
-	bool DoFileSave( wxString filename );
-
-	geLang m_lang_index;
-	wxString m_filename;
-	wxString m_filepath;
-	geLangInfo const* m_lang;
-
-#if 0
-	// margin variables
-	int m_LineNrID;
-	int m_LineNrMargin;
-	int m_FoldingID;
-	int m_FoldingMargin;
-	int m_DividerID;
-
-	// call tip data
-	int m_calltipNo;
-#endif
 
 };
 

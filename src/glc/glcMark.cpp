@@ -204,7 +204,7 @@ GlcMark Mark::get_mark_data( const Glich* glc ) const
     }
     for( auto gmr : m_grammars ) {
         data.name = gmr->get_code();
-        data.value = string();
+        data.value = gmr->get_name();
         mark.gmr.push_back( data );
     }
     for( auto fmt : m_formats ) {

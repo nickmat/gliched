@@ -50,6 +50,7 @@ namespace glich {
         void create_error( const std::string& mess );
         bool constuct();
 
+        void set_name( const std::string& name ) { m_name = name; }
         void set_inherit( const std::string& gcode );
         void set_base_fieldnames( StdStrVec fieldnames ) { m_base_fieldnames = fieldnames; }
         void set_opt_fieldnames( StdStrVec fieldnames ) { m_opt_fieldnames = fieldnames; }
@@ -68,6 +69,7 @@ namespace glich {
         }
 
         std::string get_code() const { return m_code; }
+        std::string get_name() const { return m_name; }
         std::string get_error_string() const { return m_create_error; }
         std::string resolve_field_alias( const std::string& alias );
         std::string resolve_unit_alias( const std::string& alias );
@@ -109,6 +111,7 @@ namespace glich {
 
         Glich*      m_glc;
         std::string m_code;
+        std::string m_name;
         bool        m_ok;
         std::string m_create_error;
         Grammar*    m_inherit;

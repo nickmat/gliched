@@ -437,7 +437,11 @@ Grammar* glich::do_create_grammar( Script& script, const std::string& code, cons
         }
         else if( token.type() == SToken::Type::Name ) {
             string name = token.get_str();
-            if( name == "lexicons" ) {
+            if( name == "name" ) {
+                str = script.expr( GetToken::next ).as_string();
+                gmr->set_name( str );
+            }
+            else if( name == "lexicons" ) {
                 do_grammar_lexicons( script, gmr );
             }
             else if( name == "format" ) {

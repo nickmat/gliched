@@ -37,6 +37,7 @@ glich::ScriptModule glich::hics_default_scripts[] = {
  "set context hics;\n" },
     { "jdn",  /* jdn.glcs */
  "grammar d {\n"
+ "name \"Day Number\";\n"
  "fields day;\n"
  "alias pseudo { ddddd day; }\n"
  "format d \"{day}\";\n"
@@ -64,6 +65,7 @@ glich::ScriptModule glich::hics_default_scripts[] = {
  "}\n"
  "}\n"
  "grammar jwn {\n"
+ "name \"Julian Week Number (Monday)\";\n"
  "fields week day;\n"
  "lexicons w;\n"
  "alias lexicon { day wday; }\n"
@@ -95,6 +97,7 @@ glich::ScriptModule glich::hics_default_scripts[] = {
  "}\n"
  "}\n"
  "grammar jwsn {\n"
+ "name \"Julian Week Number (Sunday)\";\n"
  "fields week day;\n"
  "lexicons ws;\n"
  "alias lexicon { day wsday; }\n"
@@ -132,6 +135,7 @@ glich::ScriptModule glich::hics_default_scripts[] = {
  "}\n"
  "}\n"
  "grammar j {\n"
+ "name \"Julian\";\n"
  "fields year month day;\n"
  "optional wday;\n"
  "lexicons m, w;\n"
@@ -158,6 +162,7 @@ glich::ScriptModule glich::hics_default_scripts[] = {
  "}\n" },
     { "julian_shift",  /* julian_shift.glcs */
  "grammar j_sh {\n"
+ "name \"Julian shifted epoch\";\n"
  "fields year month day;\n"
  "calculated cyear;\n"
  "optional wday;\n"
@@ -207,6 +212,7 @@ glich::ScriptModule glich::hics_default_scripts[] = {
  "}\n" },
     { "gregorian",  /* gregorian.glcs */
  "grammar g {\n"
+ "name \"Gregorian\";\n"
  "inherit j;\n"
  "format iso { rules iso8601 minus; }\n"
  "format iso_set { rules iso8601 dateset minus; }\n"
@@ -220,6 +226,7 @@ glich::ScriptModule glich::hics_default_scripts[] = {
  "}\n"
  "set inout g;\n"
  "grammar gw {\n"
+ "name \"Year Week Day\";\n"
  "fields year week day;\n"
  "lexicons w;\n"
  "alias field { wday week; }\n"
@@ -236,6 +243,7 @@ glich::ScriptModule glich::hics_default_scripts[] = {
  "grammar gw;\n"
  "}\n"
  "grammar go {\n"
+ "name \"Year Day\";\n"
  "fields year day;\n"
  "alias pseudo { ddd day; yyyy year; }\n"
  "alias unit { d day; y year; }\n"
@@ -260,6 +268,7 @@ glich::ScriptModule glich::hics_default_scripts[] = {
  "}\n"
  "}\n"
  "grammar jce {\n"
+ "name \"Julian Common Era\";\n"
  "fields year month day;\n"
  "calculated ce ceyear;\n"
  "optional wday;\n"
@@ -306,6 +315,7 @@ glich::ScriptModule glich::hics_default_scripts[] = {
  "}\n"
  "}\n"
  "grammar jg {\n"
+ "name \"Hybrid Julian and Gregorian\";\n"
  "fields scheme year month day;\n"
  "rank year month day;\n"
  "lexicons m jg;\n"

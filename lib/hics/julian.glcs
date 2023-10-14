@@ -48,6 +48,7 @@ lexicon m {
 }
 
 grammar j {
+    name "Julian";
     fields year month day;
     optional wday;
     lexicons m, w;

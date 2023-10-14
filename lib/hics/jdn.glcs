@@ -25,6 +25,7 @@
 */
 
 grammar d {
+    name "Day Number";
     fields day;
     alias pseudo { ddddd day; }
     format d "{day}";

@@ -42,6 +42,7 @@ lexicon w {
 }
 
 grammar jwn {
+    name "Julian Week Number (Monday)";
     fields week day;
     lexicons w;
     alias lexicon { day wday; }
@@ -76,6 +77,7 @@ lexicon ws {
 }
 
 grammar jwsn {
+    name "Julian Week Number (Sunday)";
     fields week day;
     lexicons ws;
     alias lexicon { day wsday; }

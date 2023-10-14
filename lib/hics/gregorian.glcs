@@ -25,6 +25,7 @@
 */
 
 grammar g {
+    name "Gregorian";
     inherit j;
     format iso { rules iso8601 minus; }
     format iso_set { rules iso8601 dateset minus; }
@@ -41,6 +42,7 @@ scheme g {
 set inout g; // Set Gregorian as the default input and output scheme.
 
 grammar gw {
+    name "Year Week Day";
     fields year week day;
     lexicons w;
     alias field { wday week; }
@@ -59,6 +61,7 @@ scheme gw {
 }
 
 grammar go {
+    name "Year Day";
     fields year day;
     alias pseudo { ddd day; yyyy year; }
     alias unit { d day; y year; }

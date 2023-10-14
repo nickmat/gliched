@@ -27,6 +27,7 @@
 // Uses lexicon statements from julian.glcs
 
 grammar j_sh {
+    name "Julian shifted epoch";
     fields year month day;
     calculated cyear;
     optional wday;

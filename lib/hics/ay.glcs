@@ -37,6 +37,7 @@ lexicon jg {
 }
 
 grammar jg {
+    name "Hybrid Julian and Gregorian";
     fields scheme year month day;
     rank year month day;
     lexicons m jg;

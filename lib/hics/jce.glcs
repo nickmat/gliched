@@ -36,6 +36,7 @@ lexicon ce {
 }
 
 grammar jce {
+    name "Julian Common Era";
     fields year month day;
     calculated ce ceyear;
     optional wday;

@@ -151,7 +151,7 @@ void geFrame::UpdateDataTree()
             }
         }
         if( !mark.var.empty() ) {
-            item1 = m_treeListCtrl->InsertItem( item0, wxTLI_LAST, "varibles" );
+            item1 = m_treeListCtrl->InsertItem( item0, wxTLI_LAST, "variables" );
             for( auto& data : mark.var ) {
                 item2 = m_treeListCtrl->InsertItem( item1, wxTLI_LAST, data.type );
                 m_treeListCtrl->SetItemText( item2, 1, data.name );

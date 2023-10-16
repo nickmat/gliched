@@ -105,6 +105,8 @@ Glich::Glich( InitLibrary lib, InOut* inout )
         load_hics_library();
         break;
     }
+    // Mark the start of user definitions.
+    run_script( "mark __user;" );
 }
 
 Glich::~Glich()

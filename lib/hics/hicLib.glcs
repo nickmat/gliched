@@ -25,7 +25,7 @@
 */
 
 // Add mark so default library can be removed from memory.
-mark "__:hicslib:__";
+mark "__hics_lib";
 
 set context hics;
 

@@ -25,7 +25,6 @@
 #include <wx/sizer.h>
 #include <wx/panel.h>
 #include "geEdit.h"
-#include <wx/notebook.h>
 #include <wx/textctrl.h>
 #include <wx/splitter.h>
 #include <wx/statusbr.h>
@@ -41,8 +40,6 @@ class fbGeFrame : public wxFrame
 	private:
 
 	protected:
-		wxMenu* m_menuView;
-		wxMenu* m_menuLang;
 		wxToolBar* m_toolBar1;
 		wxButton* m_buttonRun;
 		wxSplitterWindow* m_splitter2;
@@ -50,8 +47,6 @@ class fbGeFrame : public wxFrame
 		wxTreeListCtrl* m_treeListCtrl;
 		wxPanel* m_panel4;
 		wxSplitterWindow* m_splitter4;
-		wxPanel* m_panel6;
-		wxNotebook* m_codebook;
 		wxPanel* m_panelEdit;
 		geEdit* m_edit;
 		wxPanel* m_panel7;
@@ -71,10 +66,6 @@ class fbGeFrame : public wxFrame
 		virtual void OnEditCopy( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEditPaste( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEditDelete( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnLanguageGlich( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnLanguageCpp( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnLanguagePython( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnLanguageDefault( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnWebsite( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAbout( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnRun( wxCommandEvent& event ) { event.Skip(); }

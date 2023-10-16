@@ -12,7 +12,6 @@ set(GE_HEADERS
   geApp.h
   geEdit.h
   geFrame.h
-  gePrefs.h
 )
 set(GE_SOURCES
   fbGeFrame.cpp

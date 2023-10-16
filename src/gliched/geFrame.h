@@ -53,10 +53,6 @@ private:
 	void OnEditPaste( wxCommandEvent& event ) override { event.Skip(); }
 	void OnEditDelete( wxCommandEvent& event ) override { event.Skip(); }
 	void OnWebsite( wxCommandEvent& event ) override { event.Skip(); }
-	void OnLanguageGlich( wxCommandEvent& event ) override { event.Skip(); }
-	void OnLanguageCpp( wxCommandEvent& event ) override { event.Skip(); }
-	void OnLanguagePython( wxCommandEvent& event ) override { event.Skip(); }
-	void OnLanguageDefault( wxCommandEvent& event ) override { event.Skip(); }
 	void OnAbout( wxCommandEvent& event ) override { event.Skip(); }
 	void OnRun( wxCommandEvent& event ) override;
 

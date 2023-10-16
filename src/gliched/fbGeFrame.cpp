@@ -77,29 +77,6 @@ fbGeFrame::fbGeFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 
 	m_menubar->Append( m_menuEdit, _("&Edit") );
 
-	m_menuView = new wxMenu();
-	m_menuLang = new wxMenu();
-	wxMenuItem* m_menuLangItem = new wxMenuItem( m_menuView, wxID_ANY, _("&Language"), wxEmptyString, wxITEM_NORMAL, m_menuLang );
-	wxMenuItem* m_menuItemGlich;
-	m_menuItemGlich = new wxMenuItem( m_menuLang, wxID_ANY, wxString( _("&Glich") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menuLang->Append( m_menuItemGlich );
-
-	wxMenuItem* m_menuItemCpp;
-	m_menuItemCpp = new wxMenuItem( m_menuLang, wxID_ANY, wxString( _("&C++") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menuLang->Append( m_menuItemCpp );
-
-	wxMenuItem* m_menuItemPython;
-	m_menuItemPython = new wxMenuItem( m_menuLang, wxID_ANY, wxString( _("&Python") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menuLang->Append( m_menuItemPython );
-
-	wxMenuItem* m_menuItemDefault;
-	m_menuItemDefault = new wxMenuItem( m_menuLang, wxID_ANY, wxString( _("<&default>") ) , wxEmptyString, wxITEM_NORMAL );
-	m_menuLang->Append( m_menuItemDefault );
-
-	m_menuView->Append( m_menuLangItem );
-
-	m_menubar->Append( m_menuView, _("&View") );
-
 	wxMenu* m_menuHelp;
 	m_menuHelp = new wxMenu();
 	wxMenuItem* m_menuHelpWebsite;
@@ -147,30 +124,17 @@ fbGeFrame::fbGeFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_splitter4->Connect( wxEVT_IDLE, wxIdleEventHandler( fbGeFrame::m_splitter4OnIdle ), NULL, this );
 	m_splitter4->SetMinimumPaneSize( 100 );
 
-	m_panel6 = new wxPanel( m_splitter4, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
+	m_panelEdit = new wxPanel( m_splitter4, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer17;
 	bSizer17 = new wxBoxSizer( wxVERTICAL );
 
-	m_codebook = new wxNotebook( m_panel6, wxID_ANY, wxDefaultPosition, wxDefaultSize, 0 );
-	m_panelEdit = new wxPanel( m_codebook, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
-	wxBoxSizer* bSizer6;
-	bSizer6 = new wxBoxSizer( wxVERTICAL );
-
 	m_edit = new geEdit( m_panelEdit );
-	bSizer6->Add( m_edit, 1, wxALL|wxEXPAND, 5 );
+	bSizer17->Add( m_edit, 1, wxALL|wxEXPAND, 5 );
 
 
-	m_panelEdit->SetSizer( bSizer6 );
+	m_panelEdit->SetSizer( bSizer17 );
 	m_panelEdit->Layout();
-	bSizer6->Fit( m_panelEdit );
-	m_codebook->AddPage( m_panelEdit, _("Glich"), false );
-
-	bSizer17->Add( m_codebook, 1, wxEXPAND | wxALL, 5 );
-
-
-	m_panel6->SetSizer( bSizer17 );
-	m_panel6->Layout();
-	bSizer17->Fit( m_panel6 );
+	bSizer17->Fit( m_panelEdit );
 	m_panel7 = new wxPanel( m_splitter4, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL );
 	wxBoxSizer* bSizer18;
 	bSizer18 = new wxBoxSizer( wxVERTICAL );
@@ -182,7 +146,7 @@ fbGeFrame::fbGeFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_panel7->SetSizer( bSizer18 );
 	m_panel7->Layout();
 	bSizer18->Fit( m_panel7 );
-	m_splitter4->SplitHorizontally( m_panel6, m_panel7, 500 );
+	m_splitter4->SplitHorizontally( m_panelEdit, m_panel7, 500 );
 	bSizer15->Add( m_splitter4, 1, wxEXPAND, 5 );
 
 
@@ -213,10 +177,6 @@ fbGeFrame::fbGeFrame( wxWindow* parent, wxWindowID id, const wxString& title, co
 	m_menuEdit->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnEditCopy ), this, m_menuEditCopy->GetId());
 	m_menuEdit->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnEditPaste ), this, m_menuEditPaste->GetId());
 	m_menuEdit->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnEditDelete ), this, m_menuEditDelete->GetId());
-	m_menuLang->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnLanguageGlich ), this, m_menuItemGlich->GetId());
-	m_menuLang->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnLanguageCpp ), this, m_menuItemCpp->GetId());
-	m_menuLang->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnLanguagePython ), this, m_menuItemPython->GetId());
-	m_menuLang->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnLanguageDefault ), this, m_menuItemDefault->GetId());
 	m_menuHelp->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnWebsite ), this, m_menuHelpWebsite->GetId());
 	m_menuHelp->Bind(wxEVT_COMMAND_MENU_SELECTED, wxCommandEventHandler( fbGeFrame::OnAbout ), this, m_menuHelpAbout->GetId());
 	m_buttonRun->Connect( wxEVT_COMMAND_BUTTON_CLICKED, wxCommandEventHandler( fbGeFrame::OnRun ), NULL, this );

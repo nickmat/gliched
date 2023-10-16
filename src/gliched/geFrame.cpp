@@ -49,8 +49,6 @@ geFrame::geFrame(
     m_treeListCtrl->AppendColumn( "Value" );
 
     UpdateDataTree();
-
-    m_edit->InitializePrefs( geLang_glich );
 }
 
 void geFrame::OnFileOpen( wxCommandEvent& event )

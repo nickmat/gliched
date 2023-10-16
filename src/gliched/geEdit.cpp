@@ -39,28 +39,31 @@
 using std::string;
 
 
-geEdit::geEdit( wxWindow* parent )
-    : m_lang_index( geLang_glich ), m_lang( &g_lang_prefs[geLang_glich] ),
-    wxStyledTextCtrl( parent )
+geEdit::geEdit( wxWindow* parent ) : wxStyledTextCtrl( parent )
 {
-}
-
-bool geEdit::InitializePrefs( geLang index )
-{
-    return false;
+    StyleClearAll();
+    SetLexer( wxSTC_LEX_CONTAINER );
 }
 
 void geEdit::OnFileOpen()
 {
-    if( !m_filename ) {
-        wxFileDialog dlg( this, "Open file", wxEmptyString, wxEmptyString,
-            "Any file (*)|*", wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR );
-        if( dlg.ShowModal() != wxID_OK ) {
-            return;
-        }
-        m_filename = dlg.GetPath();
+    wxFileDialog dlg( this, "Open file", wxEmptyString, wxEmptyString,
+        "Glich (*.glc)|*.glcs", wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR );
+    if( dlg.ShowModal() != wxID_OK ) {
+        return;
     }
-    DoFileOpen( m_filename );
+    wxString filepath = dlg.GetPath();
+    if( filepath.empty() ) {
+        return;
+    }
+
+    ClearAll();
+    EmptyUndoBuffer();
+
+    m_filepath = filepath;
+    m_filename = wxFileNameFromPath( m_filepath );
+
+    LoadFile( m_filepath );
 }
 
 void geEdit::OnFileSave()
@@ -73,47 +76,11 @@ void geEdit::OnFileSave()
 
 void geEdit::OnFileSaveAs()
 {
-    wxFileDialog dlg( this, "Save file", wxString(), wxString(), m_lang->default_fp, wxFD_SAVE | wxFD_OVERWRITE_PROMPT );
+    wxFileDialog dlg( this, "Save file", wxString(), wxString(), "Glich(*.glc) | *.glcs", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
     if( dlg.ShowModal() != wxID_OK ) return;
     m_filepath = dlg.GetPath();
     m_filename = wxFileNameFromPath( m_filepath );
     SaveFile( m_filepath );
-}
-
-geLang geEdit::DeterminePrefs( const wxString& filename )
-{
-    // determine language from filepatterns
-    for( size_t i = 0; i < geLang_size; i++ ) {
-        wxString filepattern = g_lang_prefs[i].filepattern;
-        filepattern.Lower();
-        while( !filepattern.empty() ) {
-            wxString cur = filepattern.BeforeFirst( ';' );
-            if( (cur == filename) ||
-                (cur == (filename.BeforeLast( '.' ) + ".*")) ||
-                (cur == ("*." + filename.AfterLast( '.' ))) ) {
-                return static_cast<geLang>(i);
-            }
-            filepattern = filepattern.AfterFirst( ';' );
-        }
-    }
-    return geLang_text;
-}
-
-bool geEdit::DoFileOpen( wxString filename )
-{
-    // load file in edit and clear undo
-    if( !filename.empty() ) {
-        m_filename = filename;
-    }
-    LoadFile( m_filename );
-
-    EmptyUndoBuffer();
-
-    // determine lexer language
-    wxFileName fname( m_filename );
-    InitializePrefs( DeterminePrefs( fname.GetFullName() ) );
-
-    return true;
 }
 
 

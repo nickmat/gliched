@@ -43,4 +43,8 @@ private:
     wxString m_filepath;
 };
 
+constexpr int c_line_num_margin = 0;
+constexpr int c_symbol_margin = 1;
+constexpr int c_folding_margin = 2;
+
 #endif // SRC_GLICHED_GEEDIT_H_GUARD

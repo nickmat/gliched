@@ -43,6 +43,13 @@ geEdit::geEdit( wxWindow* parent ) : wxStyledTextCtrl( parent )
 {
     StyleClearAll();
     SetLexer( wxSTC_LEX_CONTAINER );
+
+    // Setup line numbers
+    int line_num_width = TextWidth( wxSTC_STYLE_LINENUMBER, "_99999" );
+    SetMarginType( c_line_num_margin, wxSTC_MARGIN_NUMBER );
+    StyleSetForeground( wxSTC_STYLE_LINENUMBER, wxColour( "DARK GREY" ) );
+    StyleSetBackground( wxSTC_STYLE_LINENUMBER, *wxWHITE );
+    SetMarginWidth( c_line_num_margin, line_num_width );
 }
 
 void geEdit::OnFileOpen()

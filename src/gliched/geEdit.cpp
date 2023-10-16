@@ -52,42 +52,56 @@ geEdit::geEdit( wxWindow* parent ) : wxStyledTextCtrl( parent )
     SetMarginWidth( c_line_num_margin, line_num_width );
 }
 
-void geEdit::OnFileOpen()
+wxString geEdit::OnFileOpen()
 {
     wxFileDialog dlg( this, "Open file", wxEmptyString, wxEmptyString,
         "Glich (*.glc)|*.glcs", wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR );
     if( dlg.ShowModal() != wxID_OK ) {
-        return;
+        return wxString();
     }
     wxString filepath = dlg.GetPath();
     if( filepath.empty() ) {
-        return;
+        return wxString();
     }
 
+    return DoFileOpen( filepath );
+}
+
+wxString geEdit::OnFileSave()
+{
+    if( m_filepath.empty() ) {
+        return OnFileSaveAs();
+    }
+    SaveFile( m_filepath );
+    return m_filename;
+}
+
+wxString geEdit::OnFileSaveAs()
+{
+    wxFileDialog dlg( this, "Save file", wxString(), wxString(), "Glich(*.glc) | *.glcs", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+    if( dlg.ShowModal() != wxID_OK ) {
+        return wxString();
+    }
+    m_filepath = dlg.GetPath();
+    m_filename = wxFileNameFromPath( m_filepath );
+    if( SaveFile( m_filepath ) ) {
+        return m_filename;
+    }
+    return wxString();
+}
+
+wxString geEdit::DoFileOpen( const wxString& filepath )
+{
     ClearAll();
     EmptyUndoBuffer();
 
     m_filepath = filepath;
     m_filename = wxFileNameFromPath( m_filepath );
 
-    LoadFile( m_filepath );
-}
-
-void geEdit::OnFileSave()
-{
-    if( m_filepath.empty() ) {
-        OnFileSaveAs();
+    if( LoadFile( m_filepath ) ) {
+        return m_filename;
     }
-    SaveFile( m_filepath );
-}
-
-void geEdit::OnFileSaveAs()
-{
-    wxFileDialog dlg( this, "Save file", wxString(), wxString(), "Glich(*.glc) | *.glcs", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-    if( dlg.ShowModal() != wxID_OK ) return;
-    m_filepath = dlg.GetPath();
-    m_filename = wxFileNameFromPath( m_filepath );
-    SaveFile( m_filepath );
+    return wxString();
 }
 
 

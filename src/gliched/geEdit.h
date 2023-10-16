@@ -34,9 +34,11 @@ public:
     geEdit( wxWindow* parent );
     ~geEdit() {}
 
-    void OnFileOpen();
-    void OnFileSave();
-    void OnFileSaveAs();
+    wxString OnFileOpen();
+    wxString OnFileSave();
+    wxString OnFileSaveAs();
+
+    wxString DoFileOpen( const wxString& filepath );
 
 private:
     wxString m_filename;

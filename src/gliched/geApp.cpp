@@ -42,10 +42,13 @@ bool geApp::OnInit()
 {
     glich::init_glc( glich::InitLibrary::Hics );
 
-    long style = wxMINIMIZE_BOX | wxMAXIMIZE_BOX | wxRESIZE_BORDER | wxSYSTEM_MENU |
-        wxCAPTION | wxCLOSE_BOX | wxCLIP_CHILDREN | wxTAB_TRAVERSAL;
+    wxString filename;
+    if( argc > 1 ) {
+        // 1st comand line argument is assumed to be a Glich script file
+        filename = argv[1];
+    }
 
-    geFrame* frame = new geFrame( "Glich Editor", wxDefaultPosition, wxSize( -1, -1 ), style );
+    geFrame* frame = new geFrame( "Glich Editor", filename );
 
     frame->Show( true );
 

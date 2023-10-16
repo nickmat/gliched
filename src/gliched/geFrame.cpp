@@ -38,8 +38,8 @@ using std::string;
 
 
 geFrame::geFrame(
-    const wxString& title, const wxPoint& pos, const wxSize& size, long style )
-    : fbGeFrame( (wxFrame*) nullptr, wxID_ANY, title, pos, size, style )
+    const wxString& title, const wxString& filepath )
+    : m_title( title ), fbGeFrame( nullptr )
 {
     // Set frames Icon
     SetIcon( wxICON( gliched_icon ) );
@@ -49,21 +49,50 @@ geFrame::geFrame(
     m_treeListCtrl->AppendColumn( "Value" );
 
     UpdateDataTree();
+
+    wxString filename;
+    if( !filepath.empty() ) {
+        filename = m_edit->DoFileOpen( filepath );
+    }
+    if( !filename.empty() ) {
+        SetTitle( m_title + " - " + filename );
+    }
+    else {
+        SetTitle( m_title );
+    }
 }
 
 void geFrame::OnFileOpen( wxCommandEvent& event )
 {
-    m_edit->OnFileOpen();
+    wxString filename = m_edit->OnFileOpen();
+    if( !filename.empty() ) {
+        SetTitle( m_title + " - " + filename );
+    }
+    else {
+        SetTitle( m_title );
+    }
 }
 
 void geFrame::OnFileSave( wxCommandEvent& event )
 {
-    m_edit->OnFileSave();
+    wxString filename = m_edit->OnFileSave();
+    if( !filename.empty() ) {
+        SetTitle( m_title + " - " + filename );
+    }
+    else {
+        SetTitle( m_title );
+    }
 }
 
 void geFrame::OnFileSaveAs( wxCommandEvent& event )
 {
-    m_edit->OnFileSaveAs();
+    wxString filename = m_edit->OnFileSaveAs();
+    if( !filename.empty() ) {
+        SetTitle( m_title + " - " + filename );
+    }
+    else {
+        SetTitle( m_title );
+    }
 }
 
 void geFrame::OnExit( wxCommandEvent& event )

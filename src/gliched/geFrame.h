@@ -33,11 +33,7 @@
 class geFrame : public fbGeFrame
 {
 public:
-    geFrame( 
-        const wxString& title, 
-        const wxPoint& pos = wxDefaultPosition,
-        const wxSize& size = wxDefaultSize,
-        long style = wxDEFAULT_FRAME_STYLE );
+    geFrame( const wxString& title, const wxString& filepath );
 
 private:
 	void OnFileNew( wxCommandEvent& event ) override { event.Skip(); }
@@ -58,6 +54,7 @@ private:
 
 	void UpdateDataTree();
 
+	wxString m_title;
 };
 
 #endif // SRC_GLICHED_GEFRAME_H_GUARD

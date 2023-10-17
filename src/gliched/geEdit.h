@@ -34,6 +34,7 @@ public:
     geEdit( wxWindow* parent );
     ~geEdit() {}
 
+    void OnFileNew();
     wxString OnFileOpen();
     wxString OnFileSave();
     wxString OnFileSaveAs();

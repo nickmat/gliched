@@ -54,45 +54,31 @@ geFrame::geFrame(
     if( !filepath.empty() ) {
         filename = m_edit->DoFileOpen( filepath );
     }
-    if( !filename.empty() ) {
-        SetTitle( m_title + " - " + filename );
-    }
-    else {
-        SetTitle( m_title );
-    }
+    SetGlichTitle( filename );
+}
+
+void geFrame::OnFileNew( wxCommandEvent& event )
+{
+    m_edit->OnFileNew();
+    SetGlichTitle( wxString() );
 }
 
 void geFrame::OnFileOpen( wxCommandEvent& event )
 {
     wxString filename = m_edit->OnFileOpen();
-    if( !filename.empty() ) {
-        SetTitle( m_title + " - " + filename );
-    }
-    else {
-        SetTitle( m_title );
-    }
+    SetGlichTitle( filename );
 }
 
 void geFrame::OnFileSave( wxCommandEvent& event )
 {
     wxString filename = m_edit->OnFileSave();
-    if( !filename.empty() ) {
-        SetTitle( m_title + " - " + filename );
-    }
-    else {
-        SetTitle( m_title );
-    }
+    SetGlichTitle( filename );
 }
 
 void geFrame::OnFileSaveAs( wxCommandEvent& event )
 {
     wxString filename = m_edit->OnFileSaveAs();
-    if( !filename.empty() ) {
-        SetTitle( m_title + " - " + filename );
-    }
-    else {
-        SetTitle( m_title );
-    }
+    SetGlichTitle( filename );
 }
 
 void geFrame::OnExit( wxCommandEvent& event )
@@ -107,6 +93,16 @@ void geFrame::OnRun( wxCommandEvent& event )
     string result = glich::get_glc()->run_script( script );
     m_ctrlResult->SetValue( result );
     UpdateDataTree();
+}
+
+void geFrame::SetGlichTitle( const wxString& filename )
+{
+    if( !filename.empty() ) {
+        SetTitle( m_title + " - " + filename );
+    }
+    else {
+        SetTitle( m_title );
+    }
 }
 
 void geFrame::UpdateDataTree()

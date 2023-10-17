@@ -52,6 +52,20 @@ geEdit::geEdit( wxWindow* parent ) : wxStyledTextCtrl( parent )
     SetMarginWidth( c_line_num_margin, line_num_width );
 }
 
+void geEdit::OnFileNew()
+{
+    if( IsModified() ) {
+        int rep = wxMessageBox("Save current script?", "New File", wxYES_NO );
+        if( rep == wxYES ) {
+            OnFileSave();
+        }
+    }
+    ClearAll();
+    EmptyUndoBuffer();
+    m_filename = wxString();
+    m_filepath = wxString();
+}
+
 wxString geEdit::OnFileOpen()
 {
     wxFileDialog dlg( this, "Open file", wxEmptyString, wxEmptyString,

@@ -36,7 +36,7 @@ public:
     geFrame( const wxString& title, const wxString& filepath );
 
 private:
-	void OnFileNew( wxCommandEvent& event ) override { event.Skip(); }
+	void OnFileNew( wxCommandEvent& event ) override;
 	void OnFileOpen( wxCommandEvent& event ) override;
 	void OnFileSave( wxCommandEvent& event ) override;
 	void OnFileSaveAs( wxCommandEvent& event ) override;
@@ -47,9 +47,11 @@ private:
 	void OnEditCopy( wxCommandEvent& event ) override { event.Skip(); }
 	void OnEditPaste( wxCommandEvent& event ) override { event.Skip(); }
 	void OnEditDelete( wxCommandEvent& event ) override { event.Skip(); }
+	void OnRun( wxCommandEvent& event ) override;
 	void OnWebsite( wxCommandEvent& event ) override { event.Skip(); }
 	void OnAbout( wxCommandEvent& event ) override { event.Skip(); }
-	void OnRun( wxCommandEvent& event ) override;
+
+	void SetGlichTitle( const wxString& filename );
 
 	void UpdateDataTree();
 

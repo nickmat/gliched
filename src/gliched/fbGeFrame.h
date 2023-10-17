@@ -40,7 +40,16 @@ class fbGeFrame : public wxFrame
 	private:
 
 	protected:
+		wxMenu* m_menuTools;
 		wxToolBar* m_toolBar1;
+		wxToolBarToolBase* m_toolNew;
+		wxToolBarToolBase* m_toolOpen;
+		wxToolBarToolBase* m_toolSave;
+		wxToolBarToolBase* m_toolUndo;
+		wxToolBarToolBase* m_toolRedo;
+		wxToolBarToolBase* m_toolCut;
+		wxToolBarToolBase* m_toolCopy;
+		wxToolBarToolBase* m_toolPaste;
 		wxButton* m_buttonRun;
 		wxSplitterWindow* m_splitter2;
 		wxPanel* m_panel3;
@@ -58,7 +67,6 @@ class fbGeFrame : public wxFrame
 		virtual void OnFileOpen( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnFileSave( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnFileSaveAs( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnFileClose( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnExit( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEditUndo( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEditRedo( wxCommandEvent& event ) { event.Skip(); }
@@ -66,9 +74,9 @@ class fbGeFrame : public wxFrame
 		virtual void OnEditCopy( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEditPaste( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnEditDelete( wxCommandEvent& event ) { event.Skip(); }
+		virtual void OnRun( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnWebsite( wxCommandEvent& event ) { event.Skip(); }
 		virtual void OnAbout( wxCommandEvent& event ) { event.Skip(); }
-		virtual void OnRun( wxCommandEvent& event ) { event.Skip(); }
 
 
 	public:

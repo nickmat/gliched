@@ -41,8 +41,8 @@ private:
 	void OnFileSave( wxCommandEvent& event ) override;
 	void OnFileSaveAs( wxCommandEvent& event ) override;
 	void OnExit( wxCommandEvent& event ) override;
-	void OnEditUndo( wxCommandEvent& event ) override { event.Skip(); }
-	void OnEditRedo( wxCommandEvent& event ) override { event.Skip(); }
+	void OnEditUndo( wxCommandEvent& event ) override;
+	void OnEditRedo( wxCommandEvent& event ) override;
 	void OnEditCut( wxCommandEvent& event ) override { event.Skip(); }
 	void OnEditCopy( wxCommandEvent& event ) override { event.Skip(); }
 	void OnEditPaste( wxCommandEvent& event ) override { event.Skip(); }

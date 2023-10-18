@@ -87,6 +87,16 @@ void geFrame::OnExit( wxCommandEvent& event )
     wxTheApp->Exit();
 }
 
+void geFrame::OnEditUndo( wxCommandEvent& event )
+{
+    m_edit->Undo();
+}
+
+void geFrame::OnEditRedo( wxCommandEvent& event )
+{
+    m_edit->Redo();
+}
+
 void geFrame::OnRun( wxCommandEvent& event )
 {
     string script = m_edit->GetText();

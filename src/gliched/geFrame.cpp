@@ -97,6 +97,26 @@ void geFrame::OnEditRedo( wxCommandEvent& event )
     m_edit->Redo();
 }
 
+void geFrame::OnEditCut( wxCommandEvent& event )
+{
+    m_edit->Cut();
+}
+
+void geFrame::OnEditCopy( wxCommandEvent& event )
+{
+    m_edit->Copy();
+}
+
+void geFrame::OnEditPaste( wxCommandEvent& event )
+{
+    m_edit->Paste();
+}
+
+void geFrame::OnEditDelete( wxCommandEvent& event )
+{
+    m_edit->Clear();
+}
+
 void geFrame::OnRun( wxCommandEvent& event )
 {
     string script = m_edit->GetText();

@@ -43,10 +43,10 @@ private:
 	void OnExit( wxCommandEvent& event ) override;
 	void OnEditUndo( wxCommandEvent& event ) override;
 	void OnEditRedo( wxCommandEvent& event ) override;
-	void OnEditCut( wxCommandEvent& event ) override { event.Skip(); }
-	void OnEditCopy( wxCommandEvent& event ) override { event.Skip(); }
-	void OnEditPaste( wxCommandEvent& event ) override { event.Skip(); }
-	void OnEditDelete( wxCommandEvent& event ) override { event.Skip(); }
+	void OnEditCut( wxCommandEvent& event ) override;
+	void OnEditCopy( wxCommandEvent& event ) override;
+	void OnEditPaste( wxCommandEvent& event ) override;
+	void OnEditDelete( wxCommandEvent& event ) override;
 	void OnRun( wxCommandEvent& event ) override;
 	void OnWebsite( wxCommandEvent& event ) override { event.Skip(); }
 	void OnAbout( wxCommandEvent& event ) override { event.Skip(); }

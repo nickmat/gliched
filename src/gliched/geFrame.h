@@ -49,7 +49,7 @@ private:
 	void OnEditDelete( wxCommandEvent& event ) override;
 	void OnRun( wxCommandEvent& event ) override;
 	void OnWebsite( wxCommandEvent& event ) override { event.Skip(); }
-	void OnAbout( wxCommandEvent& event ) override { event.Skip(); }
+	void OnAbout( wxCommandEvent& event ) override;
 
 	void SetGlichTitle( const wxString& filename );
 

@@ -32,6 +32,8 @@
 
 #include "geFrame.h"
 
+#include "geVersion.h"
+
 #include <glc/glc.h>
 
 using std::string;
@@ -123,6 +125,28 @@ void geFrame::OnRun( wxCommandEvent& event )
     string result = glich::get_glc()->run_script( script );
     m_ctrlResult->SetValue( result );
     UpdateDataTree();
+}
+
+void geFrame::OnAbout( wxCommandEvent& event )
+{
+    // Get version of Scintilla
+    wxVersionInfo vi = wxStyledTextCtrl::GetLibraryVersionInfo();
+
+    wxMessageBox(
+        wxString::Format(
+            _( "%s"
+                "Built with %s,\n"
+                "with %s\n"
+                "and Glich library %s\n" ),
+            geTitle,
+            wxVERSION_STRING,
+            vi.GetVersionString(),
+            glich::get_glc()->version()
+        ),
+        _( "About Gliched" ),
+        wxOK | wxICON_INFORMATION,
+        this
+    );
 }
 
 void geFrame::SetGlichTitle( const wxString& filename )

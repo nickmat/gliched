@@ -74,12 +74,15 @@ Glich::Glich( InitLibrary lib, InOut* inout )
     SValue::init( this );
 
     // Add blank built-in functions to avoid redefinition.
-    Function* blank = new Function( string() );
     m_functions = {
-        { "if", blank },
-        { "read", blank },
+        { "if", nullptr },
+        { "read", nullptr },
         // Hics functions
-        { "phrase", blank }
+        { "date", nullptr },
+        { "element", nullptr },
+        { "phrase", nullptr },
+        { "record", nullptr },
+        { "text", nullptr }
     };
     
     m_constants = {

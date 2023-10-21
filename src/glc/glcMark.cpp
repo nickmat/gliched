@@ -54,6 +54,27 @@ Mark::Mark( const string& name, Mark* prev )
 
 Mark::~Mark()
 {
+    for( auto function : m_functions ) {
+        delete function;
+    }
+    for( auto command : m_commands ) {
+        delete command;
+    }
+    for( auto object : m_objects ) {
+        delete object;
+    }
+    for( auto file : m_files ) {
+        delete file;
+    }
+    for( auto lexicon : m_lexicons ) {
+        delete lexicon;
+    }
+    for( auto grammar : m_grammars ) {
+        delete grammar;
+    }
+    for( auto format : m_formats ) {
+        delete format;
+    }
 }
 
 bool Mark::create_local( const string& name, Store* store )

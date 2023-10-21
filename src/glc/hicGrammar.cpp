@@ -47,6 +47,9 @@ Grammar::Grammar( const string& code, Glich* glc )
 
 Grammar::~Grammar()
 {
+    for( FormatMap::iterator it = m_formats.begin(); it != m_formats.end(); it++ ) {
+        delete it->second;
+    }
 }
 
 void glich::Grammar::create_error( const std::string& mess )

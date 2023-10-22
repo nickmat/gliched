@@ -73,16 +73,25 @@ Glich::Glich( InitLibrary lib, InOut* inout )
     STokenStream::init( this );
     SValue::init( this );
 
-    // Add blank built-in functions to avoid redefinition.
+    // Add dummy built-in functions to avoid redefinition.
+    Function* fptr = new Function( string() );
     m_functions = {
-        { "if", nullptr },
-        { "read", nullptr },
+        { "boolean", fptr },
+        { "error", fptr },
+        { "field", fptr },
+        { "float", fptr },
+        { "if", fptr },
+        { "number", fptr },
+        { "range", fptr },
+        { "read", fptr },
+        { "rlist", fptr },
+        { "string", fptr },
         // Hics functions
-        { "date", nullptr },
-        { "element", nullptr },
-        { "phrase", nullptr },
-        { "record", nullptr },
-        { "text", nullptr }
+        { "date", fptr },
+        { "element", fptr },
+        { "phrase", fptr },
+        { "record", fptr },
+        { "text", fptr }
     };
     
     m_constants = {
@@ -120,6 +129,7 @@ Glich::~Glich()
     while( pop_store() );
     delete m_store;
     delete m_inout;
+    delete get_function( "if" ); // delete dummy function.
 }
 
 const char* Glich::version()

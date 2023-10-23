@@ -100,6 +100,7 @@ namespace glich {
         SValue at_if();
         SValue at_read();
         SValue at_error();
+        SValue at_string();
 
         SValue get_value_var( const std::string& name );
         SValue get_cur_object();

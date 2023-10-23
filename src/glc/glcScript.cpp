@@ -1220,9 +1220,9 @@ SValueVec Script::get_args( SValue& value, GetToken get )
 
 SValue Script::function_call()
 {
-    enum f { f_if, f_error, f_read, f_date, f_text, f_record, f_element, f_phrase };
+    enum f { f_if, f_error, f_string, f_read, f_date, f_text, f_record, f_element, f_phrase };
     const static std::map<string, f> fmap = {
-        { "if", f_if }, { "error", f_error }, { "read", f_read },
+        { "if", f_if }, { "error", f_error }, { "string", f_string }, { "read", f_read },
         // Hics extension
         { "date", f_date }, { "text", f_text }, { "record", f_record }, { "element", f_element },
         { "phrase", f_phrase }
@@ -1240,6 +1240,7 @@ SValue Script::function_call()
         {
         case f_if: return at_if();
         case f_error: return at_error();
+        case f_string: return at_string();
         case f_read: return at_read();
         case f_date: return at_date( *this );
         case f_text: return at_text( *this );
@@ -1469,6 +1470,20 @@ SValue Script::at_error()
         mess = args[0].get_str();
     }
     value.set_error( mess );
+    return value;
+}
+
+SValue Script::at_string()
+{
+    SValue value;
+    SValueVec args = get_args( value, GetToken::next );
+    if( value.is_error() ) {
+        return value;
+    }
+    if( args.empty() ) {
+        return create_error( "Function @string requires one argument." );
+    }
+    value.set_str( args[0].as_string() );
     return value;
 }
 

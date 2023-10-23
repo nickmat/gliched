@@ -1,0 +1,41 @@
+// string001.glcs - @string( value ) // convert value to string.
+
+write nl;
+let a = null;
+let v = @string( a );
+write v, a[.type], v[.type] nl;
+a = true;
+let v = @string( a );
+write v, a[.type], v[.type] nl;
+a = 123n;
+let v = @string( a );
+write v, a[.type], v[.type] nl;
+a = 345f;
+let v = @string( a );
+write v, a[.type], v[.type] nl;
+a = 1.2;
+let v = @string( a );
+write v, a[.type], v[.type] nl;
+a = 10 .. 20;
+let v = @string( a );
+write v, a[.type], v[.type] nl;
+a = 50 | 5 .. 10;
+let v = @string( a );
+write v, a[.type], v[.type] nl;
+a = {:,11};
+let v = @string( a );
+write v, a[.type], v[.type] nl;
+
+
+/*[OUTPUT]
+
+null, null, string
+true, bool, string
+123, number, string
+345, field, string
+1.2, float, string
+10..20, range, string
+5..10 | 50, rlist, string
+{: null, 11}, object, string
+
+[OUTPUT]*/

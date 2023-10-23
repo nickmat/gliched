@@ -1,6 +1,8 @@
 // string001.glcs - @string( value ) // convert value to string.
 
 write nl;
+
+
 let a = null;
 let v = @string( a );
 write v, a[.type], v[.type] nl;
@@ -25,6 +27,9 @@ write v, a[.type], v[.type] nl;
 a = {:,11};
 let v = @string( a );
 write v, a[.type], v[.type] nl;
+a = @error( "Test" );
+let v = @string( a );
+write v, a[.type], v[.type] nl;
 
 
 /*[OUTPUT]
@@ -37,5 +42,6 @@ true, bool, string
 10..20, range, string
 5..10 | 50, rlist, string
 {: null, 11}, object, string
+Error (30): Test, error, string
 
 [OUTPUT]*/

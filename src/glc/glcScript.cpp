@@ -1220,36 +1220,36 @@ SValueVec Script::get_args( SValue& value, GetToken get )
 
 SValue Script::function_call()
 {
+    enum f { f_if, f_error, f_read, f_date, f_text, f_record, f_element, f_phrase };
+    const static std::map<string, f> fmap = {
+        { "if", f_if }, { "error", f_error }, { "read", f_read },
+        // Hics extension
+        { "date", f_date }, { "text", f_text }, { "record", f_record }, { "element", f_element },
+        { "phrase", f_phrase }
+    };
+
     SToken token = next_token();
     if( token.type() != SToken::Type::Name ) {
         return create_error( "Function name expected." );
     }
     string name = token.get_str();
-    if( name == "if" ) {
-        return at_if();
+
+    auto fnum = fmap.find( name );
+    if( fnum != fmap.end() ) {
+        switch( fnum->second )
+        {
+        case f_if: return at_if();
+        case f_error: return at_error();
+        case f_read: return at_read();
+        case f_date: return at_date( *this );
+        case f_text: return at_text( *this );
+        case f_record: return at_record( *this );
+        case f_element: return at_element( *this );
+        case f_phrase: return at_phrase( *this );
+        }
+        return create_error( "Built-in funtion whoopsy." );
     }
-    else if( name == "error" ) {
-        return at_error();
-    }
-    else if( name == "read" ) {
-        return at_read();
-    }
-    // Hics extension
-    else if( name == "date" ) {
-        return at_date( *this );
-    }
-    else if( name == "text" ) {
-        return at_text( *this );
-    }
-    else if( name == "record" ) {
-        return at_record( *this );
-    }
-    else if( name == "element" ) {
-        return at_element( *this );
-    }
-    else if( name == "phrase" ) {
-        return at_phrase( *this );
-    }
+
     Function* fun = m_glc->get_function( name );
     if( fun == nullptr ) {
         return create_error( "Function \"" + name + "\" not found." );

@@ -1251,7 +1251,11 @@ void SValue::range_op( const SValue& value )
 
 void SValue::property_op( const SValue& value )
 {
-    if( propagate_error( value ) ) {
+    // Note: property [.type] can operate on an error,
+    // so don't just propagate it.
+    if( value.is_error() ) {
+        m_type = Type::Error;
+        m_data = value.as_string();
         return;
     }
     if( value.m_type != Type::String ) {
@@ -1261,6 +1265,25 @@ void SValue::property_op( const SValue& value )
     string property = value.get_str();
     const char* type_err_mess = "Property not available or this type.";
     const char* empty_rlist_err_mess = "Empty rlist.";
+    if( property == "type" ) {
+        switch( m_type )
+        {
+        case Type::Number: set_str( "number" ); return;
+        case Type::field:  set_str( "field" );  return;
+        case Type::Float:  set_str( "float" );   return;
+        case Type::range:  set_str( "range" );  return;
+        case Type::rlist:  set_str( "rlist" );  return;
+        case Type::String: set_str( "string" ); return;
+        case Type::Object: set_str( "object" ); return;
+        case Type::Bool:   set_str( "bool" );   return;
+        case Type::Null:   set_str( "null" );   return;
+        case Type::Error:  set_str( "error" );  return;
+        default:           set_str( "unknown" ); return;
+        }
+    }
+    if( m_type == Type::Error ) {
+        return;
+    }
     if( property == "low" ) {
         switch( m_type )
         {
@@ -1370,22 +1393,6 @@ void SValue::property_op( const SValue& value )
         }
         set_error( type_err_mess );
         return;
-    }
-    if( property == "type" ) {
-        switch( m_type )
-        {
-        case Type::Number: set_str( "number" ); return;
-        case Type::field:  set_str( "field" );  return;
-        case Type::Float:  set_str( "float" );   return;
-        case Type::range:  set_str( "range" );  return;
-        case Type::rlist:  set_str( "rlist" );  return;
-        case Type::String: set_str( "string" ); return;
-        case Type::Object: set_str( "object" ); return;
-        case Type::Bool:   set_str( "bool" );   return;
-        case Type::Null:   set_str( "null" );   return;
-        case Type::Error:  set_str( "error" );  return;
-        default:           set_str( "unknown" );return;
-        }
     }
     if( property == "object" ) {
         set_str( get_object_code() );

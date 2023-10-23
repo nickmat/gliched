@@ -728,11 +728,8 @@ SValue glich::hics_dot( Script& script, bool& success, Object* obj, const std::s
     if( sch == nullptr ) {
         return SValue();
     }
+    SValueVec args = script.get_args( GetToken::current );
     SValue value;
-    SValueVec args = script.get_args( value, GetToken::current );
-    if( value.is_error() ) {
-        return value;
-    }
     if( !args.empty() ) {
         value = args[0];
     }
@@ -758,9 +755,8 @@ SValue glich::hics_dot( Script& script, bool& success, Object* obj, const std::s
 
 SValue glich::at_text( Script& script )
 {
-    SValue value;
     StdStrVec quals = script.get_qualifiers( GetToken::next );
-    SValueVec args = script.get_args( value, GetToken::current );
+    SValueVec args = script.get_args( GetToken::current );
     string sig, scode, fcode;
     if( !quals.empty() ) {
         sig = quals[0];
@@ -772,7 +768,7 @@ SValue glich::at_text( Script& script )
     if( args.empty() ) {
         return SValue( "One argument required.", SValue::Type::Error );
     }
-    value = args[0];
+    SValue value( args[0] );
     if( value.type() == SValue::Type::Object ) {
         Object* obj = value.get_object_ptr();
         if( obj == nullptr ) {
@@ -817,9 +813,8 @@ SValue glich::at_text( Script& script )
 
 SValue glich::at_date( Script& script )
 {
-    SValue value;
     StdStrVec quals = script.get_qualifiers( GetToken::next );
-    SValueVec args = script.get_args( value, GetToken::current );
+    SValueVec args = script.get_args( GetToken::current );
     string sig, scode, fcode;
     if( !quals.empty() ) {
         sig = quals[0];
@@ -828,21 +823,18 @@ SValue glich::at_date( Script& script )
     Glich* glc = script.get_glich();
     Scheme* sch = glc->get_scheme( scode );
     if( args.empty() ) {
-        value.set_error( "One argument required." );
-        return value;
+        return script.create_error( "One argument required." );
     }
-    value = args[0];
+    SValue value( args[0] );
     if( value.type() == SValue::Type::Object ) {
         Object* obj = value.get_object_ptr();
         if( obj == nullptr ) {
-            value.set_error( "Object type not recognised." );
-            return value;
+            return script.create_error( "Object type not recognised." );
         }
         // We ignore any suffix scheme setting
         sch = dynamic_cast<Scheme*>(obj);
         if( sch == nullptr ) {
-            value.set_error( "Object is not a scheme." );
-            return value;
+            return script.create_error( "Object is not a scheme." );
         }
         return sch->object_to_demoted_rlist( value );
     }
@@ -850,8 +842,7 @@ SValue glich::at_date( Script& script )
         if( sch == nullptr ) {
             sch = glc->get_ischeme();
             if( sch == nullptr ) {
-                value.set_error( "No default scheme set." );
-                return value;
+                return script.create_error( "No default scheme set." );
             }
             scode = sch->get_code();
         }
@@ -859,20 +850,18 @@ SValue glich::at_date( Script& script )
         value.set_rlist_demote( rlist );
         return value;
     }
-    value.set_error( "Expected an object or string type." );
-    return value;
+    return script.create_error( "Expected an object or string type." );
 }
 
 SValue glich::at_record( Script& script )
 {
-    SValue value;
     const char* no_default_mess = "No default scheme set.";
     StdStrVec quals = script.get_qualifiers( GetToken::next );
-    SValueVec args = script.get_args( value, GetToken::current );
+    SValueVec args = script.get_args( GetToken::current );
     if( args.empty() ) {
-        return SValue( "One argument required.", SValue::Type::Error );
+        return script.create_error( "One argument required." );
     }
-    value = args[0];
+    SValue value( args[0] );
     string sig, scode, fcode;
     if( !quals.empty() ) {
         sig = quals[0];
@@ -886,7 +875,7 @@ SValue glich::at_record( Script& script )
         if( sch == nullptr ) {
             sch = glc->get_oscheme();
             if( sch == nullptr ) {
-                return SValue( no_default_mess, SValue::Type::Error );
+                return script.create_error( no_default_mess );
             }
         }
         return sch->complete_object( jdn );
@@ -895,20 +884,18 @@ SValue glich::at_record( Script& script )
         if( sch == nullptr ) {
             sch = glc->get_ischeme();
             if( sch == nullptr ) {
-                return SValue( no_default_mess, SValue::Type::Error );
+                return script.create_error( no_default_mess );
             }
         }
         return sch->complete_object( value.get_str(), fcode );
     }
-    value.set_error( "Expected a field or string type." );
-    return value;
+    return script.create_error( "Expected a field or string type." );
 }
 
 SValue glich::at_element( Script& script )
 {
-    SValue value;
     StdStrVec quals = script.get_qualifiers( GetToken::next );
-    SValueVec args = script.get_args( value, GetToken::current );
+    SValueVec args = script.get_args( GetToken::current );
     string sig;
     if( !quals.empty() ) {
         sig = quals[0];
@@ -919,7 +906,7 @@ SValue glich::at_element( Script& script )
         ele.add_string( sig );
     }
     Glich* glc = script.get_glich();
-    value = args[0];
+    SValue value( args[0] );
     bool success = false;
     Field fld = value.get_field( success );
     if( success ) {
@@ -936,20 +923,15 @@ SValue glich::at_element( Script& script )
 
 SValue glich::at_phrase( Script& script )
 {
-    SValue value;
-    SValueVec args = script.get_args( value, GetToken::next );
-    if( value.is_error() ) {
-        return value;
-    }
+    SValueVec args = script.get_args( GetToken::next );
     if( args.size() != 1 || args[0].type() != SValue::Type::String ) {
-        value.set_error( "@phrase requires 1 string argument." );
-        return value;
+        return script.create_error( "@phrase requires 1 string argument." );
     }
     string code = parse_date_phrase( args[0].get_str() );
     if( !code.empty() ) {
         return script.run_script( code );
     }
-    return value;
+    return SValue();
 }
 
 // End of src/glc/hicCreateSch.cpp file

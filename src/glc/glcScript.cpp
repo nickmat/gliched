@@ -1182,7 +1182,7 @@ SValue Script::do_dot( const SValue& left, const SValue& right )
     return run_function( fun, obj, &left );
 }
 
-StdStrVec glich::Script::get_qualifiers( GetToken get )
+StdStrVec Script::get_qualifiers( GetToken get )
 {
     SToken token = (get == GetToken::next) ? m_ts.next() : current_token();
     StdStrVec quals;
@@ -1194,7 +1194,7 @@ StdStrVec glich::Script::get_qualifiers( GetToken get )
     return quals;
 }
 
-SValueVec Script::get_args( SValue& value, GetToken get )
+SValueVec Script::get_args( GetToken get )
 {
     SToken token = (get == GetToken::next) ? m_ts.next() : current_token();
     SValueVec args;
@@ -1209,7 +1209,6 @@ SValueVec Script::get_args( SValue& value, GetToken get )
                 break;
             }
             if( token.type() != SToken::Type::Comma ) {
-                value.set_error( "',' expected." );
                 return SValueVec();
             }
         }
@@ -1260,13 +1259,9 @@ SValue Script::function_call()
 
 SValue Script::run_function( Function* fun, const Object* obj, const SValue* left )
 {
-    SValue value;
     GetToken get = (obj == nullptr) ? GetToken::next : GetToken::current;
     StdStrVec qualifiers = get_qualifiers( get );
-    SValueVec args = get_args( value, GetToken::current );
-    if( value.is_error() ) {
-        return value;
-    }
+    SValueVec args = get_args( GetToken::current );
     STokenStream prev_ts = m_ts;
     m_ts.set_line( fun->get_line() );
     std::istringstream iss( fun->get_script() );
@@ -1278,8 +1273,6 @@ SValue Script::run_function( Function* fun, const Object* obj, const SValue* lef
     if( obj != nullptr ) {
         assert( left != nullptr );
         assert( left->type() == SValue::Type::Object );
-
-
         m_cur_obj = obj;
         SValueVec left_values = left->get_object();
         const NameIndexMap& vnames = obj->get_vnames_map();
@@ -1291,6 +1284,7 @@ SValue Script::run_function( Function* fun, const Object* obj, const SValue* lef
             }
         }
     }
+    SValue value;
     for( size_t i = 0; i < fun->get_qualifier_size(); i++ ) {
         string qual_name = fun->get_qualifier_name( i );
         m_glc->create_local( qual_name );
@@ -1331,11 +1325,7 @@ SValue Script::run_function( Function* fun, const Object* obj, const SValue* lef
 SValue Script::dot_mask( const Object* obj, const SValue* left )
 {
     assert( obj != nullptr );
-    SValue value;
-    SValueVec args = get_args( value, GetToken::current );
-    if( value.is_error() ) {
-        return value;
-    }
+    SValueVec args = get_args( GetToken::current );
     string name = left->get_object_code();
     if( name.empty() ) {
         return create_error( "Object type reqired for mask function." );
@@ -1370,10 +1360,7 @@ SValue glich::Script::command_call()
     }
     string name = token.get_str();
 
-    SValueVec args = get_args( value, GetToken::next );
-    if( value.is_error() ) {
-        return value;
-    }
+    SValueVec args = get_args( GetToken::next );
     Function* com = m_glc->get_command( name );
     if( com == nullptr ) {
         value.set_error( "Command \"" + name + "\" not found." );
@@ -1418,18 +1405,12 @@ SValue glich::Script::command_call()
 // function if(c,a,b) { if c result=a; else result=b; endif }
 SValue Script::at_if()
 {
-    SValue value;
-    SValueVec args = get_args( value, GetToken::next );
-    if( value.is_error() ) {
-        return value;
-    }
+    SValueVec args = get_args( GetToken::next );
     if( args.size() != 3 ) {
-        value.set_error( "@if requires 3 arguments." );
-        return value;
+        return create_error( "@if requires 3 arguments." );
     }
     if( args[0].type() != SValue::Type::Bool ) {
-        value.set_error( "1st argument of @if must be a boolean." );
-        return value;
+        return create_error( "1st argument of @if must be a boolean." );
     }
     if( args[0].get_bool() ) {
         return args[1];
@@ -1444,11 +1425,7 @@ SValue Script::at_if()
 // The result is always a string.
 SValue Script::at_read()
 {
-    SValue value;
-    SValueVec args = get_args( value, GetToken::next );
-    if( value.is_error() ) {
-        return value;
-    }
+    SValueVec args = get_args( GetToken::next );
     string prompt;
     if( args.size() > 0 && args[0].type() == SValue::Type::String ) {
         prompt = args[0].get_str();
@@ -1460,31 +1437,21 @@ SValue Script::at_read()
 // @error( message = "" )
 SValue Script::at_error()
 {
-    SValue value;
-    SValueVec args = get_args( value, GetToken::next );
-    if( value.is_error() ) {
-        return value;
-    }
+    SValueVec args = get_args( GetToken::next );
     string mess;
     if( args.size() > 0 && args[0].type() == SValue::Type::String ) {
         mess = args[0].get_str();
     }
-    value.set_error( mess );
-    return value;
+    return create_error( mess );
 }
 
 SValue Script::at_string()
 {
-    SValue value;
-    SValueVec args = get_args( value, GetToken::next );
-    if( value.is_error() ) {
-        return value;
-    }
+    SValueVec args = get_args( GetToken::next );
     if( args.empty() ) {
         return create_error( "Function @string requires one argument." );
     }
-    value.set_str( args[0].as_string() );
-    return value;
+    return SValue( args[0].as_string());
 }
 
 SValue Script::get_value_var( const std::string& name )
@@ -1498,17 +1465,14 @@ SValue Script::get_value_var( const std::string& name )
     if( m_glc->is_named( name ) ) {
         return m_glc->get_named( name );
     }
-    SValue value;
-    value.set_error( "Variable \"" + name + "\" not found." );
-    return value;
+    return create_error( "Variable \"" + name + "\" not found." );
 }
 
 SValue Script::get_cur_object()
 {
     SValue value;
     if( m_cur_obj == nullptr ) {
-        value.set_error( "Object not currently running." );
-        return value;
+        return create_error( "Object not currently running." );
     }
     const NameIndexMap& vnames_map = m_cur_obj->get_vnames_map();
     SValueVec values( vnames_map.size() + 1 );
@@ -1516,8 +1480,7 @@ SValue Script::get_cur_object()
     for( const auto& v : vnames_map ) {
         values[v.second] = m_glc->get_local( v.first );
     }
-    value.set_object( values );
-    return value;
+    return SValue( values );
 }
 
 // End of src/glc/glcScript.cpp

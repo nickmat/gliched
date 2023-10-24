@@ -388,7 +388,7 @@ Field SValue::get_field( bool& success ) const
     }
     if( std::holds_alternative<Num>( m_data ) && m_type == Type::Number ) {
         Num num = std::get<Num>( m_data );
-        return field_to_num( num, success );
+        return num_to_field( num, success );
     }
     success = false;
     return f_invalid;

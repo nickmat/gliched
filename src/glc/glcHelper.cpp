@@ -45,6 +45,15 @@ Num glich::str_to_num( const string& str )
     return strtoll( str.c_str(), nullptr, 10 );
 }
 
+Num glich::str_to_num( const std::string& str, bool& success )
+{
+    const char* cptr = str.c_str();
+    char* cptr_end = nullptr;
+    Num num = strtoll( cptr, &cptr_end, 10 );
+    success = (cptr != cptr_end);
+    return num;
+}
+
 bool glich::is_str_size_t( const std::string& str )
 {
     return (str.size() > 0 && isdigit( str[0] ));
@@ -64,6 +73,19 @@ Field glich::str_to_field( const string& str )
     if( num <= f_maximum && num >= f_minimum ) {
         return static_cast<Field>(num);
     }
+    return f_invalid;
+}
+
+Field glich::str_to_field( const std::string& str, bool& success )
+{
+    Num num = str_to_num( str, success );
+    if( !success ) {
+        return f_invalid;
+    }
+    if( num <= f_maximum && num >= f_minimum ) {
+        return static_cast<Field>(num);
+    }
+    success = false;
     return f_invalid;
 }
 

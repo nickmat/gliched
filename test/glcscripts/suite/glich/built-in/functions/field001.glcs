@@ -1,5 +1,5 @@
 // field001.glcs - @field( value ) // convert value to field.
-/*[SKIP]*/
+
 write nl;
 
 let a = null;

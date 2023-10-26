@@ -1,0 +1,51 @@
+// number001.glcs - @number( value ) // convert value to number.
+
+write nl;
+
+let a = null;
+let v = @number( a );
+write v, a[.type], v[.type] nl;
+a = "321";
+let v = @number( a );
+write v, a[.type], v[.type] nl;
+a = true;
+let v = @number( a );
+write v, a[.type], v[.type] nl;
+a = 123n;
+let v = @number( a );
+write v, a[.type], v[.type] nl;
+a = 345f;
+let v = @number( a );
+write v, a[.type], v[.type] nl;
+a = 1.8;
+let v = @number( a );
+write v, a[.type], v[.type] nl;
+a = 10 .. 10;
+let v = @number( a );
+write v, a[.type], v[.type] nl;
+// Note, RLists are automatically well formed and demoted.
+a = 199 | 199 .. 199;
+let v = @number( a );
+write v, a[.type], v[.type] nl;
+a = {:,11};
+let v = @number( a );
+write v, a[.type], v[.type] nl;
+a = @error( "Test" );
+let v = @number( a );
+write v, a[.type], v[.type] nl;
+
+
+/*[OUTPUT]
+
+0, null, number
+321, string, number
+0, bool, number
+123, number, number
+345, field, number
+2, float, number
+10, range, number
+199, field, number
+0, object, number
+0, error, number
+
+[OUTPUT]*/

@@ -50,6 +50,8 @@ namespace glich {
     Num field_to_num( Field fld, bool& success );
     double field_to_double( Field fld, bool& success );
 
+    Field double_to_field( double dbl, bool& success );
+
     std::string bool_to_string( bool b );
     std::string float_to_string( double real );
     std::string field_to_string( 

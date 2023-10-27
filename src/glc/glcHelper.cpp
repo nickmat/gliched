@@ -138,6 +138,26 @@ double glich::field_to_double( Field fld, bool& success )
     return std::numeric_limits<double>::quiet_NaN();
 }
 
+Field glich::double_to_field( double dbl, bool& success )
+{
+    success = true;
+    if( isnan( dbl ) ) {
+        return f_invalid;
+    }
+    if( dbl == std::numeric_limits<double>::infinity() ) {
+        return f_maximum;
+    }
+    if( dbl == -std::numeric_limits<double>::infinity() ) {
+        return f_minimum;
+    }
+    Num num = static_cast<Num>(std::round( dbl ));
+    if( num < f_maximum && num > f_minimum ) {
+        return static_cast<Field>(num);
+    }
+    success = false;
+    return f_invalid;
+}
+
 string glich::bool_to_string( bool b )
 {
     return b ? "true" : "false";

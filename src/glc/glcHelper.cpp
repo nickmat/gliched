@@ -112,6 +112,12 @@ Field glich::num_to_field( Num num, bool& success )
     return f_invalid;
 }
 
+double glich::num_to_double( Num num, bool& success )
+{
+    success = true;
+    return static_cast<double>(num);
+}
+
 Num glich::field_to_num( Field fld, bool& success )
 {
     success = true;

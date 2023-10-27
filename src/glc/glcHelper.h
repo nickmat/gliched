@@ -45,7 +45,9 @@ namespace glich {
     double str_to_double( const std::string& str, bool& success );
     Field str_to_field( const std::string& str );
     Field str_to_field( const std::string& str, bool& success );
+
     Field num_to_field( Num num, bool& success );
+    double num_to_double( Num num, bool& success );
 
     Num field_to_num( Field fld, bool& success );
     double field_to_double( Field fld, bool& success );

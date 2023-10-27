@@ -122,6 +122,22 @@ Num glich::field_to_num( Field fld, bool& success )
     return 0;
 }
 
+double glich::field_to_double( Field fld, bool& success )
+{
+    success = true;
+    if( fld < f_maximum && fld > f_minimum ) {
+        return static_cast<double>(fld);
+    }
+    switch( fld )
+    {
+    case f_invalid: return std::numeric_limits<double>::quiet_NaN();
+    case f_minimum: return -std::numeric_limits<double>::infinity();
+    case f_maximum: return std::numeric_limits<double>::infinity();
+    }
+    success = false;
+    return std::numeric_limits<double>::quiet_NaN();
+}
+
 string glich::bool_to_string( bool b )
 {
     return b ? "true" : "false";

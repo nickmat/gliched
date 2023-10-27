@@ -31,6 +31,7 @@
 #include "glcMath.h"
 
 #include <cassert>
+#include <limits>
 #include <sstream>
 
 using namespace glich;
@@ -65,6 +66,18 @@ double glich::str_to_float( const string& str )
         return 0.0;
     }
     return std::stod( str );
+}
+
+double glich::str_to_double( const std::string& str, bool& success )
+{
+    const char* cptr = str.c_str();
+    char* cptr_end = nullptr;
+    double dbl = strtod( cptr, &cptr_end );
+    success = (cptr != cptr_end);
+    if( !success ) {
+        return std::numeric_limits<double>::quiet_NaN();
+    }
+    return dbl;
 }
 
 Field glich::str_to_field( const string& str )

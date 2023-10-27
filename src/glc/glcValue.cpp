@@ -499,6 +499,22 @@ size_t SValue::get_int_as_size_t( bool& success ) const
     return 0;
 }
 
+double glich::SValue::get_any_as_float( bool& success ) const
+{
+    success = true;
+    switch( type() )
+    {
+    case Type::Float:
+        return get_float();
+    case Type::field:
+        return field_to_double( get_field(), success );
+    case Type::Number:
+        return num_to_double( get_number(), success );
+    }
+    success = false;
+    return std::numeric_limits<double>::quiet_NaN();
+}
+
 bool SValue::propagate_error( const SValue& value )
 {
     if( is_error() ) {

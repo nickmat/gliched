@@ -1,0 +1,51 @@
+// float001.glcs - @float( value ) // convert value to float.
+
+write nl;
+
+let a = null;
+let v = @float( a );
+write v, a[.type], v[.type] nl;
+a = "321";
+let v = @float( a );
+write v, a[.type], v[.type] nl;
+a = true;
+let v = @float( a );
+write v, a[.type], v[.type] nl;
+a = 123n;
+let v = @float( a );
+write v, a[.type], v[.type] nl;
+a = 345f;
+let v = @float( a );
+write v, a[.type], v[.type] nl;
+a = 1.2;
+let v = @float( a );
+write v, a[.type], v[.type] nl;
+a = 10 .. 10;
+let v = @float( a );
+write v, a[.type], v[.type] nl;
+// Note, RLists are automatically well formed and demoted.
+a = 199 | 199 .. 199;
+let v = @float( a );
+write v, a[.type], v[.type] nl;
+a = {:,11};
+let v = @float( a );
+write v, a[.type], v[.type] nl;
+a = @error( "Test" );
+let v = @float( a );
+write v, a[.type], v[.type] nl;
+
+
+/*[OUTPUT]
+
+nan, null, float
+321.0, string, float
+nan, bool, float
+123.0, number, float
+345.0, field, float
+1.2, float, float
+10.0, range, float
+199.0, field, float
+nan, object, float
+nan, error, float
+
+[OUTPUT]*/

@@ -1221,12 +1221,12 @@ SValueVec Script::get_args( GetToken get )
 SValue Script::function_call()
 {
     enum f {
-        f_if, f_error, f_string, f_field, f_number, f_read,
+        f_if, f_error, f_string, f_field, f_number, f_float, f_read,
         f_date, f_text, f_record, f_element, f_phrase
     };
     const static std::map<string, f> fmap = {
         { "if", f_if }, { "error", f_error }, { "string", f_string }, { "field", f_field },
-        { "number", f_number }, { "read", f_read },
+        { "number", f_number }, { "float", f_float }, { "read", f_read },
 
         // Hics extension
         { "date", f_date }, { "text", f_text }, { "record", f_record }, { "element", f_element },
@@ -1248,6 +1248,7 @@ SValue Script::function_call()
         case f_string: return at_string();
         case f_field: return at_field();
         case f_number: return at_number();
+        case f_float: return at_float();
         case f_read: return at_read();
         case f_date: return at_date( *this );
         case f_text: return at_text( *this );
@@ -1546,6 +1547,49 @@ SValue Script::at_number()
         }
     }
     value.set_number( number );
+    return value;
+}
+
+SValue glich::Script::at_float()
+{
+    SValueVec args = get_args( GetToken::next );
+    if( args.empty() ) {
+        return create_error( "Function @field requires one argument." );
+    }
+
+    SValue value;
+    double dbl = std::numeric_limits<double>::quiet_NaN();
+    bool success = false;
+    SValue::Type type = args[0].type();
+    switch( type )
+    {
+    case SValue::Type::field:
+        dbl = field_to_double( args[0].get_field(), success );
+        break;
+    case SValue::Type::Number:
+        dbl = num_to_double( args[0].get_number(), success );
+        break;
+    case SValue::Type::String:
+        dbl = str_to_double( args[0].get_str(), success );
+        break;
+    case SValue::Type::range:
+    case SValue::Type::rlist:
+        {
+            Field field = args[0].get_field( success );
+            if( success ) {
+                dbl = field_to_double( field, success );
+            }
+        }
+        break;
+    case SValue::Type::Float:
+        return args[0];
+    }
+    if( !success ) {
+        if( args.size() > 1 ) {
+            dbl = args[1].get_any_as_float( success );
+        }
+    }
+    value.set_float( dbl );
     return value;
 }
 

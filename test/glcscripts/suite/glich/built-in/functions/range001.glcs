@@ -1,0 +1,51 @@
+// range001.glcs - @range( value ) // convert value to range.
+
+write nl;
+
+let a = null;
+let v = @range( a );
+write v, a[.type], v[.type] nl;
+a = "321..320";
+let v = @range( a );
+write v, a[.type], v[.type] nl;
+a = true;
+let v = @range( a );
+write v, a[.type], v[.type] nl;
+a = 123n;
+let v = @range( a );
+write v, a[.type], v[.type] nl;
+a = 345f;
+let v = @range( a );
+write v, a[.type], v[.type] nl;
+a = 1.2;
+let v = @range( a );
+write v, a[.type], v[.type] nl;
+a = 10 .. 20;
+let v = @range( a );
+write v, a[.type], v[.type] nl;
+// Note, RLists are automatically well formed and demoted.
+a = 199 | 199 .. 200;
+let v = @range( a );
+write v, a[.type], v[.type] nl;
+a = {:,11};
+let v = @range( a );
+write v, a[.type], v[.type] nl;
+a = @error( "Test" );
+let v = @range( a );
+write v, a[.type], v[.type] nl;
+
+
+/*[OUTPUT]
+
+0, null, range
+320..321, string, range
+0, bool, range
+123, number, range
+345, field, range
+0, float, range
+10..20, range, range
+199..200, range, range
+0, object, range
+0, error, range
+
+[OUTPUT]*/

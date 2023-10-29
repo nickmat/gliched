@@ -1497,7 +1497,7 @@ SValue Script::at_field()
         if( args.size() > 1 ) {
             field = args[1].get_field( success );
         }
-        else {
+        if( !success ) {
             field = f_invalid;
         }
     }
@@ -1542,7 +1542,7 @@ SValue glich::Script::at_range()
         if( args.size() > 1 ) {
             rng = args[1].get_range( success );
         }
-        else {
+        if( !success ) {
             rng = Range( 0, 0 );
         }
     }
@@ -1588,7 +1588,7 @@ SValue Script::at_number()
         if( args.size() > 1 ) {
             number = args[1].get_number( success );
         }
-        else {
+        if( !success ) {
             number = 0;
         }
     }
@@ -1633,6 +1633,9 @@ SValue glich::Script::at_float()
     if( !success ) {
         if( args.size() > 1 ) {
             dbl = args[1].get_any_as_float( success );
+        }
+        if( !success ) {
+            dbl = std::numeric_limits<double>::quiet_NaN();
         }
     }
     value.set_float( dbl );

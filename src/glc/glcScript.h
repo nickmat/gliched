@@ -103,6 +103,7 @@ namespace glich {
         SValue at_string();
         SValue at_field();
         SValue at_range();
+        SValue at_rlist();
         SValue at_number();
         SValue at_float();
 

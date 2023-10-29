@@ -1221,13 +1221,13 @@ SValueVec Script::get_args( GetToken get )
 SValue Script::function_call()
 {
     enum f {
-        f_if, f_error, f_string, f_field, f_range, f_number, f_float, f_read,
+        f_if, f_error, f_string, f_field, f_range, f_rlist, f_number, f_float, f_read,
         f_date, f_text, f_record, f_element, f_phrase
     };
     const static std::map<string, f> fmap = {
         { "if", f_if }, { "error", f_error }, { "string", f_string }, { "field", f_field },
-        { "range", f_range }, { "number", f_number }, { "float", f_float }, { "read", f_read },
-
+        { "range", f_range }, { "rlist", f_rlist }, { "number", f_number }, { "float", f_float },
+        { "read", f_read },
         // Hics extension
         { "date", f_date }, { "text", f_text }, { "record", f_record }, { "element", f_element },
         { "phrase", f_phrase }
@@ -1248,6 +1248,7 @@ SValue Script::function_call()
         case f_string: return at_string();
         case f_field: return at_field();
         case f_range: return at_range();
+        case f_rlist: return at_rlist();
         case f_number: return at_number();
         case f_float: return at_float();
         case f_read: return at_read();
@@ -1505,11 +1506,11 @@ SValue Script::at_field()
     return value;
 }
 
-SValue glich::Script::at_range()
+SValue Script::at_range()
 {
     SValueVec args = get_args( GetToken::next );
     if( args.empty() ) {
-        return create_error( "Function @field requires one argument." );
+        return create_error( "Function @range requires one argument." );
     }
 
     SValue value;
@@ -1547,6 +1548,53 @@ SValue glich::Script::at_range()
         }
     }
     value.set_range( rng );
+    return value;
+}
+
+SValue Script::at_rlist()
+{
+    SValueVec args = get_args( GetToken::next );
+    if( args.empty() ) {
+        return create_error( "Function @rlist requires one argument." );
+    }
+
+    SValue value;
+    RList rlist;
+    Field fld = 0;
+    bool success = false;
+    if( args[0].type() == SValue::Type::String ) {
+        value = m_glc->evaluate( args[0].get_str() );
+    }
+    else {
+        value = args[0];
+    }
+    SValue::Type type = value.type();
+    switch( type )
+    {
+    case SValue::Type::field:
+        fld = value.get_field( success );
+        rlist = { {fld, fld } };
+        break;
+    case SValue::Type::Number:
+        fld = num_to_field( value.get_number(), success );
+        rlist = { { fld, fld } };
+        break;
+    case SValue::Type::range:
+        rlist = { value.get_range( success ) };
+        break;
+    case SValue::Type::rlist:
+        rlist = value.get_rlist( success );
+        break;
+    }
+    if( !success ) {
+        if( args.size() > 1 ) {
+            rlist = args[1].get_rlist( success );
+        }
+        if( !success ) {
+            rlist = RList();
+        }
+    }
+    value.set_rlist( rlist );
     return value;
 }
 
@@ -1596,7 +1644,7 @@ SValue Script::at_number()
     return value;
 }
 
-SValue glich::Script::at_float()
+SValue Script::at_float()
 {
     SValueVec args = get_args( GetToken::next );
     if( args.empty() ) {

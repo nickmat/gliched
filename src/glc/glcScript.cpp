@@ -1595,19 +1595,7 @@ SValue Script::at_rlist()
 }
 
 SValue Script::at_number()
-{/*
-    SValueVec args = get_args( GetToken::next );
-    if( args.empty() ) {
-        return create_error( "Function @field requires one argument." );
-    }
-
-    SValue value;
-    Num number = 0;
-    bool success = false;
-    SValue::Type type = args[0].type();
-    switch( type )
-    */
-
+{
     SValueVec args = get_args( GetToken::next );
     if( args.empty() ) {
         return create_error( "Function @number requires one argument." );
@@ -1655,32 +1643,29 @@ SValue Script::at_float()
         return create_error( "Function @field requires one argument." );
     }
 
-    SValue value;
     double dbl = std::numeric_limits<double>::quiet_NaN();
     bool success = false;
-    SValue::Type type = args[0].type();
-    switch( type )
+    SValue value = (args[0].type() == SValue::Type::String) ? m_glc->evaluate( args[0].get_str() ) : args[0];
+    switch( value.type() )
+
     {
     case SValue::Type::field:
-        dbl = field_to_double( args[0].get_field(), success );
+        dbl = field_to_double( value.get_field(), success );
         break;
     case SValue::Type::Number:
-        dbl = num_to_double( args[0].get_number(), success );
-        break;
-    case SValue::Type::String:
-        dbl = str_to_double( args[0].get_str(), success );
+        dbl = num_to_double( value.get_number(), success );
         break;
     case SValue::Type::range:
     case SValue::Type::rlist:
         {
-            Field field = args[0].get_field( success );
+            Field field = value.get_field( success );
             if( success ) {
                 dbl = field_to_double( field, success );
             }
         }
         break;
     case SValue::Type::Float:
-        return args[0];
+        return value;
     }
     if( !success ) {
         if( args.size() > 1 ) {

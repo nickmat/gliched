@@ -1595,7 +1595,7 @@ SValue Script::at_rlist()
 }
 
 SValue Script::at_number()
-{
+{/*
     SValueVec args = get_args( GetToken::next );
     if( args.empty() ) {
         return create_error( "Function @field requires one argument." );
@@ -1606,26 +1606,34 @@ SValue Script::at_number()
     bool success = false;
     SValue::Type type = args[0].type();
     switch( type )
+    */
+
+    SValueVec args = get_args( GetToken::next );
+    if( args.empty() ) {
+        return create_error( "Function @number requires one argument." );
+    }
+
+    Num number = 0;
+    bool success = false;
+    SValue value = (args[0].type() == SValue::Type::String) ? m_glc->evaluate( args[0].get_str() ) : args[0];
+    switch( value.type() )
     {
     case SValue::Type::field:
         number = field_to_num( args[0].get_field(), success );
         break;
     case SValue::Type::Number:
-        return args[0];
-    case SValue::Type::String:
-        number = str_to_num( args[0].get_str(), success );
-        break;
+        return value;
     case SValue::Type::range:
     case SValue::Type::rlist:
     {
-        Field field = args[0].get_field( success );
+        Field field = value.get_field( success );
         if( success ) {
             number = field_to_num( field, success );
         }
     }
         break;
     case SValue::Type::Float:
-        number = std::round( args[0].get_float( success ) );
+        number = std::round( value.get_float( success ) );
         break;
     }
     if( !success ) {

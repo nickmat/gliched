@@ -1,0 +1,10 @@
+// field003.glcs - @field( value ) // convert string to field.
+
+
+write @field( "-10" ),;
+write @field( "11+1..13-1" ),;
+write @field( "?" );
+
+/*[OUTPUT]
+-10, 12, ?
+[OUTPUT]*/

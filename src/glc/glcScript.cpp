@@ -1472,26 +1472,22 @@ SValue Script::at_field()
         return create_error( "Function @field requires one argument." );
     }
 
-    SValue value;
     Field field = f_invalid;
     bool success = false;
-    SValue::Type type = args[0].type();
-    switch( type )
+    SValue value = ( args[0].type() == SValue::Type::String ) ? m_glc->evaluate( args[0].get_str() ) : args[0];
+    switch( value.type() )
     {
     case SValue::Type::field:
-        return args[0];
+        return value;
     case SValue::Type::Number:
-        field = num_to_field( args[0].get_number(), success );
-        break;
-    case SValue::Type::String:
-        field = str_to_field( args[0].get_str(), success );
+        field = num_to_field( value.get_number(), success );
         break;
     case SValue::Type::range:
     case SValue::Type::rlist:
-        field = args[0].get_field( success );
+        field = value.get_field( success );
         break;
     case SValue::Type::Float:
-        field = std::round( args[0].get_float( success ) );
+        field = std::round( value.get_float( success ) );
         break;
     }
     if( !success ) {

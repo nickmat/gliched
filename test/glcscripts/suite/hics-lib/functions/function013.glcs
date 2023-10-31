@@ -1,17 +1,24 @@
 // function013.hcs - Test manual example functions.
 
-mark test;
-
-function this_week {
+function this_week.day_start {
     let _today = 2460049;
-    let start = _today - ( @record.g( _today )[wday] ) + 1;
+    if day_start = "sun"
+        let day = @record.jwsn( _today )[day];
+    else
+        let day = @record.jwn( _today )[day];
+    endif
+    let start = _today - day + 1;
     result = start .. ( start + 6 );
 }
 
-write @text( @this_week );
+write nl;
+write @text( @this_week ) nl;
+write @text( @this_week.sun ) nl;
 
-mark test;
 
 /*[OUTPUT]
+
 10 Apr 2023..16 Apr 2023
+9 Apr 2023..15 Apr 2023
+
 [OUTPUT]*/

@@ -36,15 +36,17 @@
 <p>
  The language has a number of functions built-in which are always available.
 </p>
+<p>
+ Additional mathematical functions will be added in the future.
+</p>
+
+<h3>General Purpose</h3>
+
 <table class='basic'>
 <tr><th>Function</th><th>Description</th></tr>
-<tr><td>@<b>error</b>( <i>message</i> )</td><td>Create an error value.</td></tr>
 <tr><td>@<b>if</b>( <i>comp, t, f</i> )</td><td>Acts as a comparison operator.</td></tr>
 <tr><td>@<b>read</b>.<i>input</i>( <i>prompt</i> )</td><td>Obtain text from file or console.</td></tr>
 </table>
-<p>
- Mathematical functions are planned to be added in a future version.
-</p>
 
 <h4>Function @if( comp, t, f )</h4>
 <p>
@@ -72,6 +74,19 @@
  Use the convert cast to read a field value.
 </p>
 
+<h3>Type Conversion</h3>
+
+<table class='basic'>
+<tr><th>Function</th><th>Description</th></tr>
+<tr><td>@<b>error</b>( <i>message</i> )</td><td>Create an error value.</td></tr>
+<tr><td>@<b>string</b>( <i>value</i> )</td><td>Stringize the value.</td></tr>
+<tr><td>@<b>field</b>( <i>value</i>, <i>default</i> = ? )</td><td>Convert value to a field type.</td></tr>
+<tr><td>@<b>range</b>( <i>value</i>, <i>default</i> = 0..0 )</td><td>Convert value to a range type.</td></tr>
+<tr><td>@<b>rlist</b>( <i>value</i>, <i>default</i> = empty )</td><td>Convert value to a rlist type.</td></tr>
+<tr><td>@<b>number</b>( <i>value</i>, <i>default</i> = 0 )</td><td>Convert value to a number type.</td></tr>
+<tr><td>@<b>float</b>( <i>value</i>, <i>default</i> = nan )</td><td>Convert value to a float type.</td></tr>
+</table>
+
 <h4>Function @error( message )</h4>
 <p>
  The error function converts a string message into an error value.
@@ -85,6 +100,136 @@
 <tr><th>Example</th><th>Result</th></tr>
  <tr><td class='example'>@error( "Age is negative." )</td><td class='example'>"Error (10): Age is negative."</td></tr>
  <tr><td class='example'>@error( "Age of " + age + " is too high." )</td><td class='example'>"Error (10): Age of 150 is too high."</td></tr>
+</table>
+
+<h4>Function @string( value )</h4>
+<p>
+ The string function converts any value type (including error types) to a string value.
+ The conversion follows the same rules as the write statement uses.
+</p>
+<table class='basic'>
+<tr><th>Example</th><th>Result</th></tr>
+ <tr><td class='example'>@string( null )</td><td class='example'>"null"</td></tr>
+ <tr><td class='example'>@string( 1 = 2 )</td><td class='example'>"false"</td></tr>
+ <tr><td class='example'>@string( 123n )</td><td class='example'>"123"</td></tr>
+ <tr><td class='example'>@string( 345f )</td><td class='example'>"345"</td></tr>
+ <tr><td class='example'>@string( 1.2 )</td><td class='example'>"1.2"</td></tr>
+ <tr><td class='example'>@string( 10 .. 20 )</td><td class='example'>"10..20"</td></tr>
+ <tr><td class='example'>@string( 50 | 5 .. 10 )</td><td class='example'>"5..10 | 50"</td></tr>
+ <tr><td class='example'>@string( {:,11} )</td><td class='example'>"{: null, 11}"</td></tr>
+ <tr><td class='example'>@string( @error( "Test" ) )</td><td class='example'>"Error (1): Test"</td></tr>
+ <tr><td class='example'>@string( "Text" )</td><td class='example'>"Text"</td></tr>
+ <tr><td colspan='2'>The quotes in the Result column are not part of the output.</td></tr>
+</table>
+
+<h4>Function @field( value, default )</h4>
+<p>
+ The field function converts the value, where possible, to a field.
+ If the conversion is not possible then the optional default value is used.
+ If the default is not given or cannot be used,
+ the function returns the unknown '?' value.
+</p>
+<p>
+ Conversion of the float type rounds the value to the nearest integer and tests for limits.
+</p>
+
+<table class='basic'>
+<tr><th>Example</th><th>Result</th></tr>
+ <tr><td class='example'>@field( null )</td><td class='example'>?</td></tr>
+ <tr><td class='example'>@field( null, 0 )</td><td class='example'>0</td></tr>
+ <tr><td class='example'>@field( 1 = 2 )</td><td class='example'>?</td></tr>
+ <tr><td class='example'>@field( 123n, 0 )</td><td class='example'>123</td></tr>
+ <tr><td class='example'>@field( 345f )</td><td class='example'>345</td></tr>
+ <tr><td class='example'>@field( 1.7 )</td><td class='example'>2</td></tr>
+ <tr><td class='example'>@field( 1.7, 10 )</td><td class='example'>2</td></tr>
+ <tr><td class='example'>@field( 10 .. 20 )</td><td class='example'>?</td></tr>
+ <tr><td class='example'>@field( 50 | 5 .. 10, 0 )</td><td class='example'>0</td></tr>
+ <tr><td class='example'>@field( {:,11} )</td><td class='example'>?</td></tr>
+ <tr><td class='example'>@field( @error( "Test" ), 0 )</td><td class='example'>0</td></tr>
+ <tr><td class='example'>@field( "-50" )</td><td class='example'>-50</td></tr>
+ <tr><td class='example'>@field( "10 + 2" )</td><td class='example'>12</td></tr>
+</table>
+
+<h4>Function @range( value, default )</h4>
+<p>
+ The range function converts the value, where possible, to a range.
+ If the conversion is not possible then the optional default value is used.
+ If the default is not given or cannot be used,
+ the function returns the 0..0 range value
+ (which normally gets demoted to the field 0).
+</p>
+<table class='basic'>
+<tr><th>Example</th><th>Result</th></tr>
+ <tr><td class='example'>@range( 123n, 0 )</td><td class='example'>123..123</td></tr>
+ <tr><td class='example'>@range( 345f )</td><td class='example'>345..345</td></tr>
+ <tr><td class='example'>@range( 1.7 )</td><td class='example'>0..0</td></tr>
+ <tr><td class='example'>@range( 1.7, 10..12 )</td><td class='example'>10..12</td></tr>
+ <tr><td class='example'>@range( 10 .. 20 )</td><td class='example'>10..20</td></tr>
+ <tr><td class='example'>@field( 50 | 5 .. 10 )</td><td class='example'>0..0</td></tr>
+ <tr><td class='example'>@field( "50 .. 55" )</td><td class='example'>50..55</td></tr>
+</table>
+
+<h4>Function @rlist( value, default )</h4>
+<p>
+ The rlist function converts the value, where possible, to an rlist.
+ If the conversion is not possible then the optional default value is used.
+ If the default is not given or cannot be used,
+ the function returns the empty rlist value.
+</p>
+<table class='basic'>
+<tr><th>Example</th><th>Result</th></tr>
+ <tr><td class='example'>@rlist( 123n, 0 )</td><td class='example'>123..123</td></tr>
+ <tr><td class='example'>@rlist( 345f )</td><td class='example'>345..345</td></tr>
+ <tr><td class='example'>@rlist( 1.7 )</td><td class='example'>empty</td></tr>
+ <tr><td class='example'>@rlist( 1.7, past..future )</td><td class='example'>past..future</td></tr>
+ <tr><td class='example'>@rlist( 10 .. 20 )</td><td class='example'>10..20</td></tr>
+ <tr><td class='example'>@rlist( 50 | 5 .. 10 )</td><td class='example'>5..10 | 50</td></tr>
+ <tr><td class='example'>@rlist( "50 .. 55|10" )</td><td class='example'>10 | 50..55</td></tr>
+ <tr><td class='example'>@rlist( "!0" )</td><td class='example'>-infinity..-1 | 1..+infinity</td></tr>
+ <tr><td colspan='2'>The output of the range limit names will depend on the script context setting.</td></tr>
+</table>
+
+<h4>Function @number( value, default )</h4>
+<p>
+ The number function converts the value, where possible, to a number.
+ If the conversion is not possible then the optional default value is used.
+ If the default is not given or cannot be used,
+ the function returns 0.
+</p>
+<p>
+ Conversion of the float type rounds the value to the nearest integer.
+</p>
+
+<table class='basic'>
+<tr><th>Example</th><th>Result</th></tr>
+ <tr><td class='example'>@number( 123n, 100 )</td><td class='example'>123</td></tr>
+ <tr><td class='example'>@number( 345f )</td><td class='example'>345</td></tr>
+ <tr><td class='example'>@number( 1.7 )</td><td class='example'>2</td></tr>
+ <tr><td class='example'>@number( 1.7, 10 )</td><td class='example'>2</td></tr>
+ <tr><td class='example'>@number( 10 .. 20 )</td><td class='example'>0</td></tr>
+ <tr><td class='example'>@number( 50 | 5 .. 10, 50 )</td><td class='example'>50</td></tr>
+ <tr><td class='example'>@number( "-50" )</td><td class='example'>-50</td></tr>
+ <tr><td class='example'>@number( "10 + 2" )</td><td class='example'>12</td></tr>
+</table>
+
+<h4>Function @float( value, default )</h4>
+<p>
+ The float function converts the value, where possible, to a float.
+ If the conversion is not possible then the optional default value is used.
+ If the default is not given or cannot be used,
+ the function returns nan (not a number).
+</p>
+
+<table class='basic'>
+<tr><th>Example</th><th>Result</th></tr>
+ <tr><td class='example'>@float( 123n, 100 )</td><td class='example'>123.0</td></tr>
+ <tr><td class='example'>@float( 345f )</td><td class='example'>345.0</td></tr>
+ <tr><td class='example'>@float( 1.7 )</td><td class='example'>1.7</td></tr>
+ <tr><td class='example'>@float( 10 .. 10 )</td><td class='example'>10.0</td></tr>
+ <tr><td class='example'>@float( 50 | 5 .. 10, 50 )</td><td class='example'>50.0</td></tr>
+ <tr><td class='example'>@float( {:,11} )</td><td class='example'>nan</td></tr>
+ <tr><td class='example'>@float( "-50" )</td><td class='example'>-50.0</td></tr>
+ <tr><td class='example'>@float( "10 + 2" )</td><td class='example'>12.0</td></tr>
 </table>
 
 

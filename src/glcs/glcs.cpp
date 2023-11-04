@@ -218,12 +218,10 @@ string compress_statement( const string& statement )
 
 bool terminated_char( const string& stmt, int character )
 {
-    for ( auto ch : stmt ) {
-        if ( ch == character ) {
-            return true;
-        }
-    }
-    return false;
+    string input = stmt;
+    input.erase( std::remove( input.begin(), input.end(), ' ' ), input.end() );
+    int ch = stmt.back();
+    return (ch == character);
 }
 bool terminated_semicolon( const string& statement )
 {

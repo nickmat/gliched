@@ -1047,7 +1047,8 @@ std::string Script::get_name_or_primary( GetToken get )
     }
     else {
         SValue value = primary( GetToken::current );
-        if( value.type() == SValue::Type::String || value.type() == SValue::Type::Number ) {
+        if( value.type() == SValue::Type::String || value.type() == SValue::Type::Number
+            || value.type() == SValue::Type::field || value.type() == SValue::Type::Float ) {
             str = value.as_string();
         }
     }

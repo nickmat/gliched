@@ -1,0 +1,13 @@
+// Add a new format to the "j" grammar for html output.
+
+mark example_html;
+
+format j:html {
+    output "<span class='date'>|{day}<sup>{day::oa}</sup> |<b>{month:m}</b> |{year}|</span>";
+}
+
+write @text.g:html( 2460255 );
+
+/*[OUTPUT]
+<span class='date'>6<sup>th</sup> <b>November</b> 2023</span>
+[OUTPUT]*/

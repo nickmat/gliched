@@ -144,7 +144,7 @@ namespace glich {
         InOut* m_inout;
     };
 
-    void init_glc( InitLibrary lib );
+    void init_glc( InitLibrary lib, InOut* inout = nullptr );
     void exit_glc();
     Glich* get_glc();
 

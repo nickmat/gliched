@@ -803,12 +803,12 @@ Scheme* Glich::get_oscheme() const
 
 static Glich* s_glc = nullptr;
 
-void glich::init_glc( InitLibrary lib )
+void glich::init_glc( InitLibrary lib, InOut* inout )
 {
     if( s_glc ) {
         delete s_glc;
     }
-    s_glc = new Glich( lib );
+    s_glc = new Glich( lib, inout );
 }
 
 void glich::exit_glc()

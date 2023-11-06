@@ -1,0 +1,20 @@
+// Display today's date in various calendar formats
+
+let _today = 2460255;
+
+write "Today is :-" nl;
+write "Gregorian: " + @text.g:full( _today ) nl;
+write "    ISO Week No: " + @record.gw( _today )[week] +
+        "    Ordinal Day No: " + @record.go( _today)[day] nl;
+
+write "Julian Annunciation Florence: " + @text.ja:out( _today ) nl;
+
+write "Julian Annunciation Pisa: " + @text.jap:out( _today );
+
+/*[OUTPUT]
+Today is :-
+Gregorian: Monday 6th November 2023
+    ISO Week No: 45    Ordinal Day No: 310
+Julian Annunciation Florence: 24th October 2023
+Julian Annunciation Pisa: 24th October 2024/3
+[OUTPUT]*/

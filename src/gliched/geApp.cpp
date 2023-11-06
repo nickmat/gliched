@@ -38,9 +38,28 @@
 
 IMPLEMENT_APP(geApp)
 
+
+class GeInOut : public glich::InOut
+{
+public:
+    std::string get_input( const std::string& prompt ) override;
+};
+
+std::string GeInOut::get_input( const std::string& prompt )
+{
+    wxTextEntryDialog dialog(
+        nullptr, prompt,
+        _( "Gliched Input" ), "", wxOK | wxCANCEL
+    );
+    if( dialog.ShowModal() == wxID_OK ) {
+        return dialog.GetValue();
+    }
+    return std::string();
+}
+
 bool geApp::OnInit()
 {
-    glich::init_glc( glich::InitLibrary::Hics );
+    glich::init_glc( glich::InitLibrary::Hics, new GeInOut );
 
     wxString filename;
     if( argc > 1 ) {

@@ -63,6 +63,8 @@ namespace glich {
 
     bool is_name( const std::string& str );
 
+    std::string string_to_quote( const std::string& str );
+
     std::string ascii_tolower( const std::string& str );
     void ascii_tolower( std::string& str );
     std::string ascii_toupper( const std::string& str );

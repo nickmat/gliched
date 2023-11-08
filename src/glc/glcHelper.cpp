@@ -266,6 +266,19 @@ bool glich::is_name( const std::string& str )
     return true;
 }
 
+// Add quote to start and end and double up any quotes in-between.
+std::string glich::string_to_quote( const std::string& str )
+{
+    string quote = "\"";
+    for( auto ch : str ) {
+        quote += ch;
+        if( ch == '"' ) {
+            quote += ch;
+        }
+    }
+    return quote + '\"';
+}
+
 // TODO: This should handle utf8
 string glich::ascii_tolower( const string& str )
 {

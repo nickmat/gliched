@@ -31,7 +31,59 @@
 
 <div id='content' class='nomenu'>
 
-<h2>Page Under Construction</h2>
+<h2>Introduction</h2>
+<p>
+ Glich has just one built-in object,
+ the general purpose object with the code name ":" (colon).
+</p>
+<p>
+ There are a few built-in object functions.
+ These are available for all objects irrespective of the object definition.
+</p>
+
+<h3>Built-in Objects</h3>
+
+<h4>General Purpose Object ":"</h4>
+<p>
+ The {:} object can be used as a variable length array of values.
+ Its definition is equivalent to the following statement.
+</p>
+
+<table class='code'>
+<tr><td
+>object : {}
+</td></tr>
+</table>
+
+<table class='basic'>
+<tr><th>Example</th><th>Output</th></tr>
+<tr> <!-- See test file - test\glcscripts\suite\glich\examples\object-def-01.glcs -->
+<td class='example'><b>object</b> complex <b>){</b>
+    <b>values</b> real imaginary;
+    <b>function</b> add( comp ) <b>){</b>
+        if (comp[.object] = "complex")
+            <b>result</b> = {complex real+comp[real], imaginary+comp[imaginary]};
+        else
+            <b>result</b> = error "Must have 'complex' argument";
+        endif
+    <b>}</b>
+<b>}</b>
+
+let c1 = {complex 5, 9};
+let c2 = c1.add( {complex 20, 6} );
+let c2 = {complex 20, 6};
+
+writeln c1.add( c2 );
+writeln c1.add( 1 );
+</td>
+<td>{complex 25, 15}<br />
+Error (9): Must have 'complex' argument
+</tr>
+</table>
+
+<h3>Built-in Object Functions</h3>
+
+
 
 </div><!--id=content-->
 

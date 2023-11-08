@@ -172,7 +172,7 @@
 </p>
 <h4>{: } Built-in Object</h4>
 <p>
- The object ':' is an empty object and can be used for any purpose.
+ The general purpose object ':' is an empty object and can be used for any purpose.
  It is defined as follows. 
 </p>
 <table class='code'>
@@ -198,6 +198,9 @@
  and 'false' otherwise.
  Any other operation with null is undefined and results in an error value.
 </p>
+<p>
+ Null values can be used as place-holder values within an object value.
+</p>
 
 <h2>Names</h2>
 <p>
@@ -206,7 +209,7 @@
 </p>
 <p>
  Names are constructed from alphanumeric, '_' underline and ':' colon characters.
- They can not start with a numeric character.
+ They cannot start with a numeric character.
 </p>
 <p>
  In some cases the script may accept either a name,
@@ -251,14 +254,14 @@
 <h2>Summary of Types</h2>
 
 <table class='basic'>
-<tr><td><b>float</b></td><td class="code">float_type</td><td rowspan="2"></td><td></td><td rowspan="3">numeric_type</td><td rowspan="5">any_numeric_type</td></tr>
+<tr><td><b>float</b></td><td class="code">float_type</td><td rowspan="2"></td><td></td><td class="code" rowspan="3">numeric_type</td><td class="code" rowspan="5">any_numeric_type</td></tr>
 <tr><td><b>number</b></td><td class="code">number_type</td><td rowspan="2" class="code">integer_type</td></tr>
-<tr><td><b>field</b></td><td class="code">field_type</td><td rowspan="3">set_type</td></tr>
-<tr><td><b>range</b></td><td class="code">range_type</td><td rowspan="2">combined_type</td><td rowspan="2"></td></tr>
+<tr><td><b>field</b></td><td class="code">field_type</td><td  class="code"rowspan="3">set_type</td></tr>
+<tr><td><b>range</b></td><td class="code">range_type</td><td class="code" rowspan="2">combined_type</td><td rowspan="2"></td></tr>
 <tr><td><b>rlist</b></td><td class="code">rlist_type</td></tr>
-<tr><td><b>bool</b></td><td class="code">bool_type</td><td colspan="4"></td></tr>
+<tr><td><b>boolean</b></td><td class="code">bool_type</td><td colspan="4"></td></tr>
 <tr><td><b>string</b></td><td class="code">string_type</td><td colspan="4"></td></tr>
-<tr><td><b>object</b></td><td class="code">object_type</td><td colspan="4">named_object_type</td></tr>
+<tr><td><b>object</b></td><td class="code">object_type</td><td class="code" colspan="4">named_object_type</td></tr>
 <tr><td><b>error</b></td><td class="code">error_type</td><td colspan="4"></td></tr>
 <tr><td><b>null</b></td><td class="code">null_type</td><td colspan="4"></td></tr>
 </table>
@@ -583,7 +586,7 @@
  and, if used as signature codes, they must be enclosed in double quotes.
 </p>
 <p>
- <b>and, do, endif, element, else, elseif, false, future, if, inf, infinite, loop, mod,
+ <b>and, do, endif, else, elseif, false, future, if, inf, infinite, loop, mod,
  nan, not, null, or, past, this, today, true</b>
 </p>
 <p>

@@ -1,0 +1,11 @@
+// quote002.glcs - @quote( value ) // convert value to a quoted string.
+
+
+let s = @quote( "Hello" );
+s = "He said " + s;
+
+write @string( s ), @quote( s );
+
+/*[OUTPUT]
+He said "Hello", "He said ""Hello"""
+[OUTPUT]*/

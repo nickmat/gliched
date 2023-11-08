@@ -80,6 +80,7 @@
 <tr><th>Function</th><th>Description</th></tr>
 <tr><td>@<b>error</b>( <i>message</i> )</td><td>Create an error value.</td></tr>
 <tr><td>@<b>string</b>( <i>value</i> )</td><td>Stringize the value.</td></tr>
+<tr><td>@<b>quote</b>( <i>value</i> )</td><td>Same as @string but enclose in <b>"</b> quotes.</td></tr>
 <tr><td>@<b>field</b>( <i>value</i>, <i>default</i> = ? )</td><td>Convert value to a field type.</td></tr>
 <tr><td>@<b>range</b>( <i>value</i>, <i>default</i> = 0..0 )</td><td>Convert value to a range type.</td></tr>
 <tr><td>@<b>rlist</b>( <i>value</i>, <i>default</i> = empty )</td><td>Convert value to a rlist type.</td></tr>
@@ -98,8 +99,8 @@
 </p>
 <table class='basic'>
 <tr><th>Example</th><th>Result</th></tr>
- <tr><td class='example'>@error( "Age is negative." )</td><td class='example'>"Error (10): Age is negative."</td></tr>
- <tr><td class='example'>@error( "Age of " + age + " is too high." )</td><td class='example'>"Error (10): Age of 150 is too high."</td></tr>
+ <tr><td class='example'>@error( "Age is negative." )</td><td class='example'>Error (10): Age is negative.</td></tr>
+ <tr><td class='example'>@error( "Age of " + age + " is too high." )</td><td class='example'>Error (10): Age of 150 is too high.</td></tr>
 </table>
 
 <h4>Function @string( value )</h4>
@@ -109,17 +110,29 @@
 </p>
 <table class='basic'>
 <tr><th>Example</th><th>Result</th></tr>
- <tr><td class='example'>@string( null )</td><td class='example'>"null"</td></tr>
- <tr><td class='example'>@string( 1 = 2 )</td><td class='example'>"false"</td></tr>
- <tr><td class='example'>@string( 123n )</td><td class='example'>"123"</td></tr>
- <tr><td class='example'>@string( 345f )</td><td class='example'>"345"</td></tr>
- <tr><td class='example'>@string( 1.2 )</td><td class='example'>"1.2"</td></tr>
- <tr><td class='example'>@string( 10 .. 20 )</td><td class='example'>"10..20"</td></tr>
- <tr><td class='example'>@string( 50 | 5 .. 10 )</td><td class='example'>"5..10 | 50"</td></tr>
- <tr><td class='example'>@string( {:,11} )</td><td class='example'>"{: null, 11}"</td></tr>
- <tr><td class='example'>@string( @error( "Test" ) )</td><td class='example'>"Error (1): Test"</td></tr>
- <tr><td class='example'>@string( "Text" )</td><td class='example'>"Text"</td></tr>
- <tr><td colspan='2'>The quotes in the Result column are not part of the output.</td></tr>
+ <tr><td class='example'>@string( null )</td><td class='example'>null</td></tr>
+ <tr><td class='example'>@string( 1 = 2 )</td><td class='example'>false</td></tr>
+ <tr><td class='example'>@string( 123n )</td><td class='example'>123</td></tr>
+ <tr><td class='example'>@string( 345f )</td><td class='example'>345</td></tr>
+ <tr><td class='example'>@string( 1.2 )</td><td class='example'>1.2</td></tr>
+ <tr><td class='example'>@string( 10 .. 20 )</td><td class='example'>10..20</td></tr>
+ <tr><td class='example'>@string( 50 | 5 .. 10 )</td><td class='example'>5..10 | 50</td></tr>
+ <tr><td class='example'>@string( {:,11} )</td><td class='example'>{: null, 11}</td></tr>
+ <tr><td class='example'>@string( @error( "Test" ) )</td><td class='example'>Error (1): Test</td></tr>
+ <tr><td class='example'>@string( "Text" )</td><td class='example'>Text</td></tr>
+</table>
+
+<h4>Function @quote( value )</h4>
+<p>
+ The quote function is identical to the string function,
+ except the resulting text is enclosed in <b>"</b> double quotes
+</p>
+<table class='basic'>
+<tr><th>Example</th><th>Result</th></tr>
+ <tr><td class='example'>@quote( 1 = 2 )</td><td class='example'>"false"</td></tr>
+ <tr><td class='example'>@quote( 345f )</td><td class='example'>"345"</td></tr>
+ <tr><td class='example'>@quote( 50 | 5 .. 10 )</td><td class='example'>"5..10 | 50"</td></tr>
+ <tr><td class='example'>@quote( "Text" )</td><td class='example'>"Text"</td></tr>
 </table>
 
 <h4>Function @field( value, default )</h4>

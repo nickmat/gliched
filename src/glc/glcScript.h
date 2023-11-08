@@ -101,6 +101,7 @@ namespace glich {
         SValue at_read();
         SValue at_error();
         SValue at_string();
+        SValue at_quote();
         SValue at_field();
         SValue at_range();
         SValue at_rlist();

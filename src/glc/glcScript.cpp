@@ -1222,11 +1222,11 @@ SValueVec Script::get_args( GetToken get )
 SValue Script::function_call()
 {
     enum f {
-        f_if, f_error, f_string, f_field, f_range, f_rlist, f_number, f_float, f_read,
+        f_if, f_error, f_string, f_quote, f_field, f_range, f_rlist, f_number, f_float, f_read,
         f_date, f_text, f_record, f_element, f_phrase
     };
     const static std::map<string, f> fmap = {
-        { "if", f_if }, { "error", f_error }, { "string", f_string }, { "field", f_field },
+        { "if", f_if }, { "error", f_error }, { "string", f_string }, { "quote", f_quote }, { "field", f_field },
         { "range", f_range }, { "rlist", f_rlist }, { "number", f_number }, { "float", f_float },
         { "read", f_read },
         // Hics extension
@@ -1247,6 +1247,7 @@ SValue Script::function_call()
         case f_if: return at_if();
         case f_error: return at_error();
         case f_string: return at_string();
+        case f_quote: return at_quote();
         case f_field: return at_field();
         case f_range: return at_range();
         case f_rlist: return at_rlist();
@@ -1464,6 +1465,12 @@ SValue Script::at_string()
         return create_error( "Function @string requires one argument." );
     }
     return SValue( args[0].as_string());
+}
+
+SValue Script::at_quote()
+{
+    SValue value = at_string();
+    return SValue( string_to_quote( value.get_str() ) );
 }
 
 SValue Script::at_field()

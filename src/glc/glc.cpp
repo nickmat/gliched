@@ -86,6 +86,7 @@ Glich::Glich( InitLibrary lib, InOut* inout )
         { "read", fptr },
         { "rlist", fptr },
         { "string", fptr },
+        { "quote", fptr },
         // Hics functions
         { "date", fptr },
         { "element", fptr },

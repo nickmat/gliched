@@ -1,0 +1,17 @@
+// object-colon002.glcs - {:} // create object.
+
+let x = {: 1,,3,,5};
+write x nl;
+
+x = x.mask( {: 10, 20, 30} );
+write x nl;
+
+x = x.mask( {: ,,,400,500,600} );
+write x nl;
+
+/*[OUTPUT]
+{: 1, null, 3, null, 5}
+{: 1, 20, 3, null, 5}
+{: 1, 20, 3, 400, 5, 600}
+
+[OUTPUT]*/

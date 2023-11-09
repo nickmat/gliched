@@ -31,14 +31,14 @@
 
 <div id='content' class='nomenu'>
 
-<h2>Statement mark</h2>
+<h2>Statement: mark</h2>
 <p>
  Unless directed otherwise, the program will remember all variables and defined entities,
  even after the script has finished running.
  The statement <b>mark</b> is used to control this behaviour.
 </p>
 <p>
- Entities definitions (function, command and object) are added to the library
+ Entity definitions (function, command and object) are added to the library
  as they are encountered in the script.
  This can be particularly problematic when testing a new script.
  We may want to make small change and re-run the script.
@@ -55,8 +55,8 @@
 
 <p>
  When processing the <b>mark</b> statement, if the tag is already in use
- then all entity definitions added after that tag are removed.
- The mark tag itself is not remove but any mark tags added afterwards are removed.
+ then all entity definitions (and variables) added after that tag are removed.
+ The mark tag itself is not remove but any mark tags added afterwards are.
 </p>
 <p>
  Values that are changed with the <b>set</b> statement 

@@ -200,10 +200,7 @@ string glich::field_to_string( Field fld, Context ctx, ShowInvalid si )
     switch( fld )
     {
     case f_invalid:
-        if( si == ShowInvalid::context ) {
-            return (ctx == Context::glich) ? "?" : "";
-        }
-        return (si == ShowInvalid::qmark) ? "?" : "";
+        return "?";
     case f_maximum:
         return (ctx == Context::glich) ? "+infinity" : "future";
     case f_minimum:

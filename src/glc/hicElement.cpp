@@ -101,6 +101,9 @@ void Element::add_string( const string & str )
 
 string Element::get_formatted_element( const Glich& glc, Field field ) const
 {
+    if( field == f_invalid ) {
+        return string();
+    }
     if ( m_lcode.empty() && m_spec.empty() ) {
         return field_to_string( field, Context::hics );
     }

@@ -1,0 +1,13 @@
+// hics-lib\functions\built-in\at-phrase004.glcs
+// Test @phrase with default date value.
+
+let year = @string( @record( today )[year] );
+
+let x1 = !today & @date( year );
+let x2 = @phrase( "!today &. " + year );
+
+write x1 = x2;
+
+/*[OUTPUT]
+true
+[OUTPUT]*/

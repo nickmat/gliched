@@ -12,7 +12,8 @@
       { "folder": "man", "name": "index", "label": "v0.3.0 Manual", "title": "v0.3.0 Manual", "subtitle": "Introduction", "content": [
         { "folder": "script", "name": "index", "label": "Glich Script", "subtitle": "Glich Script Language", "content": [
           { "name": "expr", "label": "Expressions", "subtitle": "Script Expressions" },
-          { "name": "write", "label": "write & file", "subtitle":  "write Statement and Define file"},
+          { "name": "file", "label": "Define file" },
+          { "name": "write", "label": "write Statement" },
           { "name": "let", "label": "let Statement" },
           { "name": "end", "label": "end Statement" },
           { "name": "if", "label": "if Statement" },
@@ -27,12 +28,13 @@
           { "name": "ebnf", "label": "EBNF Definition" }
         ]},
         { "folder": "hics", "name": "index", "label": "Hics Extension", "subtitle": "Hics Language Extension", "content": [
-          { "name": "bi-functions", "label": "Built-in Functions" },
           { "name": "lexicon", "label": "Define lexicon" },
           { "name": "grammar", "label": "Define grammar" },
           { "name": "format", "label": "Define format" },
           { "name": "scheme", "label": "Define scheme" },
           { "name": "set", "label": "set Extensions" },
+          { "name": "bi-functions", "label": "Built-in Functions" },
+          { "name": "phrase", "label": "Date Phrase", "subtitle": "Date Phrase Meta Language" },
           { "name": "ebnf", "label": "EBNF Definitions" }
         ]},
         { "folder": "defs", "name": "index", "label": "Hics Library", "subtitle": "Hics Library Calendar Index", "menu": false, "css": "big-list", "content": [

@@ -218,6 +218,9 @@ string compress_statement( const string& statement )
 
 bool terminated_char( const string& stmt, int character )
 {
+    if( stmt.empty() ) {
+        return false;
+    }
     string input = stmt;
     input.erase( std::remove( input.begin(), input.end(), ' ' ), input.end() );
     int ch = stmt.back();

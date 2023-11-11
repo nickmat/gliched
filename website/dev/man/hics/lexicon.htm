@@ -31,7 +31,7 @@
 
 <div id='content' class='nomenu'>
 
-<h2>Statement lexicon</h2>
+<h2>Statement: lexicon</h2>
 <p>
  The lexicon statement defines a lexicon which can later be incorporated into a
  <a href='grammar.htm'>grammar</a> definition.
@@ -53,27 +53,27 @@
 <tr><td class='code'>tokens</td><td>A list of values, tokens and an optional abbreviation.</td><td class='example'>tokens {1, January, Jan; ...}</td></tr>
 </table>
 
-<h3>name Sub-Statement</h3>
+<h3>Sub-Statement: name</h3>
 <p>
  Gives a descriptive name to the lexicon.
  Used to provide a list of available lexicons to the host program.
 </p>
 
-<h3>fieldname Sub-Statement</h3>
+<h3>Sub-Statement: fieldname</h3>
 <p>
  This statement links the lexicon to a particular field name for a given scheme.
  This can be used when deciphering text formats
  as the position of these elements does not need to be known in advance.
 </p>
 
-<h3>lang Sub-Statement</h3>
+<h3>Sub-Statement: lang</h3>
 <p>
  This statement sets the language for the lexicon.
  Multi-lingual versions of the program have not yet been developed,
  so this is available for the future.
 </p>
 
-<h3>pseudo Sub-Statement</h3>
+<h3>Sub-Statement: pseudo</h3>
 <p>
  The pseudo text is used by a format definition
  when creating the pseudo date used to show the intended output.
@@ -83,7 +83,7 @@
  will use the abbreviated value from the lexicon.
 </p>
 
-<h3>tokens Sub-Statement</h3>
+<h3>Sub-Statement: tokens</h3>
 <p>
  A list of the value and token names.
  A second token for a value may be given to be used as an abbreviation.

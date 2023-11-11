@@ -923,15 +923,21 @@ SValue glich::at_element( Script& script )
 
 SValue glich::at_phrase( Script& script )
 {
-    SValueVec args = script.get_args( GetToken::next );
+    const char* no_default_mess = "No default scheme set.";
+    StdStrVec quals = script.get_qualifiers( GetToken::next );
+    SValueVec args = script.get_args( GetToken::current );
     if( args.size() != 1 || args[0].type() != SValue::Type::String ) {
         return script.create_error( "@phrase requires 1 string argument." );
     }
-    string code = parse_date_phrase( args[0].get_str() );
-    if( !code.empty() ) {
-        return script.run_script( code );
+    string sig;
+    if( !quals.empty() ) {
+        sig = quals[0];
     }
-    return SValue();
+    Glich* glc = script.get_glich();
+    RList rlist = glc->date_phrase_to_rlist( args[0].get_str(), sig );
+    SValue value;
+    value.set_rlist_demote( rlist );
+    return value;
 }
 
 // End of src/glc/hicCreateSch.cpp file

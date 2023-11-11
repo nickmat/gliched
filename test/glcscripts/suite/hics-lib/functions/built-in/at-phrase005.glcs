@@ -1,0 +1,7 @@
+// suite/hics-lib\functions\built-in\at-phrase005.glcs
+
+write @phrase.j:mdy( "sep6,1948" );
+
+/*[OUTPUT]
+2432814
+[OUTPUT]*/

@@ -83,6 +83,8 @@ namespace glich {
         // Converts the given jdn into the Records' Fields.
         virtual FieldVec get_fields( Field jdn ) const = 0;
 
+        virtual bool is_leap_year( Field year ) const { return false; }
+
     protected:
         StdStrVec m_fieldnames; // This is both required, calculated and optional.
         size_t m_record_size;

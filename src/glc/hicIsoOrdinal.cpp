@@ -84,6 +84,11 @@ Field IsoOrdinal::year_from_jdn( Field jdn )
     return Gregorian::year_from_jdn( jdn );
 }
 
+bool IsoOrdinal::is_leap_year( Field year ) const
+{
+    return Gregorian::leap_year( year );
+}
+
 Field IsoOrdinal::last_day_of_year( Field year ) const
 {
     return Gregorian::leap_year( year) ? 366 : 365;

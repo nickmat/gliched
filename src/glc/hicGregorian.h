@@ -49,7 +49,6 @@ namespace glich {
         static bool leap_year( Field year );
         static Field today();
 
-    protected:
         bool is_leap_year( Field year ) const override { return leap_year( year ); }
 
     };

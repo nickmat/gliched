@@ -48,8 +48,9 @@ namespace glich {
 
         FieldVec get_fields( Field jdn ) const override;
 
+        bool is_leap_year( Field year ) const override;
+
     protected:
-        virtual bool is_leap_year( Field year ) const;
         Field last_day_in_month( Field year, Field month ) const;
 
     private:

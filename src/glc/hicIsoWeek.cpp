@@ -95,6 +95,11 @@ Field IsoWeek::year_from_jdn( Field jdn )
     return year;
 }
 
+bool IsoWeek::is_leap_year( Field year ) const
+{
+    return last_week_of_year( year ) == 53;
+}
+
 Field IsoWeek::last_week_of_year( Field year ) const
 {
     return ( to_jdn( year + 1, 1, 1 ) - to_jdn( year, 1, 1 ) ) / 7;

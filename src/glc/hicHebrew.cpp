@@ -236,4 +236,9 @@ FieldVec Hebrew::get_fields( Field jdn ) const
     return fields;
 }
 
+bool Hebrew::is_leap_year( Field year ) const
+{
+    return hebrew_is_leap_year( year );
+}
+
 // End of src/glc/hicHebrew.cpp

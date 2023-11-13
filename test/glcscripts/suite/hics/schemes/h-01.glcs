@@ -1,0 +1,83 @@
+// hics\schemes\h-01.glcs test Hebrew calendar scheme
+
+
+lexicon HM {
+    name "Month names";
+    fieldname month;
+    lang en;
+    pseudo     Month,     Mon;
+    tokens {
+        1, "Nisan",      "Nsn";
+        2, "Iyyar",      "Iyr";
+        3, "Sivan",      "Svn";
+        4, "Tammuz",     "Tmz";
+        5, "Av",         "Aav";
+        6, "Elul",       "Ell";
+        7, "Tishri",     "Tsh";
+        8, "Marheshvan", "Csh";
+        9, "Kislev",     "Ksl";
+        10, "Tevet",     "Tvt";
+        11, "Shevat",    "Shv";
+        12, "Adar",      "Adr";
+        13, "Adar II",   "Ads";
+    }
+}
+
+lexicon HW {
+    name "Weekday names";
+    fieldname wsday; // Note: Days are numbered from Sunday, unlike "wday".
+    lang en;
+    pseudo    Weekday,      WDay;
+    tokens {
+        1, "Yom Rishon",   "Rish"; // Sunday
+        2, "Yom Sheni",    "Shen"; // Monday
+        3, "Yom Shelishi", "Shel"; // Tuesday
+        4, "Yom Revi'i",   "Revi"; // Wednesday
+        5, "Yom Hamishi",  "Hami"; // Thursday
+        6, "Yom Shishi",   "Shis"; // Friday
+        7, "Yom Shabbat",  "Shab"; // Saturday
+    }
+}
+
+grammar H {
+    name "Hebrew";
+    fields year month day;
+    optional wsday;
+    lexicons HM, HW;
+    alias pseudo { w wday; dd day; mm month; yyyy year; }
+    alias unit { d day; m month; y year; }
+    format  dmy    "{day} |{month:HM:a} |{year}";
+    format "dmy+"  "{day} |{month:HM} |{year}";
+    format "dmy-"  "{day} |{month} |{year}";
+    format  wdmy   "{wsday:HW:a} |{day} |{month:HM:a} |{year}";
+    format "wdmy+" "{wsday:HW} |{day} |{month:HM} |{year}";
+    format  ymd    "{year}| {month:HM:a}| {day}";
+    format "ymd+"  "{year}| {month:HM}| {day}";
+    format "ymd-"  "{year}| {month}| {day}";
+    preferred dmy;
+}
+
+scheme H {
+    name "Hebrew";
+    base hebrew;
+    grammar H;
+}
+
+write nl;
+write @record.H( 2460049 ) nl;
+write @record.H:ymd( "5783 Nisan 23" ) nl;
+write @text.H:ymd( 2460049 ) nl;
+write @text.H:ymd( {s:H 5783, 1, 23} ) nl;
+write @date.H:ymd( "5783 nsn 23" ) nl;
+write @date( {s:H 5783, 1, 23} ) nl;
+
+/*[OUTPUT]
+
+{s:H 5783, 1, 23, 6}
+{s:H 5783, 1, 23, 6}
+5783 Nsn 23
+5783 Nsn 23
+2460049
+2460049
+
+[OUTPUT]*/

@@ -125,7 +125,7 @@ Field French::get_end_field_value( const FieldVec& fields, size_t index ) const
     switch( index )
     {
     case 1: // Last month of year
-        return 6;
+        return 13;
     case 2: // Last day of month
         return french_last_day_in_month( fields[0], fields[1] );
     }

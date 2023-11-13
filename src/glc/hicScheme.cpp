@@ -152,6 +152,11 @@ void glich::Scheme::get_format_text_info( FormatText_info* info, const std::stri
     }
 }
 
+bool glich::Scheme::is_leap_year( Field year ) const
+{
+    return m_base.is_leap_year( year );;
+}
+
 FieldVec Scheme::get_object_fields( const SValueVec& values ) const
 {
     FieldVec fields( m_base.record_size(), f_invalid );

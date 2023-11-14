@@ -48,7 +48,8 @@ namespace glich {
 
         FieldVec get_fields( Field jdn ) const override;
 
-        bool is_leap_year( Field year ) const override;
+        static bool leap_year( Field year );
+        bool is_leap_year( Field year ) const override { return leap_year( year ); }
     };
 
 }

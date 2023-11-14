@@ -139,7 +139,8 @@ FieldVec French::get_fields( Field jdn ) const
     return fields;
 }
 
-bool glich::French::is_leap_year( Field year ) const
+/* static */
+bool French::leap_year( Field year )
 {
     return french_last_day_in_month( year, 13 ) == 6;
 }

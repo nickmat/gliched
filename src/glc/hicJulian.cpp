@@ -179,8 +179,8 @@ FieldVec Julian::get_fields( Field jdn ) const
 }
 
 /*! Returns true if the year is a leap year in the Julian Calendar.
- */
-bool Julian::is_leap_year( Field year ) const
+static */
+bool Julian::leap_year( Field year )
 {
     return mod_e( year, 4 ) == 0;
 }

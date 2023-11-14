@@ -50,10 +50,11 @@ namespace glich {
         static void from_jdn( Field* year, Field* week, Field* day, Field jdn );
         static Field year_from_jdn( Field jdn );
 
-        bool is_leap_year( Field year ) const override;
+        static bool leap_year( Field year );
+        bool is_leap_year( Field year ) const override { return leap_year( year ); }
 
     private:
-        Field last_week_of_year( Field year ) const;
+        static Field last_week_of_year( Field year );
     };
 
 }

@@ -236,7 +236,8 @@ FieldVec Hebrew::get_fields( Field jdn ) const
     return fields;
 }
 
-bool Hebrew::is_leap_year( Field year ) const
+/* static */
+bool Hebrew::leap_year( Field year )
 {
     return hebrew_is_leap_year( year );
 }

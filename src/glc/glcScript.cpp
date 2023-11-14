@@ -1223,7 +1223,7 @@ SValue Script::function_call()
 {
     enum f {
         f_if, f_error, f_string, f_quote, f_field, f_range, f_rlist, f_number, f_float, f_read,
-        f_date, f_text, f_record, f_element, f_phrase
+        f_date, f_text, f_record, f_element, f_phrase, f_leapyear
     };
     const static std::map<string, f> fmap = {
         { "if", f_if }, { "error", f_error }, { "string", f_string }, { "quote", f_quote }, { "field", f_field },
@@ -1231,7 +1231,7 @@ SValue Script::function_call()
         { "read", f_read },
         // Hics extension
         { "date", f_date }, { "text", f_text }, { "record", f_record }, { "element", f_element },
-        { "phrase", f_phrase }
+        { "phrase", f_phrase }, { "leapyear", f_leapyear }
     };
 
     SToken token = next_token();
@@ -1259,6 +1259,7 @@ SValue Script::function_call()
         case f_record: return at_record( *this );
         case f_element: return at_element( *this );
         case f_phrase: return at_phrase( *this );
+        case f_leapyear: return at_leapyear( *this );
         }
         return create_error( "Built-in funtion whoopsy." );
     }

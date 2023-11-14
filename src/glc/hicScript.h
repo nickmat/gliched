@@ -46,6 +46,7 @@ namespace glich {
     SValue at_record( Script& script );
     SValue at_element( Script& script );
     SValue at_phrase( Script& script );
+    SValue at_leapyear( Script& script );
 }
 
 #endif // SRC_GLC_HICSCRIPT_H

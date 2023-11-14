@@ -29,10 +29,10 @@
 
 #include "glcScript.h"
 #include "hicBase.h"
+#include "hicCalendars.h"
 #include "hicDatePhrase.h"
 #include "hicElement.h"
 #include "hicGrammar.h"
-#include "hicHybrid.h"
 #include "hicFormatIso.h"
 #include "hicFormatText.h"
 #include "hicFormatUnit.h"
@@ -938,6 +938,42 @@ SValue glich::at_phrase( Script& script )
     SValue value;
     value.set_rlist_demote( rlist );
     return value;
+}
+
+SValue glich::at_leapyear( Script& script )
+{
+    StdStrVec quals = script.get_qualifiers( GetToken::next );
+    if( quals.empty() ) {
+        return script.create_error( "@leapyear requires a qualifier." );
+    }
+    SValueVec args = script.get_args( GetToken::current );
+    string mess = "@leapyear requires integer argument.";
+    if( args.empty() ) {
+        return script.create_error( mess );
+    }
+    bool success = false;
+    Field year = args[0].get_field( success );
+    if( !success ) {
+        return script.create_error( mess );
+    }
+
+    string calendar = quals[0];
+    if( calendar == "julian" ) {
+        return Julian::leap_year( year );
+    }
+    if( calendar == "gregorian" ) {
+        return Gregorian::leap_year( year );
+    }
+    if( calendar == "hebrew" ) {
+        return Hebrew::leap_year( year );
+    }
+    if( calendar == "ordinal" ) {
+        return IsoOrdinal::leap_year( year );
+    }
+    if( calendar == "isoweek" ) {
+        return IsoWeek::leap_year( year );
+    }
+    return false;
 }
 
 // End of src/glc/hicCreateSch.cpp file

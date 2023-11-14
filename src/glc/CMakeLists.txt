@@ -69,6 +69,7 @@ set( GLC_HEADERS
     glcVersion.h
     hicAstro.h
     hicBase.h
+    hicCalendars.h
     hicChinese.h
     hicDatePhrase.h
     hicElement.h

@@ -36,8 +36,8 @@ lexicon hm {
         4, "Tammuz",   "Tmz", "Tamaz";
         5, "Av",       "Aav";
         6, "Elul",     "Ell";
-        7, "Tishrei",  "Tsh", "Tishri;
-        8, "Cheshvan", "Csh", "Marheshvan, "Heshvan";
+        7, "Tishrei",  "Tsh", "Tishri";
+        8, "Cheshvan", "Csh", "Marheshvan", "Heshvan";
         9, "Kislev",   "Ksl";
         10, "Tevet",   "Tvt";
         11, "Shevat",  "Shv", "Shvat";

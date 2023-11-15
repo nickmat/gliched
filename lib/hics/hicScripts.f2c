@@ -38,6 +38,7 @@ glich::ScriptModule glich::hics_default_scripts[] = {
     { "eh", @(cp.cpp)"eh.glcs" },
     { "gregorian", @(cp.cpp)"gregorian.glcs" },
     { "jce", @(cp.cpp)"jce.glcs" },
+    { "hebrew", @(cp.cpp)"hebrew.glcs" },
 };
 
 size_t glich::hics_default_scripts_size =

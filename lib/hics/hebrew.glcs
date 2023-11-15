@@ -1,0 +1,95 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Name:        lib/hics/hebrew.glcs
+ * Project:     Glich: Extendable Script Language.
+ * Purpose:     Hebrew scheme for hics library.
+ * Author:      Nick Matthews
+ * Website:     https://github.com/nickmat/glich
+ * Created:     12th November 2023
+ * Copyright:   Copyright (c) 2023, Nick Matthews.
+ * Licence:     GNU GPLv3
+ *
+ *  Glich is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Glich is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Glich.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+*/
+
+lexicon hm {
+    name "Month names";
+    fieldname cmonth;
+    lang en;
+    pseudo     Month,     Mon;
+    tokens {
+        1, "Nissan",   "Nsn", "Nisan";
+        2, "Iyar",     "Iyr", "Iyyar";
+        3, "Sivan",    "Svn";
+        4, "Tammuz",   "Tmz", "Tamaz";
+        5, "Av",       "Aav";
+        6, "Elul",     "Ell";
+        7, "Tishrei",  "Tsh", "Tishri;
+        8, "Cheshvan", "Csh", "Marheshvan, "Heshvan";
+        9, "Kislev",   "Ksl";
+        10, "Tevet",   "Tvt";
+        11, "Shevat",  "Shv", "Shvat";
+        12, "Adar",    "Adr";
+        13, "Adar II", "Ads";
+        14, "Adar I",  "Adf";
+    }
+}
+
+lexicon hw {
+    name "Weekday names";
+    fieldname wsday; // Note: Days are numbered from Sunday, unlike "wday".
+    lang en;
+    pseudo    Weekday,      WDay;
+    tokens {
+        1, "Yom Rishon",   "Rish"; // Sunday
+        2, "Yom Sheni",    "Shen"; // Monday
+        3, "Yom Shelishi", "Shel"; // Tuesday
+        4, "Yom Revi'i",   "Revi"; // Wednesday
+        5, "Yom Hamishi",  "Hami"; // Thursday
+        6, "Yom Shishi",   "Shis"; // Friday
+        7, "Yom Shabbat",  "Shab"; // Saturday
+    }
+}
+
+grammar h {
+    name "Hebrew";
+    name "Hebrew";
+    fields year month day;
+    calculated cmonth;
+    optional wsday;
+    rank year cmonth day;
+    calculate {
+        output {: ,,,@if(month=12 and @leapyear.hebrew(year), 14, month)};
+        input {: ,@if(cmonth=14, 12, cmonth)};
+    }
+    lexicons hm, hw;
+    alias pseudo { w wday; dd day; mm month; yyyy year; }
+    alias unit { d day; m month; y year; }
+    format  dmy_a "{day} |{cmonth:hm:a} |{year}";
+    format  dmy   "{day} |{cmonth:hm} |{year}";
+    format "dmy-" "{day} |{month} |{year}";
+    format  wdmy  "{wsday:hw} |{day} |{cmonth:hm} |{year}";
+    format  ymd   "{year}| {cmonth:hm}| {day}";
+    format "ymd-" "{year}| {month}| {day}";
+    preferred dmy;
+}
+
+scheme h {
+    name "Hebrew";
+    base hebrew;
+    grammar h;
+}
+
+// End of lib/hics/hebrew.glcs file

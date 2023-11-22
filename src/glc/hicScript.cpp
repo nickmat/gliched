@@ -943,10 +943,10 @@ SValue glich::at_phrase( Script& script )
 SValue glich::at_leapyear( Script& script )
 {
     StdStrVec quals = script.get_qualifiers( GetToken::next );
+    SValueVec args = script.get_args( GetToken::current );
     if( quals.empty() ) {
         return script.create_error( "@leapyear requires a qualifier." );
     }
-    SValueVec args = script.get_args( GetToken::current );
     string mess = "@leapyear requires integer argument.";
     if( args.empty() ) {
         return script.create_error( mess );
@@ -974,6 +974,84 @@ SValue glich::at_leapyear( Script& script )
         return IsoWeek::leap_year( year );
     }
     return false;
+}
+
+SValue glich::at_last( Script& script )
+{
+    StdStrVec quals = script.get_qualifiers( GetToken::next );
+    SValueVec args = script.get_args( GetToken::current );
+    if( quals.empty() ) {
+        return script.create_error( "@last requires a qualifier." );
+    }
+    string mess = "@last requires integer arguments.";
+    if( args.empty() ) {
+        return script.create_error( mess );
+    }
+    bool success = false;
+    FieldVec fields;
+    for( auto& value : args ) {
+        Field field = value.get_field( success );
+        if( !success ) {
+            if( value.type() != SValue::Type::Null ) {
+                return script.create_error( mess );
+            }
+            field = f_invalid;
+        }
+        fields.push_back( field );
+    }
+
+    string sig, calendar, fname;
+    if( !quals.empty() ) {
+        sig = quals[0];
+    }
+    split_code( &calendar, &fname, sig );
+    
+    if( calendar == "hebrew" ) {
+        int index = Hebrew::fieldname_index( fname );
+        if( index >= 0 ) {
+            return Hebrew::end_field_value( fields, index );
+        }
+    }
+    return f_invalid;
+}
+
+SValue glich::at_first( Script& script )
+{
+    StdStrVec quals = script.get_qualifiers( GetToken::next );
+    SValueVec args = script.get_args( GetToken::current );
+    if( quals.empty() ) {
+        return script.create_error( "@first requires a qualifier." );
+    }
+    string mess = "@first requires integer arguments.";
+    if( args.empty() ) {
+        return script.create_error( mess );
+    }
+    bool success = false;
+    FieldVec fields;
+    for( auto& value : args ) {
+        Field field = value.get_field( success );
+        if( !success ) {
+            if( value.type() != SValue::Type::Null ) {
+                return script.create_error( mess );
+            }
+            field = f_invalid;
+        }
+        fields.push_back( field );
+    }
+
+    string sig, calendar, fname;
+    if( !quals.empty() ) {
+        sig = quals[0];
+    }
+    split_code( &calendar, &fname, sig );
+
+    if( calendar == "hebrew" ) {
+        int index = Hebrew::fieldname_index( fname );
+        if( index >= 0 ) {
+            return Hebrew::beg_field_value( fields, index );
+        }
+    }
+    return f_invalid;
 }
 
 // End of src/glc/hicCreateSch.cpp file

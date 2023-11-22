@@ -35,6 +35,8 @@ namespace glich {
 
     class Hebrew : public Base
     {
+        static constexpr const char* s_fields[] = { "year", "month", "day" };
+
     public:
         Hebrew( const std::string& data );
         ~Hebrew() {};
@@ -43,8 +45,15 @@ namespace glich {
 
         Field get_jdn( const FieldVec& fields ) const override;
 
-        Field get_beg_field_value( const FieldVec& fields, size_t index ) const override;
-        Field get_end_field_value( const FieldVec& fields, size_t index ) const override;
+        static Field beg_field_value( const FieldVec& fields, size_t index );
+        Field get_beg_field_value( const FieldVec& fields, size_t index ) const override {
+            return beg_field_value( fields, index );
+        }
+        static Field end_field_value( const FieldVec& fields, size_t index );
+        Field get_end_field_value( const FieldVec& fields, size_t index ) const override {
+            return end_field_value( fields, index );
+        }
+        static int fieldname_index( const std::string& fieldname );
 
         FieldVec get_fields( Field jdn ) const override;
 

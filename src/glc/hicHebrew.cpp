@@ -197,7 +197,7 @@ namespace {
 Hebrew::Hebrew( const string& data ) 
     : Base( data, 3 )
 {
-    m_fieldnames = { "year", "month", "day" };
+    m_fieldnames = { s_fields[0], s_fields[1], s_fields[2] };
 }
 
 Field Hebrew::get_jdn( const FieldVec& fields ) const
@@ -205,7 +205,8 @@ Field Hebrew::get_jdn( const FieldVec& fields ) const
     return hebrew_to_jdn( fields[0], fields[1], fields[2] );
 }
 
-Field Hebrew::get_beg_field_value( const FieldVec& fields, size_t index ) const
+/* static */
+Field Hebrew::beg_field_value( const FieldVec& fields, size_t index )
 {
     switch( index )
     {
@@ -217,8 +218,12 @@ Field Hebrew::get_beg_field_value( const FieldVec& fields, size_t index ) const
     return f_invalid;
 }
 
-Field Hebrew::get_end_field_value( const FieldVec& fields, size_t index ) const
+/* static */
+Field Hebrew::end_field_value( const FieldVec& fields, size_t index )
 {
+    if( fields.size() < index ) {
+        return f_invalid;
+    }
     switch( index )
     {
     case 1: // Last month of year
@@ -227,6 +232,19 @@ Field Hebrew::get_end_field_value( const FieldVec& fields, size_t index ) const
         return hebrew_last_day_in_month( fields[0], fields[1] );
     }
     return f_invalid;
+}
+
+/* static */
+int Hebrew::fieldname_index( const std::string& fieldname )
+{
+    int index = 0;
+    for( const char* name : s_fields ) {
+        if( fieldname == name ) {
+            return index;
+        }
+        index++;
+    }
+    return -1;
 }
 
 FieldVec Hebrew::get_fields( Field jdn ) const

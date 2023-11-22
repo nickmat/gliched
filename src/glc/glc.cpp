@@ -90,6 +90,8 @@ Glich::Glich( InitLibrary lib, InOut* inout )
         // Hics functions
         { "date", fptr },
         { "element", fptr },
+        { "first", fptr },
+        { "last", fptr },
         { "leapyear", fptr },
         { "phrase", fptr },
         { "record", fptr },

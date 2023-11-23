@@ -338,7 +338,7 @@ namespace {
             script.error( "'{' expected." );
             return false;
         }
-        string input, output;
+        string input, output, first, last;
         for( ;; ) {
             token = script.next_token();
             if( token.type() == SToken::Type::RCbracket ||
@@ -354,12 +354,18 @@ namespace {
                 else if( sub == "input" ) {
                     input = script.read_until( ";" );
                 }
+                else if( sub == "first" ) {
+                    first = script.read_until( ";" );
+                }
+                else if( sub == "last" ) {
+                    last = script.read_until( ";" );
+                }
                 else {
                     script.error( "Grammar calculate sub-statement expected." );
                 }
             }
         }
-        gmr->set_calculate( input, output );
+        gmr->set_calculate( input, output, first, last );
         return true;
     }
 

@@ -63,10 +63,9 @@ namespace glich {
         FormatUnit* create_format_unit( const std::string& code );
         bool add_format( Format* fmt );
         void add_alias( const std::string& alias, const StdStrVec& pairs );
-        void set_calculate( const std::string& input, const std::string& output ) {
-            m_calculate_input = input;
-            m_calculate_output = output;
-        }
+        void set_calculate(
+            const std::string& input, const std::string& output,
+            const std::string& first, const std::string& last );
 
         std::string get_code() const { return m_code; }
         std::string get_name() const { return m_name; }
@@ -130,6 +129,8 @@ namespace glich {
         StrUnitMap  m_unit_type_alias;
         std::string m_calculate_input;
         std::string m_calculate_output;
+        std::string m_calculate_first;
+        std::string m_calculate_last;
     };
 
 }

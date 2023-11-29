@@ -324,7 +324,9 @@ string FormatText::range_to_string( const Base& base, const Range& range ) const
     }
     string str1, str2;
     Record rec1( base, range.m_beg );
+    rec1.update_output();
     Record rec2( base, range.m_end );
+    rec2.update_output();
 
     if( m_shorthand ) {
         BoolVec reveal = rec1.mark_balanced_fields( rec2, m_rank_to_def_index, m_sig_rank_size );

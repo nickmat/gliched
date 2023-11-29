@@ -202,11 +202,17 @@ void Record::calculate_expression( const string& script_expr )
 
 void Record::update_input()
 {
+    if( m_base.has_calc_input() ) {
+        calculate_expression( m_base.get_calc_input() );
+    }
     m_base.update_input( m_f );
 }
 
 void Record::update_output()
 {
+    if( m_base.has_calc_output() ) {
+        calculate_expression( m_base.get_calc_output() );
+    }
     m_base.update_output( m_f );
 }
 

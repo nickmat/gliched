@@ -1,0 +1,179 @@
+/* HistoryCal - Home Website CSS File */
+
+/*
+div.p {
+ //clear: both;
+}
+*/
+
+blockquote {
+ margin: 0 0 0 35%;
+ font: italic 0.9em "Times New Roman", serif;
+ text-align: justify;
+ padding: 10px;
+ border-bottom: 4px solid #eef;
+ border-right:  2px solid #eef;
+}
+
+blockquote.long {
+ margin-left: 20%;
+}
+
+blockquote.short {
+ margin-left: 65%;
+}
+
+blockquote p {
+ margin: 0;
+}
+
+blockquote p.attribute {
+ text-align: right;
+}
+
+img.quote {
+ float: right;
+ border-bottom: 4px solid #fff5cc;
+ border-right:  2px solid #fff5cc;
+ margin-top: 0.5em;
+ margin-bottom: 1em;
+}
+
+div.diag {
+ margin-top: 1em;
+ text-align: center;
+}
+
+img.fig {
+ display: block;
+ margin-top: 1em;
+ margin-left: auto;
+ margin-right: auto;
+}
+
+img.scrnprnt {
+ float: right;
+ margin: 0 0 1em 1em;
+}
+
+div.calendar h2, div.calendar h3, hr {
+ clear: both;
+}
+
+span.field {
+ font-family: courier, monospace;
+ font-size: larger;
+ font-weight: bold;
+}
+
+code {
+ padding: 0 0.5em;
+ background-color: GhostWhite;
+ white-space: nowrap;
+}
+/*
+table.large {
+ float: none;
+}
+
+
+table.left {
+ display: inline-table;
+ float: left;
+ margin: 0 1em 1em 0;
+}
+*/
+table td.stat-imp { /* Implemented */
+ background-color: lightgreen;
+}
+table td.stat-dev { /* Under development */
+ background-color: powderblue;
+}
+table td.stat-prop { /* Proposed */
+ background-color: plum;
+}
+table td.stat-res { /* Researching */
+ background-color: gold;
+}
+table td.stat-ucr { /* Use case required */
+ background-color: orangered;
+}
+
+table.record {
+ display: inline-table;
+ float: left;
+ margin: 0 1em 1em 0;
+ border-collapse: collapse;
+ text-align: center;
+}
+
+table.record th {
+ background-color: Cornsilk;
+ border: 1px solid blue;
+ padding: 0.2em 1em;
+}
+
+table.record td {
+ white-space: pre;
+ font-family: "Courier New", Courier, monospace;
+ background-color: aliceblue;
+ border: 1px solid blue;
+ padding: 0.5em 1em;
+}
+
+table.record td.rdonly {
+ background-color: MistyRose;
+}
+
+table.record td.rec-opt {
+ background-color: rgb(255, 228, 225);
+}
+
+table.record td.rec-calc {
+ background-color: rgb(253, 225, 255);
+}
+
+table.rec-value {
+ display: inline-table;
+ border: 1px solid black;
+ margin: 0.1em 0.2em;
+ border-collapse: collapse;
+ background-color: GhostWhite;
+}
+
+table.rec-value th {
+ border: 1px solid black;
+ padding: 0 0.25em;
+ text-align: center;
+ font-size: 66%;
+}
+
+table.rec-value td {
+ border: 1px solid black;
+ padding: 0 0.25em;
+ text-align: center;
+ font-weight: bold;
+}
+
+table.rec-value td.sig {
+ font-size: 120%;
+ font-weight: normal;
+}
+
+table.rec-value span.var {
+ font-style: italic;
+}
+
+tr.future {
+ color: red;
+}
+
+dl.gloss dt {
+ font-weight: bold;
+}
+
+dl.gloss dd {
+ margin-bottom: 0.75em;
+}
+
+/* End of glich.css file */

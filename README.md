@@ -1,6 +1,6 @@
 # gliched - An IDE for the Glich Script Language
 
-![Glich logo](./images/logo3/logo3.svg)
+![Glich logo](./images/logo2/logo2.svg)
 
 This is just the beginnings of an IDE.
 It allows scripts to be written and run.

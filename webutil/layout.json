@@ -1,0 +1,17 @@
+{
+  "project": "Gliched",
+  "home-url": "https://nickmat.github.io/gliched/index.htm",
+  "color-top": "#e6c9ed",
+  "color-border": "#cd93da",
+  "site-css": "sys/glich.css",
+  "github-url": "https://github.com/nickmat/gliched",
+  "site": { "folder": "web-new", "name": "index", "subtitle": "Home Page", "label": "Home", "content": [
+    { "folder": "new", "name": "news", "label": "News" },
+    { "folder": "man", "name": "index", "label": "Manual", "title": "Manual", "subtitle": "Introduction" },
+    { "folder": "dev", "name": "index", "label": "Development", "title": "Development", "subtitle": "Introduction", "content": [
+      { "folder": "man", "name": "index", "label": "v0.0.1 Manual", "title": "v0.0.1 Manual", "subtitle": "Introduction" },
+      { "name": "routemap", "label": "Route Map", "title": "Development" }
+    ]},
+    { "name": "support", "label": "Support" }
+  ]}
+}

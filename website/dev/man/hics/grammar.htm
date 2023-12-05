@@ -136,7 +136,7 @@
  </tr>
 </table>
 <p>
- Where <i>type</i> is one of: <b>field</b>, <b>pseudo</b> or <b>unit</b>.
+ Where <i>type</i> is one of: <b>field</b>, <b>pseudo</b>, <b>unit</b> or <b>lexicon</b>.
 </p>
 <table class='basic'>
 <tr><th colspan='3'>grammar alias Sub-Statement</th></tr>
@@ -144,6 +144,7 @@
 <tr><td class='code'>alias field</td><td>Allow the use of more user friendly field names.</td><td class='example'>alias field {WDay wday; ...}</td></tr>
 <tr><td class='code'>alias pseudo</td><td>The pseudonym matching numbers in the pseudo date.</td><td class='example'>alias pseudo {w wday; dd day; ...}</td></tr>
 <tr><td class='code'>alias unit</td><td>Alternative field name when used as a unit.</td><td class='example'>alias field {d day; m month; ...}</td></tr>
+<tr><td class='code'>alias lexicon</td><td>When the register name does not match the lexicon name.</td><td class='example'>alias lexicon {wday day; ...}</td></tr>
 </table>
 <p>
  Note, the alias does not replace the field-name, but gives a preferred alternative.

@@ -172,7 +172,7 @@ void Grammar::add_alias( const string& alias, const StdStrVec& pairs )
     }
     else if( alias == "lexicon" ) {
         for( size_t i = 0; i < pairs.size(); i += 2 ) {
-            m_lex_alias[pairs[i + 1]] = pairs[i];
+            m_lex_alias[pairs[i]] = pairs[i + 1];
         }
     }
     else if( alias == "pseudo" ) {

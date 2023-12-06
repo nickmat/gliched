@@ -19,7 +19,7 @@ lexicon W {
 grammar ISOW {
     fields year week day;
     lexicons W;
-    alias lexicon { day wday; }
+    alias lexicon { wday day; }
     alias pseudo { d day; ww week; yyyy year; }
     alias unit { d day; y year; w week; }
     format iso { rules iso8601 week; }

@@ -19,7 +19,7 @@ lexicon W {
 grammar JWN {
     fields week day;
     lexicons W;
-    alias lexicon { day wday; }
+    alias lexicon { wday day; }
     alias pseudo { wwwww week; d day; }
     format  wd      "{week}| {day}";
     format  wday    "{week}| {day:W:a}";

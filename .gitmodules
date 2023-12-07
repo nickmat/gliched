@@ -4,3 +4,4 @@
 [submodule "3rdparty/glich"]
 	path = 3rdparty/glich
 	url = https://github.com/nickmat/glich.git
+	ignore = dirty

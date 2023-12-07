@@ -62,6 +62,18 @@ using std::vector;
 
 enum class StmtType { semicolon, curlybracket, both, if_endif, do_loop };
 
+struct StmtStatus {
+    StmtType type;
+    bool in_quote;
+    bool in_mcomment; // Multiline comment
+    int brace_cnt;
+    int word_cnt;
+
+    StmtStatus( StmtType t )
+        : type( t ), in_quote( false ), in_mcomment( false ),
+        brace_cnt( 0 ), word_cnt( 0 ) {}
+};
+
 string left_trim( const string& str )
 {
     size_t pos = 0;
@@ -146,77 +158,56 @@ void do_help( const string& option, bool glich_prog )
     ;
 }
 
-string compress_statement( const string& statement )
+// Remove comments and strings.
+string compress_statement( const string& line, StmtStatus& status )
 {
-    string stmt;
-    bool in_quote = false;
-    bool in_peren = false;
-    int brace_cnt = 0;
+    string compressed;
     bool start_comment = false;
     bool end_comment = false;
-    bool in_lcomment = false;
-    bool in_mcomment = false;
 
-    for ( auto ch : statement ) {
-        if ( in_lcomment ) {
-            if ( ch == '\n' ) {
-                in_lcomment = false;
-            }
-        } else if(in_mcomment ){
-            if ( end_comment ) {
-                if ( ch == '/' ) {
-                    in_mcomment = false;
-                }
-            }
-            end_comment = ( ch == '*' );
-        } else if ( in_quote ) {
-            if ( ch == '"' ) {
-                stmt += ' ';
-                in_quote = false;
-            }
-        } else if ( start_comment ) {
-            if ( ch == '/' ) {
-                in_lcomment = true;
-            } else if ( ch == '*' ) {
-                in_mcomment = true;
-            } else {
-                stmt += '/';
-                stmt += ch;
-            }
+    for( auto ch : line ) {
+        if( start_comment ) {
             start_comment = false;
-        } else if ( ch == '/' ) {
-            start_comment = true;
-        } else if ( in_peren ) {
-            if ( ch == ')' ) {
-                stmt += ' ';
-                in_peren = false;
+            if( ch == '/' ) {
+                break; // Single line comment.
             }
-        } else if ( brace_cnt > 1 ) {
-            if ( ch == '{' ) {
-                brace_cnt++;
-            } else if ( ch == '}' ) {
-                --brace_cnt;
-                if ( brace_cnt == 1 ) {
-                    stmt += ' ';
+            else if( ch == '*' ) {
+                status.in_mcomment = true;
+                continue;
+            }
+            else {
+                compressed += "/" + ch;
+            }
+        }
+        if( status.in_mcomment ) {
+            if( end_comment ) {
+                if( ch == '/' ) {
+                    status.in_mcomment = false;
                 }
             }
-        } else if ( ch == '"' ) {
-            in_quote = true;
-        } else if ( ch == '(' ) {
-            in_peren = true;
-        } else if ( ch == '{' ) {
-            brace_cnt++;
-            if ( brace_cnt == 1 ) {
-                stmt += ch;
+            end_comment = (ch == '*');
+            continue;
+        }
+
+        if( status.in_quote ) {
+            if( ch == '"' ) {
+                status.in_quote = false;
             }
-        } else {
-            stmt += ch;
+        }
+        else if( ch == '"' ) {
+            status.in_quote = true;
+        }
+        else if( ch == '/' ) {
+            start_comment = true;
+        }
+        else {
+            compressed += ch;
         }
     }
-    return stmt;
+    return compressed;
 }
 
-bool terminated_char( const string& stmt, int character )
+bool terminated_semicolon( const string& stmt )
 {
     if( stmt.empty() ) {
         return false;
@@ -224,62 +215,115 @@ bool terminated_char( const string& stmt, int character )
     string input = stmt;
     input.erase( std::remove( input.begin(), input.end(), ' ' ), input.end() );
     int ch = stmt.back();
-    return (ch == character);
-}
-bool terminated_semicolon( const string& statement )
-{
-    string stmt = compress_statement( statement );
-    return terminated_char( stmt, ';' );
+    return (ch == ';');
 }
 
-bool terminated_curlybracket( const string& statement )
+bool terminated_word( const string& line, StmtStatus& status )
 {
-    string stmt = compress_statement( statement );
-    return terminated_char( stmt, '}' );
-}
-
-bool terminated_both( const string& statement )
-{
-    string stmt = compress_statement( statement );
-    for ( auto ch : stmt ) {
-        if ( ch == '{' ) {
-            return terminated_char( stmt, '}' );
-        }
+    string beg, end;
+    if( status.type == StmtType::if_endif ) {
+        beg = "if";
+        end = "endif";
     }
-    return terminated_char( stmt, ';' );
-}
+    else if( status.type == StmtType::do_loop ) {
+        beg = "do";
+        end = "loop";
+    }
+    else {
+        return true; // End search.
+    }
+    string stmt = compress_statement( line, status ) + '\n';
 
-bool terminated_word( const string& statement, const string& end )
-{
-    string stmt = compress_statement( statement );
-    string start = get_first_word( stmt, nullptr, ' ' );
-    int count = 0;
     string word;
     bool in_word = false;
     bool is_funct = false;
-    for ( auto ch : stmt ) {
-        if ( in_word ) {
-            if ( isalnum( ch ) || ch == '_' || ch == ':' || ch == '.' ) {
+    for( auto ch : stmt ) {
+        if( in_word ) {
+            if( isalnum( ch ) || ch == '_' || ch == ':' ) {
                 word += ch;
-            } else {
-                if ( is_funct ) {
+            }
+            else {
+                if( is_funct ) {
                     is_funct = false;
-                } else if ( word == start ) {
-                    count++;
-                } else if ( word == end ) {
-                    if ( count > 1 ) {
-                        --count;
-                    } else {
+                }
+                else if( word == beg ) {
+                    status.word_cnt++;
+                }
+                else if( word == end ) {
+                    if( status.word_cnt > 1 ) {
+                        --status.word_cnt;
+                    }
+                    else {
                         return true;
                     }
                 }
                 in_word = false;
             }
-        } else if ( isascii( ch ) && ( isalpha( ch ) || ch == '_' || ch == ':' ) ) {
+        }
+        else if( isascii( ch ) && (isalpha( ch ) || ch == '_' || ch == ':') ) {
             in_word = true;
             word = ch;
-        } else if ( ch == '@' ) {
+        }
+        else if( ch == '@' ) {
             is_funct = true;
+        }
+    }
+    return false;
+}
+
+bool terminated( const string& stmt, StmtStatus& status )
+{
+    bool start_comment = false;
+    bool end_comment = false;
+
+    for( auto ch : stmt ) {
+        if( start_comment ) {
+            start_comment = false;
+            if( ch == '/' ) {
+                break; // Single line comment.
+            }
+            else if( ch == '*' ) {
+                status.in_mcomment = true;
+                continue;
+            }
+        }
+        if( status.in_mcomment ) {
+            if( end_comment ) {
+                if( ch == '/' ) {
+                    status.in_mcomment = false;
+                }
+            }
+            end_comment = (ch == '*');
+            continue;
+        }
+
+        if( status.in_quote ) {
+            if( ch == '"' ) {
+                status.in_quote = false;
+            }
+        }
+        else if( ch == '}' ) {
+            status.brace_cnt--;
+            if( status.type == StmtType::curlybracket && status.brace_cnt == 0 ) {
+                return true;
+            }
+        }
+        else if( ch == ';' ) {
+            if( status.type == StmtType::semicolon || status.type == StmtType::both ) {
+                return true;
+            }
+        }
+        else if( ch == '"' ) {
+            status.in_quote = true;
+        }
+        else if( ch == '/' ) {
+            start_comment = true;
+        }
+        else if( ch == '{' ) {
+            status.brace_cnt++;
+            if( status.type == StmtType::both ) {
+                status.type = StmtType::curlybracket;
+            }
         }
     }
     return false;
@@ -287,51 +331,32 @@ bool terminated_word( const string& statement, const string& end )
 
 string get_statement( const string& start, StmtType type )
 {
-    string statement = start + "\n";
-    for ( int lnum = 2;; lnum++ ) {
+    StmtStatus status( type );
+    string line = start;
+    string statement;
+    for( int lnum = 2;; lnum++ ) {
+        line = left_trim( line );
+        statement += line + "\n";
+        if( line.empty() ) {
+            break;
+        }
+        if( type == StmtType::if_endif || type == StmtType::do_loop ) {
+            if( terminated_word( line, status ) ) {
+                break;
+            }
+        }
+        else {
+            if( terminated( line, status ) ) {
+                break;
+            }
+        }
         string prompt = std::to_string( lnum );
-        while ( prompt.size() < 4 ) {
+        while( prompt.size() < 4 ) {
             prompt += ".";
         }
         prompt += ":";
         std::cout << prompt << " ";
-        string line;
         std::getline( std::cin, line );
-        line = left_trim( line );
-        if ( line.empty() ) {
-            break;
-        }
-        statement += line + "\n";
-        switch ( type )
-        {
-        case StmtType::semicolon:
-            if ( terminated_semicolon( statement ) ) {
-                return statement;
-            }
-            break;
-        case StmtType::curlybracket:
-            if ( terminated_curlybracket( statement ) ) {
-                return statement;
-            }
-            break;
-        case StmtType::both:
-            if ( terminated_both( statement ) ) {
-                return statement;
-            }
-            break;
-        case StmtType::if_endif:
-            if ( terminated_word( statement, "endif" ) ) {
-                return statement;
-            }
-            break;
-        case StmtType::do_loop:
-            if ( terminated_word( statement, "loop" ) ) {
-                return statement;
-            }
-            break;
-        default:
-            return "";
-        }
     }
     return statement;
 }
@@ -428,27 +453,22 @@ int main( int argc, char* argv[] )
                 || word == "writeln" || word == "mark" || word == "clear"
                 || word == "call" )
             {
-                if( !terminated_semicolon( tail ) ) {
-                    cmnd = get_statement( cmnd, StmtType::semicolon );
-                }
+                cmnd = get_statement( cmnd, StmtType::semicolon );
             }
             else if(
                 word == "function" || word == "command" || word == "object" ||
-                word == "scheme" || word == "grammar" || word == "format" || word == "lexicon" )
+                word == "scheme" || word == "grammar" || word == "lexicon" )
             {
-                if( !terminated_curlybracket( tail ) ) {
-                    cmnd = get_statement( cmnd, StmtType::curlybracket );
-                }
+                cmnd = get_statement( cmnd, StmtType::curlybracket );
+            }
+            else if( word == "format" ) {
+                cmnd = get_statement( cmnd, StmtType::both );
             }
             else if( word == "if" ) {
-                if( !terminated_word( cmnd, "endif" ) ) {
-                    cmnd = get_statement( cmnd, StmtType::if_endif );
-                }
+                cmnd = get_statement( cmnd, StmtType::if_endif );
             }
             else if( word == "do" ) {
-                if( !terminated_word( cmnd, "loop" ) ) {
-                    cmnd = get_statement( cmnd, StmtType::do_loop );
-                }
+                cmnd = get_statement( cmnd, StmtType::do_loop );
             }
             else {
                 if( !terminated_semicolon( cmnd ) && !cmnd.empty() ) {

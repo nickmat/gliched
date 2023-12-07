@@ -52,7 +52,7 @@ std::string GeInOut::get_input( const std::string& prompt )
         _( "Gliched Input" ), "", wxOK | wxCANCEL
     );
     if( dialog.ShowModal() == wxID_OK ) {
-        return dialog.GetValue();
+        return dialog.GetValue().ToStdString();
     }
     return std::string();
 }

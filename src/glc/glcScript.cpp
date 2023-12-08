@@ -414,7 +414,7 @@ bool Script::do_assign( const std::string& name )
         }
         size_t index = 0;
         string istr = get_name_or_primary( GetToken::next );
-        if( is_str_size_t( istr ) ) {
+        if( istr.size() > 0 && isdigit( istr[0] ) ) {
             index = str_to_num( istr );
         }
         else {

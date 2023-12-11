@@ -39,10 +39,16 @@
 using std::string;
 
 
-geEdit::geEdit( wxWindow* parent ) : wxStyledTextCtrl( parent )
+geEdit::geEdit( wxWindow* parent ) :
+    m_font( 11, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL ),
+    wxStyledTextCtrl( parent )
 {
     StyleClearAll();
     SetLexer( wxSTC_LEX_CONTAINER );
+
+    // Set default styling
+    StyleSetFont( wxSTC_STYLE_DEFAULT, m_font );
+    StyleClearAll();
 
     // Setup line numbers
     int line_num_width = TextWidth( wxSTC_STYLE_LINENUMBER, "_99999" );

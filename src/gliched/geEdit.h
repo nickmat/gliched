@@ -44,6 +44,7 @@ public:
 private:
     wxString m_filename;
     wxString m_filepath;
+    wxFont m_font;
 };
 
 constexpr int c_line_num_margin = 0;

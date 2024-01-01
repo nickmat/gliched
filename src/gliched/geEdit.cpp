@@ -75,7 +75,7 @@ void geEdit::OnFileNew()
 wxString geEdit::OnFileOpen()
 {
     wxFileDialog dlg( this, "Open file", wxEmptyString, wxEmptyString,
-        "Glich (*.glc)|*.glcs", wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR );
+        "Glich (*.glcs)|*.glcs", wxFD_OPEN | wxFD_FILE_MUST_EXIST | wxFD_CHANGE_DIR );
     if( dlg.ShowModal() != wxID_OK ) {
         return wxString();
     }
@@ -98,7 +98,7 @@ wxString geEdit::OnFileSave()
 
 wxString geEdit::OnFileSaveAs()
 {
-    wxFileDialog dlg( this, "Save file", wxString(), wxString(), "Glich(*.glc) | *.glcs", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+    wxFileDialog dlg( this, "Save file", wxString(), wxString(), "Glich(*.glcs) | *.glcs", wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
     if( dlg.ShowModal() != wxID_OK ) {
         return wxString();
     }

@@ -4,7 +4,7 @@
  * Purpose:     Program Main Application Source.
  * Author:      Nick Matthews
  * Created:     19th September 2023
- * Copyright:   Copyright (c) 2023, Nick Matthews.
+ * Copyright:   Copyright (c) 2023..2024, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  Gliched is free software: you can redistribute it and/or modify
@@ -59,13 +59,26 @@ std::string GeInOut::get_input( const std::string& prompt )
 
 bool geApp::OnInit()
 {
-    glich::init_glc( glich::InitLibrary::Hics, new GeInOut );
-
+    glich::InitLibrary lib = glich::InitLibrary::Hics;
     wxString filename;
     if( argc > 1 ) {
-        // 1st comand line argument is assumed to be a Glich script file
-        filename = argv[1];
+        if( argv[1] == "--lib" && argc > 2 ) {
+            wxString libname = argv[2];
+            if( libname == "none" ) {
+                lib = glich::InitLibrary::None;
+            }
+            else if( libname == "hics" ) {
+                lib = glich::InitLibrary::Hics;
+            }
+            if( argc > 3 ) {
+                filename = argv[3];
+            }
+        }
+        else {
+            filename = argv[1];
+        }
     }
+    glich::init_glc( lib, new GeInOut );
 
     geFrame* frame = new geFrame( "Glich Editor", filename );
 

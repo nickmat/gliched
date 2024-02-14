@@ -4,7 +4,7 @@
  * Purpose:     Program Main Frame Class Source.
  * Author:      Nick Matthews
  * Created:     19th September 2023
- * Copyright:   Copyright (c) 2023, Nick Matthews.
+ * Copyright:   Copyright (c) 2023..2024, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  Gliched is free software: you can redistribute it and/or modify
@@ -125,6 +125,11 @@ void geFrame::OnRun( wxCommandEvent& event )
     string result = glich::get_glc()->run_script( script );
     m_ctrlResult->SetValue( result );
     UpdateDataTree();
+}
+
+void geFrame::OnWebsite( wxCommandEvent& event )
+{
+    wxLaunchDefaultBrowser( "https://nickmat.github.io/gliched/index.htm" );
 }
 
 void geFrame::OnAbout( wxCommandEvent& event )

@@ -4,7 +4,7 @@
  * Purpose:     Program Main Frame Class Header.
  * Author:      Nick Matthews
  * Created:     19th September 2023
- * Copyright:   Copyright (c) 2023, Nick Matthews.
+ * Copyright:   Copyright (c) 2023..2024, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  Gliched is free software: you can redistribute it and/or modify
@@ -48,7 +48,7 @@ private:
 	void OnEditPaste( wxCommandEvent& event ) override;
 	void OnEditDelete( wxCommandEvent& event ) override;
 	void OnRun( wxCommandEvent& event ) override;
-	void OnWebsite( wxCommandEvent& event ) override { event.Skip(); }
+	void OnWebsite( wxCommandEvent& event ) override;
 	void OnAbout( wxCommandEvent& event ) override;
 
 	void SetGlichTitle( const wxString& filename );

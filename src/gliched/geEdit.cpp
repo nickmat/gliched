@@ -131,33 +131,52 @@ wxString geEdit::DoFileOpen( const wxString& filepath )
 
 // Thanks to New Pagodi, see 
 // https://stackoverflow.com/questions/42241874/how-to-control-lineindentation-in-wxstyledtextctrl-when-user-presses-enter
+// Modified to remove trailing spaces on the previous line.
 void geEdit::OnCharAdded( wxStyledTextEvent& event )
 {
-    int new_line_key = (GetEOLMode() == wxSTC_EOL_CR) ? 13 : 10;
+    int eol_mode = GetEOLMode();
+    int new_line_key = (eol_mode == wxSTC_EOL_CR) ? 13 : 10;
 
     if( event.GetKey() == new_line_key ) {
+        int eol_len = (eol_mode == wxSTC_EOL_CRLF) ? 2 : 1;
         int cur_pos = GetCurrentPos();
         int cur_line = LineFromPosition( cur_pos );
 
         if( cur_line > 0 ) {
             wxString prev_line = GetLine( cur_line - 1 );
-            size_t prev_line_indent_chars( 0 );
-
+            size_t prev_line_indent_chars = 0;
             for( size_t i = 0; i < prev_line.Length(); ++i ) {
                 wxUniChar cur_char = prev_line.GetChar( i );
 
                 if( cur_char == ' ' ) {
-                    ++prev_line_indent_chars;
+                    prev_line_indent_chars++;
                 }
                 else if( cur_char == '\t' ) {
-                    ++prev_line_indent_chars;
+                    prev_line_indent_chars++;
                 }
                 else {
                     break;
                 }
             }
-
             AddText( prev_line.Left( prev_line_indent_chars ) );
+
+            int i = prev_line.Length() - eol_len;
+            int trailing_chars = 0;
+            while( i > 0 ) {
+                --i;
+                wxUniChar cur_char = prev_line.GetChar( i );
+                if( cur_char == ' ' ) {
+                    trailing_chars++;
+                }
+                else if( cur_char == '\t' ) {
+                    trailing_chars++;
+                }
+                else {
+                    break;
+                }
+            }
+            int trailing_pos = cur_pos - trailing_chars - eol_len;
+            DeleteRange( trailing_pos, trailing_chars );
         }
     }
 }

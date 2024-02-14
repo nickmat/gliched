@@ -4,7 +4,7 @@
  * Purpose:     Custom style text control class header.
  * Author:      Nick Matthews
  * Created:     13th October 2023
- * Copyright:   Copyright (c) 2023, Nick Matthews.
+ * Copyright:   Copyright (c) 2023..2024, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  Gliched is free software: you can redistribute it and/or modify
@@ -40,6 +40,8 @@ public:
     wxString OnFileSaveAs();
 
     wxString DoFileOpen( const wxString& filepath );
+
+    void OnCharAdded( wxStyledTextEvent& event );
 
 private:
     wxString m_filename;

@@ -59,6 +59,8 @@ geEdit::geEdit( wxWindow* parent ) :
     StyleSetForeground( wxSTC_STYLE_LINENUMBER, wxColour( "DARK GREY" ) );
     StyleSetBackground( wxSTC_STYLE_LINENUMBER, *wxWHITE );
     SetMarginWidth( c_line_num_margin, line_num_width );
+
+    Bind( wxEVT_STC_CHARADDED, &geEdit::OnCharAdded, this );
 }
 
 void geEdit::OnFileNew()
@@ -125,6 +127,39 @@ wxString geEdit::DoFileOpen( const wxString& filepath )
         return m_filename;
     }
     return wxString();
+}
+
+// Thanks to New Pagodi, see 
+// https://stackoverflow.com/questions/42241874/how-to-control-lineindentation-in-wxstyledtextctrl-when-user-presses-enter
+void geEdit::OnCharAdded( wxStyledTextEvent& event )
+{
+    int new_line_key = (GetEOLMode() == wxSTC_EOL_CR) ? 13 : 10;
+
+    if( event.GetKey() == new_line_key ) {
+        int cur_pos = GetCurrentPos();
+        int cur_line = LineFromPosition( cur_pos );
+
+        if( cur_line > 0 ) {
+            wxString prev_line = GetLine( cur_line - 1 );
+            size_t prev_line_indent_chars( 0 );
+
+            for( size_t i = 0; i < prev_line.Length(); ++i ) {
+                wxUniChar cur_char = prev_line.GetChar( i );
+
+                if( cur_char == ' ' ) {
+                    ++prev_line_indent_chars;
+                }
+                else if( cur_char == '\t' ) {
+                    ++prev_line_indent_chars;
+                }
+                else {
+                    break;
+                }
+            }
+
+            AddText( prev_line.Left( prev_line_indent_chars ) );
+        }
+    }
 }
 
 

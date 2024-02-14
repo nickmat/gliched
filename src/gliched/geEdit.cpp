@@ -4,7 +4,7 @@
  * Purpose:     Custom style text control class source.
  * Author:      Nick Matthews
  * Created:     13th October 2023
- * Copyright:   Copyright (c) 2023, Nick Matthews.
+ * Copyright:   Copyright (c) 2023..2024, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  Gliched is free software: you can redistribute it and/or modify
@@ -48,6 +48,9 @@ geEdit::geEdit( wxWindow* parent ) :
 
     // Set default styling
     StyleSetFont( wxSTC_STYLE_DEFAULT, m_font );
+    SetIndent( 4 );
+    SetTabWidth( 4 );
+    SetUseTabs( false );
     StyleClearAll();
 
     // Setup line numbers

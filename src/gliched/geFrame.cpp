@@ -122,7 +122,7 @@ void geFrame::OnEditDelete( wxCommandEvent& event )
 void geFrame::OnRun( wxCommandEvent& event )
 {
     string script = m_edit->GetText();
-    string result = glich::get_glc()->run_script( script );
+    string result = glich::glc().run_script( script );
     m_ctrlResult->SetValue( result );
     UpdateDataTree();
 }
@@ -146,7 +146,7 @@ void geFrame::OnAbout( wxCommandEvent& event )
             geTitle,
             wxVERSION_STRING,
             vi.GetVersionString(),
-            glich::get_glc()->version()
+            glich::glc().version()
         ),
         _( "About Gliched" ),
         wxOK | wxICON_INFORMATION,
@@ -167,7 +167,7 @@ void geFrame::SetGlichTitle( const wxString& filename )
 void geFrame::UpdateDataTree()
 {
     m_treeListCtrl->DeleteAllItems();
-    glich::GlcMarkVec tree = glich::get_glc()->get_glc_data();
+    glich::GlcMarkVec tree = glich::glc().get_glc_data();
     wxTreeListItem root = m_treeListCtrl->GetRootItem();
     for( auto& mark : tree ) {
         string type = mark.name.empty() ? "root" : "mark";

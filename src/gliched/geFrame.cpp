@@ -167,39 +167,38 @@ void geFrame::SetGlichTitle( const wxString& filename )
 void geFrame::UpdateDataTree()
 {
     m_treeListCtrl->DeleteAllItems();
-    glich::GlcMarkVec tree = glich::glc().get_glc_data();
+    glich::HicMarkDataVec tree = glich::glc().get_hic_data();
     wxTreeListItem root = m_treeListCtrl->GetRootItem();
     for( auto& mark : tree ) {
-        string type = mark.name.empty() ? "root" : "mark";
-        if( mark.name.empty() ) {}
+        string type = mark.glc.name.empty() ? "root" : "mark";
         wxTreeListItem item0 = m_treeListCtrl->InsertItem( root, wxTLI_LAST, type );
         wxTreeListItem item1;
         wxTreeListItem item2;
-        m_treeListCtrl->SetItemText( item0, 1, mark.name );
-        if( !mark.obj.empty() ) {
+        m_treeListCtrl->SetItemText( item0, 1, mark.glc.name );
+        if( !mark.glc.obj.empty() ) {
             item1 = m_treeListCtrl->InsertItem( item0, wxTLI_LAST, "object" );
-            for( auto& data : mark.obj ) {
+            for( auto& data : mark.glc.obj ) {
                 item2 = m_treeListCtrl->InsertItem( item1, wxTLI_LAST, data.name );
                 m_treeListCtrl->SetItemText( item2, 1, data.value );
             }
         }
-        if( !mark.file.empty() ) {
+        if( !mark.glc.file.empty() ) {
             item1 = m_treeListCtrl->InsertItem( item0, wxTLI_LAST, "file" );
-            for( auto& data : mark.file ) {
+            for( auto& data : mark.glc.file ) {
                 item2 = m_treeListCtrl->InsertItem( item1, wxTLI_LAST, data.name );
                 m_treeListCtrl->SetItemText( item2, 1, data.value );
             }
         }
-        if( !mark.fun.empty() ) {
+        if( !mark.glc.fun.empty() ) {
             item1 = m_treeListCtrl->InsertItem( item0, wxTLI_LAST, "function" );
-            for( auto& data : mark.fun ) {
+            for( auto& data : mark.glc.fun ) {
                 item2 = m_treeListCtrl->InsertItem( item1, wxTLI_LAST, data.name );
                 m_treeListCtrl->SetItemText( item2, 1, data.value );
             }
         }
-        if( !mark.com.empty() ) {
+        if( !mark.glc.com.empty() ) {
             item1 = m_treeListCtrl->InsertItem( item0, wxTLI_LAST, "command" );
-            for( auto& data : mark.com ) {
+            for( auto& data : mark.glc.com ) {
                 item2 = m_treeListCtrl->InsertItem( item1, wxTLI_LAST, data.name );
                 m_treeListCtrl->SetItemText( item2, 1, data.value );
             }
@@ -232,9 +231,9 @@ void geFrame::UpdateDataTree()
                 m_treeListCtrl->SetItemText( item2, 1, data.value );
             }
         }
-        if( !mark.var.empty() ) {
+        if( !mark.glc.var.empty() ) {
             item1 = m_treeListCtrl->InsertItem( item0, wxTLI_LAST, "variables" );
-            for( auto& data : mark.var ) {
+            for( auto& data : mark.glc.var ) {
                 item2 = m_treeListCtrl->InsertItem( item1, wxTLI_LAST, data.type );
                 m_treeListCtrl->SetItemText( item2, 1, data.name );
                 m_treeListCtrl->SetItemText( item2, 2, data.value );

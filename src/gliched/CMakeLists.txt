@@ -25,4 +25,4 @@ set(GE_SOURCES
 
 add_executable(gliched WIN32 ${GE_SOURCES} ${GE_HEADERS} gliched.rc)
 
-target_link_libraries (gliched PUBLIC glc wx::stc wx::net wx::core wx::base)
+target_link_libraries (gliched PUBLIC hic glc wx::stc wx::net wx::core wx::base)

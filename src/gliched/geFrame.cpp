@@ -34,7 +34,7 @@
 
 #include "geVersion.h"
 
-#include <glc/glc.h>
+#include <glc/hic.h>
 
 using std::string;
 
@@ -122,7 +122,7 @@ void geFrame::OnEditDelete( wxCommandEvent& event )
 void geFrame::OnRun( wxCommandEvent& event )
 {
     string script = m_edit->GetText();
-    string result = glich::glc().run_script( script );
+    string result = glich::hic().run_script( script );
     m_ctrlResult->SetValue( result );
     UpdateDataTree();
 }
@@ -146,7 +146,7 @@ void geFrame::OnAbout( wxCommandEvent& event )
             geTitle,
             wxVERSION_STRING,
             vi.GetVersionString(),
-            glich::glc().version()
+            glich::hic().version()
         ),
         _( "About Gliched" ),
         wxOK | wxICON_INFORMATION,
@@ -167,7 +167,7 @@ void geFrame::SetGlichTitle( const wxString& filename )
 void geFrame::UpdateDataTree()
 {
     m_treeListCtrl->DeleteAllItems();
-    glich::HicMarkDataVec tree = glich::glc().get_hic_data();
+    glich::HicMarkDataVec tree = glich::hic().get_hic_data();
     wxTreeListItem root = m_treeListCtrl->GetRootItem();
     for( auto& mark : tree ) {
         string type = mark.glc.name.empty() ? "root" : "mark";

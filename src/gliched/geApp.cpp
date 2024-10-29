@@ -34,7 +34,7 @@
 
 #include "geFrame.h"
 
-#include <glc/glc.h>
+#include <glc/hic.h>
 
 IMPLEMENT_APP(geApp)
 
@@ -78,7 +78,7 @@ bool geApp::OnInit()
             filename = argv[1];
         }
     }
-    glich::init_glc( lib, new GeInOut );
+    glich::init_hic( lib, new GeInOut );
 
     geFrame* frame = new geFrame( "Glich Editor", filename );
 
@@ -91,7 +91,7 @@ bool geApp::OnInit()
 
 int geApp::OnExit()
 {
-    glich::exit_glc();
+    glich::exit_hic();
     return 0;
 }
 

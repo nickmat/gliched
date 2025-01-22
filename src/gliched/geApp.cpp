@@ -59,6 +59,10 @@ std::string GeInOut::get_input( const std::string& prompt )
 
 bool geApp::OnInit()
 {
+    glich::StdStrVec args;
+    for( int i = 0; i < argc; i++ ) {
+        args.push_back( std::string( argv[i] ) );
+    }
     glich::InitLibrary lib = glich::InitLibrary::Hics;
     wxString filename;
     if( argc > 1 ) {
@@ -78,7 +82,7 @@ bool geApp::OnInit()
             filename = argv[1];
         }
     }
-    glich::init_hic( lib, new GeInOut );
+    glich::init_hic( lib, new GeInOut, args );
 
     geFrame* frame = new geFrame( "Glich Editor", filename );
 

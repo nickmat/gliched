@@ -4,7 +4,7 @@
  * Purpose:     Program Main Frame Class Header.
  * Author:      Nick Matthews
  * Created:     19th September 2023
- * Copyright:   Copyright (c) 2023..2024, Nick Matthews.
+ * Copyright:   Copyright (c) 2023..2026, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  Gliched is free software: you can redistribute it and/or modify
@@ -56,6 +56,7 @@ private:
 	void UpdateDataTree();
 
 	wxString m_title;
+    std::string m_filename;
 };
 
 #endif // SRC_GLICHED_GEFRAME_H_GUARD

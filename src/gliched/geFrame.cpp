@@ -4,7 +4,7 @@
  * Purpose:     Program Main Frame Class Source.
  * Author:      Nick Matthews
  * Created:     19th September 2023
- * Copyright:   Copyright (c) 2023..2024, Nick Matthews.
+ * Copyright:   Copyright (c) 2023..2026, Nick Matthews.
  * Licence:     GNU GPLv3
  *
  *  Gliched is free software: you can redistribute it and/or modify
@@ -57,6 +57,7 @@ geFrame::geFrame(
         filename = m_edit->DoFileOpen( filepath );
     }
     SetGlichTitle( filename );
+    m_filename = std::string( filename.mb_str() );
 }
 
 void geFrame::OnFileNew( wxCommandEvent& event )
@@ -122,7 +123,7 @@ void geFrame::OnEditDelete( wxCommandEvent& event )
 void geFrame::OnRun( wxCommandEvent& event )
 {
     string script = m_edit->GetText();
-    string result = glich::hic().run_script( script );
+    string result = glich::hic().run_script( script, "file:" + m_filename );
     m_ctrlResult->SetValue( result );
     UpdateDataTree();
 }

@@ -123,7 +123,14 @@ void geFrame::OnEditDelete( wxCommandEvent& event )
 void geFrame::OnRun( wxCommandEvent& event )
 {
     string script = m_edit->GetText();
-    string result = glich::hic().run_script( script, "file:" + m_filename );
+    string module = "file:" + m_edit->GetFilename();
+    if( module.substr( module.length() - 5 ) == ".glcs" ) {
+        module = module.substr( 0, module.length() - 5 );
+    }
+    else if( module == "file:" ) {
+        module = "gliched:";
+    }
+    string result = glich::hic().run_script( script, module );
     m_ctrlResult->SetValue( result );
     UpdateDataTree();
 }

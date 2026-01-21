@@ -43,6 +43,8 @@ public:
 
     void OnCharAdded( wxStyledTextEvent& event );
 
+    wxString GetFilename() const { return m_filename; }
+
 private:
     wxString m_filename;
     wxString m_filepath;

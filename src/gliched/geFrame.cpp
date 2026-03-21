@@ -247,6 +247,22 @@ void geFrame::UpdateDataTree()
                 m_treeListCtrl->SetItemText( item2, 2, data.value );
             }
         }
+        if( !mark.glc.global.empty() ) {
+            item1 = m_treeListCtrl->InsertItem( item0, wxTLI_LAST, "globals" );
+            for( auto& data : mark.glc.global ) {
+                item2 = m_treeListCtrl->InsertItem( item1, wxTLI_LAST, data.type );
+                m_treeListCtrl->SetItemText( item2, 1, data.name );
+                m_treeListCtrl->SetItemText( item2, 2, data.value );
+            }
+        }
+        if( !mark.glc.constant.empty() ) {
+            item1 = m_treeListCtrl->InsertItem( item0, wxTLI_LAST, "constants" );
+            for( auto& data : mark.glc.constant ) {
+                item2 = m_treeListCtrl->InsertItem( item1, wxTLI_LAST, data.type );
+                m_treeListCtrl->SetItemText( item2, 1, data.name );
+                m_treeListCtrl->SetItemText( item2, 2, data.value );
+            }
+        }
     }
 }
 

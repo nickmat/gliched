@@ -1,0 +1,31 @@
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+ * Name:        src/gliched/embed/geImages.f2c
+ * Project:     Glich Script Language IDE.
+ * Purpose:     SVG text compiled from SVG files. Format file for file2cpp.
+ * Author:      Nick Matthews
+ * Website:     https://nickmat.github.io/gliched/index.htm
+ * Created:     26th March 2026
+ * Copyright:   Copyright (c) 2026, Nick Matthews.
+ * Licence:     GNU GPLv3
+ *
+ *  Glich Script Language IDE is free software: you can redistribute it and/or modify
+ *  it under the terms of the GNU General Public License as published by
+ *  the Free Software Foundation, either version 3 of the License, or
+ *  (at your option) any later version.
+ *
+ *  Glich Script Language IDE is distributed in the hope that it will be useful,
+ *  but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ *  GNU General Public License for more details.
+ *
+ *  You should have received a copy of the GNU General Public License
+ *  along with Glich Script Language IDE.  If not, see <http://www.gnu.org/licenses/>.
+ *
+ * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+*/
+
+static const char* glich_icon_svg = @(cro.xml)"glich_icon.svg";
+
+
+/* End of src/gliched/embed/geImages.f2c */

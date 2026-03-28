@@ -1,4 +1,28 @@
 #include "geEditor.h"
+#include <wx/stc/stc.h>
+#include <wx/log.h> 
+#include <unordered_set>
+
+static const std::unordered_set<std::string> glich_keywords = {
+    "let", "global", "constant", "function", "result", "this" "command", "object",
+    "file", "write", "nl", "mark", "call", "set", "module",
+    "if", "else", "elseif",
+    "do", "in", "in:r", "while", "until", "exit",
+    "true", "false", "null", "empty", "infinity", "inf", "nan",
+    "and", "or", "not", "date", "text", "scheme",
+    "grammar", "format", "lexicon",
+    "past", "future", "today"
+};
+
+enum {
+    STYLE_DEFAULT = 0,
+    STYLE_COMMENT = 1,
+    STYLE_NUMBER = 2,
+    STYLE_STRING = 3,
+    STYLE_KEYWORD = 4,
+    STYLE_IDENTIFIER = 5,
+    STYLE_OPERATOR = 6
+};
 
 geEditor::geEditor(wxWindow* parent)
     : wxStyledTextCtrl(parent, wxID_ANY)
@@ -8,24 +32,264 @@ geEditor::geEditor(wxWindow* parent)
     SetTabWidth(4);
     SetUseTabs(false);
     StyleClearAll();
+
+    // Style colours
+    StyleSetForeground( STYLE_DEFAULT, wxColour( 0, 0, 0 ) );
+    StyleSetForeground( STYLE_COMMENT, wxColour( 0, 128, 0 ) );
+    StyleSetForeground( STYLE_NUMBER, wxColour( 0, 0, 255 ) );
+    StyleSetForeground( STYLE_STRING, wxColour( 163, 21, 21 ) );
+    StyleSetForeground( STYLE_KEYWORD, wxColour( 0, 0, 192 ) );
+    StyleSetBold( STYLE_KEYWORD, true );
+    StyleSetForeground( STYLE_IDENTIFIER, wxColour( 0, 0, 0 ) );
+    StyleSetForeground( STYLE_OPERATOR, wxColour( 128, 0, 64 ) );
+
+    // Line numbers
+    const int lineNumMargin = 0;
+    int lineNumWidth = TextWidth(wxSTC_STYLE_LINENUMBER, "_99999");
+    SetMarginType(lineNumMargin, wxSTC_MARGIN_NUMBER);
+    SetMarginWidth(lineNumMargin, lineNumWidth);
+    StyleSetForeground(wxSTC_STYLE_LINENUMBER, wxColour(80, 80, 80));
+    StyleSetBackground(wxSTC_STYLE_LINENUMBER, wxColour(240, 240, 240));
+
+    // Folding margin
+    const int foldMargin = 1;
+    SetMarginType(foldMargin, wxSTC_MARGIN_SYMBOL);
+    SetMarginMask(foldMargin, 0xFE000000);
+    SetMarginWidth(foldMargin, 16);
+    SetMarginSensitive(foldMargin, true);
+
+    // Folding markers
+    MarkerDefine(wxSTC_MARKNUM_FOLDER, wxSTC_MARK_BOXPLUS, *wxBLACK, wxColour(200, 200, 200));
+    MarkerDefine(wxSTC_MARKNUM_FOLDEROPEN, wxSTC_MARK_BOXMINUS, *wxBLACK, wxColour(200, 200, 200));
+    MarkerDefine(wxSTC_MARKNUM_FOLDERSUB, wxSTC_MARK_VLINE, *wxBLACK, wxColour(200, 200, 200));
+    MarkerDefine(wxSTC_MARKNUM_FOLDERTAIL, wxSTC_MARK_LCORNER, *wxBLACK, wxColour(200, 200, 200));
+    MarkerDefine(wxSTC_MARKNUM_FOLDEREND, wxSTC_MARK_BOXPLUSCONNECTED, *wxBLACK, wxColour(200, 200, 200));
+    MarkerDefine(wxSTC_MARKNUM_FOLDEROPENMID, wxSTC_MARK_BOXMINUSCONNECTED, *wxBLACK, wxColour(200, 200, 200));
+    MarkerDefine(wxSTC_MARKNUM_FOLDERMIDTAIL, wxSTC_MARK_TCORNER, *wxBLACK, wxColour(200, 200, 200));
+
+    SetProperty("fold", "1");
+    SetProperty("fold.compact", "1");
+
+    SetIndentationGuides(wxSTC_IV_LOOKBOTH);
+    SetCaretLineVisible(true);
+    SetCaretLineBackground(wxColour(235, 245, 255));
+
+    Bind(wxEVT_STC_UPDATEUI, &geEditor::OnUpdateUI, this);
+    Bind(wxEVT_STC_STYLENEEDED, &geEditor::OnStyleNeeded, this);
+    Bind( wxEVT_STC_MARGINCLICK, &geEditor::OnMarginClick, this );
+    Bind(wxEVT_STC_CHARADDED, &geEditor::OnCharAdded, this);
 }
 
-bool geEditor::LoadFile(const wxString& path)
+bool geEditor::LoadFile( const wxString& path )
 {
-    if (wxStyledTextCtrl::LoadFile(path))
-    {
+    if( wxStyledTextCtrl::LoadFile( path ) ) {
         m_filename = path;
         return true;
     }
     return false;
 }
 
-bool geEditor::SaveFile(const wxString& path)
+bool geEditor::SaveFile( const wxString& path )
 {
-    if (wxStyledTextCtrl::SaveFile(path))
-    {
+    if( wxStyledTextCtrl::SaveFile( path ) ) {
         m_filename = path;
         return true;
     }
     return false;
+}
+
+// Folding logic for { ... } blocks
+void geEditor::OnStyleNeeded(wxStyledTextEvent& event)
+{
+    // Folding logic.
+    int lineCount = GetLineCount();
+    int level = wxSTC_FOLDLEVELBASE;
+
+    for( int line = 0; line < lineCount; ++line ) {
+        wxString text = GetLine( line );
+
+        // Count braces in this line
+        int opens = 0, closes = 0;
+        for( wxChar ch : text ) {
+            if( ch == '{' ) ++opens;
+            if( ch == '}' ) ++closes;
+        }
+
+        // Set fold level for this line
+        int thisLevel = level;
+        int nextLevel = level + opens - closes;
+
+        int flags = thisLevel;
+        if( opens > 0 ) {
+            flags |= wxSTC_FOLDLEVELHEADERFLAG;
+        }
+
+        SetFoldLevel( line, flags );
+
+        // The next line's level is increased if a block is opened
+        level = thisLevel + opens - closes;
+        if( level < wxSTC_FOLDLEVELBASE ) {
+            level = wxSTC_FOLDLEVELBASE;
+        }
+    }
+
+    // Syntax colouring.
+    int startPos = GetEndStyled();
+    int endPos = event.GetPosition();
+    StartStyling(startPos);
+
+    int length = GetTextLength();
+    int pos = startPos;
+    bool inComment = false;
+
+    while (pos < endPos && pos < length) {
+        char c = GetCharAt(pos);
+
+        // Multi-line comment start or inside comment
+        if (!inComment && c == '/' && GetCharAt(pos + 1) == '*') {
+            int start = pos;
+            pos += 2;
+            inComment = true;
+            while (pos < endPos && pos < length) {
+                if (GetCharAt(pos) == '*' && GetCharAt(pos + 1) == '/') {
+                    pos += 2;
+                    inComment = false;
+                    break;
+                }
+                ++pos;
+            }
+            SetStyling(pos - start, STYLE_COMMENT);
+            continue;
+        }
+        if (inComment) {
+            int start = pos;
+            while (pos < endPos && pos < length) {
+                if (GetCharAt(pos) == '*' && GetCharAt(pos + 1) == '/') {
+                    pos += 2;
+                    inComment = false;
+                    break;
+                }
+                ++pos;
+            }
+            SetStyling(pos - start, STYLE_COMMENT);
+            continue;
+        }
+
+        // Single-line comment (// to end of line)
+        if (c == '/' && GetCharAt(pos + 1) == '/') {
+            int lineEnd = PositionFromLine(LineFromPosition(pos) + 1);
+            if (lineEnd == wxNOT_FOUND) lineEnd = length;
+            int n = lineEnd - pos;
+            SetStyling(n, STYLE_COMMENT);
+            pos += n;
+            continue;
+        }
+
+        // String
+        if (c == '"') {
+            int start = pos;
+            ++pos;
+            while (pos < endPos && pos < length) {
+                char d = GetCharAt(pos);
+                if (d == '"' && GetCharAt(pos + 1) == '"') { // Escaped quote
+                    pos += 2;
+                } else if (d == '"') {
+                    ++pos;
+                    break;
+                } else {
+                    ++pos;
+                }
+            }
+            SetStyling(pos - start, STYLE_STRING);
+            continue;
+        }
+
+        // Number
+        if (isdigit(c)) {
+            int start = pos;
+            while (pos < endPos && isdigit(GetCharAt(pos))) ++pos;
+            SetStyling(pos - start, STYLE_NUMBER);
+            continue;
+        }
+
+        // Identifier (allowing : and _)
+        if (isalpha(c) || c == '_' || c == ':') {
+            int start = pos;
+            while (pos < endPos) {
+                char d = GetCharAt(pos);
+                if (isalnum(d) || d == '_' || d == ':')
+                    ++pos;
+                else
+                    break;
+            }
+            wxString ident = GetTextRange(start, pos);
+            std::string identStr = ident.ToStdString();
+            int style = glich_keywords.count(identStr) ? STYLE_KEYWORD : STYLE_IDENTIFIER;
+            SetStyling(pos - start, style);
+            continue;
+        }
+
+        // Operator
+        if (strchr("+-*/%&|^=<>!.,;()[]{}", c)) {
+            SetStyling(1, STYLE_OPERATOR);
+            ++pos;
+            continue;
+        }
+
+        // Whitespace or default
+        SetStyling(1, STYLE_DEFAULT);
+        ++pos;
+    }
+}
+
+void geEditor::OnMarginClick( wxStyledTextEvent& event )
+{
+    if( event.GetMargin() == 1 )
+    {
+        int line = LineFromPosition( event.GetPosition() );
+        int level = GetFoldLevel( line );
+
+        if( level & wxSTC_FOLDLEVELHEADERFLAG )
+            ToggleFold( line );
+    }
+}
+
+// Smart indentation
+void geEditor::OnCharAdded(wxStyledTextEvent& event)
+{
+    if (event.GetKey() == '\n') {
+        int line = GetCurrentLine();
+        if (line == 0) return;
+        wxString prevLine = GetLine(line - 1);
+        wxString indent;
+        for (wxChar ch : prevLine) {
+            if( ch == ' ' || ch == '\t' ) {
+                indent += ch;
+            }
+            else {
+                break;
+            }
+        }
+        InsertText(GetCurrentPos(), indent);
+    }
+}
+
+// Brace matching (unchanged)
+void geEditor::OnUpdateUI(wxStyledTextEvent&)
+{
+    int pos = GetCurrentPos();
+    int braceAtCaret = -1;
+    int braceOpposite = -1;
+
+    char ch = (pos > 0) ? GetCharAt(pos - 1) : 0;
+    if (ch == '(' || ch == ')' || ch == '{' || ch == '}' || ch == '[' || ch == ']')
+        braceAtCaret = pos - 1;
+    else
+        braceAtCaret = pos;
+
+    braceOpposite = BraceMatch(braceAtCaret);
+    if (braceOpposite != wxSTC_INVALID_POSITION)
+        BraceHighlight(braceAtCaret, braceOpposite);
+    else
+        BraceBadLight(braceAtCaret);
 }

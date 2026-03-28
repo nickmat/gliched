@@ -13,5 +13,10 @@ public:
     void SetFilename(const wxString& path) { m_filename = path; }
 
 private:
+    void OnUpdateUI( wxStyledTextEvent& );
+    void OnStyleNeeded(wxStyledTextEvent& event);
+    void OnMarginClick( wxStyledTextEvent& event );
+    void OnCharAdded(wxStyledTextEvent& event);
+
     wxString m_filename;
 };

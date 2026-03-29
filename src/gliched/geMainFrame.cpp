@@ -343,8 +343,8 @@ void geMainFrame::UpdateStateTree()
                 wxTreeListItem cat = m_stateTree->AppendItem( markItem, label );
                 for( const auto& data : list ) {
                     wxTreeListItem item = m_stateTree->AppendItem( cat, "" );
-                    m_stateTree->SetItemText( item, 1, wxString::FromUTF8( data.name.c_str() ) );
-                    m_stateTree->SetItemText( item, 2, wxString::FromUTF8( data.value.c_str() ) );
+                    m_stateTree->SetItemText( item, 0, wxString::FromUTF8( data.name.c_str() ) );
+                    m_stateTree->SetItemText( item, 1, wxString::FromUTF8( data.value.c_str() ) );
                 }
             }
         };

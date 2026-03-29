@@ -9,7 +9,7 @@ static const std::unordered_set<std::string> glich_keywords = {
     "if", "else", "elseif",
     "do", "in", "in:r", "while", "until", "exit",
     "true", "false", "null", "empty", "infinity", "inf", "nan",
-    "and", "or", "not", "date", "text", "scheme",
+    "and", "or", "not",
     "grammar", "format", "lexicon",
     "past", "future", "today"
 };
@@ -59,12 +59,12 @@ geEditor::geEditor(wxWindow* parent)
     SetMarginSensitive(foldMargin, true);
 
     // Folding markers
-    MarkerDefine(wxSTC_MARKNUM_FOLDER, wxSTC_MARK_BOXPLUS, *wxBLACK, wxColour(200, 200, 200));
-    MarkerDefine(wxSTC_MARKNUM_FOLDEROPEN, wxSTC_MARK_BOXMINUS, *wxBLACK, wxColour(200, 200, 200));
+    MarkerDefine(wxSTC_MARKNUM_FOLDER, wxSTC_MARK_ARROW, *wxBLACK, wxColour(200, 200, 200));         // closed: >
+    MarkerDefine(wxSTC_MARKNUM_FOLDEROPEN, wxSTC_MARK_ARROWDOWN, *wxBLACK, wxColour(200, 200, 200)); // open: v
     MarkerDefine(wxSTC_MARKNUM_FOLDERSUB, wxSTC_MARK_VLINE, *wxBLACK, wxColour(200, 200, 200));
     MarkerDefine(wxSTC_MARKNUM_FOLDERTAIL, wxSTC_MARK_LCORNER, *wxBLACK, wxColour(200, 200, 200));
-    MarkerDefine(wxSTC_MARKNUM_FOLDEREND, wxSTC_MARK_BOXPLUSCONNECTED, *wxBLACK, wxColour(200, 200, 200));
-    MarkerDefine(wxSTC_MARKNUM_FOLDEROPENMID, wxSTC_MARK_BOXMINUSCONNECTED, *wxBLACK, wxColour(200, 200, 200));
+    MarkerDefine(wxSTC_MARKNUM_FOLDEREND, wxSTC_MARK_ARROW, *wxBLACK, wxColour(200, 200, 200));
+    MarkerDefine(wxSTC_MARKNUM_FOLDEROPENMID, wxSTC_MARK_ARROWDOWN, *wxBLACK, wxColour(200, 200, 200));
     MarkerDefine(wxSTC_MARKNUM_FOLDERMIDTAIL, wxSTC_MARK_TCORNER, *wxBLACK, wxColour(200, 200, 200));
 
     SetProperty("fold", "1");
@@ -96,6 +96,28 @@ bool geEditor::SaveFile( const wxString& path )
         return true;
     }
     return false;
+}
+
+// Helper: Returns true if inside a /* ... */ comment at the given position
+static bool IsInMultilineComment(int pos, wxStyledTextCtrl* ctrl)
+{
+    bool inComment = false;
+    int i = 0;
+    while (i < pos) {
+        char c = ctrl->GetCharAt(i);
+        if (!inComment && c == '/' && ctrl->GetCharAt(i + 1) == '*') {
+            inComment = true;
+            i += 2;
+            continue;
+        }
+        if (inComment && c == '*' && ctrl->GetCharAt(i + 1) == '/') {
+            inComment = false;
+            i += 2;
+            continue;
+        }
+        ++i;
+    }
+    return inComment;
 }
 
 // Folding logic for { ... } blocks
@@ -140,7 +162,9 @@ void geEditor::OnStyleNeeded(wxStyledTextEvent& event)
 
     int length = GetTextLength();
     int pos = startPos;
-    bool inComment = false;
+
+    // Fix: determine if we are inside a multi-line comment at startPos
+    bool inComment = IsInMultilineComment(startPos, this);
 
     while (pos < endPos && pos < length) {
         char c = GetCharAt(pos);

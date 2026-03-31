@@ -54,6 +54,7 @@ wxBEGIN_EVENT_TABLE(geMainFrame, wxFrame)
     EVT_AUINOTEBOOK_PAGE_CLOSE(wxID_ANY, geMainFrame::OnTabClose)
     EVT_MENU( ID_Select_Run_Tab, geMainFrame::OnSetAsRunFile )
     EVT_MENU( ID_Clear_Run_Tab, geMainFrame::OnClearRunFile )
+    EVT_CLOSE( geMainFrame::OnClose )
 wxEND_EVENT_TABLE()
 
 geMainFrame::geMainFrame()
@@ -405,6 +406,32 @@ void geMainFrame::OnClearRunFile( wxCommandEvent& )
         }
     }
     UpdateTabIndicators();
+}
+
+void geMainFrame::OnClose( wxCloseEvent& event )
+{
+    for( size_t i = 0; i < m_notebook->GetPageCount(); ++i ) {
+        geEditor* editor = dynamic_cast<geEditor*>( m_notebook->GetPage( i ) );
+        if( editor && editor->IsModified() ) {
+            m_notebook->SetSelection( i );
+            int res = wxMessageBox(
+                "One or more files have unsaved changes. Do you want to save before exiting?",
+                "Unsaved Changes",
+                wxYES_NO | wxCANCEL | wxICON_WARNING,
+                this
+            );
+            if( res == wxYES ) {
+                OnSave( wxCommandEvent() );
+            }
+            else if( res == wxCANCEL ) {
+                event.Veto();
+                return;
+            }
+            // If NO, continue to next tab
+        }
+    }
+    // Proceed with close
+    event.Skip();
 }
 
 wxString geMainFrame::GetFilePathForTab( int idx ) const

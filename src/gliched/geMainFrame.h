@@ -39,6 +39,7 @@ private:
     void OnTabClose( wxAuiNotebookEvent& evt );
     void OnSetAsRunFile( wxCommandEvent& evt );
     void OnClearRunFile( wxCommandEvent& evt );
+    void OnClose( wxCloseEvent& event );
 
     wxString GetFilePathForTab( int idx ) const;
     bool IsTabSetAsRunFile( int idx ) const;

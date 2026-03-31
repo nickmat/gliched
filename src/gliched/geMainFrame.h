@@ -35,9 +35,22 @@ private:
     void OnHelpAbout( wxCommandEvent& evt );
     void OnRun( wxCommandEvent& evt );
     void OnTabChanged(wxAuiNotebookEvent& evt);
+    void OnTabRightClick( wxAuiNotebookEvent& evt );
+    void OnTabClose( wxAuiNotebookEvent& evt );
+    void OnSetAsRunFile( wxCommandEvent& evt );
+    void OnClearRunFile( wxCommandEvent& evt );
 
+    wxString GetFilePathForTab( int idx ) const;
+    bool IsTabSetAsRunFile( int idx ) const;
+    wxString GetTabLabelForFile( const wxString& filePath ) const;
+
+    int GetRunTab() const;
+    void UpdateTabIndicators();
     void UpdateStateTree();
     void UpdateStatusBar();
+
+    int m_tabContextIndex; // Index of the tab for which the context menu is currently open, or -1 if none
+    int m_newTabCounter; // Counter for naming new tabs
 
     wxDECLARE_EVENT_TABLE();
 };

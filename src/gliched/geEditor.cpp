@@ -25,7 +25,7 @@ enum {
 };
 
 geEditor::geEditor(wxWindow* parent)
-    : wxStyledTextCtrl(parent, wxID_ANY)
+    : wxStyledTextCtrl( parent, wxID_ANY ), m_runPage( false )
 {
     SetLexer(wxSTC_LEX_CONTAINER);
     StyleSetFont(wxSTC_STYLE_DEFAULT, wxFont(11, wxFONTFAMILY_MODERN, wxFONTSTYLE_NORMAL, wxFONTWEIGHT_NORMAL));
@@ -84,6 +84,7 @@ bool geEditor::LoadFile( const wxString& path )
 {
     if( wxStyledTextCtrl::LoadFile( path ) ) {
         m_filename = path;
+        m_tabName = wxFileNameFromPath( path );
         return true;
     }
     return false;
@@ -93,6 +94,7 @@ bool geEditor::SaveFile( const wxString& path )
 {
     if( wxStyledTextCtrl::SaveFile( path ) ) {
         m_filename = path;
+        m_tabName = wxFileNameFromPath( path );
         return true;
     }
     return false;

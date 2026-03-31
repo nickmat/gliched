@@ -1,4 +1,4 @@
-
+﻿
 #include "geMainFrame.h"
 
 #include "geEditor.h"
@@ -31,7 +31,9 @@ enum
     ID_Paste,
     ID_Help_Website,
     ID_Help_About,
-    ID_Run
+    ID_Run,
+    ID_Select_Run_Tab,
+    ID_Clear_Run_Tab
 };
 
 wxBEGIN_EVENT_TABLE(geMainFrame, wxFrame)
@@ -49,11 +51,14 @@ wxBEGIN_EVENT_TABLE(geMainFrame, wxFrame)
     EVT_MENU( ID_Help_About, geMainFrame::OnHelpAbout )
     EVT_TOOL( ID_Run, geMainFrame::OnRun )
     EVT_AUINOTEBOOK_PAGE_CHANGED(wxID_ANY, geMainFrame::OnTabChanged)
+    EVT_AUINOTEBOOK_PAGE_CLOSE(wxID_ANY, geMainFrame::OnTabClose)
+    EVT_MENU( ID_Select_Run_Tab, geMainFrame::OnSetAsRunFile )
+    EVT_MENU( ID_Clear_Run_Tab, geMainFrame::OnClearRunFile )
 wxEND_EVENT_TABLE()
 
 geMainFrame::geMainFrame()
     : wxFrame(nullptr, wxID_ANY, "Gliched IDE", wxDefaultPosition, wxSize(900, 700)),
-      m_mgr(this)
+    m_mgr( this ), m_tabContextIndex( -1 ), m_newTabCounter( 1 )
 {
     wxBitmapBundle bundle = wxBitmapBundle::FromSVG( glich_icon_svg, wxSize( 32, 32 ) );
     if( bundle.IsOk() ) {
@@ -118,6 +123,7 @@ geMainFrame::geMainFrame()
 
     // Notebook for editors
     m_notebook = new wxAuiNotebook(this, wxID_ANY);
+    m_notebook->Bind( wxEVT_AUINOTEBOOK_TAB_RIGHT_DOWN, &geMainFrame::OnTabRightClick, this );
 
     // Output pane
     m_output = new wxTextCtrl( this, wxID_ANY, wxEmptyString,
@@ -142,7 +148,10 @@ geMainFrame::geMainFrame()
     m_mgr.Update();
 
     // Add initial tab
-    m_notebook->AddPage(new geEditor(m_notebook), "Untitled", true);
+    wxString title = wxString::Format( "Untitled-%d", m_newTabCounter++ );
+    geEditor* editor = new geEditor(m_notebook);
+    editor->SetTabName(title);
+    m_notebook->AddPage(editor, editor->GetTabName(), true);
 
     UpdateStateTree();
 }
@@ -154,7 +163,10 @@ geMainFrame::~geMainFrame()
 
 void geMainFrame::OnNew(wxCommandEvent&)
 {
-    m_notebook->AddPage(new geEditor(m_notebook), "Untitled", true);
+    wxString title = wxString::Format( "Untitled-%d", m_newTabCounter++ );
+    geEditor* editor = new geEditor(m_notebook);
+    editor->SetTabName(title);
+    m_notebook->AddPage(editor, editor->GetTabName(), true);
 }
 
 void geMainFrame::OnOpen(wxCommandEvent&)
@@ -167,7 +179,7 @@ void geMainFrame::OnOpen(wxCommandEvent&)
         geEditor* editor = new geEditor(m_notebook);
         if (editor->LoadFile(dlg.GetPath()))
         {
-            m_notebook->AddPage(editor, wxFileNameFromPath(dlg.GetPath()), true);
+            m_notebook->AddPage(editor, editor->GetTabName(), true);
         }
         else
         {
@@ -214,8 +226,7 @@ void geMainFrame::OnSaveAs(wxCommandEvent&)
     {
         if (editor->SaveFile(dlg.GetPath()))
         {
-            m_notebook->SetPageText(sel, wxFileNameFromPath(dlg.GetPath()));
-            editor->SetFilename(dlg.GetPath());
+            UpdateTabIndicators();
             SetStatusText("Saved: " + dlg.GetPath());
         }
         else
@@ -278,17 +289,6 @@ void geMainFrame::OnHelpWebsite( wxCommandEvent& )
 
 void geMainFrame::OnHelpAbout( wxCommandEvent& )
 {
-#if 0
-    wxMessageBox(
-        "Gliched IDE\n"
-        "Version 1.0\n"
-        "Copyright (c) 2023-2026 Nick Matthews\n"
-        "https://nickmat.github.io/gliched/index.htm",
-        "About Gliched",
-        wxOK | wxICON_INFORMATION,
-        this
-    );
-#endif
     wxMessageBox(
         wxString::Format(
             "Gliched IDE version 0.1\n"
@@ -306,8 +306,17 @@ void geMainFrame::OnHelpAbout( wxCommandEvent& )
 
 void geMainFrame::OnRun( wxCommandEvent& )
 {
-    int sel = m_notebook->GetSelection();
-    if( sel == wxNOT_FOUND ) return;
+    int sel = GetRunTab();
+    if( sel == wxNOT_FOUND ) {
+        wxMessageBox(
+            "The file set to run was not found in any open tabs. It may have been closed.\n"
+            "Please select the file you want to run and click Run again.",
+            "File Not Found",
+            wxOK | wxICON_WARNING,
+            this
+        );
+        return;
+    }
     geEditor* editor = dynamic_cast<geEditor*>(m_notebook->GetPage( sel ));
     if( !editor ) return;
 
@@ -320,6 +329,133 @@ void geMainFrame::OnRun( wxCommandEvent& )
 void geMainFrame::OnTabChanged( wxAuiNotebookEvent& )
 {
     UpdateStatusBar();
+}
+
+void geMainFrame::OnTabRightClick( wxAuiNotebookEvent& event )
+{
+    int tabIdx = event.GetSelection();
+    if( tabIdx == wxNOT_FOUND ) {
+        return;
+    }
+    // Store the tab index for use in the menu handler
+    m_tabContextIndex = tabIdx;
+
+    // Show the menu
+    wxMenu menu;
+    if( IsTabSetAsRunFile( tabIdx ) ) {
+        menu.Append( ID_Clear_Run_Tab, "Clear Run File" );
+    }
+    else {
+        menu.Append( ID_Select_Run_Tab, "Set as Run File" );
+    }
+
+    // Get global mouse position and convert to notebook client coordinates
+    wxPoint screenPos = wxGetMousePosition();
+    wxPoint clientPos = m_notebook->ScreenToClient( screenPos );
+    m_notebook->PopupMenu( &menu, clientPos );
+}
+
+void geMainFrame::OnTabClose( wxAuiNotebookEvent& evt )
+{
+    int sel = evt.GetSelection();
+    if( sel == wxNOT_FOUND ) return;
+    geEditor* editor = dynamic_cast<geEditor*>(m_notebook->GetPage( sel ));
+    if( editor ) {
+        if( editor->IsModified() ) {
+            int res = wxMessageBox(
+                "The file has unsaved changes. Do you want to save before closing?",
+                "Unsaved Changes",
+                wxYES_NO | wxCANCEL | wxICON_WARNING,
+                this
+            );
+            if( res == wxYES ) {
+                OnSave( wxCommandEvent() );
+            }
+            else if( res == wxCANCEL ) {
+                evt.Veto();
+                return;
+            }
+        }
+    }
+}
+
+void geMainFrame::OnSetAsRunFile( wxCommandEvent& )
+{
+    int tabIdx = m_notebook->GetSelection();
+    for( int i = 0; i < m_notebook->GetPageCount(); ++i ) {
+        geEditor* e = dynamic_cast<geEditor*>(m_notebook->GetPage( i ));
+        if( !e ) continue;
+        if( i == tabIdx ) {
+            e->SetRunPage( true );
+        }
+        else {
+            e->SetRunPage( false );
+        }
+    }
+    UpdateTabIndicators();
+}
+
+void geMainFrame::OnClearRunFile( wxCommandEvent& )
+{
+    for( int i = 0; i < m_notebook->GetPageCount(); ++i ) {
+        geEditor* e = dynamic_cast<geEditor*>(m_notebook->GetPage( i ));
+        if( !e ) continue;
+        if( e && e->IsRunPage() ) {
+            e->SetRunPage( false );
+        }
+    }
+    UpdateTabIndicators();
+}
+
+wxString geMainFrame::GetFilePathForTab( int idx ) const
+{
+    geEditor* editor = dynamic_cast<geEditor*>( m_notebook->GetPage( idx ) );
+    return editor ? editor->GetFilename() : wxString();
+}
+
+bool geMainFrame::IsTabSetAsRunFile( int idx ) const
+{
+    geEditor* editor = dynamic_cast<geEditor*>(m_notebook->GetPage( idx ));
+    return editor && editor->IsRunPage();
+}
+
+wxString geMainFrame::GetTabLabelForFile( const wxString& filePath ) const
+{
+    if( filePath.IsEmpty() ) {
+        return "Untitled";
+    }
+    return wxFileNameFromPath( filePath );
+}
+
+int geMainFrame::GetRunTab() const
+{
+    for( size_t i = 0; i < m_notebook->GetPageCount(); ++i ) {
+        geEditor* editor = dynamic_cast<geEditor*>( m_notebook->GetPage( i ) );
+        if( !editor ) continue;
+        if( editor->IsRunPage() ) {
+            return i;
+        }
+    }
+    return m_notebook->GetSelection();
+}
+
+void geMainFrame::UpdateTabIndicators()
+{
+    for( size_t i = 0; i < m_notebook->GetPageCount(); ++i ) {
+        geEditor* editor = dynamic_cast<geEditor*>( m_notebook->GetPage( i ) );
+        if( !editor ) continue;
+        wxString label = editor->GetTabName();
+        if( editor->IsRunPage() ) {
+            // Add an icon or change color if supported
+            m_notebook->SetPageText( i, wxString::FromUTF8( u8"▶ " ) + label );
+            // If SetPageTextColor is available:
+            // m_notebook->SetPageTextColor(i, *wxRED);
+        }
+        else {
+            m_notebook->SetPageText( i, label );
+            // m_notebook->SetPageTextColor(i, *wxBLACK);
+        }
+    }
 }
 
 void geMainFrame::UpdateStateTree()
@@ -386,7 +522,6 @@ void geMainFrame::UpdateStateTree()
             }
         }
     }
-//    m_stateTree->ExpandAll();
 }
 
 void geMainFrame::UpdateStatusBar()

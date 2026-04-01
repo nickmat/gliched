@@ -179,21 +179,20 @@ void geMainFrame::OnNew(wxCommandEvent&)
     m_notebook->AddPage(editor, editor->GetTabName(), true);
 }
 
-void geMainFrame::OnOpen(wxCommandEvent&)
+void geMainFrame::OnOpen( wxCommandEvent& )
 {
-    wxFileDialog dlg(this, "Open file", wxEmptyString, wxEmptyString,
-                     "Glich Script (*.glcs)|*.glcs|All Files (*.*)|*.*",
-                     wxFD_OPEN | wxFD_FILE_MUST_EXIST);
-    if (dlg.ShowModal() == wxID_OK)
-    {
-        geEditor* editor = new geEditor(m_notebook);
-        if (editor->LoadFile(dlg.GetPath()))
-        {
-            m_notebook->AddPage(editor, editor->GetTabName(), true);
+    wxFileDialog dlg( this, "Open file", wxEmptyString, wxEmptyString,
+        "Glich Script (*.glcs)|*.glcs|All Files (*.*)|*.*",
+        wxFD_OPEN | wxFD_FILE_MUST_EXIST );
+    if( dlg.ShowModal() == wxID_OK ) {
+        wxFileName filename( dlg.GetPath() );
+        AddModulePath( filename.GetPath().ToStdString() );
+        geEditor* editor = new geEditor( m_notebook );
+        if( editor->LoadFile( dlg.GetPath() ) ) {
+            m_notebook->AddPage( editor, editor->GetTabName(), true );
         }
-        else
-        {
-            wxMessageBox("Failed to open file.", "Error", wxICON_ERROR);
+        else {
+            wxMessageBox( "Failed to open file.", "Error", wxICON_ERROR );
             delete editor;
         }
     }
@@ -202,53 +201,49 @@ void geMainFrame::OnOpen(wxCommandEvent&)
 void geMainFrame::OnSave(wxCommandEvent&)
 {
     int sel = m_notebook->GetSelection();
-    if (sel == wxNOT_FOUND) return;
+    if( sel == wxNOT_FOUND ) return;
     geEditor* editor = dynamic_cast<geEditor*>(m_notebook->GetPage(sel));
-    if (!editor) return;
+    if( !editor ) return;
 
     wxString path = editor->GetFilename();
-    if (path.IsEmpty())
-    {
-        OnSaveAs(wxCommandEvent());
+    if( path.IsEmpty() ) {
+        OnSaveAs( wxCommandEvent() );
         return;
     }
-    if (editor->SaveFile(path))
-    {
-        SetStatusText("Saved: " + path);
+    if( editor->SaveFile( path ) ) {
+        SetStatusText( "Saved: " + path );
     }
-    else
-    {
-        wxMessageBox("Failed to save file.", "Error", wxICON_ERROR);
+    else {
+        wxMessageBox( "Failed to save file.", "Error", wxICON_ERROR );
     }
 }
 
-void geMainFrame::OnSaveAs(wxCommandEvent&)
+void geMainFrame::OnSaveAs( wxCommandEvent& )
 {
     int sel = m_notebook->GetSelection();
-    if (sel == wxNOT_FOUND) return;
-    geEditor* editor = dynamic_cast<geEditor*>(m_notebook->GetPage(sel));
-    if (!editor) return;
+    if( sel == wxNOT_FOUND ) return;
+    geEditor* editor = dynamic_cast<geEditor*>(m_notebook->GetPage( sel ));
+    if( !editor ) return;
 
-    wxFileDialog dlg(this, "Save file as", wxEmptyString, wxEmptyString,
-                     "Glich Script (*.glcs)|*.glcs|All Files (*.*)|*.*",
-                     wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
-    if (dlg.ShowModal() == wxID_OK)
-    {
-        if (editor->SaveFile(dlg.GetPath()))
-        {
+    wxFileDialog dlg( this, "Save file as", wxEmptyString, wxEmptyString,
+        "Glich Script (*.glcs)|*.glcs|All Files (*.*)|*.*",
+        wxFD_SAVE | wxFD_OVERWRITE_PROMPT );
+    if( dlg.ShowModal() == wxID_OK ) {
+        wxFileName filename( dlg.GetPath() );
+        AddModulePath( filename.GetPath().ToStdString() );
+        if( editor->SaveFile( dlg.GetPath() ) ) {
             UpdateTabIndicators();
-            SetStatusText("Saved: " + dlg.GetPath());
+            SetStatusText( "Saved: " + dlg.GetPath() );
         }
-        else
-        {
-            wxMessageBox("Failed to save file.", "Error", wxICON_ERROR);
+        else {
+            wxMessageBox( "Failed to save file.", "Error", wxICON_ERROR );
         }
     }
 }
 
-void geMainFrame::OnExit(wxCommandEvent&)
+void geMainFrame::OnExit( wxCommandEvent& )
 {
-    Close(true);
+    Close( true );
 }
 
 // --- Edit command handlers ---
@@ -574,4 +569,12 @@ void geMainFrame::UpdateStatusBar()
         if (name.IsEmpty()) name = "Untitled";
         SetStatusText(name);
     }
+}
+
+void geMainFrame::AddModulePath( const std::string& path )
+{
+    for( const auto& p : m_modulePaths ) {
+        if( p == path ) return;
+    }
+    m_modulePaths.push_back( path );
 }

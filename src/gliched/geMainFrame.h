@@ -8,6 +8,9 @@
 #include <wx/textctrl.h>
 #include <wx/treelist.h>
 
+#include <vector>
+#include <string>
+
 class geMainFrame : public wxFrame
 {
 public:
@@ -49,9 +52,11 @@ private:
     void UpdateTabIndicators();
     void UpdateStateTree();
     void UpdateStatusBar();
+    void AddModulePath( const std::string& path );
 
     int m_tabContextIndex; // Index of the tab for which the context menu is currently open, or -1 if none
     int m_newTabCounter; // Counter for naming new tabs
+    std::vector<std::string> m_modulePaths; // File paths of each open file used for locating modules.
 
     wxDECLARE_EVENT_TABLE();
 };

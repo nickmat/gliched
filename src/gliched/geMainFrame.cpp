@@ -16,6 +16,7 @@
 #include <wx/icon.h>
 #include <wx/image.h>
 #include <wx/mstream.h>
+#include <wx/button.h>
 
 
 enum
@@ -47,14 +48,15 @@ wxBEGIN_EVENT_TABLE(geMainFrame, wxFrame)
     EVT_TOOL( ID_Cut, geMainFrame::OnCut )
     EVT_TOOL( ID_Copy, geMainFrame::OnCopy )
     EVT_TOOL( ID_Paste, geMainFrame::OnPaste )
+    EVT_MENU( ID_Run, geMainFrame::OnRun )
     EVT_MENU( ID_Help_Website, geMainFrame::OnHelpWebsite )
     EVT_MENU( ID_Help_About, geMainFrame::OnHelpAbout )
-    EVT_TOOL( ID_Run, geMainFrame::OnRun )
     EVT_AUINOTEBOOK_PAGE_CHANGED(wxID_ANY, geMainFrame::OnTabChanged)
     EVT_AUINOTEBOOK_PAGE_CLOSE(wxID_ANY, geMainFrame::OnTabClose)
     EVT_MENU( ID_Select_Run_Tab, geMainFrame::OnSetAsRunFile )
     EVT_MENU( ID_Clear_Run_Tab, geMainFrame::OnClearRunFile )
     EVT_CLOSE( geMainFrame::OnClose )
+    EVT_BUTTON( ID_Run, geMainFrame::OnRun )
 wxEND_EVENT_TABLE()
 
 geMainFrame::geMainFrame()
@@ -92,6 +94,11 @@ geMainFrame::geMainFrame()
     editMenu->Append( ID_Paste, "&Paste\tCtrl+V" );
     menuBar->Append( editMenu, "&Edit" );
 
+    // Tools menu
+    wxMenu* toolsMenu = new wxMenu();
+    toolsMenu->Append( ID_Run, "&Run script\tF5" );
+    menuBar->Append( toolsMenu, "&Tools" );
+
     // Help menu
     wxMenu* helpMenu = new wxMenu;
     helpMenu->Append( ID_Help_Website, "Gliched &Website...\tF1" );
@@ -115,7 +122,9 @@ geMainFrame::geMainFrame()
     m_toolbar->AddTool( ID_Copy, "Copy", wxArtProvider::GetBitmap( wxART_COPY, wxART_TOOLBAR ) );
     m_toolbar->AddTool( ID_Paste, "Paste", wxArtProvider::GetBitmap( wxART_PASTE, wxART_TOOLBAR ) );
     m_toolbar->AddSeparator();
-    m_toolbar->AddTool( ID_Run, "Run", wxArtProvider::GetBitmap( wxART_EXECUTABLE_FILE, wxART_TOOLBAR ) );
+    wxButton* m_buttonRun = new wxButton( m_toolbar, ID_Run, _( "Run" ), wxDefaultPosition, wxDefaultSize, 0 );
+    m_buttonRun->SetToolTip( _( "Run active script [F5]" ) );
+    m_toolbar->AddControl( m_buttonRun );
     m_toolbar->Realize();
 
     // Status bar

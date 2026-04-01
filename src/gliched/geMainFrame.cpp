@@ -391,11 +391,10 @@ void geMainFrame::OnTabClose( wxAuiNotebookEvent& evt )
 
 void geMainFrame::OnSetAsRunFile( wxCommandEvent& )
 {
-    int tabIdx = m_notebook->GetSelection();
     for( int i = 0; i < m_notebook->GetPageCount(); ++i ) {
         geEditor* e = dynamic_cast<geEditor*>(m_notebook->GetPage( i ));
         if( !e ) continue;
-        if( i == tabIdx ) {
+        if( i == m_tabContextIndex ) {
             e->SetRunPage( true );
         }
         else {

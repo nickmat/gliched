@@ -577,4 +577,5 @@ void geMainFrame::AddModulePath( const std::string& path )
         if( p == path ) return;
     }
     m_modulePaths.push_back( path );
+    glich::hic().set_file_module_paths( m_modulePaths );
 }

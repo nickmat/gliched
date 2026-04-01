@@ -288,16 +288,68 @@ void geEditor::OnCharAdded(wxStyledTextEvent& event)
         if (line == 0) return;
         wxString prevLine = GetLine(line - 1);
         wxString indent;
+
+        // Copy indentation from previous line
         for (wxChar ch : prevLine) {
-            if( ch == ' ' || ch == '\t' ) {
+            if (ch == ' ' || ch == '\t') {
                 indent += ch;
-            }
-            else {
+            } else {
                 break;
             }
         }
+
+        // Increase indent if previous line ends with '{'
+        wxString trimmedPrev = prevLine.Trim(true).Trim(false);
+        if (trimmedPrev.EndsWith("{")) {
+            if (GetUseTabs())
+                indent += '\t';
+            else
+                indent += wxString(' ', GetTabWidth());
+        }
+
         InsertText(GetCurrentPos(), indent);
+        GotoPos(PositionFromLine(line) + indent.Length());
     }
+    // --- Auto-unindent when typing '}' at start of line ---
+    else if (event.GetKey() == '}') {
+        int pos = GetCurrentPos();
+        int line = LineFromPosition(pos);
+        wxString currLine = GetLine(line);
+        int lineStart = PositionFromLine(line);
+        int caretPosInLine = pos - lineStart;
+
+        // Check if only whitespace before the caret
+        bool onlyWhitespace = true;
+        for (int i = 0; i < caretPosInLine - 1; ++i) {
+            if (!isspace(GetCharAt(lineStart + i))) {
+                onlyWhitespace = false;
+                break;
+            }
+        }
+        if (onlyWhitespace) {
+            // Remove one indent level before the caret
+            int tabWidth = GetTabWidth();
+            int removeCount = 0;
+            for (int i = 0; i < caretPosInLine - 1 && removeCount < tabWidth; ++i) {
+                char ch = GetCharAt(lineStart + i);
+                if (ch == ' ') removeCount++;
+                else if (ch == '\t') removeCount = tabWidth; // Remove all if tab
+                else break;
+            }
+            if (removeCount > 0) {
+                SetTargetStart(lineStart);
+                SetTargetEnd(lineStart + removeCount);
+                ReplaceTarget("");
+                GotoPos(pos - removeCount);
+            }
+        }
+    }
+
+    // --- Force syntax coloring for the current line after typing ---
+    int line = GetCurrentLine();
+    int start = PositionFromLine( line );
+    int end = GetLineEndPosition( line );
+    Colourise( start, end );
 }
 
 // Brace matching (unchanged)

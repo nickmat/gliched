@@ -17,10 +17,10 @@ public:
     void SetRunPage( bool run ) { m_runPage = run; }
 
 private:
-    void OnUpdateUI( wxStyledTextEvent& );
     void OnStyleNeeded(wxStyledTextEvent& event);
     void OnMarginClick( wxStyledTextEvent& event );
     void OnCharAdded(wxStyledTextEvent& event);
+    void OnUpdateUI( wxStyledTextEvent& );
 
     wxString m_filename;
     wxString m_tabName;

@@ -1,4 +1,5 @@
 #include "geEditor.h"
+#include "geMainFrame.h"
 #include <wx/stc/stc.h>
 #include <wx/log.h> 
 #include <unordered_set>
@@ -78,6 +79,8 @@ geEditor::geEditor(wxWindow* parent)
     Bind(wxEVT_STC_STYLENEEDED, &geEditor::OnStyleNeeded, this);
     Bind( wxEVT_STC_MARGINCLICK, &geEditor::OnMarginClick, this );
     Bind(wxEVT_STC_CHARADDED, &geEditor::OnCharAdded, this);
+    Bind( wxEVT_STC_CHANGE, &geEditor::OnContentChanged, this );
+    m_autosaveTimer.Bind( wxEVT_TIMER, &geEditor::OnAutosaveTimer, this );
 }
 
 bool geEditor::LoadFile( const wxString& path )
@@ -370,4 +373,21 @@ void geEditor::OnUpdateUI(wxStyledTextEvent&)
         BraceHighlight(braceAtCaret, braceOpposite);
     else
         BraceBadLight(braceAtCaret);
+}
+
+void geEditor::OnContentChanged( wxStyledTextEvent& )
+{
+    // Only start timer if autosave is enabled (ask main frame)
+    if( m_filename.IsEmpty() ) return;
+    geMainFrame* frame = dynamic_cast<geMainFrame*>(wxGetTopLevelParent( this ));
+    if( frame && frame->IsAutosaveEnabled() ) {
+        m_autosaveTimer.Start( 1000, wxTIMER_ONE_SHOT ); // 1 second debounce
+    }
+}
+
+void geEditor::OnAutosaveTimer( wxTimerEvent& )
+{
+    if( !m_filename.IsEmpty() ) {
+        SaveFile( m_filename );
+    }
 }

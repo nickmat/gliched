@@ -33,6 +33,7 @@ enum
     ID_Help_Website,
     ID_Help_About,
     ID_Run,
+    ID_ToggleAutosave,
     ID_Select_Run_Tab,
     ID_Clear_Run_Tab
 };
@@ -49,6 +50,7 @@ wxBEGIN_EVENT_TABLE(geMainFrame, wxFrame)
     EVT_TOOL( ID_Copy, geMainFrame::OnCopy )
     EVT_TOOL( ID_Paste, geMainFrame::OnPaste )
     EVT_MENU( ID_Run, geMainFrame::OnRun )
+    EVT_MENU( ID_ToggleAutosave, geMainFrame::OnToggleAutosave )
     EVT_MENU( ID_Help_Website, geMainFrame::OnHelpWebsite )
     EVT_MENU( ID_Help_About, geMainFrame::OnHelpAbout )
     EVT_AUINOTEBOOK_PAGE_CHANGED(wxID_ANY, geMainFrame::OnTabChanged)
@@ -97,6 +99,8 @@ geMainFrame::geMainFrame()
     // Tools menu
     wxMenu* toolsMenu = new wxMenu();
     toolsMenu->Append( ID_Run, "&Run script\tF5" );
+    wxMenuItem* autosaveItem = toolsMenu->AppendCheckItem( ID_ToggleAutosave, "Toggle Autosave" );
+    autosaveItem->Check( m_autosaveEnabled );
     menuBar->Append( toolsMenu, "&Tools" );
 
     // Help menu
@@ -435,6 +439,11 @@ void geMainFrame::OnClose( wxCloseEvent& event )
     }
     // Proceed with close
     event.Skip();
+}
+
+void geMainFrame::OnToggleAutosave( wxCommandEvent& evt )
+{
+    m_autosaveEnabled = evt.IsChecked();
 }
 
 wxString geMainFrame::GetFilePathForTab( int idx ) const

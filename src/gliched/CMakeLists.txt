@@ -14,9 +14,9 @@ set(GE_HEADERS
 )
 
 set(GE_SOURCES
-  geMainFrame.cpp
+  geApp.cpp
   geEditor.cpp
-  main.cpp
+  geMainFrame.cpp
 )
 
 add_executable(gliched WIN32 ${GE_SOURCES} ${GE_HEADERS} gliched.rc)

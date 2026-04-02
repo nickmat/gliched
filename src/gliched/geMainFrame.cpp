@@ -28,6 +28,7 @@
 
 #include "geEditor.h"
 #include "geImages.h"
+#include "geVersion.h"
 
 #include <glc/hic.h>
 
@@ -323,19 +324,24 @@ void geMainFrame::OnHelpWebsite( wxCommandEvent& )
 
 void geMainFrame::OnHelpAbout( wxCommandEvent& )
 {
+    // Get version of Scintilla
+    wxVersionInfo vi = wxStyledTextCtrl::GetLibraryVersionInfo();
+
     wxMessageBox(
         wxString::Format(
-            "Gliched IDE version 0.1\n"
-            "Built with %s,\n"
-                "and Glich library %s\n",
+            _( "%s"
+                "Built with %s,\n"
+                "with %s\n"
+                "and Glich library %s\n" ),
+            geTitle,
             wxVERSION_STRING,
+            vi.GetVersionString(),
             glich::hic().version()
         ),
         "About Gliched",
         wxOK | wxICON_INFORMATION,
         this
     );
-
 }
 
 void geMainFrame::OnRun( wxCommandEvent& )

@@ -11,12 +11,14 @@ set(GE_HEADERS
   geEditor.h
   geImages.h
   geMainFrame.h
+  geVersion.h
 )
 
 set(GE_SOURCES
   geApp.cpp
   geEditor.cpp
   geMainFrame.cpp
+  geVersion.cpp
 )
 
 add_executable(gliched WIN32 ${GE_SOURCES} ${GE_HEADERS} gliched.rc)

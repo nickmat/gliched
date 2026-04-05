@@ -9,7 +9,7 @@
     { "folder": "new", "name": "news", "label": "News" },
     { "folder": "man", "name": "index", "label": "Manual", "title": "Manual", "subtitle": "Introduction" },
     { "folder": "dev", "name": "index", "label": "Development", "title": "Development", "subtitle": "Introduction", "content": [
-      { "folder": "man", "name": "index", "label": "v0.0.1 Manual", "title": "v0.0.1 Manual", "subtitle": "Introduction" },
+      { "insert": "manual-0-1-0.json" },
       { "name": "routemap", "label": "Route Map", "title": "Development" }
     ]},
     { "name": "support", "label": "Support" }

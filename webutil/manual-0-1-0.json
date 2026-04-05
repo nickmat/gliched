@@ -1,0 +1,5 @@
+{ "folder": "man", "name": "index", "label": "v0.1.0 Manual", "title": "v0.1.0 Manual", "subtitle": "Introduction", "content": [
+  { "name": "install", "label": "Installation" },
+  { "name": "editing", "label": "Editing", "title": "Editing and Running Scripts" },
+  { "name": "tutorial", "label": "Tutorial" }
+]}

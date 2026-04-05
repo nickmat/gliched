@@ -80,7 +80,7 @@ public:
         }
         glich::init_hic( lib, new GeInOut, args );
 
-        geMainFrame* frame = new geMainFrame();
+        geMainFrame* frame = new geMainFrame( filename );
         frame->Show();
         return true;
     }

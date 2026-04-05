@@ -40,7 +40,7 @@
 class geMainFrame : public wxFrame
 {
 public:
-    geMainFrame();
+    geMainFrame( const wxString& filename = wxEmptyString );
     ~geMainFrame();
 
     bool IsAutosaveEnabled() const { return m_autosaveEnabled; }

@@ -87,7 +87,7 @@ wxBEGIN_EVENT_TABLE(geMainFrame, wxFrame)
     EVT_BUTTON( ID_Run, geMainFrame::OnRun )
 wxEND_EVENT_TABLE()
 
-geMainFrame::geMainFrame()
+geMainFrame::geMainFrame( const wxString& filename )
     : wxFrame(nullptr, wxID_ANY, "Gliched IDE", wxDefaultPosition, wxSize(900, 700)),
     m_mgr( this ), m_tabContextIndex( -1 ), m_newTabCounter( 1 )
 {
@@ -187,13 +187,22 @@ geMainFrame::geMainFrame()
     m_mgr.AddPane( m_stateTree, wxAuiPaneInfo().Left().Caption( "Glich State" ).BestSize( 250, -1 ).MinSize( 150, -1 ).Resizable( true ).CloseButton( false ) );
     m_mgr.Update();
 
-    // Add initial tab
-    wxString title = wxString::Format( "Untitled-%d", m_newTabCounter++ );
-    geEditor* editor = new geEditor(m_notebook);
-    editor->SetTabName(title);
-    m_notebook->AddPage(editor, editor->GetTabName(), true);
-
     UpdateStateTree();
+
+    // Add initial tab
+    geEditor* editor = new geEditor(m_notebook);
+    if( !filename.IsEmpty() ) {
+        wxFileName fn( filename );
+        AddModulePath( fn.GetPath().ToStdString() );
+        if( editor->LoadFile( filename ) ) {
+            m_notebook->AddPage( editor, editor->GetTabName(), true );
+            return;
+        }
+    }
+    // If we failed to load the file, or no file was specified, add an empty tab
+    wxString title = wxString::Format( "Untitled-%d", m_newTabCounter++ );
+    editor->SetTabName( title );
+    m_notebook->AddPage( editor, editor->GetTabName(), true );
 }
 
 geMainFrame::~geMainFrame()

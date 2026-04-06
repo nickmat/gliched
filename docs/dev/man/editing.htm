@@ -30,7 +30,65 @@
 
 <div id='content' class='nomenu'>
 
-<h2>Page Under Construction</h2>
+<h1>Editing and Running Scripts</h1>
+
+<p>
+  Gliched IDE provides a simple, tabbed interface for editing and running Glich scripts. This section covers the basics of creating, editing, saving, and executing your scripts within the IDE.
+</p>
+
+<h2>Creating and Opening Scripts</h2>
+<ul>
+  <li><strong>New Script:</strong> Click the <b>New</b> button on the toolbar or select <b>File &gt; New</b> (Ctrl+N) to create a new script tab.</li>
+  <li><strong>Open Script:</strong> Click the <b>Open</b> button or select <b>File &gt; Open...</b> (Ctrl+O) to open an existing <code>.glcs</code> file.</li>
+  <li>Each script opens in its own tab, allowing you to work with multiple scripts at once.</li>
+</ul>
+
+<h2>Editing Scripts</h2>
+<ul>
+  <li>Use the built-in editor to write and modify your Glich scripts.</li>
+  <li>Standard editing features are available, including Undo/Redo, Cut, Copy, and Paste (via toolbar buttons or the Edit menu).</li>
+  <li>Tabs can be renamed and unsaved changes are indicated in the tab title.</li>
+  <li>
+    <strong>Automatic Save:</strong> By default, Gliched IDE automatically saves your scripts as you work. This is important because the module system (<code>file:module</code>) requires scripts to be saved as files in order to be found and used when running or importing modules.
+  </li>
+  <li>
+    You can toggle autosave in the <b>Tools</b> menu, but it is recommended to keep it enabled for correct module behavior.
+  </li>
+</ul>
+
+<h2>Running Scripts</h2>
+<ul>
+  <li>To run a script, select the tab you want to execute and click the <b>Run</b> button on the toolbar, or select <b>Tools &gt; Run script</b> (F5).</li>
+  <li>The output of your script will appear in the <b>Output</b> pane at the bottom of the window.</li>
+  <li>
+    <strong>Note:</strong> When your script uses the module system (e.g., <code>module</code> statements), Gliched will look for the required modules as files on disk. Unsaved tabs will not be found as modules. Make sure your scripts are saved before running if they use modules.
+  </li>
+  <li>
+    In future versions, it may be possible to run unsaved tabs as <code>ide:module</code>, but currently only file-based modules are supported.
+  </li>
+  <li>You can set which tab is the "Run" file by right-clicking a tab and choosing <b>Set as Run File</b>. Only one tab can be set as the run file at a time.</li>
+  <li>To clear the run file setting, right-click the tab and choose <b>Clear Run File</b>.</li>
+</ul>
+
+<h2>Viewing State</h2>
+<ul>
+  <li>The <b>Glich State</b> pane (on the left) displays variables, objects, functions, and other state information from your running script.</li>
+  <li>This pane updates automatically after each script run.</li>
+</ul>
+
+<h2>Tips</h2>
+<ul>
+  <li>Double-clicking a <code>.glcs</code> file (if associated) will open it directly in Gliched IDE.</li>
+  <li>Use the <b>Help</b> menu to access the Gliched website or About dialog.</li>
+  <li>Unsaved changes will prompt you before closing a tab or exiting the IDE (if autosave is off).</li>
+</ul>
+
+<hr>
+
+<p>
+  For more advanced usage, see the <a href="tutorial.htm">Tutorial</a> section.
+</p>
+
 
 </div><!--id=content-->
 

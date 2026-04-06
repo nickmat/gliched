@@ -30,7 +30,74 @@
 
 <div id='content' class='nomenu'>
 
-<h2>Page Under Construction</h2>
+<h2>Installation</h2>
+
+<p>
+  <strong>Gliched IDE</strong> is distributed as a single, self-contained executable file for Windows. It includes an embedded version of the Glich scripting language—no separate installation of Glich is required.
+</p>
+<div class='note'><div class='inner'>
+    <div class='h'>Note</div>
+<p>
+ Initially, it is only available for Windows as a standalone executable.
+ Future releases will include versions for other platforms and an installer.
+</p>
+</div></div>
+
+<h3>Download</h3>
+<ul>
+  <li>Download the latest <code>gliched.exe</code> from the <a href="https://github.com/nickmat/gliched/releases">Gliched GitHub Releases page</a>.</li>
+</ul>
+
+<h3>Setup</h3>
+<ol>
+  <li><strong>Copy the executable:</strong> Place <code>gliched.exe</code> in any directory of your choice.</li>
+  <li><strong>(Optional) Add to your PATH:</strong> For convenience, add the directory containing <code>gliched.exe</code> to your system’s PATH environment variable. This allows you to launch Gliched from any command prompt or file dialog.</li>
+  <li><strong>No installer required:</strong> There is currently no installer. Simply copy the executable to your preferred location.</li>
+</ol>
+
+<h3>Running Gliched</h3>
+<ul>
+  <li><strong>Basic usage:</strong> Double-click <code>gliched.exe</code> or run it from a command prompt.</li>
+  <li><strong>Command-line options:</strong>
+    <ul>
+      <li><code>--lib [hics | none]</code> &mdash; Start Gliched with or without the HICS library loaded.<br>
+        <ul>
+          <li><code>--lib hics</code> (default): Start with the HICS library.</li>
+          <li><code>--lib none</code>: Start without the HICS library.</li>
+        </ul>
+      </li>
+      <li><code>[filename]</code> &mdash; Any other command-line argument is treated as the filename of a script to open at startup.</li>
+    </ul>
+  </li>
+</ul>
+
+<h3>Examples:</h3>
+<pre>
+gliched.exe
+</pre>
+<p>Launches the IDE normally.</p>
+<pre>
+gliched.exe --lib none
+</pre>
+<p>Launches the IDE without the HICS library.</p>
+<pre>
+gliched.exe myscript.glcs
+</pre>
+<p>Opens <code>myscript.glcs</code> in the editor on startup.</p>
+
+<h3>File Association (Optional)</h3>
+<p>
+  You can associate the <code>.glcs</code> file extension (Glich script files) with <code>gliched.exe</code>. This allows you to open scripts directly in Gliched IDE by double-clicking them in Windows Explorer.
+</p>
+<ol>
+  <li>Right-click any <code>.glcs</code> file and choose <strong>Open with &gt; Choose another app</strong>.</li>
+  <li>Select <code>gliched.exe</code> from your installation directory (or browse to it).</li>
+  <li>Check <strong>Always use this app to open .glcs files</strong> and click <strong>OK</strong>.</li>
+</ol>
+<p>
+  After association, double-clicking any <code>.glcs</code> file will launch Gliched IDE and open the script automatically.
+</p>
+
 
 </div><!--id=content-->
 
